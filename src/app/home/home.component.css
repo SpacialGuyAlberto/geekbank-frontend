@@ -1,0 +1,12 @@
+.inicio-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.inicio-container h2 {
+  color: #4CAF50;
+}
+
+.inicio-container p {
+  font-size: 18px;
+}
