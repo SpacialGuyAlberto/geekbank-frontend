@@ -1,5 +1,6 @@
-<div class="start-container">
+<div class="start-container" *ngIf="homeData">
   <h2>Welcome!</h2>
   <p>You have successfully logged in.</p>
+  <p>{{ homeData.message }}</p>
 </div>
 

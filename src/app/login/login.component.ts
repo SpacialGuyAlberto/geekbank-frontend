@@ -1,24 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    NgClass
   ],
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   email: string = '';
   password: string = '';
   message: string = '';
   messageClass: string = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    if (this.authService.isBrowser()) {
+      this.authService.loadGoogleScript().then(() => {
+        this.authService.initializeGoogleSignIn();
+      }).catch(error => {
+        console.error('Error loading Google script', error);
+      });
+    }
+  }
 
   onSubmit() {
     this.authService.login(this.email, this.password).subscribe(

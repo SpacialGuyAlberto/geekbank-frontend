@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {firstValueFrom, Observable} from 'rxjs';
-import {Router} from "@angular/router";
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { firstValueFrom, Observable } from 'rxjs';
+import { Router } from "@angular/router";
 
+
+declare const google: any;
 @Injectable({
   providedIn: 'root'
 })
@@ -10,7 +12,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:7070/api/auth';
   private token: string | undefined;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) {}
 
   register(email: string, password: string, name: string): Observable<HttpResponse<any>> {
     return this.http.post(
@@ -29,11 +31,11 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return typeof localStorage !== 'undefined' && !!localStorage.getItem('token');
+    return this.isBrowser() && !!localStorage.getItem('token');
   }
 
   setToken(token: string): void {
-    if (typeof localStorage !== 'undefined') {
+    if (this.isBrowser()) {
       if (token) {
         localStorage.setItem('token', token);
       } else {
@@ -43,7 +45,7 @@ export class AuthService {
   }
 
   getToken(): string {
-    return typeof localStorage !== 'undefined' ? localStorage.getItem('token') || '' : '';
+    return this.isBrowser() ? localStorage.getItem('token') || '' : '';
   }
 
   logout(): Observable<any> {
@@ -57,7 +59,7 @@ export class AuthService {
     try {
       await firstValueFrom(this.logout());
       console.log('Logout successful');
-      if (typeof localStorage !== 'undefined') {
+      if (this.isBrowser()) {
         localStorage.removeItem('token');
         localStorage.removeItem('username');
       }
@@ -66,5 +68,72 @@ export class AuthService {
     } catch (error) {
       console.error('Logout error', error);
     }
+  }
+
+  isBrowser(): boolean {
+    return typeof window !== 'undefined';
+  }
+
+  loadGoogleScript(): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      if (this.isBrowser()) {
+        const existingScript = document.getElementById('google-jssdk');
+        if (existingScript) {
+          resolve();
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.id = 'google-jssdk';
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = () => {
+          resolve();
+        };
+        script.onerror = (error) => {
+          reject(error);
+        };
+        document.head.appendChild(script);
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  initializeGoogleSignIn(): void {
+    if (this.isBrowser() && typeof google !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: '445500636748-2nuqarr3morlrul9bdadefcogo7rffcn.apps.googleusercontent.com',
+        callback: (response: any) => this.handleGoogleLogin(response)
+      });
+      google.accounts.id.renderButton(
+        document.getElementById('google-signin-button'),
+        {
+          theme: 'outline',
+          size: 'large',
+          width: 250
+        }
+      );
+    } else {
+      console.error('Google script not loaded or not in a browser environment');
+    }
+  }
+
+  handleGoogleLogin(response: any) {
+    const token = response.credential;
+    this.googleLogin(token).subscribe(
+      (data: any) => {
+        localStorage.setItem('token', data.token);
+        this.router.navigate(['/home']);
+      },
+      (error) => {
+        console.error('Google login error', error);
+      }
+    );
+  }
+
+  googleLogin(token: string): Observable<any> {
+    return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
   }
 }

@@ -6,19 +6,14 @@ import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
-// Importa los componentes standalone
+import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './register/register.component';
 import {LoginComponent} from "./login/login.component";
 import {AppRoutingModule} from "./app-routing.module";
+import {environment} from "../environment";
+import {SocialLoginModule,   SocialAuthServiceConfig} from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 
-
-const routes: Routes = [
-  { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/register', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-];
 
 @NgModule({
   declarations: [
@@ -30,13 +25,14 @@ const routes: Routes = [
     BrowserAnimationsModule,
     MatDialogModule,
     MatButtonModule,
-    // RouterModule.forRoot(routes),
+    SocialLoginModule,
     AppRoutingModule,
     RegisterComponent,
-    AppComponent
-
+    AppComponent,
+    ReactiveFormsModule
   ],
-  providers: [ HttpClientModule, HttpClient],
+  providers: [ HttpClientModule, HttpClient
+  ],
   bootstrap: []
 })
 export class AppModule { }
