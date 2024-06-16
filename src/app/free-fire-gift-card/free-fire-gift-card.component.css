@@ -1,0 +1,37 @@
+.gift-card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.gift-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 300px;
+  text-align: center;
+  font-family: 'Arial, sans-serif';
+}
+
+.gift-card-image {
+  width: 100%;
+  height: auto;
+}
+
+.gift-card-details {
+  padding: 15px;
+}
+
+.gift-card-title {
+  font-size: 1.5em;
+  color: #333;
+  margin: 10px 0;
+}
+
+.gift-card-info {
+  font-size: 1em;
+  color: #666;
+  margin: 5px 0;
+}
