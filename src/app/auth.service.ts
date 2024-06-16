@@ -64,7 +64,7 @@ export class AuthService {
         localStorage.removeItem('username');
       }
       this.setToken('');
-      router.navigate(['/login']);
+      await router.navigate(['/login']);
     } catch (error) {
       console.error('Logout error', error);
     }
