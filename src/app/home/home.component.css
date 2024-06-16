@@ -10,3 +10,15 @@
 .inicio-container p {
   font-size: 18px;
 }
+
+.gift-cards-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.gift-card {
+  flex: 1;
+  margin: 0 10px;
+}

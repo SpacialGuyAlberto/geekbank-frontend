@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FreeFireGiftCardService} from "../free-fire-gift-card.service";
-import {FreeFireGiftCard} from "../models/FreeFireGiftCard";
+import {GiftCard} from "../models/GiftCard";
 import {CurrencyPipe, CommonModule} from "@angular/common";
 
 @Component({
@@ -15,7 +15,7 @@ import {CurrencyPipe, CommonModule} from "@angular/common";
 })
 
 export class FreeFireGiftCardComponent implements OnInit{
-  giftCard: FreeFireGiftCard | undefined;
+  giftCard: GiftCard | undefined;
 
   constructor(private giftCardService: FreeFireGiftCardService) {
   }

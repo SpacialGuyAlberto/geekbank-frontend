@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {HomeService} from "../home.service";
 import {FreeFireGiftCardComponent} from "../free-fire-gift-card/free-fire-gift-card.component";
+import {CallOfDutyGiftCardComponent} from "../call-of-duty-gift-card/call-of-duty-gift-card.component";
 
 interface onInit {
 }
@@ -15,7 +16,8 @@ interface onInit {
   imports: [
     RouterModule,
     CommonModule,
-    FreeFireGiftCardComponent
+    FreeFireGiftCardComponent,
+    CallOfDutyGiftCardComponent
   ]
 })
 // export class HomeComponent implements onInit {

@@ -1,5 +1,5 @@
 
-export interface FreeFireGiftCard {
+export interface GiftCard {
   cardNumber: string;
   product: string;
   price: number;
