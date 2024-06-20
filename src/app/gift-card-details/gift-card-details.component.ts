@@ -26,7 +26,12 @@ export class GiftCardDetailsComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.kinguinService.getGiftCardDetails(id).subscribe(data => {
+        if (!data.coverImageOriginal || !data.coverImage) {
+          data.coverImageOriginal = data.images.cover?.thumbnail || '';
+          data.coverImage = data.images.cover?.thumbnail || '';
+        }
         this.giftCard = data;
+        console.log('COVER OF IMAGE: ' + data.coverImageOriginal);
       });
     }
   }

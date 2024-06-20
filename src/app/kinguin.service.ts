@@ -21,4 +21,9 @@ export class KinguinService {
     const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
     return this.http.get<KinguinGiftCard>(`${this.apiUrl}/${id}`, { headers });
   }
+
+  searchGiftCards(name: string): Observable<KinguinGiftCard[]> {
+    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/search?name=${name}`, { headers });
+  }
 }

@@ -4,18 +4,20 @@ import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { KinguinService } from "../kinguin.service";
 import {PaginationComponent} from "../pagination/pagination.component";
 import { Router } from '@angular/router';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule, PaginationComponent] // Asegúrate de incluir CommonModule en imports
+  imports: [CommonModule, PaginationComponent, FormsModule] // Asegúrate de incluir CommonModule en imports
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
   totalPages: number = 3309; // Assuming we know the total number of pages
+  searchQuery: string = '';
 
   constructor(private kinguinService: KinguinService, private router: Router) { }
 
@@ -25,7 +27,13 @@ export class KinguinGiftCardsComponent implements OnInit {
 
   loadGiftCards(page: number): void {
     this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
-      this.giftCards = data;
+      this.giftCards = data.map(card => {
+        if (!card.coverImageOriginal || !card.coverImage) {
+          card.coverImageOriginal = card.images.cover?.thumbnail || '';
+          card.coverImage = card.images.cover?.thumbnail || '';
+        }
+        return card;
+      });
       console.log('Gift Cards: ', this.giftCards);
     });
   }
@@ -47,5 +55,22 @@ export class KinguinGiftCardsComponent implements OnInit {
       }
     });
   }
+  searchGiftCards(): void {
+    if (this.searchQuery.trim() !== '') {
+      this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
+        this.giftCards = data.map(card => {
+          if (!card.coverImageOriginal || !card.coverImage) {
+            card.coverImageOriginal = card.images.cover?.thumbnail || '';
+            card.coverImage = card.images.cover?.thumbnail || '';
+          }
+          return card;
+        });
+        console.log('Search Results: ', this.giftCards);
+      });
+    } else {
+      this.loadGiftCards(this.currentPage);
+    }
+  }
+
 
 }

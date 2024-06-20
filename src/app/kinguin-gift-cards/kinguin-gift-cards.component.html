@@ -1,8 +1,10 @@
 <div class="gift-cards">
   <h2>Gift Cards</h2>
+  <input type="text" [(ngModel)]="searchQuery" placeholder="Search for a gift card" (keyup.enter)="searchGiftCards()" />
+  <button (click)="searchGiftCards()">Search</button>
   <div class="gift-cards-container">
     <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
-      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image" />
+      <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
       <div class="gift-card-content">
         <h3 class="gift-card-title">{{ card.name }}</h3>
       </div>
