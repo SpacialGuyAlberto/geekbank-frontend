@@ -4,13 +4,17 @@ import {RegisterComponent} from "./register/register.component";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {SocialAuthService} from "@abacritt/angularx-social-login";
+import {CommonModule} from "@angular/common";
+import {KinguinGiftCard} from "./models/KinguinGiftCard";
+import {KinguinGiftCardsComponent} from "./kinguin-gift-cards/kinguin-gift-cards.component";
+import {NgModel} from "@angular/forms";
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent],
+  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule],
   providers: [ HttpClientModule, HttpClient
 
 ]

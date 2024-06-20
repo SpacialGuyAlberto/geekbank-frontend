@@ -1,0 +1,81 @@
+.gift-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.gift-card {
+  position: relative;
+  width: 180px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.gift-card:hover {
+  transform: scale(1.05);
+}
+
+.gift-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.gift-card-content {
+  padding: 10px;
+}
+
+.gift-card-title {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: bold;
+}
+
+.gift-card-description {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.gift-card-price {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  background: linear-gradient(90deg, #ff6b6b, #ff7e67, #ffa057);
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background-color: #ffa500;
+  color: white;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

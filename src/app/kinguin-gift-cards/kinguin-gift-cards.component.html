@@ -1,0 +1,24 @@
+<div class="gift-cards">
+  <h2>Gift Cards</h2>
+  <div class="gift-cards-container">
+    <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image" />
+      <div class="gift-card-content">
+        <h3 class="gift-card-title">{{ card.name }}</h3>
+      </div>
+      <div class="gift-card-price">
+        <span>{{ card.price | currency }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination">
+    <button (click)="goToPage(1)">First</button>
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+    <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
+      <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+    </span>
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    <button (click)="goToPage(totalPages)">Last</button>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<!-- src/app/gift-card-details/gift-card-details.component.html -->
+<div *ngIf="giftCard" class="gift-card-details-container">
+  <img [src]="giftCard.coverImage" alt="{{ giftCard.name }}" class="gift-card-image">
+  <div class="gift-card-content">
+    <h2 class="gift-card-title">{{ giftCard.name }}</h2>
+    <p class="gift-card-description">{{ giftCard.description }}</p>
+    <div class="gift-card-price">{{ giftCard.price | currency }}</div>
+  </div>
+  <div class="button-container">
+    <button (click)="addToCart(giftCard)" class="add-to-cart">Add to Cart</button>
+    <button (click)="buyNow(giftCard)" class="buy-now">Buy Now</button>
+    <button (click)="goBack()" class="back">Back</button>
+  </div>
+</div>

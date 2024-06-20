@@ -1,0 +1,86 @@
+/* src/app/gift-card-details/gift-card-details.component.css */
+
+.gift-card-details-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.gift-card-image {
+  width: 40%;
+  max-width: 400px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.gift-card-content {
+  width: 40%;
+  text-align: center;
+}
+
+.gift-card-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.gift-card-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.gift-card-price {
+  font-size: 2rem;
+  color: #ff6b6b;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100%;
+}
+
+.button-container button.add-to-cart {
+  background-color: #ffa500;
+  color: #fff;
+}
+
+.button-container button.add-to-cart:hover {
+  background-color: #e69500;
+}
+
+.button-container button.buy-now {
+  background-color: #ff6b6b;
+  color: #fff;
+}
+
+.button-container button.buy-now:hover {
+  background-color: #e65b5b;
+}
+
+.button-container button.back {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.button-container button.back:hover {
+  background-color: #0069d9;
+}
