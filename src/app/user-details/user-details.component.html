@@ -1,0 +1,7 @@
+<!-- src/app/user-details/user-details.component.html -->
+<div *ngIf="user" class="user-details-container">
+  <h2>{{ user.name }}</h2>
+  <p>Email: {{ user.email }}</p>
+  <p>Role: {{ user.role }}</p>
+  <p>Status: {{ user.isEnabled ? 'Active' : 'Inactive' }}</p>
+</div>

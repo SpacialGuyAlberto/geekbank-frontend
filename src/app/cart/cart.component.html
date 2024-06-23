@@ -1,0 +1,10 @@
+<!-- src/app/cart/cart.component.html -->
+<div class="cart-container">
+  <h2>Shopping Cart</h2>
+  <ul>
+    <li *ngFor="let item of cartItems">
+      Product ID: {{ item.productId }}
+      <button (click)="removeCartItem(Number(item.productId))">Remove</button>
+    </li>
+  </ul>
+</div>

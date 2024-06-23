@@ -1,0 +1,6 @@
+  <div class="search-bar">
+    <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar" (keyup.enter)="searchGiftCards()" />
+    <button (click)="searchGiftCards()">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
