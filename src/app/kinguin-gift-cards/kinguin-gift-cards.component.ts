@@ -5,13 +5,14 @@ import { KinguinService } from "../kinguin.service";
 import {PaginationComponent} from "../pagination/pagination.component";
 import { Router } from '@angular/router';
 import {FormsModule} from "@angular/forms";
+import {SearchBarComponent} from "../search-bar/search-bar.component";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule, PaginationComponent, FormsModule] // Asegúrate de incluir CommonModule en imports
+  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent]
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
@@ -28,10 +29,10 @@ export class KinguinGiftCardsComponent implements OnInit {
   loadGiftCards(page: number): void {
     this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data.map(card => {
-        if (!card.coverImageOriginal || !card.coverImage) {
+        // if (!card.coverImageOriginal || !card.coverImage) {
           card.coverImageOriginal = card.images.cover?.thumbnail || '';
           card.coverImage = card.images.cover?.thumbnail || '';
-        }
+        // }
         return card;
       });
       console.log('Gift Cards: ', this.giftCards);
@@ -55,22 +56,24 @@ export class KinguinGiftCardsComponent implements OnInit {
       }
     });
   }
-  searchGiftCards(): void {
-    if (this.searchQuery.trim() !== '') {
-      this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
-        this.giftCards = data.map(card => {
-          if (!card.coverImageOriginal || !card.coverImage) {
-            card.coverImageOriginal = card.images.cover?.thumbnail || '';
-            card.coverImage = card.images.cover?.thumbnail || '';
-          }
-          return card;
-        });
-        console.log('Search Results: ', this.giftCards);
-      });
-    } else {
-      this.loadGiftCards(this.currentPage);
-    }
+  // searchGiftCards(): void {
+  //   if (this.searchQuery.trim() !== '') {
+  //     this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
+  //       this.giftCards = data.map(card => {
+  //         // if (!card.coverImageOriginal || !card.coverImage) {
+  //           card.coverImageOriginal = card.images.cover?.thumbnail || '';
+  //           card.coverImage = card.images.cover?.thumbnail || '';
+  //         // }
+  //         return card;
+  //       });
+  //       console.log('Search Results: ', this.giftCards);
+  //     });
+  //   } else {
+  //     this.loadGiftCards(this.currentPage);
+  //   }
+  // }
+  handleSearchResults(results: KinguinGiftCard[]): void {
+    this.giftCards = results;
+    console.log('Search Results in Gift Cards Component: ', this.giftCards);
   }
-
-
 }

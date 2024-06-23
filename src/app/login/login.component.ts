@@ -38,10 +38,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.email, this.password).subscribe(
       response => {
         if (response.status === 200) {
-          const token = response.body.token;
-          const username = response.body.username;
-          localStorage.setItem('token', token);
-          localStorage.setItem('username', username);
+          const authResult = response.body;
+          this.authService.setSession(authResult);
           this.router.navigate(['/home']);
         } else {
           this.message = 'Login failed. Please try again.';

@@ -27,6 +27,6 @@ export const appConfig: ApplicationConfig = {
           }
         ]
       } as SocialAuthServiceConfig
-    }
+    }, provideAnimationsAsync()
   ]
 };

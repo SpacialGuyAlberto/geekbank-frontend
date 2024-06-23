@@ -1,7 +1,13 @@
 <div class="gift-cards">
-  <h2>Gift Cards</h2>
-  <input type="text" [(ngModel)]="searchQuery" placeholder="Search for a gift card" (keyup.enter)="searchGiftCards()" />
-  <button (click)="searchGiftCards()">Search</button>
+
+<!--  <div class="search-bar">-->
+<!--    <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar" (keyup.enter)="searchGiftCards()" />-->
+<!--    <button (click)="searchGiftCards()">-->
+<!--      <i class="fas fa-search"></i>-->
+<!--    </button>-->
+<!--  </div>-->
+
+  <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
   <div class="gift-cards-container">
     <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
       <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />

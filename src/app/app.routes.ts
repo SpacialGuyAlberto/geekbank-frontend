@@ -7,6 +7,8 @@ import {LogoutComponent} from "./logout/logout.component";
 import {AuthGuard} from "./auth.guard";
 import {NoAuthGuard} from "./noauth.guard";
 import {GiftCardDetailsComponent} from "./gift-card-details/gift-card-details.component";
+import {UserDetailsComponent} from "./user-details/user-details.component";
+import {CartComponent} from "./cart/cart.component";
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -14,5 +16,8 @@ export const routes: Routes = [
   { path: 'activate', component: ActivationComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
-  { path: '', redirectTo: '/register', pathMatch: 'full' }
+  { path: '', redirectTo: '/register', pathMatch: 'full' },
+  { path: 'user-details', component: UserDetailsComponent },
+  { path: 'cart', component: CartComponent },
+
 ];

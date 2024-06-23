@@ -6,7 +6,7 @@ import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {CurrencyPipe} from "@angular/common";
 import {CommonModule} from "@angular/common";
 import { Router } from '@angular/router';
-
+import { CartService } from '../cart.service';
 @Component({
   selector: 'app-gift-card-details',
   standalone: true,
@@ -20,16 +20,16 @@ import { Router } from '@angular/router';
 export class GiftCardDetailsComponent implements OnInit {
   giftCard: KinguinGiftCard | undefined;
 
-  constructor(private route: ActivatedRoute, private kinguinService: KinguinService, private router: Router) { }
+  constructor(private route: ActivatedRoute, private kinguinService: KinguinService, private router: Router, private cartService: CartService) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.kinguinService.getGiftCardDetails(id).subscribe(data => {
-        if (!data.coverImageOriginal || !data.coverImage) {
+        // if (!data.coverImageOriginal || !data.coverImage) {
           data.coverImageOriginal = data.images.cover?.thumbnail || '';
           data.coverImage = data.images.cover?.thumbnail || '';
-        }
+        // }
         this.giftCard = data;
         console.log('COVER OF IMAGE: ' + data.coverImageOriginal);
       });
@@ -37,10 +37,12 @@ export class GiftCardDetailsComponent implements OnInit {
   }
 
   addToCart(giftCard: KinguinGiftCard): void {
-    // Implement add to cart functionality
-    console.log('Added to cart:', this.giftCard)
+    if (this.giftCard) {
+      this.cartService.addCartItem(this.giftCard.kinguinId, 1).subscribe(() => {
+        console.log('Added to cart:', this.giftCard);
+      });
+    }
   }
-
   buyNow(giftCard: KinguinGiftCard): void {
     // Implement buy now functionality
     console.log('Bought now:', this.giftCard);

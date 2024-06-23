@@ -2,9 +2,12 @@
   <div class="navbar-brand">
     <span class="app-name">GeekBank</span>
   </div>
+
   <div class="navbar-links">
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
-    <button *ngIf="isLoggedIn()"  (click)="logout()" id="logout" class="nav-link">Logout</button>
+    <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
+    <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
+    <li *ngIf="isLoggedIn()"><a routerLink="/cart"><mat-icon>shopping_cart</mat-icon></a></li>
   </div>
 </nav>

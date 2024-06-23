@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { firstValueFrom, Observable } from 'rxjs';
+import {firstValueFrom, Observable, tap} from 'rxjs';
 import { Router } from "@angular/router";
+import {User} from "./models/User";
 
 
 declare const google: any;
@@ -10,6 +11,7 @@ declare const google: any;
 })
 export class AuthService {
   private baseUrl = 'http://localhost:7070/api/auth';
+  private baseUrl2 = 'http://localhost:7070/api/users';
   private token: string | undefined;
 
   constructor(private http: HttpClient, private router: Router) {}
@@ -22,11 +24,27 @@ export class AuthService {
     );
   }
 
+// auth.service.ts
+//   login(email: string, password: string): Observable<HttpResponse<any>> {
+//     return this.http.post(
+//       `${this.baseUrl}/login`,
+//       { email, password },
+//       { observe: 'response', responseType: 'text' as 'json' }
+//     ).pipe(
+//       tap(response => {
+//         const token = response.headers.get('Authorization'); // Asegúrate de que el encabezado correcto se utiliza
+//         if (token) {
+//           this.setToken(token);
+//         }
+//       })
+//     );
+//   }
+
   login(email: string, password: string): Observable<HttpResponse<any>> {
-    return this.http.post(
+    return this.http.post<any>(
       `${this.baseUrl}/login`,
       { email, password },
-      { observe: 'response', responseType: 'text' as 'json' }
+      { observe: 'response' }
     );
   }
 
@@ -48,10 +66,13 @@ export class AuthService {
     return this.isBrowser() ? localStorage.getItem('token') || '' : '';
   }
 
+
   logout(): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`
     });
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
     return this.http.post(`${this.baseUrl}/logout`, {}, { headers, responseType: 'text' });
   }
 
@@ -136,4 +157,31 @@ export class AuthService {
   googleLogin(token: string): Observable<any> {
     return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
   }
+
+  getUserById(userId: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${userId}`);
+  }
+
+// auth.service.ts
+// auth.service.ts
+  getUserDetails(): Observable<any> {
+    const userId = this.getUserId();
+    return this.http.get<any>(`http://localhost:7070/api/users/${userId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.getToken()}`
+      })
+    });
+  }
+
+  setSession(authResult: any) {
+    localStorage.setItem('token', authResult.token);
+    localStorage.setItem('userId', authResult.userId);
+  }
+
+  getUserId(): string {
+    return localStorage.getItem('userId') || '';
+  }
+
+
+
 }
