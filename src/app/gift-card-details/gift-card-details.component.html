@@ -7,7 +7,9 @@
     <div class="gift-card-price">{{ giftCard.price | currency }}</div>
   </div>
   <div class="button-container">
-    <button (click)="addToCart(giftCard)" class="add-to-cart">Add to Cart</button>
+    <button (click)="toggleCart(giftCard)" class="add-to-cart">
+      {{ isInCart ? 'Remove from Cart' : 'Add to Cart' }}
+    </button>
     <button (click)="buyNow(giftCard)" class="buy-now">Buy Now</button>
     <button (click)="goBack()" class="back">Back</button>
   </div>

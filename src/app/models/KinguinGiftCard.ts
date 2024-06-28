@@ -10,6 +10,7 @@ export interface KinguinGiftCard {
   genres: string[];
   platform: string;
   releaseDate: string;
+  quantity: number;
   qty: number;
   textQty: number;
   price: number;
