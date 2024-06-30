@@ -13,6 +13,7 @@
         <button
           (click)="decreaseProductQuantity(item)"
         >-</button>
+        <a (click)="openPaymentModal()" class="nav-link">PAY WITH TIGO MONEY</a>
       </div>
 
     </li>
@@ -25,3 +26,7 @@
     <button (click)="closeDialog()">OK</button>
   </div>
 </div>
+
+
+<app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems"></app-tigo-payment>
+

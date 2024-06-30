@@ -9,6 +9,7 @@ import {NoAuthGuard} from "./noauth.guard";
 import {GiftCardDetailsComponent} from "./gift-card-details/gift-card-details.component";
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {CartComponent} from "./cart/cart.component";
+import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -19,5 +20,5 @@ export const routes: Routes = [
   { path: '', redirectTo: '/register', pathMatch: 'full' },
   { path: 'user-details', component: UserDetailsComponent },
   { path: 'cart', component: CartComponent },
-
+  { path:'tigo-payment', component: TigoPaymentComponent }
 ];

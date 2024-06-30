@@ -3,13 +3,17 @@ import { Component, OnInit } from '@angular/core';
 import { CartService } from '../cart.service';
 import {NgForOf, NgIf} from "@angular/common";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import {RouterLink} from "@angular/router";
+import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    RouterLink,
+    TigoPaymentComponent
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
@@ -19,6 +23,7 @@ export class CartComponent implements OnInit {
   quantityInCart: number = 0;
   showDialog: boolean = false;
   private isInCart: boolean | undefined;
+  protected showPaymentModal: boolean = false;
 
   constructor(private cartService: CartService) {}
 
@@ -67,6 +72,10 @@ export class CartComponent implements OnInit {
         this.closeDialog();
       }, 3000);  // Dialog will close after 3 seconds
     }
+  }
+
+  openPaymentModal(): void {
+    this.showPaymentModal = true;
   }
 
   closeDialog(): void {
