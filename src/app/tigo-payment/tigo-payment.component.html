@@ -1,0 +1,21 @@
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Express Checkout</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div>
+        <label>Phone No.</label>
+        <input type="text" name="phone" class="phone-input"  required />
+      </div>
+      <div>
+        <label>Total:</label>
+        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly />
+      </div>
+      <button type="submit">Pay</button>
+    </form>
+    <div *ngIf="showConfirmation" class="confirmation">
+      <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
+      <p>Una vez realizado su pago, recibirá su código.</p>
+    </div>
+  </div>
+</div>
