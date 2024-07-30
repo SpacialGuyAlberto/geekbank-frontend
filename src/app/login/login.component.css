@@ -47,13 +47,25 @@
 button {
   width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #03346E;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
+#google-signin-button {
+  margin-top: 10px;
+  text-align: center;
+  margin-left: 25px;
+}
+
 button:hover {
-  background-color: #45a049;
+  background-color: #134B70;
+}
+
+#google-signin-button {
+
+  margin-top: 10px;
+  text-align: center;
 }
