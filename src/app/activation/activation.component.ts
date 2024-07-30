@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-activation',
@@ -17,31 +18,32 @@ export class ActivationComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params: Params) => {
       const token = params['token'];
       if (token) {
-        this.activateUser(token);
+        this.activateUser(token).then(() => {
+          this.showDialog('Cuenta activada', 'Cuenta activada exitosamente. Ahora puedes iniciar sesión.');
+          this.router.navigate(['/login']);
+        }).catch((error) => {
+          console.error('Error activating user:', error);
+          this.showDialog('Error', 'No se pudo activar la cuenta.');
+        });
       }
     });
   }
 
+
   async activateUser(token: string): Promise<void> {
     try {
-      const response = await firstValueFrom(this.http.get(`http://localhost:7070/api/auth/activate?token=${token}`, { responseType: 'text' }));
-      this.showDialog('Cuenta activada', 'Cuenta activada exitosamente. Ahora puedes iniciar sesión.');
-      this.router.navigate(['/login']);
+      await this.authService.activateUser(token).toPromise();
     } catch (error) {
       // @ts-ignore
-      if (error.status === 400) {
-        this.showDialog('Error', 'Token de activación inválido o ya utilizado. Inténtalo nuevamente.');
-      } else {
-        this.showDialog('Error', 'Error al activar la cuenta. Inténtalo nuevamente.');
-      }
-      this.router.navigate(['/login']);
+      throw new Error(error);
     }
   }
 

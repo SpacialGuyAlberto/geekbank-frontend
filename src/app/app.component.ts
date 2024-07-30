@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import {RegisterComponent} from "./register/register.component";
 import {NavbarComponent} from "./navbar/navbar.component";
@@ -8,6 +8,8 @@ import {CommonModule} from "@angular/common";
 import {KinguinGiftCard} from "./models/KinguinGiftCard";
 import {KinguinGiftCardsComponent} from "./kinguin-gift-cards/kinguin-gift-cards.component";
 import {NgModel} from "@angular/forms";
+import {TelegramListenerService} from "./telegram-listener.service";
+
 
 @Component({
   standalone: true,
@@ -20,12 +22,17 @@ import {NgModel} from "@angular/forms";
 ]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'geekbank-frontend';
-  constructor(private authService: SocialAuthService) {
-    this.authService.authState.subscribe((user) => {
-      // handle user state
-    });
+  // constructor(private authService: SocialAuthService, private telegramListenerService: TelegramListenerService) {
+  //   this.authService.authState.subscribe((user) => {
+  //     // handle user state
+  //   });
+  // }
+
+  ngOnInit(): void {
+    // The service will start listening as soon as the app initializes
+    console.log('AppComponent initialized. Telegram listener service is now active.');
   }
 
 }

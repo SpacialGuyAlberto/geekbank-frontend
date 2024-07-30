@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import {firstValueFrom, Observable, tap} from 'rxjs';
+import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from "@angular/router";
-import {User} from "./models/User";
-
+import { User } from "./models/User";
 
 declare const google: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,27 +24,18 @@ export class AuthService {
     );
   }
 
-// auth.service.ts
-//   login(email: string, password: string): Observable<HttpResponse<any>> {
-//     return this.http.post(
-//       `${this.baseUrl}/login`,
-//       { email, password },
-//       { observe: 'response', responseType: 'text' as 'json' }
-//     ).pipe(
-//       tap(response => {
-//         const token = response.headers.get('Authorization'); // Asegúrate de que el encabezado correcto se utiliza
-//         if (token) {
-//           this.setToken(token);
-//         }
-//       })
-//     );
-//   }
+  activateUser(token: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/activate?token=${token}`);
+  }
 
-  login(email: string, password: string): Observable<HttpResponse<any>> {
-    return this.http.post<any>(
-      `${this.baseUrl}/login`,
-      { email, password },
-      { observe: 'response' }
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
     );
   }
 
@@ -65,7 +56,6 @@ export class AuthService {
   getToken(): string {
     return this.isBrowser() ? localStorage.getItem('token') || '' : '';
   }
-
 
   logout(): Observable<any> {
     const headers = new HttpHeaders({
@@ -146,7 +136,9 @@ export class AuthService {
     this.googleLogin(token).subscribe(
       (data: any) => {
         localStorage.setItem('token', data.token);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home']).then(() => {
+          window.location.reload();  // Recargar la página después de la navegación
+        });
       },
       (error) => {
         console.error('Google login error', error);
@@ -159,14 +151,12 @@ export class AuthService {
   }
 
   getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${userId}`);
+    return this.http.get<User>(`${this.baseUrl2}/${userId}`);
   }
 
-// auth.service.ts
-// auth.service.ts
   getUserDetails(): Observable<any> {
     const userId = this.getUserId();
-    return this.http.get<any>(`http://localhost:7070/api/users/${userId}`, {
+    return this.http.get<any>(`${this.baseUrl2}/${userId}`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.getToken()}`
       })
@@ -181,7 +171,4 @@ export class AuthService {
   getUserId(): string {
     return localStorage.getItem('userId') || '';
   }
-
-
-
 }

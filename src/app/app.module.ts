@@ -13,11 +13,13 @@ import {AppRoutingModule} from "./app-routing.module";
 import {environment} from "../environment";
 import {SocialLoginModule,   SocialAuthServiceConfig} from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import {TelegramListenerService} from "./telegram-listener.service";
 
 
 @NgModule({
   declarations: [
     // Si tienes otros componentes no standalone, puedes declararlos aquí
+
   ],
   imports: [
     BrowserModule,
@@ -29,9 +31,9 @@ import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
     AppRoutingModule,
     RegisterComponent,
     AppComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [ HttpClientModule, HttpClient
+  providers: [ HttpClientModule, HttpClient, TelegramListenerService
   ],
   bootstrap: []
 })

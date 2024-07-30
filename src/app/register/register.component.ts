@@ -30,7 +30,7 @@ export class RegisterComponent {
     this.authService.register(this.email, this.password, this.name).subscribe(
       response => {
         if (response.status === 200) {
-          this.message = 'Registration successful!';
+          this.message = 'Registration successful! \n Please check your email to activate your account.';
           this.messageClass = 'success-message';
         } else {
           this.message = 'Registration failed. Please try again.';
