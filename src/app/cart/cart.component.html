@@ -5,19 +5,23 @@
       <div class="item-details">
         <p>Product ID: {{ item.productId }}</p>
         <p>Quantity: {{ item.quantity }}</p>
-        <p>KINGUIN ID: {{item.kinguinId}}</p>
+        <p>KINGUIN ID: {{ item.kinguinId }}</p>
+        <p>Price: {{ item.price }} €</p>
+        <p>Total: {{ item.quantity * item.price }} €</p> <!-- Precio total por ítem -->
       </div>
       <div class="item-actions">
         <button (click)="removeCartItem(Number(item.productId))">Remove</button>
         <button (click)="incrementProductQuantity(item)">+</button>
-        <button
-          (click)="decreaseProductQuantity(item)"
-        >-</button>
-        <a (click)="openPaymentModal()" class="nav-link">PAY WITH TIGO MONEY</a>
+        <button (click)="decreaseProductQuantity(item)">-</button>
       </div>
-
     </li>
   </ul>
+
+  <!-- Sección de pago con Tigo Money -->
+  <div class="total-price-section">
+    <h3>Total Price: {{ getTotalPrice() }} €</h3>
+    <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
+  </div>
 </div>
 
 <div *ngIf="showDialog" class="dialog-overlay">
@@ -27,6 +31,4 @@
   </div>
 </div>
 
-
-<app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems"></app-tigo-payment>
-
+<app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>

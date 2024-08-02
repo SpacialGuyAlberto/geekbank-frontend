@@ -1,10 +1,9 @@
-// src/app/cart/cart.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CartService } from '../cart.service';
-import {NgForOf, NgIf} from "@angular/common";
+import { NgForOf, NgIf } from "@angular/common";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import {RouterLink} from "@angular/router";
-import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
+import { RouterLink } from "@angular/router";
+import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 
 @Component({
   selector: 'app-cart',
@@ -20,10 +19,9 @@ import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 })
 export class CartComponent implements OnInit {
   cartItems: KinguinGiftCard[] = [];
-  quantityInCart: number = 0;
   showDialog: boolean = false;
-  private isInCart: boolean | undefined;
   protected showPaymentModal: boolean = false;
+  cartItemCount: number = 0;
 
   constructor(private cartService: CartService) {}
 
@@ -34,6 +32,7 @@ export class CartComponent implements OnInit {
   loadCartItems(): void {
     this.cartService.getCartItems().subscribe(data => {
       this.cartItems = data;
+      this.updateCartItemCount();
       console.log("Loaded cart items: ", data);
     });
   }
@@ -45,9 +44,14 @@ export class CartComponent implements OnInit {
     });
   }
 
+  getTotalItemCount(): number {
+    return this.cartItems.reduce((count, item) => count + item.quantity, 0);
+  }
+
+
   removeAllCartItems(): void {
     this.cartService.removeAllCartItems().subscribe(() => {
-      this.loadCartItems(); // Reload cart items after deletion
+      this.loadCartItems(); // Recargar los elementos después de la eliminación
     });
   }
 
@@ -55,15 +59,16 @@ export class CartComponent implements OnInit {
     item.quantity++;
     this.cartService.updateCartItem(Number(item.productId), item.quantity).subscribe(() => {
       console.log('Increased quantity:', item);
+      this.updateCartItemCount();
     });
   }
-
 
   decreaseProductQuantity(giftCard: KinguinGiftCard): void {
     if (giftCard.quantity > 0) {
       giftCard.quantity--;
       this.cartService.updateCartItem(Number(giftCard.productId), giftCard.quantity).subscribe(() => {
         console.log('Decreased quantity:', giftCard);
+        this.updateCartItemCount();
       });
     }
     if (giftCard.quantity === 0) {
@@ -80,6 +85,17 @@ export class CartComponent implements OnInit {
 
   closeDialog(): void {
     this.showDialog = false;
+  }
+
+  getTotalPrice(): number {
+    let total =  this.cartItems.reduce((total, item) => total + item.quantity * item.price, 0);
+    return parseFloat(total.toFixed(2));
+  }
+
+  updateCartItemCount(): void {
+    const totalCount = this.cartItems.reduce((total, item) => total + item.quantity, 0);
+    this.cartService.updateCartItemCount(totalCount);
+    console.log(totalCount);
   }
 
   protected readonly Number = Number;

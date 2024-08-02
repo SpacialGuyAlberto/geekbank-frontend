@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {TigoPaymentProtocollService} from "../tigo-payment-protocoll.service";
-import {NgIf} from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { TigoPaymentProtocollService } from "../tigo-payment-protocoll.service";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -12,12 +12,13 @@ import {NgIf} from "@angular/common";
     NgIf
   ],
   templateUrl: './tigo-payment.component.html',
-  styleUrl: './tigo-payment.component.css'
+  styleUrls: ['./tigo-payment.component.css']
 })
 export class TigoPaymentComponent {
-  // @Input() cartItems: any[];
+  @Input() cartItems: KinguinGiftCard[] = [];
+  @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
-  @Input() cartItems!: KinguinGiftCard[];
+
   showModal: boolean = true;
   showConfirmation: boolean = false;
 
@@ -45,5 +46,4 @@ export class TigoPaymentComponent {
   onSubmit(): void {
     this.showConfirmation = true;
   }
-
 }

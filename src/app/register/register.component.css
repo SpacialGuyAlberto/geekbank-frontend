@@ -31,6 +31,7 @@
   border: 1px solid #EEEEEE;
   outline: none;
 }
+
 .form-group input:focus {
   border: 1px solid #4CAF50;
 }
@@ -38,7 +39,7 @@
 button {
   width: 100%;
   padding: 10px;
-  background-color: #4CAF50;
+  background-color: #03346E;
   color: white;
   border: none;
   border-radius: 5px;
@@ -46,7 +47,7 @@ button {
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color:#134B70;
 }
 
 .success-message {

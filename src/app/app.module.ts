@@ -14,6 +14,11 @@ import {environment} from "../environment";
 import {SocialLoginModule,   SocialAuthServiceConfig} from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import {TelegramListenerService} from "./telegram-listener.service";
+import {CartComponent} from "./cart/cart.component";
+import { StoreModule } from '@ngrx/store';
+import { cartReducer } from './store/cart/cart.reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+
 
 
 @NgModule({
@@ -32,6 +37,10 @@ import {TelegramListenerService} from "./telegram-listener.service";
     RegisterComponent,
     AppComponent,
     ReactiveFormsModule,
+    CartComponent,
+    StoreModule.forRoot({ cart: cartReducer }),
+    // StoreModule.forFeature('cart', cartReducer),
+    // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [ HttpClientModule, HttpClient, TelegramListenerService
   ],

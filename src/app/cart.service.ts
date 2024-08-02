@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, BehaviorSubject, map} from 'rxjs';
 import { KinguinGiftCard } from './models/KinguinGiftCard';
 
 @Injectable({
@@ -8,6 +8,10 @@ import { KinguinGiftCard } from './models/KinguinGiftCard';
 })
 export class CartService {
   private baseUrl = 'http://localhost:7070/api/cart';
+  private cartItemCountSubject = new BehaviorSubject<number>(0);
+  cartItemCount$: Observable<number> = this.cartItemCountSubject.asObservable();
+  private cartItems: KinguinGiftCard[] = [];
+
 
   constructor(private http: HttpClient) {}
 
@@ -19,8 +23,8 @@ export class CartService {
     });
   }
 
-  addCartItem(productId: number, quantity: number): Observable<KinguinGiftCard> {
-    return this.http.post<KinguinGiftCard>(this.baseUrl, { productId, quantity }, {
+  addCartItem(productId: number, quantity: number, price: number): Observable<KinguinGiftCard> {
+    return this.http.post<KinguinGiftCard>(this.baseUrl, { productId, quantity, price }, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
@@ -42,11 +46,26 @@ export class CartService {
     });
   }
 
+  isItemInCart(kinguinId: number): Observable<boolean> {
+    console.log('ID IN CART SERVICE: ' + kinguinId);
+    return this.getCartItems().pipe(
+      map(cartItems => {
+        return cartItems.some(item => parseInt(item.productId) === kinguinId);
+      })
+    );
+  }
+
+
   removeAllCartItems(): Observable<any> {
     return this.http.delete(this.baseUrl, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     });
+  }
+
+  updateCartItemCount(count: number): void {
+    this.cartItemCountSubject.next(count);
+    localStorage.setItem('cartItemCount', JSON.stringify(count));
   }
 }

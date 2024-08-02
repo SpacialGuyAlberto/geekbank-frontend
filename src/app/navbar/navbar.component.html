@@ -8,6 +8,11 @@
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
     <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
     <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
-    <li *ngIf="isLoggedIn()"><a routerLink="/cart"><mat-icon>shopping_cart</mat-icon></a></li>
+    <li *ngIf="isLoggedIn()" class="cart-icon-container">
+      <a routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+      </a>
+    </li>
   </div>
 </nav>
