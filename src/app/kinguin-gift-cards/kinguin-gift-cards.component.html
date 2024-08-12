@@ -1,24 +1,29 @@
-<div class="gift-cards">
-
-<!--  <div class="search-bar">-->
-<!--    <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar" (keyup.enter)="searchGiftCards()" />-->
-<!--    <button (click)="searchGiftCards()">-->
-<!--      <i class="fas fa-search"></i>-->
-<!--    </button>-->
-<!--  </div>-->
-
+<div class="content-container">
   <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
-  <div class="gift-cards-container">
-    <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
-      <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-      <div class="gift-card-content">
-        <h3 class="gift-card-title">{{ card.name }}</h3>
-      </div>
-      <div class="gift-card-price">
-        <span>{{ card.price | currency }}</span>
+  <app-filters (filteredResults)="handleSearchResults($event)"></app-filters>
+
+  <div class="highlight-recommendations">
+    <app-highlights class="highlights"></app-highlights>
+    <app-recommendations class="recommendations"></app-recommendations>
+
+  </div>
+
+  <div class="main-content">
+    <div class="centered-gift-cards">
+    <div class="gift-cards-container">
+      <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+        <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+        <div class="gift-card-content">
+          <h3 class="gift-card-title">{{ card.name }}</h3>
+        </div>
+        <div class="gift-card-price">
+          <span>{{ card.price | currency }}</span>
+        </div>
       </div>
     </div>
   </div>
+  </div>
+
 
   <div class="pagination">
     <button (click)="goToPage(1)">First</button>
@@ -30,3 +35,4 @@
     <button (click)="goToPage(totalPages)">Last</button>
   </div>
 </div>
+

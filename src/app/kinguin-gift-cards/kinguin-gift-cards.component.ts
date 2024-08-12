@@ -6,13 +6,16 @@ import {PaginationComponent} from "../pagination/pagination.component";
 import { Router } from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {SearchBarComponent} from "../search-bar/search-bar.component";
+import {HighlightsComponent} from "../highlights/highlights.component";
+import {RecommendationsComponent} from "../recommendations/recommendations.component";
+import {FiltersComponent} from "../filters/filters.component";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent]
+  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent, HighlightsComponent, RecommendationsComponent, FiltersComponent]
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];

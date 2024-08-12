@@ -4,6 +4,7 @@ import { NgForOf, NgIf } from "@angular/common";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
+import {CartItemWithGiftcard} from "../models/CartItem";
 
 @Component({
   selector: 'app-cart',
@@ -18,7 +19,7 @@ import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  cartItems: KinguinGiftCard[] = [];
+  cartItems: CartItemWithGiftcard[] = [];
   showDialog: boolean = false;
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
@@ -45,7 +46,7 @@ export class CartComponent implements OnInit {
   }
 
   getTotalItemCount(): number {
-    return this.cartItems.reduce((count, item) => count + item.quantity, 0);
+    return this.cartItems.reduce((count, item) => count + item.cartItem.quantity, 0);
   }
 
 
@@ -55,23 +56,23 @@ export class CartComponent implements OnInit {
     });
   }
 
-  incrementProductQuantity(item: KinguinGiftCard): void {
-    item.quantity++;
-    this.cartService.updateCartItem(Number(item.productId), item.quantity).subscribe(() => {
+  incrementProductQuantity(item: CartItemWithGiftcard): void {
+    item.cartItem.quantity++;
+    this.cartService.updateCartItem(Number(item.cartItem.productId), item.cartItem.quantity).subscribe(() => {
       console.log('Increased quantity:', item);
       this.updateCartItemCount();
     });
   }
 
-  decreaseProductQuantity(giftCard: KinguinGiftCard): void {
-    if (giftCard.quantity > 0) {
-      giftCard.quantity--;
-      this.cartService.updateCartItem(Number(giftCard.productId), giftCard.quantity).subscribe(() => {
-        console.log('Decreased quantity:', giftCard);
+  decreaseProductQuantity(item: CartItemWithGiftcard): void {
+    if (item.cartItem.quantity > 0) {
+      item.cartItem.quantity--;
+      this.cartService.updateCartItem(Number(item.cartItem.productId), item.cartItem.quantity).subscribe(() => {
+        console.log('Decreased quantity:', item);
         this.updateCartItemCount();
       });
     }
-    if (giftCard.quantity === 0) {
+    if (item.cartItem.quantity === 0) {
       this.showDialog = true;
       setTimeout(() => {
         this.closeDialog();
@@ -88,12 +89,12 @@ export class CartComponent implements OnInit {
   }
 
   getTotalPrice(): number {
-    let total =  this.cartItems.reduce((total, item) => total + item.quantity * item.price, 0);
+    let total =  this.cartItems.reduce((total, item) => total + item.cartItem.quantity * item.giftcard.price, 0);
     return parseFloat(total.toFixed(2));
   }
 
   updateCartItemCount(): void {
-    const totalCount = this.cartItems.reduce((total, item) => total + item.quantity, 0);
+    const totalCount = this.cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
     this.cartService.updateCartItemCount(totalCount);
     console.log(totalCount);
   }

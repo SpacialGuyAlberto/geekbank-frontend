@@ -103,3 +103,50 @@ button[type="submit"]:hover {
   padding: 10px;
   border-radius: 10px;
 }
+
+.spinner-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #09f;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 10px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dotMove {
+  0%, 20% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(15px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.spinner-container p {
+  font-size: 16px;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.spinner-container p::after {
+  content: '.';
+  position: absolute;
+  animation: dotMove 1s infinite;
+}

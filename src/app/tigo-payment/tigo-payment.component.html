@@ -5,7 +5,7 @@
     <form (ngSubmit)="onSubmit()">
       <div>
         <label>Phone No.</label>
-        <input type="text" name="phone" class="phone-input"  required />
+        <input type="text" name="phone" class="phone-input" required />
       </div>
       <div>
         <label>Total:</label>
@@ -16,6 +16,10 @@
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
+      <div class="spinner-container">
+        <div class="spinner"></div>
+        <p>Esperando a su pago...</p>
+      </div>
     </div>
   </div>
 </div>

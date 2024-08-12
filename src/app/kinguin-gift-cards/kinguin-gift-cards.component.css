@@ -1,17 +1,17 @@
 .gift-cards-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 16px;
   padding: 20px;
 }
 
 .gift-card {
   position: relative;
-  width: 180px;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  width: 9.375rem; /* Equivalente a 150px en unidades rem */
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s;
@@ -23,23 +23,28 @@
 
 .gift-card-image {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: 100px; /* Ajuste de la altura de la imagen */
+  object-fit: contain;
+  background-color: #31363F;
 }
 
 .gift-card-content {
   padding: 10px;
+  text-align: center;
+  min-height: 80px; /* Asegura espacio suficiente para el contenido */
 }
 
 .gift-card-title {
-  font-size: 1rem;
-  margin: 0;
+  font-size: 0.875rem;
+  margin: 5px 0;
   font-weight: bold;
+  color: #fff;
 }
 
 .gift-card-description {
-  font-size: 0.875rem;
-  color: #666;
+  font-size: 0.75rem;
+  color: #aaa;
+  margin: 4px 0;
 }
 
 .gift-card-price {
@@ -47,82 +52,80 @@
   bottom: 0;
   width: 100%;
   padding: 10px 0;
-  background: linear-gradient(90deg, #ff6b6b, #ff7e67, #ffa057);
+  background: #ff6b00;
   color: white;
   text-align: center;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  box-sizing: border-box; /* Asegura que el padding no aumente el tamaño */
 }
 
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-  padding-bottom: 20px;
-}
-
-.pagination button {
-  margin: 0 5px;
-  padding: 5px 10px;
-  border: none;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.pagination button.active {
-  background-color: #ffa500;
-  color: white;
-}
-
-.pagination button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-.search-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.search-bar input[type="text"] {
+.gift-card-price::before {
+  content: "";
+  display: block;
   width: 100%;
-  max-width: 600px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  background: #f0f0f0;
-  font-size: 1rem;
-  outline: none;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.1s ease-in-out;
+  height: 4px;
+  background: #414141;
+  position: absolute;
+  top: -4px;
+  left: 0;
 }
 
-.search-bar input[type="text"]::placeholder {
-  color: #ccc;
-  font-size: 1rem;
+.highlight-recommendations {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px; /* Reduce el espacio entre la imagen grande y las gift cards */
+  margin: 20px 0; /* Asegura que el espacio vertical sea consistente */
 }
 
-.search-bar input[type="text"]:focus {
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+.highlights {
+  flex: 2;
+  max-width: 70%;
 }
 
-.search-bar button {
-  margin-left: -40px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  outline: none;
+.recommendations {
+  flex: 1;
+  max-width: 30%;
+}
+.highlights, .centered-gift-cards {
+  max-width: 70%; /* Asegura que ambos elementos tengan el mismo ancho */
+  width: 100%;
 }
 
-.search-bar button i {
-  font-size: 1.2rem;
-  color: #999;
+.recommendations {
+  max-width: 30%; /* Resto del espacio ocupado por las recomendaciones */
+  width: 100%;
 }
 
-.search-bar-button:hover {
-  background-color: #ff4c4c;
+.recommendations-gift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Configura dos columnas de igual ancho */
+  grid-template-rows: auto auto; /* Dos filas automáticas */
+  gap: 16px; /* Espacio entre tarjetas individuales */
+  padding: 20px;
 }
 
+
+@keyframes neonBorder {
+  0% {
+    border-color: #ff6b6b; /* Color inicial */
+    box-shadow: 0 0 2px #ff6b6b, 0 0 2px #ff6b6b, 0 0 10px #ff6b6b, 0 0 10px #ff6b6b;
+  }
+  25% {
+    border-color: #ff7e67;
+    box-shadow: 0 0 2px #ff7e67, 0 0 2px #ff7e67, 0 0 10px #ff7e67, 0 0 10px #ff7e67;
+  }
+  50% {
+    border-color: #ff9f57;
+    box-shadow: 0 0 10px #ff9f57, 0 0 20px #ff9f57, 0 0 30px #ff9f57, 0 0 40px #ff9f57;
+  }
+  75% {
+    border-color: #ffbf47;
+    box-shadow: 0 0 10px #ffbf47, 0 0 15px #ffbf47, 0 0 30px #ffbf47, 0 0 15px #ffbf47;
+  }
+  100% {
+    border-color: #ff6b6b; /* Regresar al color inicial */
+    box-shadow: 0 0 5px #ff6b6b, 0 0 20px #ff6b6b, 0 0 15px #ff6b6b, 0 0 15px #ff6b6b;
+  }
+}

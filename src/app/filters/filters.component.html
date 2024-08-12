@@ -1,0 +1,69 @@
+<div class="filter-toggle" (click)="toggleFilter()">
+  <i class="fa fa-filter"></i>
+</div>
+
+<div class="filter-container" [ngClass]="{'open': isFilterOpen}">
+  <div class="filters-container">
+    <h3>Filtros</h3>
+
+    <label>
+      <input type="checkbox" [(ngModel)]="filters.hideOutOfStock">
+      Ocultar Fuera de Stock
+    </label>
+
+    <div>
+      <label for="platform">Plataforma</label>
+      <select id="platform" [(ngModel)]="filters.platform">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let platform of platforms" [value]="platform">{{ platform }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="region">Región de Activación</label>
+      <select id="region" [(ngModel)]="filters.region">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let region of regions" [value]="region.id">{{ region.name }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="price-range">Rango de Precios</label>
+      <input type="range" id="price-range" [(ngModel)]="filters.priceRange" min="0" max="100">
+    </div>
+
+    <div>
+      <label for="os">Sistema Operativo</label>
+      <select id="os" [(ngModel)]="filters.os">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let os of operatingSystems" [value]="os">{{ os }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="genre">Géneros</label>
+      <select id="genre" [(ngModel)]="filters.genre">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let genre of genres" [value]="genre">{{ genre }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="language">Idiomas del Producto</label>
+      <select id="language" [(ngModel)]="filters.language">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="tags">Tags</label>
+      <select id="tags" [(ngModel)]="filters.tags">
+        <option value="" disabled selected>Seleccione...</option>
+        <option *ngFor="let tag of tags" [value]="tag">{{ tag }}</option>
+      </select>
+    </div>
+
+    <button (click)="applyFilters()">Aplicar Filtros</button>
+  </div>
+</div>

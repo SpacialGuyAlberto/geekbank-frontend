@@ -65,9 +65,9 @@ export class GiftCardDetailsComponent implements OnInit {
       console.log(`isInCart is now: ${this.isInCart}`);
       if (this.isInCart) {
         this.cartService.getCartItems().subscribe(cartItems => {
-          const itemInCart = cartItems.find(item => item.kinguinId === kinguinId);
+          const itemInCart = cartItems.find(item => item.cartItem.productId === kinguinId);
           if (itemInCart) {
-            this.quantityInCart = itemInCart.quantity;
+            this.quantityInCart = itemInCart.cartItem.quantity;
             console.log(`Item found in cart: ${JSON.stringify(itemInCart)}`);
           }
           this.emitCartItemCount();
@@ -109,7 +109,7 @@ export class GiftCardDetailsComponent implements OnInit {
 
   emitCartItemCount(): void {
     this.cartService.getCartItems().subscribe(cartItems => {
-      const totalCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+      const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
       this.cartService.updateCartItemCount(totalCount);
     });
   }

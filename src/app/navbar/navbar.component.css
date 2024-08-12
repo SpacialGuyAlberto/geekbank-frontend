@@ -26,6 +26,7 @@ body, html {
 .navbar-links {
   display: flex;
   align-items: center;
+  margin-right: 24rem;
 }
 
 /* Individual nav link */

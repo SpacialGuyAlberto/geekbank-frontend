@@ -1,0 +1,12 @@
+<div class="highlights-carousel">
+  <div class="carousel-track">
+    <div *ngFor="let product of highlights" class="highlight-card">
+      <img [src]="product.imageUrl" [alt]="product.title" class="highlight-card-image">
+      <div class="highlight-card-content">
+        <h3 class="highlight-card-title">{{ product.title }}</h3>
+        <p class="highlight-card-price">{{ product.price }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+

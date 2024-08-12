@@ -39,7 +39,6 @@ export class TelegramListenerService {
 
       console.log(`Message from channel ${chatId}: ${message}`);
 
-      // Send the update to the backend
       this.sendUpdateToBackend(message);
     }
   }

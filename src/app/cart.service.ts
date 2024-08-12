@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, BehaviorSubject, map} from 'rxjs';
 import { KinguinGiftCard } from './models/KinguinGiftCard';
+import {CartItemWithGiftcard} from "./models/CartItem";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class CartService {
 
   constructor(private http: HttpClient) {}
 
-  getCartItems(): Observable<KinguinGiftCard[]> {
-    return this.http.get<KinguinGiftCard[]>(this.baseUrl, {
+  getCartItems(): Observable<CartItemWithGiftcard[]> {
+    return this.http.get<CartItemWithGiftcard[]>(this.baseUrl, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
@@ -50,7 +51,7 @@ export class CartService {
     console.log('ID IN CART SERVICE: ' + kinguinId);
     return this.getCartItems().pipe(
       map(cartItems => {
-        return cartItems.some(item => parseInt(item.productId) === kinguinId);
+        return cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId);
       })
     );
   }

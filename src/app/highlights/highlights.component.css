@@ -1,0 +1,127 @@
+.highlight-recommendations {
+  display: flex;
+  justify-content: flex-start; /* Asegura que el contenido esté alineado a la izquierda */
+  align-items: flex-start;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.highlights-carousel {
+  display: flex;
+  justify-content: flex-end; /* Asegura que la imagen dentro esté alineada a la izquierda */
+  flex: 2; /* Controla la proporción del espacio ocupado */
+  max-width: 70%;
+  background: #1c1c1c;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-left: auto; /* Reduce el margen derecho */
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%; /* Ajusta según la cantidad de productos */
+}
+
+.highlight-card {
+  min-width: 100%;
+  background: #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.highlight-card-image {
+  width: 100%;
+  height: auto; /* Asegúrate de que la altura de la imagen se ajuste automáticamente */
+  object-fit: cover; /* Asegura que la imagen mantenga su proporción dentro del contenedor */
+}
+
+.highlight-card-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.highlight-card-title {
+  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
+  color: #fff;
+  margin: 10px 0 5px;
+}
+
+.highlight-card-price {
+  font-size: 1.25rem;
+  color: #ffa500;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .highlight-card-image {
+    height: 200px; /* Ajusta la altura de la imagen en pantallas más pequeñas */
+  }
+
+  .highlight-card-title {
+    font-size: 1.2rem;
+  }
+
+  .highlight-card-price {
+    font-size: 1rem;
+  }
+}
+
+
+/* Definir la animación del borde de neón */
+@keyframes neonBorder {
+  0% {
+    border-color: #ff6b6b; /* Color inicial */
+    box-shadow: 0 0 2px #ff6b6b, 0 0 2px #ff6b6b, 0 0 10px #ff6b6b, 0 0 10px #ff6b6b;
+  }
+  25% {
+    border-color: #ff7e67;
+    box-shadow: 0 0 2px #ff7e67, 0 0 2px #ff7e67, 0 0 10px #ff7e67, 0 0 10px #ff7e67;
+  }
+  50% {
+    border-color: #ff9f57;
+    box-shadow: 0 0 10px #ff9f57, 0 0 20px #ff9f57, 0 0 30px #ff9f57, 0 0 40px #ff9f57;
+  }
+  75% {
+    border-color: #ffbf47;
+    box-shadow: 0 0 10px #ffbf47, 0 0 15px #ffbf47, 0 0 30px #ffbf47, 0 0 15px #ffbf47;
+  }
+  100% {
+    border-color: #ff6b6b; /* Regresar al color inicial */
+    box-shadow: 0 0 5px #ff6b6b, 0 0 20px #ff6b6b, 0 0 15px #ff6b6b, 0 0 15px #ff6b6b;
+  }
+}
+
+/* Aplicar la animación al hacer hover */
+.highlight-card {
+  border: 0.5px solid transparent; /* Asegura que haya un borde inicial invisible */
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+.highlights-carousel:hover {
+  animation: neonBorder 2s linear infinite; /* Animación continua mientras se mantiene el hover */
+  transform: scale(1.01); /* Aumenta ligeramente el tamaño al hacer hover */
+  border-color: #ff6b6b; /* Color inicial del borde */
+  box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b; /* Efecto de neón */
+}
+
+@media (max-width: 768px) {
+  .highlight-card-image {
+    height: 200px;
+  }
+
+  .highlight-card-title {
+    font-size: 1.2rem;
+  }
+
+  .highlight-card-price {
+    font-size: 1rem;
+  }
+}

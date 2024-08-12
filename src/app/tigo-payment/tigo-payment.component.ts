@@ -3,6 +3,7 @@ import { FormsModule } from "@angular/forms";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { TigoPaymentProtocollService } from "../tigo-payment-protocoll.service";
 import { NgIf } from "@angular/common";
+import {CartItemWithGiftcard} from "../models/CartItem";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -15,7 +16,7 @@ import { NgIf } from "@angular/common";
   styleUrls: ['./tigo-payment.component.css']
 })
 export class TigoPaymentComponent {
-  @Input() cartItems: KinguinGiftCard[] = [];
+  @Input() cartItems: CartItemWithGiftcard[] = [];
   @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
 
@@ -35,7 +36,7 @@ export class TigoPaymentComponent {
   }
 
   calculateTotal(): void {
-    this.paymentDetails.total = this.cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+    this.paymentDetails.total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.cartItem.price, 0);
   }
 
   closeModal(): void {

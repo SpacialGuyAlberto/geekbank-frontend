@@ -154,9 +154,9 @@ export class AuthService {
     return this.http.get<User>(`${this.baseUrl2}/${userId}`);
   }
 
-  getUserDetails(): Observable<any> {
+  getUserDetails(): Observable<User> {
     const userId = this.getUserId();
-    return this.http.get<any>(`${this.baseUrl2}/${userId}`, {
+    return this.http.get<User>(`${this.baseUrl2}/user-details`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.getToken()}`
       })

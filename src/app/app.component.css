@@ -1,0 +1,7 @@
+:host {
+  background-color: #31363F;
+  display: block;
+  min-height: 100vh; /* Asegura que cubra al menos la altura completa de la ventana */
+  height: auto; /* Permite que la altura crezca automáticamente según el contenido */
+  width: 100%;
+}
