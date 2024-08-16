@@ -1,3 +1,9 @@
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .gift-cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -23,7 +29,7 @@
 
 .gift-card-image {
   width: 100%;
-  height: 100px; /* Ajuste de la altura de la imagen */
+  height: 100px;
   object-fit: contain;
   background-color: #31363F;
 }
@@ -129,3 +135,39 @@
     box-shadow: 0 0 5px #ff6b6b, 0 0 20px #ff6b6b, 0 0 15px #ff6b6b, 0 0 15px #ff6b6b;
   }
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.pagination button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  color: #333;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.pagination button:hover {
+  background-color: #ddd;
+}
+
+.pagination button:disabled {
+  background-color: #e0e0e0;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.pagination .active {
+  background-color: #ff6600;
+  color: white;
+  font-weight: bold;
+  cursor: default;
+}
+

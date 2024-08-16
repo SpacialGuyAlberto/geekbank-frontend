@@ -37,7 +37,7 @@ export class FiltersComponent {
     // más regiones...
   ];
   operatingSystems = ['Windows', 'Mac', 'Linux'];
-  genres = ['Action', 'Adventure', 'RPG'];
+  genres = ['Action', 'Adventure', 'RPG', 'Anime', 'Casual'];
   languages = ['English', 'Spanish', 'German'];
   tags = ['indie valley', 'dlc', 'base'];
 

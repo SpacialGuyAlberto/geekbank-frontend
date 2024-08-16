@@ -1,24 +1,64 @@
-.inicio-container {
+.home-container {
   text-align: center;
   margin-top: 50px;
 }
 
-.inicio-container h2 {
-  color: #4CAF50;
-}
-
-.inicio-container p {
-  font-size: 18px;
+.gift-cards-wrapper {
+  display: flex;
+  justify-content: center; /* Centra el contenedor de las gift cards */
+  margin-top: 20px;
 }
 
 .gift-cards-container {
   display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  margin-top: 20px;
+  flex-wrap: wrap;
+  gap: 20px; /* Espacio entre las gift cards */
+  justify-content: flex-end; /* Centra las gift cards dentro del contenedor */
+  max-width: 1200px; /* Limita el ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor si es más estrecho que el viewport */
 }
 
 .gift-card {
-  flex: 1;
-  margin: 0 10px;
+  flex: 1 1 200px; /* Asegura que las tarjetas sean flexibles pero tengan un tamaño mínimo */
+  max-width: 220px; /* Limita el ancho máximo de cada tarjeta */
+  margin: 10px;
+  background: #1c1c1c;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.gift-card:hover {
+  transform: scale(1.05);
+}
+
+.gift-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  background-color: #31363F;
+}
+
+.gift-card-content {
+  padding: 10px;
+  text-align: center;
+  min-height: 80px;
+}
+
+.gift-card-title {
+  font-size: 0.875rem;
+  margin: 5px 0;
+  font-weight: bold;
+  color: #fff;
+}
+
+.gift-card-price {
+  padding: 10px 0;
+  background: #ff6b00;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
 }

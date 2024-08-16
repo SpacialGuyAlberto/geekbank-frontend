@@ -1,9 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { TigoPaymentProtocollService } from "../tigo-payment-protocoll.service";
 import { NgIf } from "@angular/common";
-import {CartItemWithGiftcard} from "../models/CartItem";
+import { CartItemWithGiftcard } from "../models/CartItem";
+import {TigoService} from "../tigo.service";// Importa el servicio
 
 @Component({
   selector: 'app-tigo-payment',
@@ -21,22 +20,19 @@ export class TigoPaymentComponent {
   @Output() close = new EventEmitter<void>();
 
   showModal: boolean = true;
-  showConfirmation: boolean = false;
+  showConfirmation: boolean = true;
 
   paymentDetails = {
     name: '',
     address: '',
+    phoneNumber: '',
     total: 0
   };
 
-  constructor(private paymentService: TigoPaymentProtocollService) {}
+  constructor(private tigoService: TigoService) {} // Inyecta el servicio
 
   ngOnInit(): void {
-    this.calculateTotal();
-  }
-
-  calculateTotal(): void {
-    this.paymentDetails.total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.cartItem.price, 0);
+    this.paymentDetails.total = this.totalPrice;
   }
 
   closeModal(): void {
@@ -45,6 +41,23 @@ export class TigoPaymentComponent {
   }
 
   onSubmit(): void {
-    this.showConfirmation = true;
+    const orderDetails = {
+      phoneNumber: this.paymentDetails.phoneNumber,
+      products: this.cartItems.map(item => ({
+        kinguinId: item.giftcard.kinguinId,
+        qty: item.cartItem.quantity,
+        price: item.giftcard.price
+      }))
+    };
+
+    this.tigoService.placeOrder(orderDetails).subscribe(
+      response => {
+        console.log('Order placed successfully', response);
+        this.showConfirmation = true;
+      },
+      error => {
+        console.error('Error placing order', error);
+      }
+    );
   }
 }

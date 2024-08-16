@@ -5,7 +5,7 @@
     <form (ngSubmit)="onSubmit()">
       <div>
         <label>Phone No.</label>
-        <input type="text" name="phone" class="phone-input" required />
+        <input type="text" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required />
       </div>
       <div>
         <label>Total:</label>

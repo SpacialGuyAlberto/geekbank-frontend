@@ -59,22 +59,7 @@ export class KinguinGiftCardsComponent implements OnInit {
       }
     });
   }
-  // searchGiftCards(): void {
-  //   if (this.searchQuery.trim() !== '') {
-  //     this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
-  //       this.giftCards = data.map(card => {
-  //         // if (!card.coverImageOriginal || !card.coverImage) {
-  //           card.coverImageOriginal = card.images.cover?.thumbnail || '';
-  //           card.coverImage = card.images.cover?.thumbnail || '';
-  //         // }
-  //         return card;
-  //       });
-  //       console.log('Search Results: ', this.giftCards);
-  //     });
-  //   } else {
-  //     this.loadGiftCards(this.currentPage);
-  //   }
-  // }
+
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
     console.log('Search Results in Gift Cards Component: ', this.giftCards);

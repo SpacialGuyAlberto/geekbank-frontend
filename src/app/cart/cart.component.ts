@@ -23,6 +23,7 @@ export class CartComponent implements OnInit {
   showDialog: boolean = false;
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
+  totalPrice: number = 0;
 
   constructor(private cartService: CartService) {}
 
@@ -76,7 +77,7 @@ export class CartComponent implements OnInit {
       this.showDialog = true;
       setTimeout(() => {
         this.closeDialog();
-      }, 3000);  // Dialog will close after 3 seconds
+      }, 3000);
     }
   }
 
@@ -90,6 +91,7 @@ export class CartComponent implements OnInit {
 
   getTotalPrice(): number {
     let total =  this.cartItems.reduce((total, item) => total + item.cartItem.quantity * item.giftcard.price, 0);
+    this.totalPrice = parseFloat(total.toFixed(2));
     return parseFloat(total.toFixed(2));
   }
 

@@ -37,7 +37,7 @@ export class KinguinService {
       }
     });
 
-    return this.http.get<KinguinGiftCard[]>(this.apiUrl, { headers, params });
+    return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params });
   }
 
 }
