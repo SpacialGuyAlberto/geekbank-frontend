@@ -1,7 +1,38 @@
 :host {
-  background-color: #31363F;
+  background-color: #021526; /* Fondo principal gris oscuro */
   display: block;
   min-height: 100vh; /* Asegura que cubra al menos la altura completa de la ventana */
   height: auto; /* Permite que la altura crezca automáticamente según el contenido */
   width: 100%;
+  padding: 20px; /* Añade algo de espacio alrededor */
+  color: #88D66C; /* Color del texto en general */
 }
+
+/* Estilos para los títulos y textos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', cursive; /* Estilo de fuente retro */
+  color: #88D66C; /* Naranja retro para títulos */
+  text-transform: uppercase; /* Convierte los textos a mayúsculas */
+}
+
+p, a, span, label {
+  font-family: 'VT323', monospace; /* Fuente retro para textos generales */
+  color: #399918; /* Color rosado brillante */
+}
+
+/* Ajustes para botones */
+button {
+  background-color: #4F1787; /* Fondo púrpura oscuro para los botones */
+  color: #88D66C; /* Texto de color rosado brillante */
+  border: 2px solid #180161; /* Bordes oscuros */
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #180161; /* Cambio a un púrpura más oscuro en hover */
+}
+

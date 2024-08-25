@@ -5,15 +5,17 @@
   gap: 16px;
   margin: 20px auto;
   max-width: 80%;
+  background-color: var(--primary-color); /* Fondo principal */
 }
 
 .gift-card-image-container {
   flex: 1;
   max-width: 50%;
-  background: #1c1c1c;
-  border-radius: 12px;
+  background-color: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Bordes verdes claros */
+  border-radius: 2px; /* Bordes cuadrados */
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
 }
 
 .gift-card-image {
@@ -24,10 +26,11 @@
 
 .gift-card-info-card {
   flex: 0.2;
-  background: #292929;
-  border-radius: 12px;
+  background-color: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Bordes verdes claros */
+  border-radius: 2px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -37,7 +40,7 @@
 
 .gift-card-title {
   font-size: 1.5rem;
-  color: #fff;
+  color: var(--text-color); /* Color del texto claro */
   margin-bottom: 10px;
   text-align: center;
 }
@@ -45,24 +48,22 @@
 .gift-card-region {
   display: flex;
   align-items: center;
-  color: #fff;
+  color: var(--text-color); /* Color del texto claro */
   font-weight: bold;
 }
 
 .check-icon {
-  color: green;
+  color: #88D66C; /* Icono en verde claro */
   margin-right: 8px; /* Espacio entre el icono y el texto */
 }
-
 
 .gift-card-title, .gift-card-price {
   margin-bottom: 5px; /* Reduce el espacio debajo del título y el precio */
 }
 
-
 .gift-card-price {
   font-size: 3rem;
-  color: #ffa500;
+  color: var(--highlight-color); /* Color azul retro */
   font-weight: bold;
   margin-bottom: 20px;
   text-align: center;
@@ -71,17 +72,18 @@
 .add-info-content {
   padding: 20px;
   text-align: center;
+  background-color: #021526; /* Fondo oscuro retro */
 }
 
 .add-info-title {
-  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
-  color: #fff;
+  font-size: 1.5rem;
+  color: var(--text-color); /* Color del texto claro */
   margin: 10px 0 5px;
 }
 
 .add-info-price {
   font-size: 1.25rem;
-  color: #ffa500;
+  color: var(--highlight-color); /* Color azul retro */
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -100,7 +102,6 @@
   }
 }
 
-
 .button-container {
   display: flex;
   flex-direction: column;
@@ -111,37 +112,38 @@
 
 button {
   padding: 15px;
-  border: none;
-  border-radius: 30px;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
   font-size: 1rem;
   cursor: pointer;
   width: 100%;
   flex: 1;
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
 }
 
 .add-to-cart {
-  background-color: #ff9500;
-  color: #fff;
+  background-color: #88D66C; /* Fondo verde claro */
+  color: 0C2D57; /* Texto oscuro */
 }
 
 .add-to-cart:hover {
-  background-color: #e68900;
+  background-color: #76b35a; /* Cambio a verde más oscuro en hover */
 }
 
 .buy-now {
-  background-color: #0069d9;
-  color: #fff;
+  background-color: #1261A0; /* Fondo azul retro */
+  color: var(--primary-color); /* Texto oscuro */
 }
 
 .buy-now:hover {
-  background-color: #0056b3;
+  background-color: #104f87; /* Cambio a azul más oscuro en hover */
 }
 
 .back {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #1D4B8F; /* Fondo azul acento */
+  color: var(--primary-color); /* Texto oscuro */
 }
 
 .back:hover {
-  background-color: #0069d9;
+  background-color: #163b70; /* Cambio a azul acento más oscuro en hover */
 }

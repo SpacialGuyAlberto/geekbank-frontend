@@ -1,0 +1,22 @@
+<div class="highlights-container">
+  <h2>Configurar Highlights</h2>
+<!--  <form [formGroup]="highlightForm" (ngSubmit)="saveHighlight()">-->
+<!--    <label for="productId">Seleccionar Producto</label>-->
+<!--    <select id="productId" formControlName="productId">-->
+<!--      <option *ngFor="let product of products" [value]="product.id">{{ product.name }}</option>-->
+<!--    </select>-->
+
+    <label for="highlightText">Texto del Highlight</label>
+    <input id="highlightText" formControlName="highlightText">
+
+    <button type="submit">Guardar Highlight</button>
+  </form>
+
+  <h3>Highlights Actuales</h3>
+  <ul>
+    <li *ngFor="let highlight of highlights">
+      {{ highlight.productName }}: {{ highlight.highlightText }}
+      <button (click)="removeHighlight(highlight.id)">Eliminar</button>
+    </li>
+  </ul>
+</div>

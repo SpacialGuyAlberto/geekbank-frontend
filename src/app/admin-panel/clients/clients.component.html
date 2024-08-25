@@ -1,0 +1,25 @@
+<div class="clients-container">
+  <h2>Clientes</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Email</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let client of clients">
+      <td>{{ client.id }}</td>
+      <td>{{ client.name }}</td>
+      <td>{{ client.email }}</td>
+      <td>
+        <button (click)="editClient(client.id)">Editar</button>
+        <button (click)="deleteClient(client.id)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <button (click)="addClient()">Añadir Cliente</button>
+</div>

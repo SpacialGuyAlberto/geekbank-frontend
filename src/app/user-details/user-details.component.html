@@ -1,11 +1,10 @@
-<!-- src/app/user-details/user-details.component.html -->
 <div *ngIf="user" class="user-details-container">
   <h2>{{ user.name }}</h2>
   <p>Email: {{ user.email }}</p>
   <p>Role: {{ user.role }}</p>
-  <p>Status: {{ user.enabled ? 'Active' : 'Inactive' }}</p>
+  <p>Status: <span [ngClass]="{'active': user.enabled, 'inactive': !user.enabled}">{{ user.enabled ? 'Active' : 'Inactive' }}</span></p>
 </div>
 
 <div *ngIf="user && user.role === 'ADMIN'">
-    <app-admin-panel></app-admin-panel>
+  <app-admin-panel></app-admin-panel>
 </div>

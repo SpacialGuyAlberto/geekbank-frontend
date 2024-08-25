@@ -1,3 +1,11 @@
+/* Estilo retro general */
+body, html {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19; /* Fondo oscuro */
+  color: #88D66C; /* Verde claro */
+}
+
+/* Modal */
 .modal {
   position: fixed;
   z-index: 1000;
@@ -6,115 +14,96 @@
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo semitransparente oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: #1A2A40; /* Fondo retro oscuro */
   padding: 20px;
-  border: 1px solid #888;
-  border-radius: 8px;
-  width: 300px;
+  border: 2px solid #1261A0; /* Borde azul */
+  color: #E1E6F1; /* Texto claro */
+  width: 320px;
   position: relative;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra suave */
 }
 
 .close {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
+  color: #E1E6F1; /* Color del icono de cierre */
+  font-size: 24px;
   cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
-  color: #000;
-  text-decoration: none;
-  cursor: pointer;
+.close:hover {
+  color: #FB773C; /* Naranja retro al pasar el cursor */
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #FB773C; /* Título en naranja retro */
 }
 
-form div {
+/* Inputs y botones */
+.retro-input {
+  width: 90%;
+  padding: 10px;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  background-color: #0B0D19; /* Fondo oscuro */
+  color: #E1E6F1; /* Texto claro */
   margin-bottom: 15px;
+  font-size: 1rem;
 }
 
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.phone-input {
-  width: 100%;
-  padding: 10px;
-  border: 2px solid #4CAF50;
-  border-radius: 5px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-  font-size: 16px;
-  transition: border-color 0.3s ease-in-out;
-}
-
-.phone-input:focus {
-  border-color: #66afe9;
+.retro-input:focus {
+  border-color: #FB773C; /* Borde naranja al enfocar */
   outline: none;
 }
 
-button[type="submit"] {
+.retro-button {
   width: 100%;
-  padding: 10px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
+  padding: 12px;
+  background-color: #1261A0; /* Fondo azul */
+  border: 2px solid #1D4B8F; /* Borde azul oscuro */
+  color: #E1E6F1; /* Texto claro */
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
-  background-color: #45a049;
+.retro-button:hover {
+  background-color: #1D4B8F; /* Azul más oscuro en hover */
 }
 
 .confirmation {
   margin-top: 20px;
-  background-color: #e7f3e7;
-  padding: 10px;
-  border-radius: 10px;
+  background-color: #12223C; /* Fondo oscuro para la confirmación */
+  padding: 15px;
+  border-radius: 8px;
+  color: #88D66C; /* Texto en verde claro */
+  text-align: center;
 }
 
+/* Spinner */
 .spinner-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   margin-top: 10px;
 }
 
 .spinner {
-  width: 20px;
-  height: 20px;
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #09f;
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #09f; /* Azul brillante */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-right: 10px;
@@ -126,27 +115,8 @@ button[type="submit"]:hover {
   }
 }
 
-@keyframes dotMove {
-  0%, 20% {
-    transform: translateX(0);
-  }
-  50% {
-    transform: translateX(15px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 .spinner-container p {
-  font-size: 16px;
+  font-size: 1rem;
   margin: 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.spinner-container p::after {
-  content: '.';
-  position: absolute;
-  animation: dotMove 1s infinite;
+  color: #88D66C;
 }

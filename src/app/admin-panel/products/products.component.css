@@ -1,0 +1,55 @@
+.products-container {
+  padding: 20px;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+  border: 2px solid #1261A0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.products-container h2, .products-container h3 {
+  color: #FB773C;
+  margin-bottom: 20px;
+}
+
+.products-container form {
+  margin-bottom: 20px;
+}
+
+.products-container label {
+  display: block;
+  margin-bottom: 8px;
+  color: #E1E6F1;
+}
+
+.products-container input {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 2px solid #1261A0;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+  margin-bottom: 10px;
+}
+
+.products-container button {
+  background-color: #1261A0;
+  border: 2px solid #1D4B8F;
+  color: #E1E6F1;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.products-container button:hover {
+  background-color: #1D4B8F;
+}
+
+.products-container table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.products-container th, .products-container td {
+  padding: 12px;
+  border-bottom: 2px solid #1261A0;
+}

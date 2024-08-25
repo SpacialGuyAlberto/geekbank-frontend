@@ -1,0 +1,14 @@
+<!-- statistics.component.css -->
+.statistics-container {
+  padding: 20px;
+}
+
+.charts {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.chart {
+  width: 45%;
+}

@@ -1,20 +1,35 @@
-/* src/app/user-details/user-details.component.css */
 .user-details-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #f9f9f9;
+  background: #0B0D19; /* Fondo oscuro */
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #1261A0; /* Borde azul */
+  border-radius: 8px;
+  color: #E1E6F1; /* Texto claro */
+  font-family: 'Courier New', Courier, monospace;
   max-width: 400px;
   margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .user-details-container h2 {
   margin-bottom: 10px;
+  color: #FB773C; /* Color naranja para el título */
+  font-size: 1.5rem;
+  text-transform: uppercase;
 }
 
 .user-details-container p {
   margin: 5px 0;
+  color: #88D66C; /* Verde claro para el texto */
+  font-size: 1rem;
+}
+
+.user-details-container .active {
+  color: #88D66C; /* Verde claro para estado activo */
+}
+
+.user-details-container .inactive {
+  color: #EB3678; /* Rojo para estado inactivo */
 }

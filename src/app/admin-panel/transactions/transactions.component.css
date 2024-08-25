@@ -1,0 +1,72 @@
+.transactions-container {
+  padding: 20px;
+  background-color: #0B0D19; /* Fondo oscuro */
+  border: 2px solid #1261A0; /* Borde azul */
+  border-radius: 8px;
+  color: #E1E6F1; /* Texto claro */
+  font-family: 'Courier New', Courier, monospace;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 800px;
+  margin: 20px auto;
+}
+
+.transactions-container h2 {
+  color: #FB773C; /* Naranja para el título */
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+}
+
+.filters input[type="date"] {
+  padding: 8px;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  background-color: #0B0D19; /* Fondo oscuro */
+  color: #E1E6F1; /* Texto claro */
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 4px;
+}
+
+.filters button {
+  padding: 8px 12px;
+  background-color: #1261A0; /* Fondo azul */
+  border: 2px solid #1D4B8F; /* Borde azul oscuro */
+  color: #E1E6F1; /* Texto claro */
+  font-family: 'Courier New', Courier, monospace;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filters button:hover {
+  background-color: #1D4B8F; /* Fondo más oscuro al hacer hover */
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  color: #E1E6F1; /* Texto claro */
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 2px solid #1261A0; /* Borde inferior azul */
+}
+
+th {
+  background-color: #1D4B8F; /* Fondo azul oscuro para encabezados */
+  color: #FB773C; /* Texto naranja para encabezados */
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+td {
+  background-color: #0B0D19; /* Fondo oscuro para celdas */
+  font-size: 1rem;
+}

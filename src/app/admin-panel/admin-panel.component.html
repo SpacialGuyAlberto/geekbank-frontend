@@ -1,1 +1,29 @@
-<h2>ADMIN PANEL HERE</h2>
+<div class="admin-panel-container">
+  <h1>Panel de Administración</h1>
+
+  <nav class="admin-navigation">
+    <button (click)="selectSection('clients')">Clientes</button>
+    <button (click)="selectSection('products')">Productos</button>
+    <button (click)="selectSection('highlights')">Highlights</button>
+    <button (click)="selectSection('transactions')">Transacciones</button>
+    <button (click)="selectSection('statistics')">Estadísticas</button>
+  </nav>
+
+  <div class="admin-section">
+    <div *ngIf="selectedSection === 'clients'">
+      <app-clients></app-clients>
+    </div>
+    <div *ngIf="selectedSection === 'products'">
+      <app-products></app-products>
+    </div>
+    <div *ngIf="selectedSection === 'highlights'">
+<!--      <app-highlights></app-highlights>-->
+    </div>
+    <div *ngIf="selectedSection === 'transactions'">
+      <app-transactions></app-transactions>
+    </div>
+    <div *ngIf="selectedSection === 'statistics'">
+      <app-statistics></app-statistics>
+    </div>
+  </div>
+</div>

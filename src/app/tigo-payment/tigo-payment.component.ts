@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
-import {TigoService} from "../tigo.service";// Importa el servicio
+import { TigoService } from "../tigo.service";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -20,7 +20,8 @@ export class TigoPaymentComponent {
   @Output() close = new EventEmitter<void>();
 
   showModal: boolean = true;
-  showConfirmation: boolean = true;
+  showConfirmation: boolean = false; // Inicialmente en false
+  showSpinner: boolean = false; // Para controlar la visibilidad del spinner
 
   paymentDetails = {
     name: '',
@@ -29,7 +30,7 @@ export class TigoPaymentComponent {
     total: 0
   };
 
-  constructor(private tigoService: TigoService) {} // Inyecta el servicio
+  constructor(private tigoService: TigoService) {}
 
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
@@ -41,6 +42,7 @@ export class TigoPaymentComponent {
   }
 
   onSubmit(): void {
+    this.showSpinner = true; // Mostrar spinner al hacer clic en Pay
     const orderDetails = {
       phoneNumber: this.paymentDetails.phoneNumber,
       products: this.cartItems.map(item => ({
@@ -54,9 +56,11 @@ export class TigoPaymentComponent {
       response => {
         console.log('Order placed successfully', response);
         this.showConfirmation = true;
+        this.showSpinner = false; // Ocultar spinner al recibir respuesta
       },
       error => {
         console.error('Error placing order', error);
+        this.showSpinner = false; // Ocultar spinner en caso de error
       }
     );
   }

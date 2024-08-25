@@ -1,17 +1,18 @@
 .cart-container {
   width: 80%;
   margin: 20px auto;
-  background: #2c2c2c;
-  border-radius: 10px;
+  background: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   padding: 20px;
-  font-family: 'Arial', sans-serif;
-  color: #ecf0f1;
+  font-family: 'Courier New', Courier, monospace;
+  color: #88D66C; /* Texto verde claro */
 }
 
 .cart-container h2 {
   text-align: left;
-  color: #ecf0f1;
+  color: #88D66C; /* Color del texto verde claro */
   margin-bottom: 20px;
 }
 
@@ -26,30 +27,29 @@ ul {
   justify-content: space-between;
   margin-bottom: 20px;
   padding: 10px;
-  background: #333;
-  border-radius: 5px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  background: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
+  transition: transform 0.3s ease-in-out; /* Añade una animación de transformación */
 }
 
-.product-image {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 5px;
-  margin-right: 20px;
+.cart-item:hover {
+  transform: scale(1.02); /* Efecto de aumento al pasar el ratón */
 }
 
 .gift-card-image {
   width: 100px; /* Ancho de la imagen */
   height: auto; /* Mantener la proporción */
   margin-right: 15px; /* Espacio a la derecha */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+  border-radius: 2px; /* Bordes cuadrados */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
 }
 
 .item-details {
   flex: 1;
-  color: #fff;
+  color: #88D66C; /* Texto verde claro */
 }
 
 .item-details p {
@@ -64,25 +64,46 @@ ul {
 
 .item-actions button {
   padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background: #f39c12;
-  color: white;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
+  background: #4F1787; /* Fondo púrpura oscuro */
+  color: #88D66C; /* Texto verde claro */
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  position: relative; /* Para la animación de brillo */
+  z-index: 0;
+  overflow: hidden; /* Ocultar cualquier exceso */
 }
 
 .item-actions button:hover {
-  background: #e67e22;
+  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
+  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+}
+
+.item-actions button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  transition: all 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.item-actions button:hover:before {
+  left: 100%;
 }
 
 .item-actions button:active {
-  background: #d35400;
+  background: #12013B; /* Púrpura aún más oscuro en active */
 }
 
 .total-price-section {
   text-align: right;
-  color: #ecf0f1;
+  color: #88D66C; /* Texto verde claro */
   margin-top: 20px;
 }
 
@@ -92,16 +113,37 @@ ul {
 
 .total-price-section button {
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background: #27ae60;
-  color: white;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
+  background: #4F1787; /* Fondo púrpura oscuro */
+  color: #88D66C; /* Texto verde claro */
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  position: relative; /* Para la animación de brillo */
+  z-index: 0;
+  overflow: hidden; /* Ocultar cualquier exceso */
 }
 
 .total-price-section button:hover {
-  background: #2ecc71;
+  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
+  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+}
+
+.total-price-section button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  transition: all 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.total-price-section button:hover:before {
+  left: 100%;
 }
 
 .dialog-overlay {
@@ -110,30 +152,52 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente más oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .dialog {
-  background: #2c3e50;
+  background: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
   padding: 20px;
-  border-radius: 10px;
   text-align: center;
-  color: #ecf0f1;
+  color: #88D66C; /* Texto verde claro */
 }
 
 .dialog button {
   padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background: #c0392b;
-  color: white;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
+  background: #4F1787; /* Fondo púrpura oscuro */
+  color: #88D66C; /* Texto verde claro */
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  position: relative; /* Para la animación de brillo */
+  z-index: 0;
+  overflow: hidden; /* Ocultar cualquier exceso */
 }
 
 .dialog button:hover {
-  background: #e74c3c;
+  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
+  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+}
+
+.dialog button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  transition: all 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.dialog button:hover:before {
+  left: 100%;
 }

@@ -1,64 +1,72 @@
-.home-container {
-  text-align: center;
-  margin-top: 50px;
-}
-
-.gift-cards-wrapper {
-  display: flex;
-  justify-content: center; /* Centra el contenedor de las gift cards */
-  margin-top: 20px;
-}
-
-.gift-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px; /* Espacio entre las gift cards */
-  justify-content: flex-end; /* Centra las gift cards dentro del contenedor */
-  max-width: 1200px; /* Limita el ancho máximo del contenedor */
-  margin: 0 auto; /* Centra el contenedor si es más estrecho que el viewport */
-}
-
-.gift-card {
-  flex: 1 1 200px; /* Asegura que las tarjetas sean flexibles pero tengan un tamaño mínimo */
-  max-width: 220px; /* Limita el ancho máximo de cada tarjeta */
-  margin: 10px;
-  background: #1c1c1c;
-  border: 1px solid #2a2a2a;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
-}
-
-.gift-card:hover {
-  transform: scale(1.05);
-}
-
-.gift-card-image {
+:host {
+  background-color: #04060F
+; /* Fondo principal gris oscuro */
+  display: block;
+  min-height: 100vh; /* Asegura que cubra al menos la altura completa de la ventana */
+  height: auto; /* Permite que la altura crezca automáticamente según el contenido */
   width: 100%;
-  height: 120px;
-  object-fit: contain;
-  background-color: #31363F;
+  padding: 20px; /* Añade algo de espacio alrededor */
+  color: #009FBD; /* Color del texto en general */
 }
 
-.gift-card-content {
+/* Estilos para los títulos y textos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', cursive; /* Estilo de fuente retro */
+  color: #FB773C; /* Naranja retro para títulos */
+  text-transform: uppercase; /* Convierte los textos a mayúsculas */
+}
+
+p, a, span, label {
+  font-family: 'VT323', monospace; /* Fuente retro para textos generales */
+  color: #EB3678; /* Color rosado brillante */
+}
+
+/* Ajustes para botones */
+button {
+  background-color: #4F1787; /* Fondo púrpura oscuro para los botones */
+  color: #EB3678; /* Texto de color rosado brillante */
+  border: 2px solid #180161; /* Bordes oscuros */
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #180161; /* Cambio a un púrpura más oscuro en hover */
+}
+
+/* Ajustes para entradas de texto y formularios */
+input[type="text"], select, textarea {
+  background-color: #180161; /* Fondo oscuro para inputs */
+  border: 2px solid #4F1787; /* Borde púrpura oscuro */
+  color: #EB3678; /* Texto rosado */
+  font-family: 'VT323', monospace;
   padding: 10px;
-  text-align: center;
-  min-height: 80px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.gift-card-title {
-  font-size: 0.875rem;
-  margin: 5px 0;
-  font-weight: bold;
-  color: #fff;
+input[type="text"]::placeholder, textarea::placeholder {
+  color: #FB773C; /* Color del placeholder */
 }
 
-.gift-card-price {
-  padding: 10px 0;
-  background: #ff6b00;
-  color: white;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1.1rem;
+/* Estilos adicionales */
+.container {
+  background-color: #180161; /* Contenedor principal en púrpura oscuro */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+}
+
+.pagination button {
+  background-color: #4F1787;
+  color: #EB3678;
+  border: 2px solid #180161;
+}
+
+.pagination button.active {
+  background-color: #FB773C;
+  color: #180161;
 }

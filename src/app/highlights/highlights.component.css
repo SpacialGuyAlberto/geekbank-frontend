@@ -1,6 +1,6 @@
 .highlight-recommendations {
   display: flex;
-  justify-content: flex-start; /* Asegura que el contenido esté alineado a la izquierda */
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 16px;
   margin: 20px 0;
@@ -8,38 +8,40 @@
 
 .highlights-carousel {
   display: flex;
-  justify-content: flex-end; /* Asegura que la imagen dentro esté alineada a la izquierda */
-  flex: 2; /* Controla la proporción del espacio ocupado */
+  justify-content: flex-end;
+  flex: 2;
   max-width: 70%;
-  background: #1c1c1c;
-  border-radius: 12px;
+  background: #021526;
+  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-left: auto; /* Reduce el margen derecho */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-left: auto;
+  border: 2px solid #88D66C; /* Bordes del color del texto */
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
-  width: 100%; /* Ajusta según la cantidad de productos */
+  width: 100%;
 }
 
 .highlight-card {
   min-width: 100%;
-  background: #2a2a2a;
-  border-radius: 12px;
+  background: #12223C;
+  border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 2px solid #88D66C; /* Bordes del color del texto */
 }
 
 .highlight-card-image {
   width: 100%;
-  height: auto; /* Asegúrate de que la altura de la imagen se ajuste automáticamente */
-  object-fit: cover; /* Asegura que la imagen mantenga su proporción dentro del contenedor */
+  height: auto;
+  object-fit: cover;
 }
 
 .highlight-card-content {
@@ -48,68 +50,16 @@
 }
 
 .highlight-card-title {
-  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
-  color: #fff;
+  font-size: 1.2rem;
   margin: 10px 0 5px;
+  color: #88D66C; /* Color del texto */
 }
 
 .highlight-card-price {
-  font-size: 1.25rem;
-  color: #ffa500;
+  font-size: 1rem;
+  color: #88D66C; /* Color del texto */
   font-weight: bold;
   margin-bottom: 10px;
-}
-
-@media (max-width: 768px) {
-  .highlight-card-image {
-    height: 200px; /* Ajusta la altura de la imagen en pantallas más pequeñas */
-  }
-
-  .highlight-card-title {
-    font-size: 1.2rem;
-  }
-
-  .highlight-card-price {
-    font-size: 1rem;
-  }
-}
-
-
-/* Definir la animación del borde de neón */
-@keyframes neonBorder {
-  0% {
-    border-color: #ff6b6b; /* Color inicial */
-    box-shadow: 0 0 2px #ff6b6b, 0 0 2px #ff6b6b, 0 0 10px #ff6b6b, 0 0 10px #ff6b6b;
-  }
-  25% {
-    border-color: #ff7e67;
-    box-shadow: 0 0 2px #ff7e67, 0 0 2px #ff7e67, 0 0 10px #ff7e67, 0 0 10px #ff7e67;
-  }
-  50% {
-    border-color: #ff9f57;
-    box-shadow: 0 0 10px #ff9f57, 0 0 20px #ff9f57, 0 0 30px #ff9f57, 0 0 40px #ff9f57;
-  }
-  75% {
-    border-color: #ffbf47;
-    box-shadow: 0 0 10px #ffbf47, 0 0 15px #ffbf47, 0 0 30px #ffbf47, 0 0 15px #ffbf47;
-  }
-  100% {
-    border-color: #ff6b6b; /* Regresar al color inicial */
-    box-shadow: 0 0 5px #ff6b6b, 0 0 20px #ff6b6b, 0 0 15px #ff6b6b, 0 0 15px #ff6b6b;
-  }
-}
-
-/* Aplicar la animación al hacer hover */
-.highlight-card {
-  border: 0.5px solid transparent; /* Asegura que haya un borde inicial invisible */
-  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
-}
-
-.highlights-carousel:hover {
-  animation: neonBorder 2s linear infinite; /* Animación continua mientras se mantiene el hover */
-  transform: scale(1.01); /* Aumenta ligeramente el tamaño al hacer hover */
-  border-color: #ff6b6b; /* Color inicial del borde */
-  box-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b, 0 0 30px #ff6b6b, 0 0 40px #ff6b6b; /* Efecto de neón */
 }
 
 @media (max-width: 768px) {
@@ -123,5 +73,80 @@
 
   .highlight-card-price {
     font-size: 1rem;
+  }
+}
+
+/* Estilo de la recomendación */
+.recommendations-gift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto auto;
+  gap: 8px;
+  padding: 20px;
+  margin: -1.2rem;
+  max-width: 30%;
+}
+
+.gift-card {
+  position: relative;
+  width: 9.37rem;
+  background: #021526;
+  border: 2px solid #88D66C; /* Bordes del color del texto */
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s;
+}
+
+.gift-card:hover {
+  transform: scale(1.05);
+}
+
+.gift-card-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  background-color: #1A2A40;
+}
+
+.gift-card-content {
+  padding: 10px;
+  text-align: center;
+  min-height: 80px;
+}
+
+.gift-card-title {
+  font-size: 0.875rem;
+  margin: 5px 0;
+  font-weight: bold;
+  color: #88D66C;
+}
+
+.gift-card-price {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 0;
+  background: #1261A0;
+  color: #0B0D19;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .highlights-and-giftcards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .highlights-carousel, .gift-cards-container {
+    max-width: 100%;
+  }
+
+  .gift-cards-container {
+    padding: 0;
+    margin-top: 20px;
   }
 }

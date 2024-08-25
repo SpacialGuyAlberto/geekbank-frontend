@@ -5,13 +5,13 @@
     <form (ngSubmit)="onSubmit()">
       <div>
         <label>Phone No.</label>
-        <input type="text" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required />
+        <input type="text" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required class="retro-input" />
       </div>
       <div>
         <label>Total:</label>
-        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly />
+        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly class="retro-input" />
       </div>
-      <button type="submit">Pay</button>
+      <button type="submit" class="retro-button">Pay</button>
     </form>
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>

@@ -1,0 +1,45 @@
+.admin-panel-container {
+  padding: 20px;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+  font-family: 'Courier New', Courier, monospace;
+  border: 2px solid #1261A0;
+  border-radius: 8px;
+  max-width: 1200px;
+  margin: auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  color: #FB773C;
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.admin-navigation {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.admin-navigation button {
+  background-color: #1261A0;
+  color: #E1E6F1;
+  border: 2px solid #1D4B8F;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.admin-navigation button:hover {
+  background-color: #1D4B8F;
+}
+
+.admin-section {
+  padding: 20px;
+  background-color: #12223C;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}

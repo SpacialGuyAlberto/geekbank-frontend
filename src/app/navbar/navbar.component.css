@@ -2,7 +2,9 @@
 body, html {
   margin: 0;
   padding: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  background-color: #021526; /* Fondo oscuro */
+  color: #88D66C; /* Texto verde claro */
 }
 
 /* Navbar container */
@@ -10,14 +12,16 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #2c3e50;
+  background-color: #021526; /* Fondo oscuro retro */
   padding: 1rem 2rem;
+  border-bottom: 2px solid #88D66C; /* Borde inferior verde claro */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
 }
 
 /* Navbar brand */
 .navbar-brand {
   font-size: 1.5rem;
-  color: #ecf0f1;
+  color: #88D66C; /* Texto verde claro */
   text-decoration: none;
   font-weight: bold;
 }
@@ -31,40 +35,27 @@ body, html {
 
 /* Individual nav link */
 .nav-link {
-  color: #ecf0f1;
+  color: #88D66C; /* Texto verde claro */
   text-decoration: none;
   margin-left: 1rem;
-  transition: color 0.3s;
+  font-size: 1.2rem;
 }
 
-/* Hover effect for links */
-.nav-link:hover {
-  color: #3498db;
-}
-
-/* Material icons styling */
-.mat-icon {
-  color: #ecf0f1;
-  margin-left: 1rem;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-/* Hover effect for icons */
-.mat-icon:hover {
-  color: #3498db;
+/* Iconos retro para links */
+.nav-link-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-block;
+  margin-right: 8px;
+  filter: invert(75%); /* Aplica un filtro para adaptar el color del ícono al diseño */
 }
 
 /* App name styling */
 .app-name {
-  color: #ecf0f1;
+  color: #88D66C; /* Texto verde claro */
   text-decoration: none;
   cursor: pointer;
-  transition: color 0.3s;
-}
-
-.app-name:hover {
-  color: #3498db;
+  font-size: 1.5rem;
 }
 
 /* Cart icon styling */
@@ -72,16 +63,7 @@ li {
   list-style: none;
 }
 
-li .mat-icon {
-  color: #ecf0f1;
-  transition: color 0.3s;
-}
-
-li .mat-icon:hover {
-  color: #3498db;
-}
-
-
+/* Cart icon container */
 .cart-icon-container {
   position: relative;
 }
@@ -90,9 +72,17 @@ li .mat-icon:hover {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: red;
+  background-color: #ED5AB3; /* Fondo del contador en rosa neón */
   color: white;
   border-radius: 50%;
   padding: 2px 6px;
   font-size: 12px;
+}
+
+/* Material icons styling */
+.mat-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-left: 1rem;
 }

@@ -1,0 +1,38 @@
+<div class="products-container">
+  <h2>Productos</h2>
+<!--  <form [formGroup]="(<FormGroup<any>>productForm" (ngSubmit)="saveProduct()">-->
+<!--    <label for="name">Nombre del Producto</label>-->
+<!--    <input id="name" formControlName="name">-->
+
+<!--    <label for="price">Precio</label>-->
+<!--    <input id="price" formControlName="price" type="number">-->
+
+<!--    <label for="stock">Stock</label>-->
+<!--    <input id="stock" formControlName="stock" type="number">-->
+
+<!--    <button type="submit">Guardar Producto</button>-->
+<!--  </form>-->
+
+  <h3>Lista de Productos</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let product of products">
+      <td>{{ product.name }}</td>
+      <td>{{ product.price | currency }}</td>
+      <td>{{ product.stock }}</td>
+      <td>
+        <button (click)="editProduct(product.id)">Editar</button>
+        <button (click)="deleteProduct(product.id)">Eliminar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

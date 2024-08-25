@@ -1,20 +1,35 @@
-<div class="register-container">
-  <h2 class="register-title">Register</h2>
-  <form (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="name">Name</label>
-      <input type="text" id="name" [(ngModel)]="name" name="name" required>
-    </div>
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" [(ngModel)]="email" name="email" required>
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" [(ngModel)]="password" name="password" required>
-    </div>
-    <p>Do you already have an account? <a routerLink="/login">Sign in</a>.</p>
-    <button type="submit">Register</button>
-  </form>
-  <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - GeekBank</title>
+</head>
+<body>
+<div class="stars-container">
+  <canvas id="starfield"></canvas>
+  <div class="register-container">
+    <h2 class="register-title">Welcome to GeekBank!</h2>
+    <p>Let's begin the adventure</p>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Enter your name*</label>
+        <input type="text" id="name" [(ngModel)]="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Enter your email*</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Enter your password*</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+      </div>
+      <button type="submit">Continue</button>
+    </form>
+    <p>Do you already have an account? <a routerLink="/login">Sign in →</a>.</p>
+    <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
+  </div>
 </div>
+<script src="animationScript.js"></script>
+</body>
+</html>

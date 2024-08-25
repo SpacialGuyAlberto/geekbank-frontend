@@ -123,13 +123,15 @@ export class AuthService {
         {
           theme: 'outline',
           size: 'large',
-          width: 250
+          type: 'icon',  // Solo el ícono
+          shape: 'circle'  // Forma circular del ícono
         }
       );
     } else {
       console.error('Google script not loaded or not in a browser environment');
     }
   }
+
 
   handleGoogleLogin(response: any) {
     const token = response.credential;

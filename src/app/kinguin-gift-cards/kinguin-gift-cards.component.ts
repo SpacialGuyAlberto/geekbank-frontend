@@ -19,6 +19,7 @@ import {FiltersComponent} from "../filters/filters.component";
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
+  seachedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
   totalPages: number = 3309; // Assuming we know the total number of pages
   searchQuery: string = '';
