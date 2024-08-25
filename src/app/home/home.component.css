@@ -1,12 +1,13 @@
 :host {
-  background-color: #04060F
-; /* Fondo principal gris oscuro */
+  background-color: #04060F; /* Fondo principal gris oscuro */
   display: block;
-  min-height: 100vh; /* Asegura que cubra al menos la altura completa de la ventana */
-  height: auto; /* Permite que la altura crezca automáticamente según el contenido */
+  min-height: 100vh;
+  height: auto;
   width: 100%;
-  padding: 20px; /* Añade algo de espacio alrededor */
-  color: #009FBD; /* Color del texto en general */
+  padding: 20px;
+  color: #009FBD;
+  position: relative; /* Añadir si no está */
+  z-index: 0; /* Debe ser inferior al z-index del canvas */
 }
 
 /* Estilos para los títulos y textos */

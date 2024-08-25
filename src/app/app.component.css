@@ -1,38 +1,113 @@
 :host {
-  background-color: #021526; /* Fondo principal gris oscuro */
   display: block;
-  min-height: 100vh; /* Asegura que cubra al menos la altura completa de la ventana */
-  height: auto; /* Permite que la altura crezca automáticamente según el contenido */
+  position: relative;
   width: 100%;
-  padding: 20px; /* Añade algo de espacio alrededor */
-  color: #88D66C; /* Color del texto en general */
+  min-height: 100vh; /* Asegura que cubra la altura completa de la pantalla */
+  overflow: hidden; /* Para evitar barras de desplazamiento innecesarias */
 }
 
-/* Estilos para los títulos y textos */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Press Start 2P', cursive; /* Estilo de fuente retro */
-  color: #88D66C; /* Naranja retro para títulos */
-  text-transform: uppercase; /* Convierte los textos a mayúsculas */
+.stars-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* Asegura que la animación esté en el fondo */
 }
 
-p, a, span, label {
-  font-family: 'VT323', monospace; /* Fuente retro para textos generales */
-  color: #399918; /* Color rosado brillante */
+.register-container {
+  position: relative;
+  z-index: 1; /* Asegura que el formulario esté sobre la animación */
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+  background-color: rgba(11, 13, 25, 0.9); /* Fondo semitransparente */
+  border: 2px solid #1261A0;
+  color: #88D66C;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
 }
 
-/* Ajustes para botones */
+.register-title {
+  font-family: 'Press Start 2P', cursive;
+  color: #FB773C;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  font-family: 'VT323', monospace;
+  color: #399918;
+  font-size: 1rem;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.form-group input {
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 2px solid #88D66C;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  outline: none;
+  margin-bottom: 20px;
+}
+
+.form-group input:focus {
+  border-color: #FB773C;
+}
+
 button {
-  background-color: #4F1787; /* Fondo púrpura oscuro para los botones */
-  color: #88D66C; /* Texto de color rosado brillante */
-  border: 2px solid #180161; /* Bordes oscuros */
-  padding: 10px 20px;
-  text-transform: uppercase;
+  width: 100%;
+  padding: 12px 20px;
+  background-color: #4F1787;
+  border: 2px solid #180161;
+  color: #88D66C;
   font-family: 'Press Start 2P', cursive;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #180161; /* Cambio a un púrpura más oscuro en hover */
+  background-color: #180161;
 }
 
+button:active {
+  background-color: #12223C;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 10px #1D4B8F;
+}
+
+p, a {
+  font-family: 'VT323', monospace;
+  color: #399918;
+}
+
+p a {
+  color: #1261A0;
+}
+
+p a:hover {
+  color: #FB773C;
+}
+
+.success-message {
+  color: #88D66C;
+  margin-top: 15px;
+}
+
+.error-message {
+  color: #EB3678;
+  margin-top: 15px;
+}

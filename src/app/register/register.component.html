@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - GeekBank</title>
+  <link rel="stylesheet" href="register.component.css">
 </head>
 <body>
-<div class="stars-container">
-  <canvas id="starfield"></canvas>
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
   <div class="register-container">
     <h2 class="register-title">Welcome to GeekBank!</h2>
     <p>Let's begin the adventure</p>
@@ -30,6 +31,5 @@
     <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
   </div>
 </div>
-<script src="animationScript.js"></script>
 </body>
 </html>
