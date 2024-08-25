@@ -1,4 +1,8 @@
-<div *ngIf="giftCard" class="gift-card-details-container">
+<!DOCTYPE html>
+<html lang="en">
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
+  <div *ngIf="giftCard" class="gift-card-details-container">
   <div class="gift-card-image-container">
     <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
     <div class="add-info-content">
@@ -24,3 +28,5 @@
     </div>
   </div>
 </div>
+</div>
+</html>

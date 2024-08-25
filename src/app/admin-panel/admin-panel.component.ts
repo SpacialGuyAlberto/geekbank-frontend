@@ -6,6 +6,7 @@ import { ProductsComponent } from './products/products.component';
 import { HightlightsComponent} from './hightlights/hightlights.component'
 import { TransactionsComponent } from './transactions/transactions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
+import {BackgroundAnimationService} from "../background-animation.service";
 
 @Component({
   selector: 'app-admin-panel',
@@ -29,6 +30,13 @@ export class AdminPanelComponent {
   startDate: any;
   endDate: any;
   transactions: any;
+
+  constructor(private animation: BackgroundAnimationService) {
+  }
+
+  ngOnInit(){
+    this.animation.initializeGraphAnimation();
+  }
 
   filterTransactions() {
     // Implementa la lógica para filtrar transacciones

@@ -9,6 +9,7 @@ import {SearchBarComponent} from "../search-bar/search-bar.component";
 import {HighlightsComponent} from "../highlights/highlights.component";
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {FiltersComponent} from "../filters/filters.component";
+import {BackgroundAnimationService} from "../background-animation.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -24,9 +25,10 @@ export class KinguinGiftCardsComponent implements OnInit {
   totalPages: number = 3309; // Assuming we know the total number of pages
   searchQuery: string = '';
 
-  constructor(private kinguinService: KinguinService, private router: Router) { }
+  constructor(private kinguinService: KinguinService, private router: Router, private animation: BackgroundAnimationService) { }
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
     this.loadGiftCards(this.currentPage);
   }
 

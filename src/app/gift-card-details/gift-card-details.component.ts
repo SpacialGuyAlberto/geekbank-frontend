@@ -8,6 +8,7 @@ import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import {BackgroundAnimationService} from "../background-animation.service";
 import {CartComponent} from "../cart/cart.component";
 
 @Component({
@@ -37,9 +38,11 @@ export class GiftCardDetailsComponent implements OnInit {
     private router: Router,
     private cartService: CartService,
     private snackBar: MatSnackBar,
+    private animation: BackgroundAnimationService
   ) { }
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.kinguinService.getGiftCardDetails(id).subscribe(data => {

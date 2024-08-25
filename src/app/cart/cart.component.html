@@ -1,3 +1,6 @@
+<html lang="en">
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
 <div class="cart-container">
   <h2>Shopping Cart</h2>
   <ul>
@@ -31,3 +34,5 @@
 </div>
 
 <app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>
+</div>
+</html>

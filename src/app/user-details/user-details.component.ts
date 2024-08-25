@@ -4,6 +4,7 @@ import { User } from '../models/User';
 import { CommonModule } from '@angular/common';
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {AdminPanelComponent} from "../admin-panel/admin-panel.component";
+import {BackgroundAnimationService} from "../background-animation.service";
 
 
 @Component({
@@ -16,9 +17,10 @@ import {AdminPanelComponent} from "../admin-panel/admin-panel.component";
 export class UserDetailsComponent implements OnInit {
   user: User | any;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private animation: BackgroundAnimationService) {}
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
 

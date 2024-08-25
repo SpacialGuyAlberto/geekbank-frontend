@@ -5,6 +5,7 @@ import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import {CartItemWithGiftcard} from "../models/CartItem";
+import {BackgroundAnimationService} from "../background-animation.service";
 
 @Component({
   selector: 'app-cart',
@@ -25,9 +26,10 @@ export class CartComponent implements OnInit {
   cartItemCount: number = 0;
   totalPrice: number = 0;
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private animation: BackgroundAnimationService) {}
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
     this.loadCartItems();
   }
 
