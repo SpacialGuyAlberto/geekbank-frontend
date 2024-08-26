@@ -26,8 +26,8 @@ export class BackgroundAnimationService {
 
     let nodes: Array<any> = [];
     let edges: Array<any> = [];
-    const nodeCount = 10;
-    const maxDistance = 10;
+    const nodeCount = 1;
+    const maxDistance = 1;
     const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#FFBD33'];
 
     const createNodes = () => {
