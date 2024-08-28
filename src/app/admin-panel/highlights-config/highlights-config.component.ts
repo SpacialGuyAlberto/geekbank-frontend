@@ -37,9 +37,6 @@ export class HighlightsConfigComponent {
   }
 
   addToHighlights(card: KinguinGiftCard): void {
-    // if (!this.highlightItems.includes(card)) {
-    //   this.highlightItems.push(card);
-    // }
     if (!this.currentHighlights.includes(card)){
       this.currentHighlights.push(card);
     }

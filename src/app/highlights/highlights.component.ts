@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForOf, NgOptimizedImage } from "@angular/common";
+import {HighlightItemWithGiftcard} from "../models/HighlightItem";
+import {HighlightService} from "../highlights.service";
+import {KinguinGiftCard} from "../models/KinguinGiftCard";
 
 @Component({
   selector: 'app-highlights',
@@ -12,21 +15,28 @@ import { NgForOf, NgOptimizedImage } from "@angular/common";
   styleUrls: ['./highlights.component.css']
 })
 export class HighlightsComponent implements OnInit {
-
-  highlights = [
-    { title: "Garena Free Fire - 100 + 10 Diamonds CD Key", price: "€19.99", imageUrl: "https://images.kinguin.net/g/carousel-main/media/images/products/_073.jpg" },
-    { title: "Genshin Impact - GeForce DLC Bundle CD Key", price: "€0.48", imageUrl: "https://images.kinguin.net/g/carousel-main/media/images/products/_blessingmoongenshinws.jpg" },
-  ];
+  highlightItems: HighlightItemWithGiftcard[] = [];
+  highlights: KinguinGiftCard[] = [];
 
   currentIndex = 0;
 
-  constructor() { }
+  constructor(private highlightService: HighlightService) { }
 
   ngOnInit(): void {
-    // Inicia el carrusel automático
+    this.loadHighlights();
     setInterval(() => {
       this.moveToNextSlide();
     }, 3000);
+  }
+
+  loadHighlights(){
+    this.highlightService.getHighlights().subscribe(data =>
+      data.map( item => this.highlights.push(item.giftcard)),
+    );
+
+    this.highlightService.getHighlights().subscribe(data =>
+      data.map( item =>console.log( item.giftcard)),
+    );
   }
 
   moveToNextSlide(): void {

@@ -10,8 +10,17 @@
   <p>Status: <span [ngClass]="{'active': user.enabled, 'inactive': !user.enabled}">{{ user.enabled ? 'Active' : 'Inactive' }}</span></p>
 </div>
 
+
+  <div>
+    <app-settings></app-settings>
+  </div>
+
+
+
 <div *ngIf="user && user.role === 'ADMIN'">
-  <app-admin-panel></app-admin-panel>
+<!--  <app-admin-panel></app-admin-panel>-->
+
+
 </div>
 </div>
 </html>

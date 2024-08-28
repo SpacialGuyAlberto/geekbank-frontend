@@ -1,0 +1,26 @@
+<div class="orders-container">
+  <h2>Mis Pedidos</h2>
+
+  <div class="recent-orders">
+    <h3>Pedidos Recientes</h3>
+    <div *ngFor="let order of recentOrders" class="order-item">
+      <p>Pedido #{{ order.id }}</p>
+      <p>Fecha: {{ order.date }}</p>
+      <p>Total: {{ order.total | currency }}</p>
+      <button (click)="viewOrderDetails(order)">Ver Detalles</button>
+      <button (click)="trackShipment(order)">Rastrear Envío</button>
+      <button (click)="reorder(order)">Recomprar</button>
+    </div>
+  </div>
+
+  <div class="order-history">
+    <h3>Historial de Pedidos</h3>
+    <div *ngFor="let order of orderHistory" class="order-item">
+      <p>Pedido #{{ order.id }}</p>
+      <p>Fecha: {{ order.date }}</p>
+      <p>Total: {{ order.total | currency }}</p>
+      <button (click)="viewOrderDetails(order)">Ver Detalles</button>
+      <button (click)="reorder(order)">Recomprar</button>
+    </div>
+  </div>
+</div>

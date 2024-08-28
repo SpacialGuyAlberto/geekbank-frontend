@@ -1,0 +1,109 @@
+.account-info-container {
+  max-width: 800px;
+  margin: auto;
+  background-color: #12223C;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  color: #E1E6F1;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+h2, h3 {
+  color: #FB773C;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #88D66C;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #88D66C;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="tel"]::placeholder,
+input[type="password"]::placeholder {
+  color: #88D66C;
+}
+
+button {
+  background-color: #1261A0;
+  color: #E1E6F1;
+  border: 2px solid #1D4B8F;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+button:hover {
+  background-color: #1D4B8F;
+}
+
+.personal-info,
+.change-password,
+.addresses,
+.payment-methods,
+.communication-preferences {
+  margin-bottom: 30px;
+}
+
+.addresses p,
+.payment-methods p {
+  margin: 10px 0;
+  color: #88D66C;
+}
+
+.addresses button,
+.payment-methods button {
+  margin-left: 10px;
+}
+
+.communication-preferences label {
+  display: flex;
+  align-items: center;
+}
+
+.communication-preferences input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .account-info-container {
+    padding: 15px;
+  }
+
+  h2, h3 {
+    font-size: 1.5rem;
+  }
+
+  form {
+    gap: 10px;
+  }
+
+  button {
+    padding: 8px 12px;
+  }
+}

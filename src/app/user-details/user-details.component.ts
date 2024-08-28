@@ -5,6 +5,10 @@ import { CommonModule } from '@angular/common';
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {AdminPanelComponent} from "../admin-panel/admin-panel.component";
 import {BackgroundAnimationService} from "../background-animation.service";
+import {SettingsComponent} from "./settings/settings.component";
+import {AccountInfoComponent} from "./settings/account-info/account-info.component";
+import {OrdersComponent} from "./settings/orders/orders.component";
+import {PaymentMethodsComponent} from "./settings/payment-methods/payment-methods.component";
 
 
 @Component({
@@ -12,10 +16,11 @@ import {BackgroundAnimationService} from "../background-animation.service";
   standalone: true,
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
-  imports: [CommonModule, AdminPanelComponent]
+  imports: [CommonModule, AdminPanelComponent, SettingsComponent, AccountInfoComponent, OrdersComponent, PaymentMethodsComponent]
 })
 export class UserDetailsComponent implements OnInit {
   user: User | any;
+  currentSection: string = 'clients';
 
   constructor(private authService: AuthService, private animation: BackgroundAnimationService) {}
 
@@ -25,5 +30,12 @@ export class UserDetailsComponent implements OnInit {
       this.user = data;
 
     });
+    this.selectSection('products');
+  }
+
+
+
+  selectSection(section: string) {
+    this.currentSection = section;
   }
 }

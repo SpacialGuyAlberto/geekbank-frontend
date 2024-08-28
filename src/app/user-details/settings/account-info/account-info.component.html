@@ -1,0 +1,78 @@
+<p>account-info works!</p>
+<div class="account-info-container">
+  <h2>Account Information</h2>
+
+  <!-- Información Personal -->
+  <section class="personal-info">
+    <h3>Personal Information</h3>
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" [(ngModel)]="user.name">
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" [(ngModel)]="user.email">
+
+      <label for="phone">Phone:</label>
+      <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone">
+
+      <button type="submit" (click)="updatePersonalInfo()">Save Changes</button>
+    </form>
+  </section>
+
+  <!-- Cambiar Contraseña -->
+  <section class="change-password">
+    <h3>Change Password</h3>
+    <form>
+      <label for="current-password">Current Password:</label>
+      <input type="password" id="current-password" name="current-password">
+
+      <label for="new-password">New Password:</label>
+      <input type="password" id="new-password" name="new-password">
+
+      <label for="confirm-password">Confirm New Password:</label>
+      <input type="password" id="confirm-password" name="confirm-password">
+
+      <button type="submit" (click)="changePassword()">Update Password</button>
+    </form>
+  </section>
+
+  <!-- Direcciones -->
+  <section class="addresses">
+    <h3>Addresses</h3>
+    <div *ngFor="let address of user.addresses">
+      <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>
+      <button (click)="editAddress(address)">Edit</button>
+      <button (click)="deleteAddress(address)">Delete</button>
+    </div>
+    <button (click)="addNewAddress()">Add New Address</button>
+  </section>
+
+  <!-- Métodos de Pago -->
+  <section class="payment-methods">
+    <h3>Payment Methods</h3>
+    <div *ngFor="let payment of user.paymentMethods">
+      <p>{{ payment.cardType }} ending in {{ payment.last4Digits }}</p>
+      <button (click)="editPaymentMethod(payment)">Edit</button>
+      <button (click)="deletePaymentMethod(payment)">Delete</button>
+    </div>
+    <button (click)="addNewPaymentMethod()">Add New Payment Method</button>
+  </section>
+
+  <!-- Preferencias de Comunicación -->
+  <section class="communication-preferences">
+    <h3>Communication Preferences</h3>
+    <form>
+      <label>
+        <input type="checkbox" [(ngModel)]="user.preferences.promotions">
+        Receive Promotions and Offers
+      </label>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates">
+        Receive Order Updates
+      </label>
+
+      <button type="submit" (click)="updateCommunicationPreferences()">Save Preferences</button>
+    </form>
+  </section>
+</div>
