@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from "@angular/router";
 import { User } from "./models/User";
+import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 
 declare const google: any;
 
@@ -13,6 +14,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:7070/api/auth';
   private baseUrl2 = 'http://localhost:7070/api/users';
   private token: string | undefined;
+  private emailUser: string | undefined;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -30,6 +32,21 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
+    );
+  }
+
+  resetPassword(oldPassword: AbstractControl<ɵGetProperty<ɵTypedOrUntyped<any, ɵFormGroupRawValue<any>, any>, "currentPassword">> | null, newPassword: AbstractControl<ɵGetProperty<ɵTypedOrUntyped<any, ɵFormGroupRawValue<any>, any>, "newPassword">> | null){
+    this.getUserDetails().subscribe(data => {
+      this.emailUser = data.email;
+    });
+    let email = this.emailUser;
+    return this.http.post(`${this.baseUrl}/reset-password`, { email, oldPassword, newPassword }, { observe: 'response' }).pipe(
       tap(response => {
         const token = response.headers.get('Authorization');
         if (token) {
@@ -169,6 +186,7 @@ export class AuthService {
     localStorage.setItem('token', authResult.token);
     localStorage.setItem('userId', authResult.userId);
   }
+
 
   getUserId(): string {
     return localStorage.getItem('userId') || '';

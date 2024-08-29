@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import {FormsModule} from "@angular/forms";
+import {ChangePasswordComponent} from "./change-password/change-password.component";
 
 @Component({
   selector: 'app-account-info',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,
+    ChangePasswordComponent
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
@@ -22,6 +24,7 @@ export class AccountInfoComponent {
       orderUpdates: true
     }
   };
+
   private _address: any;
   private _payment: any;
 
@@ -29,9 +32,6 @@ export class AccountInfoComponent {
     // Lógica para actualizar la información personal del usuario
   }
 
-  changePassword() {
-    // Lógica para cambiar la contraseña del usuario
-  }
 
   editAddress(address: any) {
     this._address = address;

@@ -19,22 +19,7 @@
     </form>
   </section>
 
-  <!-- Cambiar Contraseña -->
-  <section class="change-password">
-    <h3>Change Password</h3>
-    <form>
-      <label for="current-password">Current Password:</label>
-      <input type="password" id="current-password" name="current-password">
-
-      <label for="new-password">New Password:</label>
-      <input type="password" id="new-password" name="new-password">
-
-      <label for="confirm-password">Confirm New Password:</label>
-      <input type="password" id="confirm-password" name="confirm-password">
-
-      <button type="submit" (click)="changePassword()">Update Password</button>
-    </form>
-  </section>
+  <app-change-password></app-change-password>
 
   <!-- Direcciones -->
   <section class="addresses">
