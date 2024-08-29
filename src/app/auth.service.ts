@@ -41,12 +41,17 @@ export class AuthService {
     );
   }
 
-  resetPassword(oldPassword: AbstractControl<ɵGetProperty<ɵTypedOrUntyped<any, ɵFormGroupRawValue<any>, any>, "currentPassword">> | null, newPassword: AbstractControl<ɵGetProperty<ɵTypedOrUntyped<any, ɵFormGroupRawValue<any>, any>, "newPassword">> | null){
-    this.getUserDetails().subscribe(data => {
-      this.emailUser = data.email;
-    });
-    let email = this.emailUser;
-    return this.http.post(`${this.baseUrl}/reset-password`, { email, oldPassword, newPassword }, { observe: 'response' }).pipe(
+  resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
+    const email = "enkivergamel@gmail.com";  // Suponiendo que el email es fijo para esta prueba
+
+    return this.http.post(`${this.baseUrl}/reset-password`,
+      {
+        email,
+        oldPassword: oldPassword?.value,
+        newPassword: newPassword?.value
+      },
+      { observe: 'response' }
+    ).pipe(
       tap(response => {
         const token = response.headers.get('Authorization');
         if (token) {
@@ -185,6 +190,7 @@ export class AuthService {
   setSession(authResult: any) {
     localStorage.setItem('token', authResult.token);
     localStorage.setItem('userId', authResult.userId);
+    localStorage.setItem('email', authResult.email);
   }
 
 

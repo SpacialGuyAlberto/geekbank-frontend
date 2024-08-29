@@ -34,8 +34,17 @@ export class ChangePasswordComponent {
 
   changePassword() {
     if (this.changePasswordForm.valid) {
-      console.log('Password updated successfully', this.changePasswordForm.value);
-      this.authService.resetPassword(this.changePasswordForm.get('currentPassword'), this.changePasswordForm.get('newPassword'))
+      this.authService.resetPassword(
+        this.changePasswordForm.get('currentPassword'),
+        this.changePasswordForm.get('newPassword')
+      ).subscribe(
+        response => {
+          console.log('Password updated successfully', response);
+        },
+        error => {
+          console.error('Error updating password', error);
+        }
+      );
     } else {
       console.error('Form is invalid');
     }
