@@ -42,7 +42,7 @@ export class AuthService {
   }
 
   resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
-    const email = "enkivergamel@gmail.com";  // Suponiendo que el email es fijo para esta prueba
+    const email = sessionStorage.getItem("email"); // Suponiendo que el email es fijo para esta prueba
 
     return this.http.post(`${this.baseUrl}/reset-password`,
       {

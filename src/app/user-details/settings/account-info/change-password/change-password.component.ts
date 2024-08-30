@@ -13,13 +13,12 @@ import {Auth} from "@angular/fire/auth";
 })
 export class ChangePasswordComponent {
 
-
   changePasswordForm: FormGroup;
 
   constructor(private fb: FormBuilder, private authService: AuthService) {
     this.changePasswordForm = this.fb.group({
       currentPassword: ['', [Validators.required]],
-      newPassword: ['', [Validators.required, Validators.minLength(4)]],
+      newPassword: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', [Validators.required]]
     }, {
       validator: this.passwordsMatchValidator // Custom validator

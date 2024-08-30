@@ -20,6 +20,7 @@ import {PaymentMethodsComponent} from "./settings/payment-methods/payment-method
 })
 export class UserDetailsComponent implements OnInit {
   user: User | any;
+  email: string | undefined;
   currentSection: string = 'clients';
 
   constructor(private authService: AuthService, private animation: BackgroundAnimationService) {}
@@ -28,9 +29,11 @@ export class UserDetailsComponent implements OnInit {
     this.animation.initializeGraphAnimation();
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
-
+      console.log(data.email)
+      sessionStorage.setItem("email", data.email)
     });
     this.selectSection('products');
+
   }
 
 

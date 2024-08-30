@@ -1,109 +1,61 @@
-.account-info-container {
-  max-width: 800px;
-  margin: auto;
-  background-color: #12223C;
+.personal-info, .addresses {
+  margin-bottom: 20px;
   padding: 20px;
+  background-color: var(--secondary-color);
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  color: #E1E6F1;
-  font-family: 'Courier New', Courier, monospace;
 }
 
-h2, h3 {
-  color: #FB773C;
-  text-align: center;
+.personal-info h3, .addresses h3 {
+  color: var(--highlight-color);
+  margin-bottom: 10px;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-label {
-  font-weight: bold;
+.personal-info label, .addresses label {
+  display: block;
   margin-bottom: 5px;
-  color: #88D66C;
+  color: var(--text-color);
 }
 
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"] {
+.personal-info input[type="text"],
+.personal-info input[type="email"],
+.personal-info input[type="tel"],
+.addresses input[type="text"] {
+  width: 100%;
   padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid var(--light-accent-color);
   border-radius: 4px;
-  border: 1px solid #88D66C;
-  background-color: #0B0D19;
-  color: #E1E6F1;
+  background-color: var(--primary-color);
+  color: var(--text-color);
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="tel"]::placeholder,
-input[type="password"]::placeholder {
-  color: #88D66C;
-}
 
 button {
-  background-color: #1261A0;
-  color: #E1E6F1;
-  border: 2px solid #1D4B8F;
-  padding: 10px 15px;
+  background-color: var(--highlight-color);
+  border: none;
+  padding: 10px 20px;
+  color: var(--text-color);
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-family: 'Courier New', Courier, monospace;
   border-radius: 4px;
-  align-self: flex-start;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #1D4B8F;
+  background-color: var(--accent-color);
 }
 
-.personal-info,
-.change-password,
-.addresses,
-.payment-methods,
-.communication-preferences {
-  margin-bottom: 30px;
+
+.invalid {
+  border-color: #FF6B6B; /* Red border for invalid inputs */
 }
 
-.addresses p,
-.payment-methods p {
-  margin: 10px 0;
-  color: #88D66C;
+.error {
+  color: #FF6B6B;
+  font-size: 0.875rem;
 }
 
-.addresses button,
-.payment-methods button {
-  margin-left: 10px;
-}
-
-.communication-preferences label {
-  display: flex;
-  align-items: center;
-}
-
-.communication-preferences input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .account-info-container {
-    padding: 15px;
-  }
-
-  h2, h3 {
-    font-size: 1.5rem;
-  }
-
-  form {
-    gap: 10px;
-  }
-
-  button {
-    padding: 8px 12px;
-  }
+.success {
+  color: #0B8494;
+  font-size: 0.875rem;
 }

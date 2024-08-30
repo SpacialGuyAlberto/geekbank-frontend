@@ -1,0 +1,86 @@
+.payment-methods-container {
+  background-color: var(--secondary-color);
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 20px auto; /* Centrado con margen superior/inferior */
+  border: 2px solid #1261A0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+h2 {
+  color: var(--highlight-color);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h3 {
+  color: var(--highlight-color);
+  margin-bottom: 15px;
+}
+
+.current-payment-methods,
+.add-payment-method {
+  margin-bottom: 30px;
+}
+
+.payment-method-item {
+  background-color: var(--primary-color);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--light-accent-color);
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
+.payment-method-item p {
+  margin: 5px 0;
+}
+
+.payment-method-item button {
+  background-color: var(--highlight-color);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.payment-method-item button:hover {
+  background-color: var(--accent-color);
+}
+
+.add-payment-method form {
+  display: flex;
+  flex-direction: column;
+}
+
+.add-payment-method label {
+  color: var(--text-color);
+  margin-bottom: 5px;
+}
+
+.add-payment-method input[type="text"] {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--light-accent-color);
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  margin-bottom: 10px;
+}
+
+.add-payment-method button {
+  background-color: var(--highlight-color);
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-payment-method button:hover {
+  background-color: var(--accent-color);
+}

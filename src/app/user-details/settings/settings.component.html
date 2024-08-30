@@ -13,7 +13,9 @@
       </nav>
 
       <div class="admin-section">
-        <app-account-info *ngIf="selectedSection === 'account-info'"></app-account-info>
+        <app-account-info *ngIf="selectedSection === 'account-info'"
+          [user]="user"
+        ></app-account-info>
         <app-orders *ngIf="selectedSection === 'orders'"></app-orders>
         <app-payment-methods *ngIf="selectedSection === 'payment-methods'"></app-payment-methods>
       </div>

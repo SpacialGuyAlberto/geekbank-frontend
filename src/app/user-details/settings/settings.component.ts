@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ClientsComponent} from "../../admin-panel/clients/clients.component";
 import {HighlightsConfigComponent} from "../../admin-panel/highlights-config/highlights-config.component";
 import {NgIf} from "@angular/common";
@@ -31,6 +31,17 @@ import {user} from "@angular/fire/auth";
 })
 export class SettingsComponent {
   selectedSection: string = 'clients';
+  @Input() user: any = {
+    name: '',
+    email: '',
+    phone: '',
+    addresses: [],
+    paymentMethods: [],
+    preferences: {
+      promotions: true,
+      orderUpdates: true
+    }
+  };
 
   constructor(private animation: BackgroundAnimationService) {
   }
@@ -45,5 +56,5 @@ export class SettingsComponent {
   }
 
 
-  protected readonly user = user;
+
 }

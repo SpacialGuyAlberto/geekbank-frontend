@@ -1,18 +1,23 @@
-import { Component } from '@angular/core';
-import {FormsModule} from "@angular/forms";
-import {ChangePasswordComponent} from "./change-password/change-password.component";
+import {Component, Input} from '@angular/core';
+import { FormsModule } from "@angular/forms";
+import { ChangePasswordComponent } from "./change-password/change-password.component";
+import {NgClass, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-account-info',
   standalone: true,
   imports: [
     FormsModule,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    NgClass,
+    NgForOf
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
 })
 export class AccountInfoComponent {
+
+  @Input()
   user: any = {
     name: '',
     email: '',
@@ -24,45 +29,69 @@ export class AccountInfoComponent {
       orderUpdates: true
     }
   };
+  showSuccessMessage: boolean = false;
 
   private _address: any;
   private _payment: any;
 
   updatePersonalInfo() {
-    // Lógica para actualizar la información personal del usuario
+    if (this.validateName(this.user.name) && this.validateEmail(this.user.email) && this.validatePhone(this.user.phone)) {
+      this.showSuccessMessage = true;
+      setTimeout(() => {
+        this.showSuccessMessage = false;
+      }, 5000);
+
+      console.log('Personal information is valid and updated.');
+    } else {
+      console.log('Validation failed.');
+    }
+
   }
 
+  validateName(name: string): boolean {
+    const nameRegex = /^[a-zA-Z\s]+$/;
+    return nameRegex.test(name);
+  }
+
+  validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
+  validatePhone(phone: string): boolean {
+    const phoneRegex = /^[0-9]{10,15}$/;
+    return phoneRegex.test(phone);
+  }
 
   editAddress(address: any) {
     this._address = address;
-    // Lógica para editar la dirección seleccionada
+
   }
 
   deleteAddress(address: any) {
     this._address = address;
-    // Lógica para eliminate la dirección seleccionada
+
   }
 
   addNewAddress() {
-    // Lógica para añadir una nueva dirección
+
   }
 
   editPaymentMethod(payment: any) {
     this._payment = payment;
-    // Lógica para editar el método de pago seleccionado
+
   }
 
   deletePaymentMethod(payment: any) {
     this._payment = payment;
-    // Lógica para eliminar el método de pago seleccionado
+
   }
 
   addNewPaymentMethod() {
-    // Lógica para añadir un nuevo método de pago
+
   }
 
   updateCommunicationPreferences() {
-    // Lógica para actualizar las preferencias de comunicación del usuario
+
   }
 }
-

@@ -7,39 +7,61 @@
     <h3>Personal Information</h3>
     <form>
       <label for="name">Name:</label>
-      <input type="text" id="name" name="name" [(ngModel)]="user.name">
+      <input type="text" id="name" name="name" [(ngModel)]="user.name"
+             [ngClass]="{'invalid': !validateName(user.name) && user.name}">
+      @if (!validateName(user.name) && user.name) {
+        <small class="error">El nombre debe contener solo letras y espacios, con al menos dos caracteres.</small>
+      }
 
       <label for="email">Email:</label>
-      <input type="email" id="email" name="email" [(ngModel)]="user.email">
+      <input type="email" id="email" name="email" [(ngModel)]="user.email"
+             [ngClass]="{'invalid': !validateEmail(user.email) && user.email}">
+      @if (!validateEmail(user.email) && user.email) {
+        <small class="error">El correo electrónico debe tener un formato válido, como usuario&#64;ejemplo.com.</small>
+      }
 
       <label for="phone">Phone:</label>
-      <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone">
+      <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone"
+             [ngClass]="{'invalid': !validatePhone(user.phonew) && user.phone}">
+      @if (!validatePhone(user.phone) && user.phone) {
+        <small class="error">El número de teléfono debe contener entre 10 y 15 dígitos.</small>
+      }
 
       <button type="submit" (click)="updatePersonalInfo()">Save Changes</button>
     </form>
+    @if (showSuccessMessage){
+      <small class="success">Se envio un correo electronico a su nuevo email para la confirmacion de su cambio</small>
+    }
   </section>
 
   <app-change-password></app-change-password>
 
-  <!-- Direcciones -->
   <section class="addresses">
     <h3>Addresses</h3>
-    <div *ngFor="let address of user.addresses">
-      <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>
-      <button (click)="editAddress(address)">Edit</button>
-      <button (click)="deleteAddress(address)">Delete</button>
-    </div>
+    @if (user.addresses.length > 0) {
+      <div *ngFor="let address of user.addresses">
+        <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>
+        <button (click)="editAddress(address)">Edit</button>
+        <button (click)="deleteAddress(address)">Delete</button>
+      </div>
+    } @else {
+      <p>No addresses found.</p>
+    }
     <button (click)="addNewAddress()">Add New Address</button>
   </section>
 
   <!-- Métodos de Pago -->
   <section class="payment-methods">
     <h3>Payment Methods</h3>
-    <div *ngFor="let payment of user.paymentMethods">
-      <p>{{ payment.cardType }} ending in {{ payment.last4Digits }}</p>
-      <button (click)="editPaymentMethod(payment)">Edit</button>
-      <button (click)="deletePaymentMethod(payment)">Delete</button>
-    </div>
+    @if (user.paymentMethods.length > 0) {
+      <div *ngFor="let payment of user.paymentMethods">
+        <p>{{ payment.cardType }} ending in {{ payment.last4Digits }}</p>
+        <button (click)="editPaymentMethod(payment)">Edit</button>
+        <button (click)="deletePaymentMethod(payment)">Delete</button>
+      </div>
+    } @else {
+      <p>No payment methods available.</p>
+    }
     <button (click)="addNewPaymentMethod()">Add New Payment Method</button>
   </section>
 
