@@ -1,7 +1,8 @@
 import {Component, Input} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
-import {NgClass, NgForOf} from "@angular/common";
+import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {PasswordModalComponent} from "./password-modal-component/password-modal-component.component";
 
 @Component({
   selector: 'app-account-info',
@@ -10,7 +11,9 @@ import {NgClass, NgForOf} from "@angular/common";
     FormsModule,
     ChangePasswordComponent,
     NgClass,
-    NgForOf
+    NgForOf,
+    PasswordModalComponent,
+    NgIf,
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
@@ -30,6 +33,7 @@ export class AccountInfoComponent {
     }
   };
   showSuccessMessage: boolean = false;
+  isPasswordModalOpen: boolean = false;
 
   private _address: any;
   private _payment: any;
@@ -40,12 +44,22 @@ export class AccountInfoComponent {
       setTimeout(() => {
         this.showSuccessMessage = false;
       }, 5000);
-
       console.log('Personal information is valid and updated.');
     } else {
       console.log('Validation failed.');
     }
+  }
 
+  openPasswordModal() {
+    this.isPasswordModalOpen = true;
+  }
+
+  handlePasswordConfirmation(isConfirmed: boolean) {
+    this.isPasswordModalOpen = false;
+    this.showSuccessMessage = true;
+    if (isConfirmed) {
+      this.updatePersonalInfo();
+    }
   }
 
   validateName(name: string): boolean {

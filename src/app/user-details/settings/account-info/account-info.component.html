@@ -22,20 +22,23 @@
 
       <label for="phone">Phone:</label>
       <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone"
-             [ngClass]="{'invalid': !validatePhone(user.phonew) && user.phone}">
+             [ngClass]="{'invalid': !validatePhone(user.phone) && user.phone}">
       @if (!validatePhone(user.phone) && user.phone) {
         <small class="error">El número de teléfono debe contener entre 10 y 15 dígitos.</small>
       }
 
-      <button type="submit" (click)="updatePersonalInfo()">Save Changes</button>
+      <button type="submit" (click)="openPasswordModal()">Save Changes</button>
     </form>
-    @if (showSuccessMessage){
-      <small class="success">Se envio un correo electronico a su nuevo email para la confirmacion de su cambio</small>
+    @if (showSuccessMessage) {
+      <small class="success">Se envió un correo electrónico a su nuevo email para la confirmación de su cambio.</small>
     }
   </section>
 
+   Change Password Section
+  <app-password-modal *ngIf="isPasswordModalOpen" (onConfirm)="handlePasswordConfirmation($event)"></app-password-modal>
   <app-change-password></app-change-password>
 
+  <!-- Address Section -->
   <section class="addresses">
     <h3>Addresses</h3>
     @if (user.addresses.length > 0) {
@@ -50,7 +53,7 @@
     <button (click)="addNewAddress()">Add New Address</button>
   </section>
 
-  <!-- Métodos de Pago -->
+  <!-- Payment Methods Section -->
   <section class="payment-methods">
     <h3>Payment Methods</h3>
     @if (user.paymentMethods.length > 0) {
@@ -65,7 +68,7 @@
     <button (click)="addNewPaymentMethod()">Add New Payment Method</button>
   </section>
 
-  <!-- Preferencias de Comunicación -->
+  <!-- Communication Preferences Section -->
   <section class="communication-preferences">
     <h3>Communication Preferences</h3>
     <form>
@@ -83,3 +86,5 @@
     </form>
   </section>
 </div>
+
+
