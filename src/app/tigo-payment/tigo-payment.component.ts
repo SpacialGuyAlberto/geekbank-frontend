@@ -20,8 +20,8 @@ export class TigoPaymentComponent {
   @Output() close = new EventEmitter<void>();
 
   showModal: boolean = true;
-  showConfirmation: boolean = false; // Inicialmente en false
-  showSpinner: boolean = false; // Para controlar la visibilidad del spinner
+  showConfirmation: boolean = false;
+  showSpinner: boolean = false;
 
   paymentDetails = {
     name: '',

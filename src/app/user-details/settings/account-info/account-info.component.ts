@@ -51,7 +51,15 @@ export class AccountInfoComponent {
   }
 
   openPasswordModal() {
-    this.isPasswordModalOpen = true;
+    if (this.validateName(this.user.name) && this.validateEmail(this.user.email) && this.validatePhone(this.user.phone)) {
+      this.isPasswordModalOpen = true;
+      setTimeout(() => {
+        this.showSuccessMessage = false;
+      }, 5000);
+      console.log('Personal information is valid and updated.');
+    } else {
+      console.log('Validation failed.');
+    }
   }
 
   handlePasswordConfirmation(isConfirmed: boolean) {

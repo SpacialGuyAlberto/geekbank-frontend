@@ -35,56 +35,58 @@
   </section>
 
    Change Password Section
-  <app-password-modal *ngIf="isPasswordModalOpen" (onConfirm)="handlePasswordConfirmation($event)"></app-password-modal>
+  <app-password-modal *ngIf="isPasswordModalOpen" (onConfirm)="handlePasswordConfirmation($event)"
+                      [user]="user"
+  ></app-password-modal>
   <app-change-password></app-change-password>
 
-  <!-- Address Section -->
-  <section class="addresses">
-    <h3>Addresses</h3>
-    @if (user.addresses.length > 0) {
-      <div *ngFor="let address of user.addresses">
-        <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>
-        <button (click)="editAddress(address)">Edit</button>
-        <button (click)="deleteAddress(address)">Delete</button>
-      </div>
-    } @else {
-      <p>No addresses found.</p>
-    }
-    <button (click)="addNewAddress()">Add New Address</button>
-  </section>
+<!--  &lt;!&ndash; Address Section &ndash;&gt;-->
+<!--  <section class="addresses">-->
+<!--    <h3>Addresses</h3>-->
+<!--    @if (user.addresses.length > 0) {-->
+<!--      <div *ngFor="let address of user.addresses">-->
+<!--        <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>-->
+<!--        <button (click)="editAddress(address)">Edit</button>-->
+<!--        <button (click)="deleteAddress(address)">Delete</button>-->
+<!--      </div>-->
+<!--    } @else {-->
+<!--      <p>No addresses found.</p>-->
+<!--    }-->
+<!--    <button (click)="addNewAddress()">Add New Address</button>-->
+<!--  </section>-->
 
   <!-- Payment Methods Section -->
-  <section class="payment-methods">
-    <h3>Payment Methods</h3>
-    @if (user.paymentMethods.length > 0) {
-      <div *ngFor="let payment of user.paymentMethods">
-        <p>{{ payment.cardType }} ending in {{ payment.last4Digits }}</p>
-        <button (click)="editPaymentMethod(payment)">Edit</button>
-        <button (click)="deletePaymentMethod(payment)">Delete</button>
-      </div>
-    } @else {
-      <p>No payment methods available.</p>
-    }
-    <button (click)="addNewPaymentMethod()">Add New Payment Method</button>
-  </section>
+<!--  <section class="payment-methods">-->
+<!--    <h3>Payment Methods</h3>-->
+<!--    @if (user.paymentMethods.length > 0) {-->
+<!--      <div *ngFor="let payment of user.paymentMethods">-->
+<!--        <p>{{ payment.cardType }} ending in {{ payment.last4Digits }}</p>-->
+<!--        <button (click)="editPaymentMethod(payment)">Edit</button>-->
+<!--        <button (click)="deletePaymentMethod(payment)">Delete</button>-->
+<!--      </div>-->
+<!--    } @else {-->
+<!--      <p>No payment methods available.</p>-->
+<!--    }-->
+<!--    <button (click)="addNewPaymentMethod()">Add New Payment Method</button>-->
+<!--  </section>-->
 
-  <!-- Communication Preferences Section -->
-  <section class="communication-preferences">
-    <h3>Communication Preferences</h3>
-    <form>
-      <label>
-        <input type="checkbox" [(ngModel)]="user.preferences.promotions">
-        Receive Promotions and Offers
-      </label>
+<!--  &lt;!&ndash; Communication Preferences Section &ndash;&gt;-->
+<!--  <section class="communication-preferences">-->
+<!--    <h3>Communication Preferences</h3>-->
+<!--    <form>-->
+<!--      <label>-->
+<!--        <input type="checkbox" [(ngModel)]="user.preferences.promotions">-->
+<!--        Receive Promotions and Offers-->
+<!--      </label>-->
 
-      <label>
-        <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates">
-        Receive Order Updates
-      </label>
+<!--      <label>-->
+<!--        <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates">-->
+<!--        Receive Order Updates-->
+<!--      </label>-->
 
-      <button type="submit" (click)="updateCommunicationPreferences()">Save Preferences</button>
-    </form>
-  </section>
+<!--      <button type="submit" (click)="updateCommunicationPreferences()">Save Preferences</button>-->
+<!--    </form>-->
+<!--  </section>-->
 </div>
 
 
