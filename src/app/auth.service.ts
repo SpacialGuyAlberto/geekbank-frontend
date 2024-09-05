@@ -41,6 +41,18 @@ export class AuthService {
     );
   }
 
+  validatePassword( password: string): Observable<HttpResponse<any>> {
+    const email = sessionStorage.getItem("email");
+    return this.http.post(`${this.baseUrl}/validate-password`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
+    );
+  }
+
   resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
     const email = sessionStorage.getItem("email"); // Suponiendo que el email es fijo para esta prueba
 

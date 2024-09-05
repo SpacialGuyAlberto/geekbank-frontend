@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {NgIf} from "@angular/common";
 import {UserService} from "../../../../user.service";
+import {AuthService} from "../../../../auth.service";
+import {response} from "express";
 
 @Component({
   selector: 'app-password-modal',
@@ -29,21 +31,22 @@ export class PasswordModalComponent {
     }
   };
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private authService: AuthService
+  ) { }
 
   validatePassword() {
-    if (this.password === "hola") {
-      this.isPasswordValid = true;
-      this.errorMessage = '';
-    } else {
-      this.isPasswordValid = false;
-      this.errorMessage = 'Incorrect password. Please try again.';
-    }
+    this.authService.validatePassword(this.password).subscribe((response) => {
+      if (response.status === 200){
+          this.updatePersonalInfo()
+      }
+    },
+      (error) => {
+      this.errorMessage = "Your Password is invalid. Please try again."
+      }
+    )
   }
 
   updatePersonalInfo() {
-    this.validatePassword();
-    if (this.isPasswordValid) {
       this.userService.updateDetails(this.password, this.user.email, this.user.phone, this.user.name).subscribe(
         response => {
           console.log('Details updated successfully', response);
@@ -53,7 +56,6 @@ export class PasswordModalComponent {
           console.error('Error updating details', error);
         }
       );
-    }
   }
 
   closeModal() {
