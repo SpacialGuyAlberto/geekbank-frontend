@@ -8,8 +8,8 @@
       <div class="item-details">
         <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
         <p>Quantity: {{ item.cartItem.quantity }}</p>
-        <p>Price: {{ item.giftcard.price * 24 }} LPS</p>
-        <p>Total: {{ item.cartItem.quantity * item.giftcard.price }} €</p> <!-- Precio total por ítem -->
+        <p [ngModel]="exchangeRate">Price: {{ (item.giftcard.price *  exchangeRate).toFixed(2)}} LPS</p>
+        <p [ngModel]="exchangeRate">Subtotal: {{ (item.cartItem.quantity * item.giftcard.price  * exchangeRate).toFixed(2)}} LPS</p> <!-- Precio total por ítem -->
       </div>
       <div class="item-actions">
         <button (click)="removeCartItem(Number(item.cartItem.productId))">Remove</button>
@@ -19,7 +19,6 @@
     </li>
   </ul>
 
-  <!-- Sección de pago con Tigo Money -->
   <div class="total-price-section">
     <h3>Total Price: {{ getTotalPrice() }} €</h3>
     <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>

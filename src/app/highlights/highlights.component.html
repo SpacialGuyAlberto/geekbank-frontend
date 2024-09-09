@@ -1,7 +1,7 @@
 <div class="highlights-carousel">
   <div class="carousel-track">
-    <div *ngFor="let product of highlights" class="highlight-card">
-      <img [src]="product.coverImageOriginal || product.images.screenshots[0]" [alt]="product.name" class="highlight-card-image">
+    <div *ngFor="let product of highlights" class="highlight-card" (click)="viewDetails(product)">
+      <img [src]="product.coverImageOriginal || product.coverImage || product.screenshots[product.screenshots.length - 1]" [alt]="product.name" class="highlight-card-image">
       <div class="highlight-card-content">
         <h3 class="highlight-card-title">{{ product.name }}</h3>
         <p class="highlight-card-price">{{ product.price }}</p>

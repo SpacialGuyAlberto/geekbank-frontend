@@ -6,6 +6,8 @@ import { RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import {CartItemWithGiftcard} from "../models/CartItem";
 import {BackgroundAnimationService} from "../background-animation.service";
+import {CurrencyService} from "../currency.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-cart',
@@ -14,23 +16,26 @@ import {BackgroundAnimationService} from "../background-animation.service";
     NgForOf,
     NgIf,
     RouterLink,
-    TigoPaymentComponent
+    TigoPaymentComponent,
+    FormsModule
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
   cartItems: CartItemWithGiftcard[] = [];
+  exchangeRate: number = 0;
   showDialog: boolean = false;
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
   totalPrice: number = 0;
 
-  constructor(private cartService: CartService, private animation: BackgroundAnimationService) {}
+  constructor(private cartService: CartService, private animation: BackgroundAnimationService, private currencyService: CurrencyService) {}
 
   ngOnInit(): void {
     this.animation.initializeGraphAnimation();
     this.loadCartItems();
+    this.fetchCurrencyExchange();
   }
 
   loadCartItems(): void {
@@ -39,6 +44,12 @@ export class CartComponent implements OnInit {
       this.updateCartItemCount();
       console.log("Loaded cart items: ", data);
     });
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getCurrency().subscribe(data => {
+      this.exchangeRate = data['conversion_rate']
+    })
   }
 
   removeCartItem(cartItemId: number): void {
@@ -51,7 +62,6 @@ export class CartComponent implements OnInit {
   getTotalItemCount(): number {
     return this.cartItems.reduce((count, item) => count + item.cartItem.quantity, 0);
   }
-
 
   removeAllCartItems(): void {
     this.cartService.removeAllCartItems().subscribe(() => {
@@ -85,6 +95,7 @@ export class CartComponent implements OnInit {
 
   openPaymentModal(): void {
     this.showPaymentModal = true;
+    console.log(this.exchangeRate);
   }
 
   closeDialog(): void {
@@ -92,7 +103,7 @@ export class CartComponent implements OnInit {
   }
 
   getTotalPrice(): number {
-    let total =  this.cartItems.reduce((total, item) => total + item.cartItem.quantity * item.giftcard.price, 0);
+    let total =  this.cartItems.reduce((total, item) => total + item.cartItem.quantity * (item.giftcard.price * this.exchangeRate), 0);
     this.totalPrice = parseFloat(total.toFixed(2));
     return parseFloat(total.toFixed(2));
   }

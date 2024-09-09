@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
-    const email = sessionStorage.getItem("email"); // Suponiendo que el email es fijo para esta prueba
+    const email = sessionStorage.getItem("email");
 
     return this.http.post(`${this.baseUrl}/reset-password`,
       {

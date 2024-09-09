@@ -3,6 +3,7 @@ import { NgForOf, NgOptimizedImage } from "@angular/common";
 import {HighlightItemWithGiftcard} from "../models/HighlightItem";
 import {HighlightService} from "../highlights.service";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-highlights',
@@ -20,7 +21,7 @@ export class HighlightsComponent implements OnInit {
 
   currentIndex = 0;
 
-  constructor(private highlightService: HighlightService) { }
+  constructor(private highlightService: HighlightService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadHighlights();
@@ -47,5 +48,17 @@ export class HighlightsComponent implements OnInit {
     const amountToMove = -track.clientWidth * this.currentIndex;
 
     track.style.transform = `translateX(${amountToMove}px)`;
+  }
+
+
+  viewDetails(card: KinguinGiftCard): void {
+    console.log('CARD ID: ' + card.productId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+      if (success) {
+        console.log('Navigation successful');
+      } else {
+        console.log('Navigation failed');
+      }
+    });
   }
 }

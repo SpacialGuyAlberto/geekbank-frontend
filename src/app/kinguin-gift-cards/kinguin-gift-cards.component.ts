@@ -10,6 +10,7 @@ import {HighlightsComponent} from "../highlights/highlights.component";
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {FiltersComponent} from "../filters/filters.component";
 import {BackgroundAnimationService} from "../background-animation.service";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -22,14 +23,16 @@ export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
   seachedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
-  totalPages: number = 3309; // Assuming we know the total number of pages
+  exchangeRate: number = 0;
+  totalPages: number = 3309;
   searchQuery: string = '';
 
-  constructor(private kinguinService: KinguinService, private router: Router, private animation: BackgroundAnimationService) { }
+  constructor(private kinguinService: KinguinService, private router: Router, private animation: BackgroundAnimationService, private currencyService: CurrencyService) { }
 
   ngOnInit(): void {
     this.animation.initializeGraphAnimation();
     this.loadGiftCards(this.currentPage);
+    this.fetchCurrencyExchange();
   }
 
   loadGiftCards(page: number): void {
@@ -66,5 +69,11 @@ export class KinguinGiftCardsComponent implements OnInit {
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
     console.log('Search Results in Gift Cards Component: ', this.giftCards);
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getCurrency().subscribe(data => {
+      this.exchangeRate = data['conversion_rate']
+    });
   }
 }

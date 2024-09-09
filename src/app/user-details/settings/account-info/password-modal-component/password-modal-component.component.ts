@@ -34,19 +34,30 @@ export class PasswordModalComponent {
   constructor(private userService: UserService, private authService: AuthService
   ) { }
 
-  validatePassword() {
-    this.authService.validatePassword(this.password).subscribe((response) => {
-      if (response.status === 200){
-          this.updatePersonalInfo()
-      }
-    },
-      (error) => {
-      this.errorMessage = "Your Password is invalid. Please try again."
-      }
-    )
+  validatePassword(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.authService.validatePassword(this.password).subscribe(
+        (response) => {
+          if (response.status === 200) {
+
+            resolve(true);  // Retorna true si la respuesta es 200
+          } else {
+            resolve(false);
+          }
+        },
+        (error) => {
+          this.errorMessage = "Your Password is invalid. Please try again.";
+          resolve(false);
+        }
+      );
+    });
   }
 
-  updatePersonalInfo() {
+
+  async updatePersonalInfo() {
+
+    const isValid = await this.validatePassword()
+    if (isValid){
       this.userService.updateDetails(this.password, this.user.email, this.user.phone, this.user.name).subscribe(
         response => {
           console.log('Details updated successfully', response);
@@ -56,6 +67,8 @@ export class PasswordModalComponent {
           console.error('Error updating details', error);
         }
       );
+    }
+
   }
 
   closeModal() {

@@ -18,7 +18,7 @@
     </h2>
 
     <h2 class="gift-card-title">{{ giftCard.name }}</h2>
-    <div class="gift-card-price">{{ giftCard.price | currency }}</div>
+    <div class="gift-card-price" [ngModel]="exchangeRate" >{{ (giftCard.price * exchangeRate).toFixed(2) | currency }}</div>
     <div class="button-container">
       <button (click)="toggleCart(giftCard)" class="add-to-cart">
         {{ isInCart ? 'Remove from Cart' : 'Add to Cart' }}

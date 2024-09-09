@@ -12,6 +12,7 @@ body, html {
   position: relative;
   width: 100%;
   height: 100vh;
+  z-index: 0; /* Asegúrate de que el graph container esté por debajo */
 }
 
 #graphCanvas {
@@ -20,7 +21,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: 1; /* Canvas está en una capa inferior */
 }
 
 .cart-container {
@@ -33,6 +34,8 @@ body, html {
   padding: 20px;
   font-family: 'Courier New', Courier, monospace;
   color: #88D66C; /* Texto verde claro */
+  position: relative; /* Agregar position para que z-index funcione */
+  z-index: 2; /* Aumentar z-index para que esté encima del canvas */
 }
 
 .cart-container h2 {
