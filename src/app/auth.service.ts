@@ -201,7 +201,7 @@ export class AuthService {
 
   setSession(authResult: any) {
     localStorage.setItem('token', authResult.token);
-    localStorage.setItem('userId', authResult.userId);
+    sessionStorage.setItem('userId', authResult.userId);
     localStorage.setItem('email', authResult.email);
   }
 

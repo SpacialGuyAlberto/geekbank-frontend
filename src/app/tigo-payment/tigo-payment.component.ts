@@ -19,6 +19,7 @@ export class TigoPaymentComponent {
   @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
 
+
   showModal: boolean = true;
   showConfirmation: boolean = false;
   showSpinner: boolean = false;
@@ -29,11 +30,14 @@ export class TigoPaymentComponent {
     phoneNumber: '',
     total: 0
   };
+  userId: string | null = '';
 
   constructor(private tigoService: TigoService) {}
 
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
+    this.userId = sessionStorage.getItem("userId");
+    console.log(' USER ID: ' + this.userId);
   }
 
   closeModal(): void {
@@ -44,12 +48,14 @@ export class TigoPaymentComponent {
   onSubmit(): void {
     this.showSpinner = true; // Mostrar spinner al hacer clic en Pay
     const orderDetails = {
+      userId: parseInt(<string>sessionStorage.getItem("userId")),
       phoneNumber: this.paymentDetails.phoneNumber,
       products: this.cartItems.map(item => ({
         kinguinId: item.giftcard.kinguinId,
         qty: item.cartItem.quantity,
         price: item.giftcard.price
-      }))
+      })),
+      amount: 35.2
     };
 
     this.tigoService.placeOrder(orderDetails).subscribe(

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TigoService {
-  private apiUrl = 'http://localhost:7070/api/orders'; // URL del backend
+  private apiUrl = 'http://localhost:7070/api/orders';
 
   constructor(private http: HttpClient) {}
 

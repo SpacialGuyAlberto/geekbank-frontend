@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {CurrencyPipe} from "@angular/common";
+import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
+import {Transaction, TransactionsService} from "../../../transactions.service";
 
 interface Order {
   id: number;
@@ -12,23 +13,26 @@ interface Order {
   templateUrl: './orders.component.html',
   standalone: true,
   imports: [
-    CurrencyPipe
+    CurrencyPipe,
+    NgIf,
+    NgForOf
   ],
   styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];
   orderHistory: Order[] = [];
+  transactions: Transaction[] = [];
 
-  constructor() { }
+  constructor(private transactionService: TransactionsService) { }
 
   ngOnInit(): void {
     this.loadRecentOrders();
     this.loadOrderHistory();
+    this.loadTransactions();
   }
 
   loadRecentOrders(): void {
-    // Simulación de datos recientes
     this.recentOrders = [
       { id: 1, date: '2024-08-28', total: 49.99 },
       { id: 2, date: '2024-08-27', total: 99.99 }
@@ -44,18 +48,26 @@ export class OrdersComponent implements OnInit {
     ];
   }
 
+  loadTransactions(): void {
+    this.transactionService.getTransactions().subscribe(
+      (data: Transaction[]) => {
+        this.transactions = data;
+      },
+      (error) => {
+        console.error('Error fetching transactions', error);
+      }
+    );
+  }
+
   viewOrderDetails(order: Order): void {
-    // Lógica para ver detalles del pedido
     console.log('Ver detalles del pedido', order);
   }
 
   trackShipment(order: Order): void {
-    // Lógica para rastrear el envío
     console.log('Rastrear envío del pedido', order);
   }
 
   reorder(order: Order): void {
-    // Lógica para volver a comprar el pedido
     console.log('Recomprar pedido', order);
   }
 }
