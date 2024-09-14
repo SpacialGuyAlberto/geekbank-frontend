@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
 import {Transaction, TransactionsService} from "../../../transactions.service";
-
 interface Order {
   id: number;
   date: string;
@@ -23,6 +22,16 @@ export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];
   orderHistory: Order[] = [];
   transactions: Transaction[] = [];
+
+  @Input() user: any = {
+    email: '',
+    name: '',
+    phoneNumber: '',
+    id: 0,
+    role: ''
+  };
+
+  //      userId: parseInt(<string>sessionStorage.getItem("userId")),
 
   constructor(private transactionService: TransactionsService) { }
 
@@ -49,14 +58,22 @@ export class OrdersComponent implements OnInit {
   }
 
   loadTransactions(): void {
-    this.transactionService.getTransactions().subscribe(
-      (data: Transaction[]) => {
-        this.transactions = data;
-      },
-      (error) => {
-        console.error('Error fetching transactions', error);
-      }
-    );
+    if (this.user.role == 'ADMIN'){
+      this.transactionService.getTransactions().subscribe(
+        (data: Transaction[]) => {
+          this.transactions = data;
+        },
+        (error) => {
+          console.error('Error fetching transactions', error);
+        }
+      );
+    }  else {
+      this.transactionService.getTransactionsById(this.user.id).subscribe(
+        (data: Transaction[]) => {
+          this.transactions = data;
+        }
+      )
+    }
   }
 
   viewOrderDetails(order: Order): void {

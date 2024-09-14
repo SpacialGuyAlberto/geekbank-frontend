@@ -31,12 +31,11 @@ export class UserDetailsComponent implements OnInit {
       this.user = data;
       console.log(data.email)
       sessionStorage.setItem("email", data.email)
+      console.log(this.user);
     });
     this.selectSection('products');
 
   }
-
-
 
   selectSection(section: string) {
     this.currentSection = section;

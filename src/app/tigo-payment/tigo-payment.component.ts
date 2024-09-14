@@ -55,7 +55,7 @@ export class TigoPaymentComponent {
         qty: item.cartItem.quantity,
         price: item.giftcard.price
       })),
-      amount: 35.2
+      amount: this.totalPrice
     };
 
     this.tigoService.placeOrder(orderDetails).subscribe(

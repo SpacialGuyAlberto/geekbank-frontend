@@ -16,7 +16,7 @@
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
-      <div class="spinner-container">
+      <div *ngIf="showSpinner" class="spinner-container">
         <div class="spinner"></div>
         <p>Esperando a su pago...</p>
       </div>

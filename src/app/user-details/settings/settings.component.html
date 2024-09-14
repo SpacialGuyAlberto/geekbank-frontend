@@ -16,7 +16,9 @@
         <app-account-info *ngIf="selectedSection === 'account-info'"
           [user]="user"
         ></app-account-info>
-        <app-orders *ngIf="selectedSection === 'orders'"></app-orders>
+        <app-orders *ngIf="selectedSection === 'orders'"
+        [user]="user"
+        ></app-orders>
         <app-payment-methods *ngIf="selectedSection === 'payment-methods'"></app-payment-methods>
       </div>
     </div>

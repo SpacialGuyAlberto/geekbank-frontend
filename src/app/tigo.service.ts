@@ -12,6 +12,6 @@ export class TigoService {
 
   placeOrder(orderDetails: any): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    return this.http.post(this.apiUrl, orderDetails, { headers });
+    return this.http.post(this.apiUrl, orderDetails, { headers, responseType: 'text' });
   }
 }
