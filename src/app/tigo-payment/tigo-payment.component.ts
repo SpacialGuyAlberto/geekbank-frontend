@@ -24,7 +24,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy{
   @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
 
-
   showModal: boolean = true;
   showConfirmation: boolean = false;
   showSpinner: boolean = false;
@@ -38,7 +37,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy{
   };
   userId: string | null = '';
 
-  constructor(private tigoService: TigoService) { }
+  constructor(private tigoService: TigoService, private webSocketService: WebSocketService) { }
 
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
