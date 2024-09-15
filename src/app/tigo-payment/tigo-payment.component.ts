@@ -1,8 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { TigoService } from "../tigo.service";
+import {WebSocketService} from "../web-socket.service";
+import {Subscription} from "rxjs";
+import {response} from "express";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+
 
 @Component({
   selector: 'app-tigo-payment',
@@ -14,7 +19,7 @@ import { TigoService } from "../tigo.service";
   templateUrl: './tigo-payment.component.html',
   styleUrls: ['./tigo-payment.component.css']
 })
-export class TigoPaymentComponent {
+export class TigoPaymentComponent implements OnInit, OnDestroy{
   @Input() cartItems: CartItemWithGiftcard[] = [];
   @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
@@ -23,6 +28,7 @@ export class TigoPaymentComponent {
   showModal: boolean = true;
   showConfirmation: boolean = false;
   showSpinner: boolean = false;
+  transactionSubscription: Subscription | null = null;
 
   paymentDetails = {
     name: '',
@@ -32,7 +38,7 @@ export class TigoPaymentComponent {
   };
   userId: string | null = '';
 
-  constructor(private tigoService: TigoService) {}
+  constructor(private tigoService: TigoService) { }
 
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
@@ -69,5 +75,8 @@ export class TigoPaymentComponent {
         this.showSpinner = false; // Ocultar spinner en caso de error
       }
     );
+  }
+
+  ngOnDestroy(): void {
   }
 }

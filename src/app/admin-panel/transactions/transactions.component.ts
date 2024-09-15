@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormsModule} from "@angular/forms";
-import {CurrencyPipe, DatePipe} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-transactions',
@@ -8,7 +8,8 @@ import {CurrencyPipe, DatePipe} from "@angular/common";
   imports: [
     FormsModule,
     DatePipe,
-    CurrencyPipe
+    CurrencyPipe,
+    NgForOf
   ],
   templateUrl: './transactions.component.html',
   styleUrl: './transactions.component.css'
@@ -19,10 +20,10 @@ export class TransactionsComponent {
   transactions: any;
 
   filterTransactions() {
-    
+
   }
 
   exportTransactions() {
-    
+
   }
 }

@@ -100,16 +100,16 @@ export class BackgroundAnimationService {
       ctx.filter = 'none';
     }
 
-    const animate = () => {
-      updateNodes();
-      connectNodes();
-      drawGraph();
-      requestAnimationFrame(animate);
-    }
+    // const animate = () => {
+    //   updateNodes();
+    //   connectNodes();
+    //   drawGraph();
+    //   requestAnimationFrame(animate);
+    // }
 
     createNodes();
     connectNodes();
-    animate();
+    // animate();
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;

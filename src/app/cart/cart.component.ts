@@ -29,6 +29,7 @@ export class CartComponent implements OnInit {
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
   totalPrice: number = 0;
+  userId: number = 0;
 
   constructor(private cartService: CartService, private animation: BackgroundAnimationService, private currencyService: CurrencyService) {}
 
@@ -36,6 +37,8 @@ export class CartComponent implements OnInit {
     this.animation.initializeGraphAnimation();
     this.loadCartItems();
     this.fetchCurrencyExchange();
+    this.userId =  parseInt(<string>sessionStorage.getItem("userId"));
+    console.log('USER ID : ' + this.userId)
   }
 
   loadCartItems(): void {

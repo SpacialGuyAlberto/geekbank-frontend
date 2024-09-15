@@ -18,6 +18,7 @@ import {CartComponent} from "./cart/cart.component";
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './store/cart/cart.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import {TransactionsComponent} from "./admin-panel/transactions/transactions.component";
 
 
 
@@ -38,7 +39,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     AppComponent,
     ReactiveFormsModule,
     CartComponent,
-    StoreModule.forRoot({ cart: cartReducer }),
+    TransactionsComponent,
+    StoreModule.forRoot({cart: cartReducer}),
+    TransactionsComponent,
     // StoreModule.forFeature('cart', cartReducer),
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
