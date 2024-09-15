@@ -1,19 +1,13 @@
 .transactions-container {
+  width: 100%;
   padding: 20px;
-  background-color: #0B0D19; /* Fondo oscuro */
-  border: 2px solid #1261A0; /* Borde azul */
-  border-radius: 8px;
-  color: #E1E6F1; /* Texto claro */
-  font-family: 'Courier New', Courier, monospace;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  max-width: 800px;
-  margin: 20px auto;
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  color: #ffffff;
 }
 
-.transactions-container h2 {
-  color: #FB773C; /* Naranja para el título */
-  font-size: 1.8rem;
-  text-align: center;
+.section-title {
+  font-size: 24px;
   margin-bottom: 20px;
 }
 
@@ -21,52 +15,80 @@
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-  justify-content: center;
 }
 
-.filters input[type="date"] {
-  padding: 8px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  background-color: #0B0D19; /* Fondo oscuro */
-  color: #E1E6F1; /* Texto claro */
-  font-family: 'Courier New', Courier, monospace;
-  border-radius: 4px;
+.filters input, .filters select, .filters button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
 }
 
 .filters button {
-  padding: 8px 12px;
-  background-color: #1261A0; /* Fondo azul */
-  border: 2px solid #1D4B8F; /* Borde azul oscuro */
-  color: #E1E6F1; /* Texto claro */
-  font-family: 'Courier New', Courier, monospace;
+  background-color: #ff7a00;
+  border: none;
   cursor: pointer;
+}
+
+.transaction-table {
+  display: grid;
+  gap: 10px;
+}
+
+.transaction-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #1c1c1c;
+  font-weight: bold;
+  color: #ff7a00;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
-.filters button:hover {
-  background-color: #1D4B8F; /* Fondo más oscuro al hacer hover */
+.transaction-row:hover {
+  background-color: #444;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  color: #E1E6F1; /* Texto claro */
+.transaction-status {
+  padding: 5px 15px;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  width: 120px;
 }
 
-th, td {
-  padding: 12px;
-  border-bottom: 2px solid #1261A0; /* Borde inferior azul */
+.transaction-status.PENDING {
+  color: #FFC107; /* Color de texto */
+  border-color: #FFC107; /* Color del borde */
+  background-color: transparent; /* Sin fondo */
 }
 
-th {
-  background-color: #1D4B8F; /* Fondo azul oscuro para encabezados */
-  color: #FB773C; /* Texto naranja para encabezados */
-  font-size: 1rem;
-  text-transform: uppercase;
+.transaction-status.COMPLETED {
+  color: #4CAF50; /* Verde */
+  border-color: #4CAF50; /* Color del borde */
+  background-color: transparent; /* Sin fondo */
 }
 
-td {
-  background-color: #0B0D19; /* Fondo oscuro para celdas */
-  font-size: 1rem;
+.transaction-status.REFUNDED {
+  color: #00BCD4; /* Azul claro */
+  border-color: #00BCD4;
+  background-color: transparent; /* Sin fondo */
+}
+
+.transaction-status.CANCELLED {
+  color: #F44336; /* Rojo */
+  border-color: #F44336;
+  background-color: transparent; /* Sin fondo */
 }

@@ -1,60 +1,39 @@
-<div class="orders-container">
-  <h2>Mis Pedidos</h2>
+<div class="transactions-container">
+  <h2 class="section-title">Transacciones</h2>
 
-  <div class="recent-orders">
-    <h3>Pedidos Recientes</h3>
-    <div *ngFor="let order of recentOrders" class="order-item">
-      <p>Pedido #{{ order.id }}</p>
-      <p>Fecha: {{ order.date }}</p>
-      <p>Total: {{ order.total | currency }}</p>
-      <button (click)="viewOrderDetails(order)">Ver Detalles</button>
-      <button (click)="trackShipment(order)">Rastrear Envío</button>
-      <button (click)="reorder(order)">Recomprar</button>
+  <!-- Filtros -->
+  <div class="filters">
+    <input type="text" placeholder="Buscar por ID de transacción" [(ngModel)]="searchQuery">
+    <select [(ngModel)]="selectedStatus">
+      <option value="">Estado</option>
+      <option value="COMPLETED">Completado</option>
+      <option value="REFUNDED">Reembolsado</option>
+      <option value="PENDING">Pendiente</option>
+      <option value="CANCELLED">Cancelado</option>
+    </select>
+    <input type="date" [(ngModel)]="dateFrom" placeholder="Desde">
+    <input type="date" [(ngModel)]="dateTo" placeholder="Hasta">
+    <button (click)="filterTransactions()">Filtrar</button>
+  </div>
+
+  <!-- Tabla de Transacciones -->
+  <div class="transaction-table">
+    <div class="transaction-header">
+      <span>ID de Transacción</span>
+      <span>Fecha</span>
+      <span>Descripción</span>
+      <span>Estado</span>
+      <span>Monto</span>
+    </div>
+
+    <div *ngFor="let transaction of transactions" class="transaction-row">
+      <span>{{ transaction.id }}</span>
+      <span>{{ transaction.timestamp | date:'dd-MM-yyyy' }}</span>
+      <span>{{ transaction.description }}</span>
+      <td>
+        <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
+      </td>
+      <span>{{ transaction.amount | currency }}</span>
     </div>
   </div>
-
-  <div class="order-history">
-    <h3>Historial de Pedidos</h3>
-    <div *ngFor="let order of orderHistory" class="order-item">
-      <p>Pedido #{{ order.id }}</p>
-      <p>Fecha: {{ order.date }}</p>
-      <p>Total: {{ order.total | currency }}</p>
-      <button (click)="viewOrderDetails(order)">Ver Detalles</button>
-      <button (click)="reorder(order)">Recomprar</button>
-    </div>
-  </div>
-
-  <div *ngIf="transactions.length > 0; else noTransactions">
-    <h2>Transactions</h2>
-    <table>
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Transaction Number</th>
-        <th>Amount</th>
-        <th>Description</th>
-        <th>Status</th>
-        <th>Timestamp</th>
-        <th>Type</th>
-        <th>Phone Number</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let transaction of transactions">
-        <td>{{ transaction.id }}</td>
-        <td>{{ transaction.transactionNumber }}</td>
-        <td>{{ transaction.amount }}</td>
-        <td>{{ transaction.description }}</td>
-        <td>{{ transaction.status }}</td>
-        <td>{{ transaction.timestamp }}</td>
-        <td>{{ transaction.type }}</td>
-        <td>{{ transaction.phoneNumber }}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <ng-template #noTransactions>
-    <p>No transactions found</p>
-  </ng-template>
 </div>

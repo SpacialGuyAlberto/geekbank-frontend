@@ -1,24 +1,48 @@
-<div class="graph-container">
-  <canvas id="graphCanvas"></canvas>
-  <div class="admin-panel-container">
-    <h1>Panel de Administración</h1>
-    <div class="admin-navigation">
-      <button (click)="selectSection('clients')">Clientes</button>
-      <button (click)="selectSection('products')">Productos</button>
-      <button (click)="selectSection('highlights')">Highlights</button>
-      <button (click)="selectSection('transactions')">Transacciones</button>
-      <button (click)="selectSection('statistics')">Estadísticas</button>
-    </div>
+<div class="admin-dashboard">
+  <!-- Sidebar de navegación -->
+  <nav class="sidebar">
+    <ul>
+      <li>
+        <a  (click)="selectSection('general')">
+          <i class="fas fa-tachometer-alt"></i> Vista General
+        </a>
+      </li>
+      <li>
+        <a  (click)="selectSection('clients')">
+          <i class="fas fa-users"></i> Clientes
+        </a>
+      </li>
+      <li>
+        <a href="#" (click)="selectSection('products')">
+          <i class="fas fa-box"></i> Productos
+        </a>
+      </li>
+      <li>
+        <a  (click)="selectSection('transactions')">
+          <i class="fas fa-money-check-alt"></i> Transacciones
+        </a>
+      </li>
+      <li>
+        <a href="#" (click)="selectSection('statistics')">
+          <i class="fas fa-chart-line"></i> Estadísticas
+        </a>
+      </li>
+      <li>
+        <a href="#" (click)="selectSection('highlights')">
+          <i class="fas fa-lightbulb"></i> Highlights
+        </a>
+      </li>
+    </ul>
+  </nav>
 
-    <div class="admin-section">
-      <div *ngIf="selectedSection === 'clients' ">
+  <main class="main-content">
+    <!-- Sección dinámica: Carga los subcomponentes según la sección seleccionada -->
+    <div class="dynamic-section">
+      <div *ngIf="selectedSection === 'clients'">
         <app-clients></app-clients>
       </div>
       <div *ngIf="selectedSection === 'products'">
         <app-products></app-products>
-      </div>
-      <div *ngIf="selectedSection === 'highlights'">
-         <app-highlights-config></app-highlights-config>
       </div>
       <div *ngIf="selectedSection === 'transactions'">
         <app-transactions></app-transactions>
@@ -26,6 +50,44 @@
       <div *ngIf="selectedSection === 'statistics'">
         <app-statistics></app-statistics>
       </div>
+      <div *ngIf="selectedSection === 'highlights'">
+        <app-highlights-config></app-highlights-config>
+      </div>
     </div>
-  </div>
+
+    <!-- Cajas de métricas y gráficos solo visibles en la vista general -->
+    <div *ngIf="selectedSection === 'general'">
+      <!-- Cajas de métricas clave -->
+      <div class="metrics-container">
+        <div class="metric-box locations">
+          <i class="fas fa-shopping-cart"></i>
+          <p>32 Ventas</p>
+        </div>
+        <div class="metric-box shops">
+          <i class="fas fa-store"></i>
+          <p>295 Tiendas</p>
+        </div>
+        <div class="metric-box products">
+          <i class="fas fa-box"></i>
+          <p>45784 Productos</p>
+        </div>
+        <div class="metric-box revenue">
+          <i class="fas fa-dollar-sign"></i>
+          <p>$346928 Ingresos</p>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="charts-container">
+        <div class="chart-box">
+          <h3>Ventas mensuales</h3>
+          <canvas id="salesChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <h3>Categoría de ventas</h3>
+          <canvas id="categoryChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

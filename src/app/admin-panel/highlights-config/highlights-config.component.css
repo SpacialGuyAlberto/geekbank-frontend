@@ -1,69 +1,80 @@
+/* Estructura principal del dashboard */
+.highlight-dashboard {
+  padding: 20px;
+  background-color: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Barra de búsqueda y botón Guardar */
 .search-save-container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px; /* Espacio entre el search bar y el contenido principal */
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.search-save-container app-search-bar {
-  flex: 2; /* Ocupa más espacio en la fila */
-  margin-right: 20px; /* Espacio entre el search bar y el botón */
+.search-bar {
+  flex-grow: 1;
+  margin-right: 20px;
 }
 
-.search-save-container button {
-  flex: 1; /* Ajuste para que ocupe menos espacio que el search bar */
-  max-width: 150px; /* Limitar el ancho máximo del botón */
-  padding: 10px 20px;
-  background-color: #1261A0;
-  color: #E1E6F1;
-  border: 2px solid #1D4B8F;
-  border-radius: 8px;
-  font-family: 'Courier New', Courier, monospace;
+.save-btn {
+  padding: 12px 25px;
+  background-color: #4CAF50; /* Cambié el color a verde para hacerlo más amigable */
+  color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
   transition: background-color 0.3s ease;
-  text-align: center;
 }
 
-.search-save-container button:hover {
-  background-color: #1D4B8F;
+.save-btn:hover {
+  background-color: #43a047; /* Un color verde más oscuro en hover */
 }
 
-
-/* Resto del CSS para la disposición de las columnas */
+/* Panel izquierdo y derecho */
 .main-content {
-  padding: 20px;
-  background-color: #0B0D19;
-  color: #E1E6F1;
-  font-family: 'Courier New', Courier, monospace;
-}
-
-.columns {
   display: flex;
-  gap: 20px; /* Espacio entre las dos columnas */
+  justify-content: space-between;
+  gap: 40px;
 }
 
-.left-panel,
-.right-panel {
+.left-panel, .right-panel {
   flex: 1;
+  background-color: #2C3E50; /* Color de fondo más oscuro para un look profesional */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.left-panel h2, .right-panel h2 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 22px;
+  text-align: left;
+}
+
+/* Tarjetas de regalo */
 .gift-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 20px;
 }
 
 .gift-card {
-  background-color: #021526;
-  border: 2px solid #88D66C;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-  transition: transform 0.3s ease-in-out;
-  cursor: pointer;
+  background-color: #34495e; /* Azul oscuro, consistente con el resto del dashboard */
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .gift-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
 .gift-card-image-container {
@@ -74,80 +85,45 @@
   width: 100%;
   height: 150px;
   object-fit: cover;
-  border-bottom: 2px solid #88D66C;
 }
 
+.add-highlight-btn, .remove-highlight-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff9800; /* Cambié el color a naranja para el botón de añadir/eliminar */
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.add-highlight-btn:hover, .remove-highlight-btn:hover {
+  background-color: #e67e22;
+}
+
+/* Contenido de la tarjeta */
 .gift-card-content {
   padding: 15px;
+  color: white;
   text-align: center;
 }
 
 .gift-card-title {
-  font-size: 1.2rem;
-  color: #FB773C;
-  margin: 10px 0;
+  font-size: 18px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .gift-card-price {
-  background-color: #1261A0;
-  color: #E1E6F1;
-  padding: 10px;
-  text-align: center;
-  border-top: 2px solid #88D66C;
-}
-
-.add-highlight-btn,
-.remove-highlight-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #FB773C;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  font-size: 1.2rem;
-  line-height: 30px;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.add-highlight-btn:hover,
-.remove-highlight-btn:hover {
-  background-color: #ED5AB3;
-  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3;
-}
-
-/* Responsivo: ajustes para pantallas más pequeñas */
-@media (max-width: 768px) {
-  .columns {
-    flex-direction: column;
-  }
-
-  .gift-cards-container {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  }
-
-  .gift-card-image {
-    height: 120px;
-  }
-
-  .gift-card-title {
-    font-size: 1rem;
-  }
-
-  .gift-card-price {
-    font-size: 0.9rem;
-  }
-
-  .add-highlight-btn,
-  .remove-highlight-btn {
-    width: 25px;
-    height: 25px;
-    font-size: 1rem;
-    line-height: 25px;
-  }
+  font-size: 16px;
+  color: #ff9800; /* Naranja para el precio */
+  font-weight: bold;
 }

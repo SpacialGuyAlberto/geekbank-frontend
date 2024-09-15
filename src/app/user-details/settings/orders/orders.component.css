@@ -1,0 +1,123 @@
+.transactions-container {
+  width: 100%;
+  padding: 20px;
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  color: #ffffff;
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input, .filters select, .filters button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
+}
+
+.filters button {
+  background-color: #ff7a00;
+  border: none;
+  cursor: pointer;
+}
+
+.transaction-table {
+  display: grid;
+  gap: 10px;
+}
+
+.transaction-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #1c1c1c;
+  font-weight: bold;
+  color: #ff7a00;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+  background-color: #444;
+}
+
+.status-label {
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.status-label.COMPLETED {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-label.REFUNDED {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.status-label.PENDING {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.status-label.CANCELLED {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.transaction-status {
+  padding: 5px 15px;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  width: 120px;
+}
+
+.transaction-status.PENDING {
+  color: #FFC107; /* Color de texto */
+  border-color: #FFC107; /* Color del borde */
+  background-color: transparent; /* Sin fondo */
+}
+
+.transaction-status.COMPLETED {
+  color: #4CAF50; /* Verde */
+  border-color: #4CAF50; /* Color del borde */
+  background-color: transparent; /* Sin fondo */
+}
+
+.transaction-status.REFUNDED {
+  color: #00BCD4; /* Azul claro */
+  border-color: #00BCD4;
+  background-color: transparent; /* Sin fondo */
+}
+
+.transaction-status.CANCELLED {
+  color: #F44336; /* Rojo */
+  border-color: #F44336;
+  background-color: transparent; /* Sin fondo */
+}
+
+/* Puedes agregar más estilos de estado según sea necesario */
+

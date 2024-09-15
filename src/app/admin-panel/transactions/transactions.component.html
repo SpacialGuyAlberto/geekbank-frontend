@@ -1,29 +1,32 @@
 <div class="transactions-container">
-  <h2>Transacciones</h2>
+  <h2 class="section-title">Transacciones</h2>
+
+  <!-- Filtros -->
   <div class="filters">
     <input type="date" placeholder="Desde" [(ngModel)]="startDate">
     <input type="date" placeholder="Hasta" [(ngModel)]="endDate">
     <button (click)="filterTransactions()">Filtrar</button>
     <button (click)="exportTransactions()">Exportar CSV</button>
   </div>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Cliente</th>
-      <th>Fecha</th>
-      <th>Monto</th>
-      <th>Estado</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let transaction of transactions">
-      <td>{{ transaction.id }}</td>
-      <td>{{ transaction.clientName }}</td>
-      <td>{{ transaction.date | date }}</td>
-      <td>{{ transaction.amount | currency }}</td>
-      <td>{{ transaction.status }}</td>
-    </tr>
-    </tbody>
-  </table>
+
+  <!-- Tabla de Transacciones -->
+  <div class="transaction-table">
+    <div class="transaction-header">
+      <span>ID de Transacción</span>
+      <span>Fecha</span>
+      <span>Descripción</span>
+      <span>Estado</span>
+      <span>Monto</span>
+    </div>
+
+    <div *ngFor="let transaction of transactions" class="transaction-row">
+      <span>{{ transaction.id }}</span>
+      <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
+      <span>{{ transaction.description }}</span>
+      <td>
+        <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
+      </td>
+      <span>{{ transaction.amount | currency }}</span>
+    </div>
+  </div>
 </div>

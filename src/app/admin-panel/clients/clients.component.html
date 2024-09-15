@@ -1,25 +1,51 @@
-<div class="clients-container">
-  <h2>Clientes</h2>
-  <table>
-    <thead>
-    <tr>
-      <th>ID</th>
-      <th>Nombre</th>
-      <th>Email</th>
-      <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let client of clients">
-      <td>{{ client.id }}</td>
-      <td>{{ client.name }}</td>
-      <td>{{ client.email }}</td>
-      <td>
-        <button (click)="editClient(client.id)">Editar</button>
-        <button (click)="deleteClient(client.id)">Eliminar</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <button (click)="addClient()">Añadir Cliente</button>
+<div class="clients-dashboard">
+  <!-- Sección de búsqueda y agregar nuevo cliente -->
+  <div class="search-add-container">
+    <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" class="search-bar" />
+    <button class="add-client-btn" (click)="addClient()">+ Nuevo Cliente</button>
+  </div>
+
+  <!-- Lista de clientes -->
+  <div class="clients-list-container">
+    <h2>Nuevos Clientes</h2>
+    <div class="client-cards-container">
+      <div *ngFor="let client of filteredClients" class="client-card" (click)="showTransactions(client)">
+        <div class="client-photo-container">
+          <img ngSrc="{{ client.photo }}" alt="{{ client.name }}" class="client-photo" />
+        </div>
+        <div class="client-info">
+          <h3 class="client-name">{{ client.name }}</h3>
+          <p>Última actividad: {{ client.lastActivity }} min</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
+  <div *ngIf="selectedClient" class="transactions-list">
+    <h2>Transacciones de {{ selectedClient.name }}</h2>
+    <table class="transactions-table">
+      <thead>
+      <tr>
+        <th>ID de la Transacción</th>
+        <th>Fecha</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Monto</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let transaction of selectedClient.transactions">
+        <td>{{ transaction.id }}</td>
+        <td>{{ transaction.date | date:'dd-MM-yyyy' }}</td>
+        <td>{{ transaction.description }}</td>
+        <td>
+          <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
+        </td>
+
+        <td>{{ transaction.amount | currency }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

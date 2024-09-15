@@ -32,6 +32,8 @@ export class AccountInfoComponent {
       orderUpdates: true
     }
   };
+
+  selectedSection: string = 'account-details';
   showSuccessMessage: boolean = false;
   isPasswordModalOpen: boolean = false;
 
