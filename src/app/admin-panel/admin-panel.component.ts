@@ -48,7 +48,7 @@ export class AdminPanelComponent implements AfterViewInit {
         labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'],
         datasets: [{
           label: 'Ventas mensuales',
-          data: [100, 150, 200, 120, 240, 350, 400, 450, 500],
+          data: [100, 150, 200, 120, 240, 350, 400, 450, 420],
           borderColor: 'rgba(75, 192, 192, 1)',
           fill: false
         }]
