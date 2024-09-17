@@ -1,10 +1,10 @@
 import {Component, Input} from '@angular/core';
-import {ClientsComponent} from "../../admin-panel/clients/clients.component";
-import {HighlightsConfigComponent} from "../../admin-panel/highlights-config/highlights-config.component";
+import {ClientsComponent} from "../admin-panel/clients/clients.component";
+import {HighlightsConfigComponent} from "../admin-panel/highlights-config/highlights-config.component";
 import {NgIf} from "@angular/common";
-import {ProductsComponent} from "../../admin-panel/products/products.component";
-import {StatisticsComponent} from "../../admin-panel/statistics/statistics.component";
-import {TransactionsComponent} from "../../admin-panel/transactions/transactions.component";
+import {ProductsComponent} from "../admin-panel/products/products.component";
+import {StatisticsComponent} from "../admin-panel/statistics/statistics.component";
+import {TransactionsComponent} from "../admin-panel/transactions/transactions.component";
 import {BackgroundAnimationService} from "../../background-animation.service"
 import {AccountInfoComponent} from "./account-info/account-info.component";
 import {OrdersComponent} from "./orders/orders.component";

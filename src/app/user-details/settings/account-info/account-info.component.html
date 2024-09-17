@@ -1,100 +1,35 @@
 <div class="account-settings-container">
-  <!-- Sidebar de navegación -->
-  <aside class="account-sidebar">
-    <nav class="account-nav">
-      <ul>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'account-details'"
-               [class.active]="selectedSection === 'account-details'">Account Details</div>
-        </li>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'addresses'"
-               [class.active]="selectedSection === 'addresses'">Addresses</div>
-        </li>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'connected-apps'"
-               [class.active]="selectedSection === 'connected-apps'">Connected Apps</div>
-        </li>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'change-password'"
-               [class.active]="selectedSection === 'change-password'">Change Password</div>
-        </li>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'login-history'"
-               [class.active]="selectedSection === 'login-history'">Login History</div>
-        </li>
-        <li>
-          <div class="nav-item" (click)="selectedSection = 'marketing-consent'"
-               [class.active]="selectedSection === 'marketing-consent'">Marketing Consent</div>
-        </li>
-      </ul>
-    </nav>
-  </aside>
 
-  <!-- Contenido de la cuenta -->
+
   <section class="account-content">
     <div class="main-box">
-      <!-- Detalles de la cuenta -->
-      <div *ngIf="selectedSection === 'account-details'">
-        <h2>Account Details</h2>
-        <form (ngSubmit)="updatePersonalInfo()">
+      <h2>Account Details</h2>
+      <form (ngSubmit)="updatePersonalInfo()">
+        <div class="field">
           <label for="name">Name:</label>
-          <input type="text" id="name" name="name" [(ngModel)]="user.name" [ngClass]="{'invalid': !validateName(user.name) && user.name}">
-          <small class="error" *ngIf="!validateName(user.name) && user.name">Invalid name</small>
-
-          <label for="email">Email:</label>
-          <input type="email" id="email" name="email" [(ngModel)]="user.email" [ngClass]="{'invalid': !validateEmail(user.email) && user.email}">
-          <small class="error" *ngIf="!validateEmail(user.email) && user.email">Invalid email</small>
-
-          <label for="phone">Phone:</label>
-          <input type="tel" id="phone" name="phone" [(ngModel)]="user.phone" [ngClass]="{'invalid': !validatePhone(user.phone) && user.phone}">
-          <small class="error" *ngIf="!validatePhone(user.phone) && user.phone">Invalid phone number</small>
-
-          <button type="submit">Save Changes</button>
-        </form>
-        <small class="success" *ngIf="showSuccessMessage">Your information has been updated!</small>
-      </div>
-
-      <!-- Otras secciones -->
-      <div *ngIf="selectedSection === 'addresses'">
-        <h2>Addresses</h2>
-        <div *ngFor="let address of user.addresses">
-          <p>{{ address.street }}, {{ address.city }}, {{ address.state }} {{ address.zip }}</p>
-          <button (click)="editAddress(address)">Edit</button>
-          <button (click)="deleteAddress(address)">Delete</button>
+          <span *ngIf="!editingName">{{ user.name }}</span>
+          <input *ngIf="editingName" type="text" id="name" [(ngModel)]="user.name" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('name')"></i>
         </div>
-        <button (click)="addNewAddress()">Add New Address</button>
-      </div>
 
-      <div *ngIf="selectedSection === 'connected-apps'">
-        <h2>Connected Apps</h2>
-        <p>Here you can manage connected applications.</p>
-      </div>
+        <div class="field">
+          <label for="email">Email:</label>
+          <span *ngIf="!editingEmail">{{ user.email }}</span>
+          <input *ngIf="editingEmail" type="email" id="email" [(ngModel)]="user.email" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('email')"></i>
+        </div>
 
-      <div *ngIf="selectedSection === 'change-password'">
-        <h2>Change Password</h2>
-        <app-change-password></app-change-password>
-      </div>
+        <div class="field">
+          <label for="phone">Phone:</label>
+          <span *ngIf="!editingPhone">{{ user.phone }}</span>
+          <input *ngIf="editingPhone" type="tel" id="phone" [(ngModel)]="user.phone" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('phone')"></i>
+        </div>
 
-      <div *ngIf="selectedSection === 'login-history'">
-        <h2>Login History</h2>
-        <p>Here you can review your login history.</p>
-      </div>
+        <!-- Otros campos aquí -->
 
-      <div *ngIf="selectedSection === 'marketing-consent'">
-        <h2>Marketing Consent</h2>
-        <form (ngSubmit)="updateCommunicationPreferences()">
-          <label>
-            <input type="checkbox" [(ngModel)]="user.preferences.promotions">
-            Receive Promotions and Offers
-          </label>
-          <label>
-            <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates">
-            Receive Order Updates
-          </label>
-          <button type="submit">Save Preferences</button>
-        </form>
-      </div>
+        <button type="submit">Update Account Info</button>
+      </form>
     </div>
   </section>
 </div>

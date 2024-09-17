@@ -18,9 +18,16 @@ import {CartComponent} from "./cart/cart.component";
 import { StoreModule } from '@ngrx/store';
 import { cartReducer } from './store/cart/cart.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {TransactionsComponent} from "./admin-panel/transactions/transactions.component";
+import {TransactionsComponent} from "./user-details/admin-panel/transactions/transactions.component";
+import {AccountInfoComponent} from "./user-details/settings/account-info/account-info.component";
+import {ChangePasswordComponent} from "./user-details/settings/account-info/change-password/change-password.component";
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {  provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
-
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -41,12 +48,23 @@ import {TransactionsComponent} from "./admin-panel/transactions/transactions.com
     CartComponent,
     TransactionsComponent,
     StoreModule.forRoot({cart: cartReducer}),
-    TransactionsComponent,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
+
     // StoreModule.forFeature('cart', cartReducer),
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [ HttpClientModule, HttpClient, TelegramListenerService
+  providers: [  HttpClient, TelegramListenerService, provideHttpClient(withInterceptorsFromDi())
   ],
   bootstrap: []
 })
 export class AppModule { }
+
+// export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+//   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// }

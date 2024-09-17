@@ -30,9 +30,7 @@
       <span>{{ transaction.id }}</span>
       <span>{{ transaction.timestamp | date:'dd-MM-yyyy' }}</span>
       <span>{{ transaction.description }}</span>
-      <td>
-        <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-      </td>
+      <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
       <span>{{ transaction.amount | currency }}</span>
     </div>
   </div>

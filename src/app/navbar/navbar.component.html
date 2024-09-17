@@ -4,15 +4,30 @@
   </div>
 
   <div class="navbar-links">
-    <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
-    <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">{{ 'LOGIN' | translate }}</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">{{ 'REGISTER' | translate }}</a>
+    <button *ngIf="!isLoggedIn()">{{ 'LOGIN' | translate }}</button>
     <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
     <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
+
     <li *ngIf="isLoggedIn()" class="cart-icon-container">
       <a routerLink="/cart">
         <mat-icon>shopping_cart</mat-icon>
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
     </li>
+
+    <!-- Dropdown de selección de idioma -->
+    <div class="language-dropdown">
+      <button class="language-btn" (click)="toggleLanguageMenu()">
+        <mat-icon>language</mat-icon>
+        {{ 'LANGUAGE' | translate }}
+      </button>
+      <ul class="language-menu" *ngIf="isLanguageMenuOpen">
+        <li (click)="useLanguage('en')" [class.active]="selectedLanguage === 'en'">English</li>
+        <li (click)="useLanguage('es')" [class.active]="selectedLanguage === 'es'">Español</li>
+        <li (click)="useLanguage('de')" [class.active]="selectedLanguage === 'de'">Deutsch</li>
+      </ul>
+    </div>
   </div>
 </nav>

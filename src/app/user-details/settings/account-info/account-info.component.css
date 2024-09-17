@@ -1,14 +1,28 @@
 /* Contenedor principal */
 .account-settings-container {
   display: flex;
+  flex-direction: column;
 }
 
 /* Sidebar de navegación */
 .account-sidebar {
-  width: 250px;
-  background-color: #141414;
+  width: 100%; /* 100% para pantallas pequeñas */
+  background-color: #00253d;
   padding: 20px;
   border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* Para pantallas grandes */
+@media (min-width: 768px) {
+  .account-settings-container {
+    flex-direction: row; /* Mostrar la barra lateral y el contenido en filas */
+  }
+
+  .account-sidebar {
+    width: 250px; /* Ajustar el ancho de la barra lateral */
+    margin-bottom: 0; /* Eliminar el margen inferior */
+  }
 }
 
 .account-nav ul {
@@ -17,86 +31,102 @@
 }
 
 .account-nav .nav-item {
-  padding: 15px;
   color: #fff;
-  cursor: pointer;
-  border-left: 4px solid transparent;
-  transition: all 0.3s ease;
   font-size: 1.1rem;
-}
-
-/* Efecto hover y seleccionado */
-.account-nav .nav-item:hover {
-  color: #00bcd4; /* Color en hover */
-  box-shadow: 0 0 2px #00bcd4; /* Brillo más sutil */
-}
-
-.account-nav .nav-item.active {
-  border-left-color: #ff5722; /* Color al seleccionar */
-  background-color: #1a1a1a;
-  color: #ff5722;
-  box-shadow: 0 0 2px #ff5722; /* Brillo más sutil */
+  padding: 10px 0;
 }
 
 /* Contenido de la cuenta */
 .account-content {
   flex-grow: 1;
   padding: 20px;
-  background-color: #0d0d0d; /* Fondo oscuro unificado */
-  color: #fff;
-  border-radius: 8px;
-  margin-left: 20px;
+  background-color: #f1f4f9;
+  margin-left: 0;
 }
 
-/* Caja principal con efecto de neón más suave */
 .main-box {
-  background-color: #1a1a1a;
+  background-color: #f1f1f1;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 87, 34, 0.6); /* Sutil efecto de neón */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
   color: #ff5722;
+  margin-bottom: 20px;
 }
 
-/* Estilos para el formulario */
-input[type="text"],
-input[type="email"],
-input[type="tel"] {
-  width: 100%;
+.field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.field label {
+  flex-basis: 150px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Para pantallas más pequeñas, hacer que las etiquetas y los campos de entrada se apilen */
+@media (max-width: 767px) {
+  .field {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .field label {
+    flex-basis: auto;
+    margin-bottom: 5px;
+  }
+
+  .field input {
+    width: 100%;
+  }
+}
+
+.field span,
+.field input {
+  flex-grow: 1;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
   border-radius: 4px;
-  background-color: #333;
-  color: #fff;
+  border: 1px solid #ccc;
+}
+
+.field input {
+  background-color: #fff;
+}
+
+.field i {
+  margin-left: 10px;
+  cursor: pointer;
+  color: #666;
+}
+
+.field i:hover {
+  color: #ff5722;
 }
 
 button {
   background-color: #ff5722;
-  border: none;
-  padding: 10px 15px;
   color: #fff;
-  cursor: pointer;
+  padding: 10px 20px;
+  border: none;
   border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #e64a19;
 }
 
-/* Mensajes de éxito y error */
-.error {
-  color: #ff6b6b;
-  font-size: 0.875rem;
+/* Estilo del gradiente en la selección de la sidebar */
+.sidebar .nav-item.active {
+  background: linear-gradient(90deg, #ff5722, #ff9100);
+  color: #fff;
 }
 
-.success {
-  color: #00bcd4;
-  font-size: 0.875rem;
-}
-
-.invalid {
-  border-color: #ff6b6b;
+.sidebar .nav-item.active:hover {
+  background: linear-gradient(90deg, #ff9100, #ff5722);
 }

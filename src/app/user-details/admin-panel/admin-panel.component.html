@@ -1,34 +1,39 @@
 <div class="admin-dashboard">
+  <!-- Botón de menú hamburguesa solo visible en móviles -->
+  <button class="hamburger-btn" (click)="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
   <!-- Sidebar de navegación -->
-  <nav class="sidebar">
+  <nav class="sidebar" [class.is-collapsed]="isCollapsed">
     <ul>
       <li>
-        <a  (click)="selectSection('general')">
+        <a (click)="selectSection('general')" [class.active]="selectedSection === 'general'">
           <i class="fas fa-tachometer-alt"></i> Vista General
         </a>
       </li>
       <li>
-        <a  (click)="selectSection('clients')">
+        <a (click)="selectSection('clients')" [class.active]="selectedSection === 'clients'">
           <i class="fas fa-users"></i> Clientes
         </a>
       </li>
       <li>
-        <a href="#" (click)="selectSection('products')">
+        <a (click)="selectSection('products')" [class.active]="selectedSection === 'products'">
           <i class="fas fa-box"></i> Productos
         </a>
       </li>
       <li>
-        <a  (click)="selectSection('transactions')">
+        <a (click)="selectSection('transactions')" [class.active]="selectedSection === 'transactions'">
           <i class="fas fa-money-check-alt"></i> Transacciones
         </a>
       </li>
       <li>
-        <a (click)="selectSection('statistics')">
+        <a (click)="selectSection('statistics')" [class.active]="selectedSection === 'statistics'">
           <i class="fas fa-chart-line"></i> Estadísticas
         </a>
       </li>
       <li>
-        <a href="#" (click)="selectSection('highlights')">
+        <a (click)="selectSection('highlights')" [class.active]="selectedSection === 'highlights'">
           <i class="fas fa-lightbulb"></i> Highlights
         </a>
       </li>
@@ -57,7 +62,6 @@
 
     <!-- Cajas de métricas y gráficos solo visibles en la vista general -->
     <div *ngIf="selectedSection === 'general'">
-      <!-- Cajas de métricas clave -->
       <div class="metrics-container">
         <div class="metric-box locations">
           <i class="fas fa-shopping-cart"></i>

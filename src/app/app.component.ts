@@ -9,6 +9,7 @@ import {KinguinGiftCard} from "./models/KinguinGiftCard";
 import {KinguinGiftCardsComponent} from "./kinguin-gift-cards/kinguin-gift-cards.component";
 import {NgModel} from "@angular/forms";
 import {TelegramListenerService} from "./telegram-listener.service";
+import {TranslateModule, TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -16,8 +17,8 @@ import {TelegramListenerService} from "./telegram-listener.service";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule],
-  providers: [ HttpClientModule, HttpClient
+  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule, HttpClientModule, TranslateModule],
+  providers: [ HttpClient
 
 ]
 })
@@ -30,9 +31,19 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
+  constructor(private translate: TranslateService) {
+    // Establece el idioma predeterminado
+    this.translate.setDefaultLang('en');
+  }
+
   ngOnInit(): void {
     // The service will start listening as soon as the app initializes
     console.log('AppComponent initialized. Telegram listener service is now active.');
   }
+
+  // // Método para cambiar el idioma
+  // changeLanguage(lang: string) {
+  //   this.translate.use(lang);
+  // }
 
 }

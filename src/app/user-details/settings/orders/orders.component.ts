@@ -31,7 +31,7 @@ export class OrdersComponent implements OnInit {
     email: '',
     name: '',
     phoneNumber: '',
-    id: 0,
+    id: parseInt(<string>sessionStorage.getItem("userId")),
     role: ''
   };
 
@@ -45,8 +45,8 @@ export class OrdersComponent implements OnInit {
   constructor(private transactionService: TransactionsService) { }
 
   ngOnInit(): void {
-    this.loadRecentOrders();
-    this.loadOrderHistory();
+    // this.loadRecentOrders();
+    // this.loadOrderHistory();
     this.loadTransactions();
   }
 
@@ -83,24 +83,14 @@ export class OrdersComponent implements OnInit {
   }
 
   loadTransactions(): void {
-    if (this.user.role == 'ADMIN'){
-      this.transactionService.getTransactions().subscribe(
-        (data: Transaction[]) => {
-          this.transactions = data;
-        },
-        (error) => {
-          console.error('Error fetching transactions', error);
-        }
-      );
-    }  else {
+
       this.transactionService.getTransactionsById(this.user.id).subscribe(
         (data: Transaction[]) => {
           this.transactions = data;
         }
       )
-    }
-  }
 
+  }
 
   filterOrders() {
     this.recentOrders = this.recentOrders.filter(order => {

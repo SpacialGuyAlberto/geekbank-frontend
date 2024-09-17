@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { SearchBarComponent } from "../../search-bar/search-bar.component";
-import { KinguinGiftCard } from "../../models/KinguinGiftCard";
+import {SearchBarComponent} from "../../../search-bar/search-bar.component";
+
+import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
 import { CurrencyPipe, NgForOf } from "@angular/common";
-import {HighlightService} from "../../highlights.service";
+import {HighlightService} from "../../../highlights.service";
 import {OnInit} from "@angular/core";
-import {HighlightItemWithGiftcard} from "../../models/HighlightItem";
+import {HighlightItemWithGiftcard} from "../../../models/HighlightItem";
 
 @Component({
   selector: 'app-highlights-config',

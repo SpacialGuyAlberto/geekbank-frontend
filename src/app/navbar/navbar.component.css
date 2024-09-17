@@ -1,88 +1,108 @@
-/* Reset some basic styles */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
-  background-color: #021526; /* Fondo oscuro */
-  color: #88D66C; /* Texto verde claro */
-}
-
-/* Navbar container */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #021526; /* Fondo oscuro retro */
-  padding: 1rem 2rem;
-  border-bottom: 2px solid #88D66C; /* Borde inferior verde claro */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
+  background-color: #00253d;
+  padding: 10px 20px;
 }
 
-/* Navbar brand */
 .navbar-brand {
-  font-size: 1.5rem;
-  color: #88D66C; /* Texto verde claro */
-  text-decoration: none;
+  font-size: 24px;
   font-weight: bold;
+  color: white;
+  cursor: pointer;
 }
 
-/* Navbar links */
 .navbar-links {
   display: flex;
   align-items: center;
-  margin-right: 24rem;
 }
 
-/* Individual nav link */
 .nav-link {
-  color: #88D66C; /* Texto verde claro */
+  color: white;
+  margin-right: 15px;
   text-decoration: none;
-  margin-left: 1rem;
-  font-size: 1.2rem;
 }
 
-/* Iconos retro para links */
-.nav-link-icon {
-  width: 24px;
-  height: 24px;
-  display: inline-block;
-  margin-right: 8px;
-  filter: invert(75%); /* Aplica un filtro para adaptar el color del ícono al diseño */
-}
-
-/* App name styling */
-.app-name {
-  color: #88D66C; /* Texto verde claro */
-  text-decoration: none;
+.clickable-icon {
+  font-size: 24px;
+  color: white;
   cursor: pointer;
-  font-size: 1.5rem;
+  margin-right: 15px;
 }
 
-/* Cart icon styling */
-li {
-  list-style: none;
-}
-
-/* Cart icon container */
 .cart-icon-container {
   position: relative;
 }
 
 .cart-count {
   position: absolute;
-  top: -10px;
-  right: -10px;
-  background-color: #ED5AB3; /* Fondo del contador en rosa neón */
-  color: white;
+  top: 0;
+  right: 0;
+  background-color: red;
   border-radius: 50%;
-  padding: 2px 6px;
+  color: white;
+  padding: 0 5px;
   font-size: 12px;
 }
 
-/* Material icons styling */
-.mat-icon {
-  display: inline-block;
-  width: 24px;
-  height: 24px;
-  margin-left: 1rem;
+.language-dropdown {
+  position: relative;
+  z-index: 2;
+}
+
+.language-btn {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  padding: 5px 10px;
+
+}
+
+.language-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
+  list-style: none;
+  padding: 10px 0;
+  border-radius: 4px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 2;
+}
+
+.language-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2/* Permite posicionar elementos hijos como el indicador de hover */
+}
+
+/* Estilos de hover: cambia el fondo, el color del texto y añade una sombra */
+.language-menu li:hover {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); /* Sombra en el hover */
+  transform: translateY(-2px); /* Un ligero efecto de elevación */
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+/* Indicador de hover: línea sutil debajo del elemento */
+.language-menu li::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: white;
+  transition: width 0.3s;
+}
+
+.language-menu li:hover::after {
+  width: 100%;
 }

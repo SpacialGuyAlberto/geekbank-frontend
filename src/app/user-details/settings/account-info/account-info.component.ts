@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {PasswordModalComponent} from "./password-modal-component/password-modal-component.component";
 
 @Component({
@@ -14,6 +14,7 @@ import {PasswordModalComponent} from "./password-modal-component/password-modal-
     NgForOf,
     PasswordModalComponent,
     NgIf,
+    DatePipe,
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
@@ -34,8 +35,14 @@ export class AccountInfoComponent {
   };
 
   selectedSection: string = 'account-details';
+  isAccountInfoOpen: boolean = false;
   showSuccessMessage: boolean = false;
   isPasswordModalOpen: boolean = false;
+
+  editingName = false;
+  editingEmail = false;
+  editingPhone = false;
+
 
   private _address: any;
   private _payment: any;
@@ -49,6 +56,16 @@ export class AccountInfoComponent {
       console.log('Personal information is valid and updated.');
     } else {
       console.log('Validation failed.');
+    }
+  }
+
+  toggleEdit(field: string) {
+    if (field === 'name') {
+      this.editingName = !this.editingName;
+    } else if (field === 'email') {
+      this.editingEmail = !this.editingEmail;
+    } else if (field === 'phone') {
+      this.editingPhone = !this.editingPhone;
     }
   }
 
@@ -118,4 +135,14 @@ export class AccountInfoComponent {
   updateCommunicationPreferences() {
 
   }
+
+  toggleAccountInfoSubsections() {
+    this.isAccountInfoOpen = !this.isAccountInfoOpen;
+  }
+
+  selectSection(section: string) {
+    this.selectedSection = section;
+  }
+
+
 }

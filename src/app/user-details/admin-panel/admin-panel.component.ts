@@ -6,9 +6,10 @@ import { ProductsComponent } from './products/products.component';
 import { HighlightsConfigComponent } from './highlights-config/highlights-config.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { BackgroundAnimationService } from "../background-animation.service";
+// import { BackgroundAnimationService } from "../background-animation.service";
 // @ts-ignore
 import { Chart } from 'chart.js';
+import {BackgroundAnimationService} from "../../background-animation.service";
 
 @Component({
   selector: 'app-admin-panel',
@@ -29,7 +30,7 @@ import { Chart } from 'chart.js';
 })
 export class AdminPanelComponent implements AfterViewInit {
   selectedSection: string = 'general'; // Cambia a 'general' para la vista inicial
-
+  isCollapsed = false;
   constructor(private animation: BackgroundAnimationService) {}
 
   ngOnInit() {
@@ -38,6 +39,14 @@ export class AdminPanelComponent implements AfterViewInit {
 
   selectSection(section: string) {
     this.selectedSection = section;
+    if (window.innerWidth <= 768) {
+      // Si está en móvil, colapsa el menú automáticamente al seleccionar una sección
+      this.isCollapsed = false;
+    }
+  }
+
+  toggleSidebar() {
+    this.isCollapsed = !this.isCollapsed;
   }
 
   createSalesChart() {
@@ -74,4 +83,6 @@ export class AdminPanelComponent implements AfterViewInit {
       }
     });
   }
+
+
 }
