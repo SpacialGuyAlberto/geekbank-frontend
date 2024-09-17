@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {AbstractControl} from "@angular/forms";
 import {Observable, tap} from "rxjs";
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
+import {Transaction} from "./transactions.service";
+import {User} from "./models/User";
 
 @Injectable({
   providedIn: 'root'
@@ -46,4 +48,14 @@ export class UserService {
     return typeof window !== 'undefined';
   }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}`);
+  }
+
 }
+
+
+
+// getTransactions(): Observable<Transaction[]> {
+//   return this.http.get<Transaction[]>(`${this.apiUrl}`);
+// }

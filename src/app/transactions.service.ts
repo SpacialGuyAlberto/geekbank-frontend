@@ -27,7 +27,7 @@ export class TransactionsService {
     return this.http.get<Transaction[]>(`${this.apiUrl}`);
   }
 
-  getTransactionsById(userId: number): Observable<Transaction[]> {
+  getTransactionsById(userId: number | undefined): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.apiUrl}/${userId}`);
   }
 

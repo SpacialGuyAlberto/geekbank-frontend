@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe} from "@angular/common";
+import {User} from "../../../models/User";
+import {UserService} from "../../../user.service";
+import {Transaction, TransactionsService} from "../../../transactions.service";
 
 @Component({
   selector: 'app-clients',
@@ -21,50 +24,83 @@ import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperC
 export class ClientsComponent {
   searchQuery: string = '';
   selectedClient: any = null;
+  users: User[] = [];
+  transactions: Transaction[] = [];
+  photo: string = "C:\\Users\\LuisA\\Documents\\GeekCoin\\geekbank-frontend\\src\\assets\\blank-profile-picture-973460_1280.png";
 
-  clients = [
-    {
-      id: 1,
-      name: 'Jack',
-      lastActivity: 54,
-      photo: 'https://via.placeholder.com/80',
-      transactions: [
-          { id: 1, date: new Date(), amount: 150.50, status: 'COMPLETED', description: 'Compra de productos' },
-        { id: 2, date: new Date(), amount: 120.00, status: 'PENDING', description: 'Pago de servicio' }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Amir',
-      lastActivity: 180,
-      photo: 'https://via.placeholder.com/80',
-      transactions: [
-        { id: 3, date: new Date(), amount: 90.00, status: 'PENDING', description: 'Compra de alimentos' },
-        { id: 4, date: new Date(), amount: 40.00, status: 'REFUNDED', description: 'Reembolso por devolución' }
-      ]
-    },
-    {
-      id: 3,
-      name: 'Ember',
-      lastActivity: 360,
-      photo: 'https://via.placeholder.com/80',
-      transactions: [
-        { id: 5, date: new Date(), amount: 200.00, status: 'REFUNDED', description: 'Reembolso de productos defectuosos' },
-        { id: 6, date: new Date(), amount: 75.00, status: 'REFUNDED', description: 'Compra de servicios' }
-      ]
-    }
-  ];
+  currentPage: number = 1;
+  itemsPerPage: number = 5;
+  totalPages: number = 0;
+  visibleTransactions: Transaction[] = [];
 
-  get filteredClients() {
-    return this.clients.filter(client => client.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  constructor(private userService: UserService, private transactionService: TransactionsService){}
+
+  ngOnInit() {
+    this.fetchAllUsers()
   }
 
-  showTransactions(client: any) {
+  fetchAllUsers(){
+    this.userService.getUsers()
+    .subscribe(data => {
+      this.users = data;
+      console.log(data);
+    })
+  }
+
+  fetchTransactionsForUser(userId: number | undefined){
+    this.transactionService.getTransactionsById(userId).subscribe(data => {
+      this.transactions = data;
+      console.log(data);
+    })
+    console.log('Fetching transactions')
+  }
+
+  fetchTransactionsPerPage(userId: number | undefined){
+    this.transactionService.getTransactionsById(userId).subscribe(data => {
+      this.transactions = data;
+      this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
+      this.updateVisibleTransactions();
+    })
+    console.log('Fetching transactions')
+  }
+
+  updateVisibleTransactions(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.visibleTransactions = this.transactions.slice(startIndex, endIndex);
+  }
+
+
+  get filteredUsers() {
+    return this.users.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  }
+
+  showTransactions(client: User) {
     this.selectedClient = client;
+    //this.fetchTransactionsForUser(client.id)
+    this.fetchTransactionsPerPage(client.id)
   }
 
   addClient() {
-    // Lógica para agregar un nuevo cliente
     console.log('Agregar nuevo cliente');
+  }
+
+  goToPage(page: number): void {
+    this.currentPage = page;
+    this.updateVisibleTransactions();
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updateVisibleTransactions();
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updateVisibleTransactions();
+    }
   }
 }

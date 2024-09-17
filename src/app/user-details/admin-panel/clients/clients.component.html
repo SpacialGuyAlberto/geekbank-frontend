@@ -7,45 +7,60 @@
 
   <!-- Lista de clientes -->
   <div class="clients-list-container">
-    <h2>Nuevos Clientes</h2>
     <div class="client-cards-container">
-      <div *ngFor="let client of filteredClients" class="client-card" (click)="showTransactions(client)">
+      <div *ngFor="let client of filteredUsers" class="client-card" (click)="showTransactions(client)">
         <div class="client-photo-container">
-          <img ngSrc="{{ client.photo }}" alt="{{ client.name }}" class="client-photo" />
+          <!-- Si el cliente no tiene foto, usa el avatar por defecto -->
+          <img [src]="'assets/blank-profile-picture-973460_1280.png'" alt="{{ client.name }}" class="client-photo" />
         </div>
         <div class="client-info">
           <h3 class="client-name">{{ client.name }}</h3>
-          <p>Última actividad: {{ client.lastActivity }} min</p>
+          <p>Última actividad: {{ client.email }} min</p>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
-  <div *ngIf="selectedClient" class="transactions-list">
-    <h2>Transacciones de {{ selectedClient.name }}</h2>
-    <table class="transactions-table">
-      <thead>
-      <tr>
-        <th>ID de la Transacción</th>
-        <th>Fecha</th>
-        <th>Descripción</th>
-        <th>Estado</th>
-        <th>Monto</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let transaction of selectedClient.transactions">
-        <td>{{ transaction.id }}</td>
-        <td>{{ transaction.date | date:'dd-MM-yyyy' }}</td>
-        <td>{{ transaction.description }}</td>
-        <td>
-          <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-        </td>
 
-        <td>{{ transaction.amount | currency }}</td>
-      </tr>
-      </tbody>
-    </table>
+  <div class="transactions-container">
+    <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
+    <div *ngIf="selectedClient" class="transactions-list">
+      <h2>Transacciones de {{ selectedClient.name }}</h2>
+
+      <!-- Si no hay transacciones, muestra el mensaje -->
+      <div *ngIf="!visibleTransactions.length" class="no-transactions">
+        No transactions for this customer.
+      </div>
+
+      <!-- Tabla de transacciones -->
+      <div *ngIf="visibleTransactions.length" class="transaction-table">
+        <div class="transaction-header">
+          <span>ID de Transacción</span>
+          <span>Fecha</span>
+          <span>Descripción</span>
+          <span>Estado</span>
+          <span>Monto</span>
+        </div>
+
+        <div *ngFor="let transaction of visibleTransactions" class="transaction-row">
+          <span>{{ transaction.id }}</span>
+          <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
+          <span>{{ transaction.description }}</span>
+          <td>
+            <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
+          </td>
+          <span>{{ transaction.amount | currency }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination" *ngIf="totalPages > 1">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)" [class.active]="currentPage === (i + 1)">
+      {{ i + 1 }}
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
   </div>
 </div>
+

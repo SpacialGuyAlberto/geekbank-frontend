@@ -1,112 +1,134 @@
 .clients-dashboard {
   padding: 20px;
-  background-color: #f9f9f9; /* Fondo claro */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra todo el contenido horizontalmente */
 }
 
 .search-add-container {
   display: flex;
   justify-content: space-between;
+  width: 100%;
+  max-width: 800px; /* Limita el ancho máximo del contenedor */
   margin-bottom: 20px;
 }
 
 .search-bar {
-  width: 70%;
   padding: 10px;
   border-radius: 5px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 300px; /* Ajusta el ancho máximo */
 }
 
 .add-client-btn {
   padding: 10px 20px;
   background-color: #28a745;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-weight: bold;
+}
+
+.add-client-btn:hover {
+  background-color: #218838;
 }
 
 .clients-list-container {
-  margin-top: 20px;
+  margin-bottom: 40px;
+  width: 100%;
+  max-width: 1200px; /* Limita el ancho máximo */
+  display: flex;
+  justify-content: center; /* Centra los elementos */
 }
 
 .client-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 20px;
+  justify-content: center; /* Centra los elementos flexibles */
 }
 
 .client-card {
-  display: flex;
   background-color: #fff;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 200px;
   transition: transform 0.3s ease;
-  border: 1px solid #ddd; /* Borde claro */
 }
 
 .client-card:hover {
-  transform: translateY(-5px);
-  background-color: #f1f1f1;
+  transform: scale(1.05);
 }
 
 .client-photo-container {
-  flex-shrink: 0;
   width: 80px;
   height: 80px;
+  margin-bottom: 10px;
 }
 
 .client-photo {
   width: 100%;
   height: 100%;
-  border-radius: 50%;
   object-fit: cover;
-}
-
-.client-info {
-  margin-left: 15px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  border-radius: 50%;
 }
 
 .client-name {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 5px;
-  cursor: pointer;
+  font-size: 1.1rem;
   color: #007bff;
+  margin-bottom: 5px;
 }
 
-.client-name:hover {
-  text-decoration: underline;
+.client-info p {
+  font-size: 0.9rem;
+  color: #666;
 }
 
-.transactions-list {
-  margin-top: 30px;
-}
+/* Sección de transacciones */
 
-.transactions-table {
+.transactions-container {
   width: 100%;
-  border-collapse: collapse;
+  max-width: 1000px; /* Limita el ancho máximo */
+  margin: 20px auto; /* Centra el contenedor */
+  padding: 20px;
+  background-color: #2d2d2d;
+  border-radius: 10px;
+  color: #ffffff;
+  max-height: 500px; /* Limita la altura máxima del contenedor */
+  overflow-y: auto; /* Habilita el desplazamiento vertical */
 }
 
-.transactions-table th,
-.transactions-table td {
+.transaction-table {
+  display: grid;
+  gap: 10px;
+}
+
+.transaction-header, .transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  background-color: #333;
 }
 
-.transactions-table th {
-  background-color: #e9ecef;
+.transaction-header {
+  background-color: #1c1c1c;
   font-weight: bold;
-  color: #333;
+  color: #ff7a00;
 }
 
-.transactions-table td {
-  background-color: #fff;
+.transaction-row {
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.transaction-row:hover {
+  background-color: #444;
 }
 
 .transaction-status {
@@ -118,26 +140,76 @@
   font-weight: bold;
   display: inline-block;
   width: 120px;
-  background-color: transparent; /* Asegura que el fondo sea transparente */
+}
+
+.no-transactions {
+  text-align: center;
+  color: #ff7a00;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button:hover {
+  background-color: #0056b3;
+}
+
+.pagination button.active {
+  background-color: #ff7a00;
+  color: #fff;
 }
 
 .transaction-status.PENDING {
-  color: #ffc107 !important; /* Amarillo */
-  border-color: #ffc107 !important;
+  color: #FFC107;
+  border-color: #FFC107;
+  background-color: transparent;
 }
 
 .transaction-status.COMPLETED {
-  color: #28a745 !important; /* Verde */
-  border-color: #28a745 !important;
+  color: #4CAF50;
+  border-color: #4CAF50;
+  background-color: transparent;
 }
 
 .transaction-status.REFUNDED {
-  color: #17a2b8 !important; /* Azul claro */
-  border-color: #17a2b8 !important;
+  color: #00BCD4;
+  border-color: #00BCD4;
+  background-color: transparent;
 }
 
 .transaction-status.CANCELLED {
-  color: #dc3545 !important; /* Rojo */
-  border-color: #dc3545 !important;
+  color: #F44336;
+  border-color: #F44336;
+  background-color: transparent;
 }
 
+/* Para pantallas pequeñas */
+@media (max-width: 768px) {
+  .transaction-header, .transaction-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .transactions-container {
+    max-height: 300px;
+  }
+
+  .client-cards-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
