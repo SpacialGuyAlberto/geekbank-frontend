@@ -1,7 +1,93 @@
-<!-- src/app/user-details/user-details.component.html -->
-<div *ngIf="user" class="user-details-container">
-  <h2>{{ user.name }}</h2>
-  <p>Email: {{ user.email }}</p>
-  <p>Role: {{ user.role }}</p>
-  <p>Status: {{ user.isEnabled ? 'Active' : 'Inactive' }}</p>
+<div class="user-dashboard">
+
+  <!-- Botón de menú hamburguesa solo visible en pantallas pequeñas -->
+  <button class="hamburger-btn" (click)="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar de navegación -->
+  <nav class="sidebar" [class.is-collapsed]="isCollapsed">
+    <ul>
+      <li>
+        <!-- Cuando se hace clic en Account Info, se muestran las subsecciones -->
+        <div class="nav-item" (click)="toggleAccountInfoSubsections()" [class.active]="isAccountInfoOpen || selectedSection === 'account-info'">
+          <i class="fas fa-user"></i> Account Info
+        </div>
+        <!-- Sub-secciones que se despliegan debajo de Account Info -->
+        <ul *ngIf="isAccountInfoOpen" class="sub-sections">
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('account-details')" [class.active]="selectedSection === 'account-details'">
+              Account Details
+            </div>
+          </li>
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('addresses')" [class.active]="selectedSection === 'addresses'">
+              Addresses
+            </div>
+          </li>
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('connected-apps')" [class.active]="selectedSection === 'connected-apps'">
+              Connected Apps
+            </div>
+          </li>
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('change-password')" [class.active]="selectedSection === 'change-password'">
+              Change Password
+            </div>
+          </li>
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('login-history')" [class.active]="selectedSection === 'login-history'">
+              Login History
+            </div>
+          </li>
+          <li>
+            <div class="sub-nav-item" (click)="selectSection('marketing-consent')" [class.active]="selectedSection === 'marketing-consent'">
+              Marketing Consent
+            </div>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a (click)="selectSection('orders')">
+          <i class="fas fa-box"></i> Orders
+        </a>
+      </li>
+      <li>
+        <a (click)="selectSection('payment-methods')">
+          <i class="fas fa-credit-card"></i> Payment Methods
+        </a>
+      </li>
+
+      <!-- Link al Admin Panel solo si es admin -->
+      <li *ngIf="user && user.role == 'ADMIN'">
+        <a (click)="navigateToAdminPanel()">
+          <i class="fas fa-tools"></i> Admin Panel
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="main-content">
+    <!-- Sección predeterminada: mostrar nombre del usuario y su saldo -->
+    <div *ngIf="selectedSection === 'account-info'">
+      <h2>{{ user.name }}</h2>
+      <p>Saldo: {{ user.balance }}</p>
+    </div>
+
+    <!-- Secciones dinámicas de Account Info -->
+    <div *ngIf="selectedSection === 'account-details'">
+      <app-account-info ></app-account-info>
+    </div>
+
+    <div *ngIf="selectedSection === 'change-password'">
+      <app-change-password></app-change-password>
+    </div>
+
+    <div *ngIf="selectedSection === 'orders'">
+      <app-orders [user]="user"></app-orders>
+    </div>
+    <div *ngIf="selectedSection === 'payment-methods'">
+      <app-payment-methods></app-payment-methods>
+    </div>
+  </main>
 </div>

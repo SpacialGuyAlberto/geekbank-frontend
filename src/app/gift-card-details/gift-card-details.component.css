@@ -1,86 +1,177 @@
-/* src/app/gift-card-details/gift-card-details.component.css */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19;
+}
+
+.graph-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+#graphCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
 
 .gift-card-details-container {
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 20px;
+  align-items: stretch;
+  gap: 16px;
+  margin: 20px auto;
+  max-width: 80%;
+  background-color: var(--primary-color); /* Fondo principal */
+  color: #88D66C;
+  z-index: 2;
+}
+
+.gift-card-image-container {
+  flex: 1;
+  max-width: 50%;
+  background-color: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Bordes verdes claros */
+  border-radius: 2px; /* Bordes cuadrados */
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
 }
 
 .gift-card-image {
-  width: 40%;
-  max-width: 400px;
+  width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 8px;
-  margin-right: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.gift-card-content {
-  width: 40%;
-  text-align: center;
+.gift-card-info-card {
+  flex: 0.2;
+  background-color: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Bordes verdes claros */
+  border-radius: 2px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
 }
 
 .gift-card-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
+  color: var(--text-color); /* Color del texto claro */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.gift-card-region {
+  display: flex;
+  align-items: center;
+  color: var(--text-color); /* Color del texto claro */
+  font-weight: bold;
+}
+
+.check-icon {
+  color: #88D66C; /* Icono en verde claro */
+  margin-right: 8px; /* Espacio entre el icono y el texto */
+}
+
+.gift-card-title, .gift-card-price {
+  margin-bottom: 5px; /* Reduce el espacio debajo del título y el precio */
+}
+
+.gift-card-price {
+  font-size: 3rem;
+  color: var(--highlight-color); /* Color azul retro */
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.add-info-content {
+  padding: 20px;
+  text-align: center;
+  background-color: #021526; /* Fondo oscuro retro */
+}
+
+.add-info-title {
+  font-size: 1.5rem;
+  color: var(--text-color); /* Color del texto claro */
+  margin: 10px 0 5px;
+}
+
+.add-info-price {
+  font-size: 1.25rem;
+  color: var(--highlight-color); /* Color azul retro */
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.gift-card-description {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 20px;
-}
+@media (max-width: 768px) {
+  .highlight-card-image {
+    height: 200px; /* Ajusta la altura de la imagen en pantallas más pequeñas */
+  }
 
-.gift-card-price {
-  font-size: 2rem;
-  color: #ff6b6b;
-  font-weight: bold;
-  margin-bottom: 20px;
+  .add-info-title {
+    font-size: 1.2rem;
+  }
+
+  .add-info-price {
+    font-size: 1rem;
+  }
 }
 
 .button-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
+  width: 70%;
+  margin-bottom: 4.7rem;
 }
 
-.button-container button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
+button {
+  padding: 15px;
+  border: 2px solid #88D66C; /* Borde verde claro */
+  border-radius: 2px; /* Bordes cuadrados */
   font-size: 1rem;
   cursor: pointer;
-  transition: background 0.3s;
   width: 100%;
+  flex: 1;
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
 }
 
-.button-container button.add-to-cart {
-  background-color: #ffa500;
-  color: #fff;
+.add-to-cart {
+  background-color: #88D66C; /* Fondo verde claro */
+  color: 0C2D57; /* Texto oscuro */
 }
 
-.button-container button.add-to-cart:hover {
-  background-color: #e69500;
+.add-to-cart:hover {
+  background-color: #76b35a; /* Cambio a verde más oscuro en hover */
 }
 
-.button-container button.buy-now {
-  background-color: #ff6b6b;
-  color: #fff;
+.buy-now {
+  background-color: #1261A0; /* Fondo azul retro */
+  color: var(--primary-color); /* Texto oscuro */
 }
 
-.button-container button.buy-now:hover {
-  background-color: #e65b5b;
+.buy-now:hover {
+  background-color: #104f87; /* Cambio a azul más oscuro en hover */
 }
 
-.button-container button.back {
-  background-color: #007bff;
-  color: #fff;
+.back {
+  background-color: #1D4B8F; /* Fondo azul acento */
+  color: var(--primary-color); /* Texto oscuro */
 }
 
-.button-container button.back:hover {
-  background-color: #0069d9;
+.back:hover {
+  background-color: #163b70; /* Cambio a azul acento más oscuro en hover */
 }

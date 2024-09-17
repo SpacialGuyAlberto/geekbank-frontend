@@ -10,6 +10,8 @@ import {GiftCardDetailsComponent} from "./gift-card-details/gift-card-details.co
 import {UserDetailsComponent} from "./user-details/user-details.component";
 import {CartComponent} from "./cart/cart.component";
 import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
+import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.component";
+
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
@@ -20,5 +22,6 @@ export const routes: Routes = [
   { path: '', redirectTo: '/register', pathMatch: 'full' },
   { path: 'user-details', component: UserDetailsComponent },
   { path: 'cart', component: CartComponent },
-  { path:'tigo-payment', component: TigoPaymentComponent }
+  { path:'tigo-payment', component: TigoPaymentComponent },
+  { path: 'admin-panel', component: AdminPanelComponent },
 ];

@@ -1,24 +1,73 @@
-.inicio-container {
-  text-align: center;
-  margin-top: 50px;
+:host {
+  background-color: #04060F; /* Fondo principal gris oscuro */
+  display: block;
+  min-height: 100vh;
+  height: auto;
+  width: 100%;
+  padding: 20px;
+  color: #009FBD;
+  position: relative; /* Añadir si no está */
+  z-index: 0; /* Debe ser inferior al z-index del canvas */
 }
 
-.inicio-container h2 {
-  color: #4CAF50;
+/* Estilos para los títulos y textos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Press Start 2P', cursive; /* Estilo de fuente retro */
+  color: #FB773C; /* Naranja retro para títulos */
+  text-transform: uppercase; /* Convierte los textos a mayúsculas */
 }
 
-.inicio-container p {
-  font-size: 18px;
+p, a, span, label {
+  font-family: 'VT323', monospace; /* Fuente retro para textos generales */
+  color: #EB3678; /* Color rosado brillante */
 }
 
-.gift-cards-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  margin-top: 20px;
+/* Ajustes para botones */
+button {
+  background-color: #4F1787; /* Fondo púrpura oscuro para los botones */
+  color: #EB3678; /* Texto de color rosado brillante */
+  border: 2px solid #180161; /* Bordes oscuros */
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-family: 'Press Start 2P', cursive;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.gift-card {
-  flex: 1;
-  margin: 0 10px;
+button:hover {
+  background-color: #180161; /* Cambio a un púrpura más oscuro en hover */
+}
+
+/* Ajustes para entradas de texto y formularios */
+input[type="text"], select, textarea {
+  background-color: #180161; /* Fondo oscuro para inputs */
+  border: 2px solid #4F1787; /* Borde púrpura oscuro */
+  color: #EB3678; /* Texto rosado */
+  font-family: 'VT323', monospace;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input[type="text"]::placeholder, textarea::placeholder {
+  color: #FB773C; /* Color del placeholder */
+}
+
+/* Estilos adicionales */
+.container {
+  background-color: #180161; /* Contenedor principal en púrpura oscuro */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+}
+
+.pagination button {
+  background-color: #4F1787;
+  color: #EB3678;
+  border: 2px solid #180161;
+}
+
+.pagination button.active {
+  background-color: #FB773C;
+  color: #180161;
 }

@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TigoPaymentProtocollService } from './tigo-payment-protocoll.service';
+import { TigoService} from './tigo.service';
 
 describe('TigoPaymentProtocollService', () => {
-  let service: TigoPaymentProtocollService;
+  let service: TigoService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TigoPaymentProtocollService);
+    service = TestBed.inject(TigoService);
   });
 
   it('should be created', () => {

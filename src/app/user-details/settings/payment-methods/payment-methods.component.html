@@ -1,0 +1,29 @@
+<div class="payment-methods-container">
+  <h2>Métodos de Pago</h2>
+
+  <div class="current-payment-methods">
+    <h3>Mis Métodos de Pago</h3>
+    <div *ngFor="let paymentMethod of paymentMethods" class="payment-method-item">
+      <p>{{ paymentMethod.type }} terminada en {{ paymentMethod.lastFourDigits }}</p>
+      <p>Expiración: {{ paymentMethod.expiryDate }}</p>
+      <button (click)="editPaymentMethod(paymentMethod)">Editar</button>
+      <button (click)="removePaymentMethod(paymentMethod)">Eliminar</button>
+    </div>
+  </div>
+
+  <div class="add-payment-method">
+    <h3>Añadir Nuevo Método de Pago</h3>
+    <form (ngSubmit)="addPaymentMethod()">
+      <label for="type">Tipo</label>
+      <input type="text" id="type" [(ngModel)]="newPaymentMethod.type" name="type" required>
+
+      <label for="cardNumber">Número de Tarjeta</label>
+      <input type="text" id="cardNumber" [(ngModel)]="newPaymentMethod.cardNumber" name="cardNumber" required>
+
+      <label for="expiryDate">Fecha de Expiración</label>
+      <input type="text" id="expiryDate" [(ngModel)]="newPaymentMethod.expiryDate" name="expiryDate" required>
+
+      <button type="submit">Añadir Método de Pago</button>
+    </form>
+  </div>
+</div>

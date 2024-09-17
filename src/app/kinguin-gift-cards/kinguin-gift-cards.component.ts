@@ -6,24 +6,33 @@ import {PaginationComponent} from "../pagination/pagination.component";
 import { Router } from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {SearchBarComponent} from "../search-bar/search-bar.component";
+import {HighlightsComponent} from "../highlights/highlights.component";
+import {RecommendationsComponent} from "../recommendations/recommendations.component";
+import {FiltersComponent} from "../filters/filters.component";
+import {BackgroundAnimationService} from "../background-animation.service";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent]
+  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent, HighlightsComponent, RecommendationsComponent, FiltersComponent]
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
+  seachedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
-  totalPages: number = 3309; // Assuming we know the total number of pages
+  exchangeRate: number = 0;
+  totalPages: number = 3309;
   searchQuery: string = '';
 
-  constructor(private kinguinService: KinguinService, private router: Router) { }
+  constructor(private kinguinService: KinguinService, private router: Router, private animation: BackgroundAnimationService, private currencyService: CurrencyService) { }
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
     this.loadGiftCards(this.currentPage);
+    this.fetchCurrencyExchange();
   }
 
   loadGiftCards(page: number): void {
@@ -56,24 +65,15 @@ export class KinguinGiftCardsComponent implements OnInit {
       }
     });
   }
-  // searchGiftCards(): void {
-  //   if (this.searchQuery.trim() !== '') {
-  //     this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
-  //       this.giftCards = data.map(card => {
-  //         // if (!card.coverImageOriginal || !card.coverImage) {
-  //           card.coverImageOriginal = card.images.cover?.thumbnail || '';
-  //           card.coverImage = card.images.cover?.thumbnail || '';
-  //         // }
-  //         return card;
-  //       });
-  //       console.log('Search Results: ', this.giftCards);
-  //     });
-  //   } else {
-  //     this.loadGiftCards(this.currentPage);
-  //   }
-  // }
+
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
     console.log('Search Results in Gift Cards Component: ', this.giftCards);
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getCurrency().subscribe(data => {
+      this.exchangeRate = data['conversion_rate']
+    });
   }
 }

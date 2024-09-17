@@ -5,6 +5,8 @@ import {HomeService} from "../home.service";
 import {FreeFireGiftCardComponent} from "../free-fire-gift-card/free-fire-gift-card.component";
 import {KinguinGiftCardsComponent} from "../kinguin-gift-cards/kinguin-gift-cards.component";
 import {NgModel} from "@angular/forms";
+import { HighlightsComponent } from '../highlights/highlights.component'; // Importa el componente
+
 
 interface onInit {
 }
@@ -19,6 +21,7 @@ interface onInit {
     CommonModule,
     FreeFireGiftCardComponent,
     KinguinGiftCardsComponent,
+    HighlightsComponent
   ]
 })
 // export class HomeComponent implements onInit {

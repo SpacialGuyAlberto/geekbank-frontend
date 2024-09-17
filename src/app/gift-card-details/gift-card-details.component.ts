@@ -8,15 +8,18 @@ import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import {BackgroundAnimationService} from "../background-animation.service";
 import {CartComponent} from "../cart/cart.component";
-
+import {CurrencyService} from "../currency.service";
+import {FormsModule} from "@angular/forms";
 @Component({
   selector: 'app-gift-card-details',
   standalone: true,
   imports: [
     CurrencyPipe,
     CommonModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    FormsModule
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrl: './gift-card-details.component.css'
@@ -27,6 +30,7 @@ export class GiftCardDetailsComponent implements OnInit {
   giftCard: KinguinGiftCard | undefined;
   isInCart: boolean = false;
   cartItemCount: number = 0;
+  exchangeRate: number = 0;
   quantityInCart: number = 0;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
@@ -37,9 +41,13 @@ export class GiftCardDetailsComponent implements OnInit {
     private router: Router,
     private cartService: CartService,
     private snackBar: MatSnackBar,
+    private animation: BackgroundAnimationService,
+    private currencyService: CurrencyService
   ) { }
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation();
+    this.fetchCurrencyExchange();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.kinguinService.getGiftCardDetails(id).subscribe(data => {
@@ -65,9 +73,9 @@ export class GiftCardDetailsComponent implements OnInit {
       console.log(`isInCart is now: ${this.isInCart}`);
       if (this.isInCart) {
         this.cartService.getCartItems().subscribe(cartItems => {
-          const itemInCart = cartItems.find(item => item.kinguinId === kinguinId);
+          const itemInCart = cartItems.find(item => item.cartItem.productId === kinguinId);
           if (itemInCart) {
-            this.quantityInCart = itemInCart.quantity;
+            this.quantityInCart = itemInCart.cartItem.quantity;
             console.log(`Item found in cart: ${JSON.stringify(itemInCart)}`);
           }
           this.emitCartItemCount();
@@ -109,7 +117,7 @@ export class GiftCardDetailsComponent implements OnInit {
 
   emitCartItemCount(): void {
     this.cartService.getCartItems().subscribe(cartItems => {
-      const totalCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+      const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
       this.cartService.updateCartItemCount(totalCount);
     });
   }
@@ -126,5 +134,11 @@ export class GiftCardDetailsComponent implements OnInit {
 
   goBack(): void {
     this.router.navigate(['/home']);
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getCurrency().subscribe(data => {
+      this.exchangeRate = data['conversion_rate']
+    });
   }
 }

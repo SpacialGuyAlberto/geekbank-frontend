@@ -1,0 +1,54 @@
+<div class="statistics-dashboard">
+  <!-- Menú de pestañas para seleccionar gráficos con iconos -->
+  <div class="tabs-menu">
+    <button class="tab-button locations" [ngClass]="{'active': selectedTab === 'sales'}" (click)="selectTab('sales')">
+      <i class="fas fa-shopping-cart"></i> Ventas Mensuales
+    </button>
+    <button class="tab-button shops" [ngClass]="{'active': selectedTab === 'category'}" (click)="selectTab('category')">
+      <i class="fas fa-tags"></i> Ventas por Categoría
+    </button>
+    <button class="tab-button products" [ngClass]="{'active': selectedTab === 'behavior'}" (click)="selectTab('behavior')">
+      <i class="fas fa-users"></i> Comportamiento del Cliente
+    </button>
+    <button class="tab-button traffic" [ngClass]="{'active': selectedTab === 'traffic'}" (click)="selectTab('traffic')">
+      <i class="fas fa-chart-line"></i> Tráfico por Canal
+    </button>
+    <button class="tab-button inventory" [ngClass]="{'active': selectedTab === 'inventory'}" (click)="selectTab('inventory')">
+      <i class="fas fa-boxes"></i> Inventario
+    </button>
+    <button class="tab-button orders" [ngClass]="{'active': selectedTab === 'orders'}" (click)="selectTab('orders')">
+      <i class="fas fa-box"></i> Pedidos Totales
+    </button>
+  </div>
+
+  <!-- Contenido de gráficos según la pestaña seleccionada -->
+  <div class="chart-container" *ngIf="selectedTab === 'sales'">
+    <h3>Ventas Mensuales</h3>
+    <canvas id="salesChart"></canvas>
+  </div>
+
+  <div class="chart-container" *ngIf="selectedTab === 'category'">
+    <h3>Ventas por Categoría</h3>
+    <canvas id="salesByCategoryChart"></canvas>
+  </div>
+
+  <div class="chart-container" *ngIf="selectedTab === 'behavior'">
+    <h3>Comportamiento del Cliente</h3>
+    <canvas id="customerBehaviorChart"></canvas>
+  </div>
+
+  <div class="chart-container" *ngIf="selectedTab === 'traffic'">
+    <h3>Tráfico por Canal</h3>
+    <canvas id="trafficSourcesChart"></canvas>
+  </div>
+
+  <div class="chart-container" *ngIf="selectedTab === 'inventory'">
+    <h3>Inventario</h3>
+    <canvas id="inventoryChart"></canvas>
+  </div>
+
+  <div class="chart-container" *ngIf="selectedTab === 'orders'">
+    <h3>Pedidos Totales</h3>
+    <canvas id="ordersChart"></canvas>
+  </div>
+</div>

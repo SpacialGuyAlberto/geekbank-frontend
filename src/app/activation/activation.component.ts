@@ -37,7 +37,6 @@ export class ActivationComponent implements OnInit {
     });
   }
 
-
   async activateUser(token: string): Promise<void> {
     try {
       await this.authService.activateUser(token).toPromise();

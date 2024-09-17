@@ -1,0 +1,37 @@
+<div class="transactions-container">
+  <h2 class="section-title">Transacciones</h2>
+
+  <!-- Filtros -->
+  <div class="filters">
+    <input type="text" placeholder="Buscar por ID de transacción" [(ngModel)]="searchQuery">
+    <select [(ngModel)]="selectedStatus">
+      <option value="">Estado</option>
+      <option value="COMPLETED">Completado</option>
+      <option value="REFUNDED">Reembolsado</option>
+      <option value="PENDING">Pendiente</option>
+      <option value="CANCELLED">Cancelado</option>
+    </select>
+    <input type="date" [(ngModel)]="dateFrom" placeholder="Desde">
+    <input type="date" [(ngModel)]="dateTo" placeholder="Hasta">
+    <button (click)="filterTransactions()">Filtrar</button>
+  </div>
+
+  <!-- Tabla de Transacciones -->
+  <div class="transaction-table">
+    <div class="transaction-header">
+      <span>ID de Transacción</span>
+      <span>Fecha</span>
+      <span>Descripción</span>
+      <span>Estado</span>
+      <span>Monto</span>
+    </div>
+
+    <div *ngFor="let transaction of transactions" class="transaction-row">
+      <span>{{ transaction.id }}</span>
+      <span>{{ transaction.timestamp | date:'dd-MM-yyyy' }}</span>
+      <span>{{ transaction.description }}</span>
+      <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
+      <span>{{ transaction.amount | currency }}</span>
+    </div>
+  </div>
+</div>

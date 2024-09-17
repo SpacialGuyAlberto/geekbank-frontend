@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { AuthService } from '../auth.service';
+import {BackgroundAnimationService} from "../background-animation.service";
 
 @Component({
   selector: 'app-register',
@@ -17,14 +18,18 @@ import { AuthService } from '../auth.service';
     CommonModule // Asegúrate de importar CommonModule
   ],
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   name: string = '';
   email: string = '';
   password: string = '';
   message: string = '';
   messageClass: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private animation: BackgroundAnimationService) { }
+
+  ngOnInit(): void {
+    this.animation.initializeGraphAnimation()
+  }
 
   onSubmit() {
     this.authService.register(this.email, this.password, this.name).subscribe(

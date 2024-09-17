@@ -1,0 +1,111 @@
+/* Botón de activación del filtro */
+.filter-toggle {
+  position: fixed;
+  top: 6.5rem;
+  left: 1.5rem;
+  background-color: #021526;
+  color: #88D66C;
+  padding: 10px;
+  border: 2px solid #88D66C;
+  cursor: pointer;
+  z-index: 1000;
+  transition: border-color 0.3s, color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+}
+
+.filter-toggle i {
+  font-size: 20px;
+}
+
+/* Contenedor del filtro */
+.filter-container {
+  position: fixed;
+  top: 6.5rem;
+  left: -320px;
+  width: 320px;
+  background-color: #021526;
+  transition: left 0.3s ease;
+  z-index: 999;
+  overflow-y: auto;
+  border: 2px solid #88D66C;
+}
+
+/* Abrir el contenedor del filtro */
+.filter-container.open {
+  left: 1.5rem;
+}
+
+/* Estilos dentro del contenedor de filtros */
+.filters-container {
+  padding: 15px;
+  color: #88D66C;
+  font-family: 'Press Start 2P', cursive;
+}
+
+.filters-container h3 {
+  margin-bottom: 10px;
+  text-align: center;
+  color: #FB773C;
+  font-size: 1rem; /* Tamaño de fuente reducido para mayor claridad */
+  text-transform: uppercase; /* Texto en mayúsculas */
+}
+
+.filters-container label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.875rem; /* Ajuste del tamaño de la fuente */
+}
+
+.filters-container select,
+.filters-container input[type="range"],
+.filters-container input[type="checkbox"] {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  background-color: #021526;
+  border: 1px solid #88D66C;
+  color: #88D66C;
+  font-family: 'VT323', monospace;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 0.875rem; /* Tamaño de fuente para los inputs */
+}
+
+.filters-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #FB773C;
+  border: 2px solid #180161;
+  color: #021526;
+  cursor: pointer;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 0.875rem; /* Tamaño de fuente ajustado */
+  margin-top: 15px; /* Espacio superior para separación */
+}
+
+.filters-container button:hover {
+  background-color: #E6552A;
+}
+
+/* Sin borde redondeado */
+.filters-container,
+.filter-toggle {
+  border-radius: 0;
+}
+
+/* Ajustes de diseño responsivo */
+@media (max-width: 768px) {
+  .filter-container {
+    width: 100%;
+    left: -100%;
+  }
+
+  .filter-container.open {
+    left: 0;
+  }
+}

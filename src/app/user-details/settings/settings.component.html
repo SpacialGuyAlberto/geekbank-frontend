@@ -1,0 +1,26 @@
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
+  <div class="admin-panel-container">
+    <h1>Settings</h1>
+    <div *ngIf="user">
+      <!-- Navegación para las secciones de cuenta -->
+      <nav class="admin-navigation">
+        <ul>
+          <button (click)="selectedSection = 'account-info'">Account Info</button>
+          <button (click)="selectedSection = 'orders'">Orders</button>
+          <button (click)="selectedSection = 'payment-methods'">Payment Methods</button>
+        </ul>
+      </nav>
+
+      <div class="admin-section">
+        <app-account-info *ngIf="selectedSection === 'account-info'"
+          [user]="user"
+        ></app-account-info>
+        <app-orders *ngIf="selectedSection === 'orders'"
+        [user]="user"
+        ></app-orders>
+        <app-payment-methods *ngIf="selectedSection === 'payment-methods'"></app-payment-methods>
+      </div>
+    </div>
+  </div>
+</div>

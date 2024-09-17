@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { interval } from 'rxjs';
@@ -39,7 +40,6 @@ export class TelegramListenerService {
 
       console.log(`Message from channel ${chatId}: ${message}`);
 
-      // Send the update to the backend
       this.sendUpdateToBackend(message);
     }
   }

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from "@angular/router";
 import { User } from "./models/User";
+import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 
 declare const google: any;
 
@@ -13,6 +14,7 @@ export class AuthService {
   private baseUrl = 'http://localhost:7070/api/auth';
   private baseUrl2 = 'http://localhost:7070/api/users';
   private token: string | undefined;
+  private emailUser: string | undefined;
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -30,6 +32,38 @@ export class AuthService {
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
+    );
+  }
+
+  validatePassword( password: string): Observable<HttpResponse<any>> {
+    const email = sessionStorage.getItem("email");
+    return this.http.post(`${this.baseUrl}/validate-password`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
+    );
+  }
+
+  resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
+    const email = sessionStorage.getItem("email");
+
+    return this.http.post(`${this.baseUrl}/reset-password`,
+      {
+        email,
+        oldPassword: oldPassword?.value,
+        newPassword: newPassword?.value
+      },
+      { observe: 'response' }
+    ).pipe(
       tap(response => {
         const token = response.headers.get('Authorization');
         if (token) {
@@ -123,13 +157,15 @@ export class AuthService {
         {
           theme: 'outline',
           size: 'large',
-          width: 250
+          type: 'icon',  // Solo el ícono
+          shape: 'circle'  // Forma circular del ícono
         }
       );
     } else {
       console.error('Google script not loaded or not in a browser environment');
     }
   }
+
 
   handleGoogleLogin(response: any) {
     const token = response.credential;
@@ -154,9 +190,9 @@ export class AuthService {
     return this.http.get<User>(`${this.baseUrl2}/${userId}`);
   }
 
-  getUserDetails(): Observable<any> {
+  getUserDetails(): Observable<User> {
     const userId = this.getUserId();
-    return this.http.get<any>(`${this.baseUrl2}/${userId}`, {
+    return this.http.get<User>(`${this.baseUrl2}/user-details`, {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.getToken()}`
       })
@@ -165,8 +201,10 @@ export class AuthService {
 
   setSession(authResult: any) {
     localStorage.setItem('token', authResult.token);
-    localStorage.setItem('userId', authResult.userId);
+    sessionStorage.setItem('userId', authResult.userId);
+    localStorage.setItem('email', authResult.email);
   }
+
 
   getUserId(): string {
     return localStorage.getItem('userId') || '';

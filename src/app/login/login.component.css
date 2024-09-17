@@ -1,71 +1,133 @@
-.login-title {
-  color: #373A40;
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19;
 }
+
+.graph-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+
+#graphCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
 .login-container {
-  width: 300px;
-  margin: 2rem auto; /* Espacio superior para separar del navbar */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 400px;
   padding: 20px;
-  border: 1px solid #EEEEEE; /* Color del borde */
-  border-radius: 10px; /* Esquinas redondeadas */
-  background-color: #FFFFFF; /* Color de fondo blanco */
-  font-family: 'Arial', sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra */
+  background-color: #021526;
+  border: 2px solid #1261A0;
+  color: #88D66C;
+  text-align: center;
+  z-index: 2;
 }
 
-
-.form-container {
-  width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
+.login-title {
+  color: #FB773C;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .form-group {
   margin-bottom: 15px;
+  text-align: left;
 }
 
 .form-group label {
-  display: block;
+  color: #88D66C;
+  font-size: 1rem;
   margin-bottom: 5px;
-  color: #686D76;
+  display: block;
 }
 
 .form-group input {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
-  border-radius: 5px;
-  border: 1px solid #EEEEEE;
+  width: calc(100% - 24px);
+  padding: 12px;
+  border: 2px solid #88D66C;
+  background-color: #0B0D19;
+  color: #E1E6F1;
+  font-size: 1rem;
   outline: none;
+  margin-bottom: 20px;
 }
+
 .form-group input:focus {
-  border: 1px solid #4CAF50;
+  border-color: #FB773C;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  background-color: #03346E;
-  color: white;
-  border: none;
-  border-radius: 5px;
+  padding: 12px 20px;
+  background-color: #1261A0;
+  border: 2px solid #1D4B8F;
+  color: #E1E6F1;
+  font-size: 1rem;
   cursor: pointer;
-}
-
-#google-signin-button {
-  margin-top: 10px;
-  text-align: center;
-  margin-left: 25px;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #134B70;
+  background-color: #1D4B8F;
 }
 
+button:active {
+  background-color: #12223C;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 10px #1D4B8F;
+}
+
+.success-message {
+  color: #88D66C;
+  margin-top: 15px;
+}
+
+.error-message {
+  color: #EB3678;
+  margin-top: 15px;
+}
+
+/* Estilo personalizado para el botón de Google */
 #google-signin-button {
-
-  margin-top: 10px;
-  text-align: center;
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+#google-signin-button div {
+  display: none; /* Oculta cualquier texto que pudiera aparecer */
+}
+
+#google-signin-button svg {
+  width: 24px;
+  height: 24px;
+}
+
+#google-signin-button::after {
+  content: '';
+  display: inline-block;
+  background-image: url('https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg');
+  background-size: cover;
+  width: 24px;
+  height: 24px;
+}
+

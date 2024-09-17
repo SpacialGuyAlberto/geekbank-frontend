@@ -1,0 +1,35 @@
+<div class="account-settings-container">
+
+
+  <section class="account-content">
+    <div class="main-box">
+      <h2>Account Details</h2>
+      <form (ngSubmit)="updatePersonalInfo()">
+        <div class="field">
+          <label for="name">Name:</label>
+          <span *ngIf="!editingName">{{ user.name }}</span>
+          <input *ngIf="editingName" type="text" id="name" [(ngModel)]="user.name" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('name')"></i>
+        </div>
+
+        <div class="field">
+          <label for="email">Email:</label>
+          <span *ngIf="!editingEmail">{{ user.email }}</span>
+          <input *ngIf="editingEmail" type="email" id="email" [(ngModel)]="user.email" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('email')"></i>
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone:</label>
+          <span *ngIf="!editingPhone">{{ user.phone }}</span>
+          <input *ngIf="editingPhone" type="tel" id="phone" [(ngModel)]="user.phone" />
+          <i class="fas fa-pencil-alt" (click)="toggleEdit('phone')"></i>
+        </div>
+
+        <!-- Otros campos aquí -->
+
+        <button type="submit">Update Account Info</button>
+      </form>
+    </div>
+  </section>
+</div>

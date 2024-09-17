@@ -3,39 +3,56 @@
   justify-content: center;
   align-items: center;
   margin: 20px 0;
+  background-color: #021526; /* Fondo oscuro retro */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  padding: 10px;
+  width: 100%; /* Aumenta el tamaño total */
+  max-width: 800px; /* Ajusta el tamaño máximo */
 }
 
 .search-bar input[type="text"] {
   width: 100%;
-  max-width: 600px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 50px;
-  background: #f0f0f0;
-  font-size: 1rem;
+  padding: 15px 25px; /* Aumenta el tamaño de padding */
+  border: 2px solid #88D66C; /* Borde verde claro */
+  background: #021526; /* Fondo oscuro retro */
+  color: #88D66C; /* Texto verde claro */
+  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
+  font-family: 'Press Start 2P', cursive; /* Fuente retro */
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .search-bar input[type="text"]::placeholder {
-  color: #ccc;
-  font-size: 1rem;
-}
-
-.search-bar input[type="text"]:focus {
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  color: #88D66C; /* Placeholder verde claro */
+  font-size: 1.5rem; /* Aumenta el tamaño del placeholder */
 }
 
 .search-bar button {
-  margin-left: -40px;
+  margin-left: -50px;
   background: none;
   border: none;
   cursor: pointer;
   outline: none;
 }
 
-.search-bar button i {
-  font-size: 1.2rem;
-  color: #999;
+.search-bar .search-icon {
+  width: 32px; /* Aumenta el tamaño del ícono */
+  height: 32px;
+  filter: invert(75%); /* Ajusta el color del ícono */
+}
+
+/* Responsividad */
+@media (max-width: 480px) {
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .search-bar input[type="text"] {
+    font-size: 1.2rem; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+  }
+
+  .search-bar .search-icon {
+    width: 24px; /* Ajusta el tamaño del ícono para pantallas más pequeñas */
+    height: 24px;
+  }
 }

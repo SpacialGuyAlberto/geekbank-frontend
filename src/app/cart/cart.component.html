@@ -1,23 +1,24 @@
+<html lang="en">
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
 <div class="cart-container">
   <h2>Shopping Cart</h2>
   <ul>
     <li *ngFor="let item of cartItems" class="cart-item">
       <div class="item-details">
-        <p>Product ID: {{ item.productId }}</p>
-        <p>Quantity: {{ item.quantity }}</p>
-        <p>KINGUIN ID: {{ item.kinguinId }}</p>
-        <p>Price: {{ item.price }} €</p>
-        <p>Total: {{ item.quantity * item.price }} €</p> <!-- Precio total por ítem -->
+        <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
+        <p>Quantity: {{ item.cartItem.quantity }}</p>
+        <p [ngModel]="exchangeRate">Price: {{ (item.giftcard.price *  exchangeRate).toFixed(2)}} LPS</p>
+        <p [ngModel]="exchangeRate">Subtotal: {{ (item.cartItem.quantity * item.giftcard.price  * exchangeRate).toFixed(2)}} LPS</p> <!-- Precio total por ítem -->
       </div>
       <div class="item-actions">
-        <button (click)="removeCartItem(Number(item.productId))">Remove</button>
+        <button (click)="removeCartItem(Number(item.cartItem.productId))">Remove</button>
         <button (click)="incrementProductQuantity(item)">+</button>
         <button (click)="decreaseProductQuantity(item)">-</button>
       </div>
     </li>
   </ul>
 
-  <!-- Sección de pago con Tigo Money -->
   <div class="total-price-section">
     <h3>Total Price: {{ getTotalPrice() }} €</h3>
     <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
@@ -32,3 +33,5 @@
 </div>
 
 <app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>
+</div>
+</html>

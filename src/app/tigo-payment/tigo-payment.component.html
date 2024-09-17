@@ -5,17 +5,31 @@
     <form (ngSubmit)="onSubmit()">
       <div>
         <label>Phone No.</label>
-        <input type="text" name="phone" class="phone-input"  required />
+        <input type="text" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required class="retro-input" />
       </div>
       <div>
         <label>Total:</label>
-        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly />
+        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly class="retro-input" />
       </div>
-      <button type="submit">Pay</button>
+
+      <!-- Mostrar mensaje en lugar del botón dependiendo del estado de la transacción -->
+      <button type="submit" class="retro-button" *ngIf="!showSpinner && transactionStatus === ''">Pay</button>
+      <button type="submit" class="retro-button" *ngIf="!showSpinner && transactionStatus === 'CANCELLED'">Retry Payment</button>
+
+      <!-- Mensaje según el estado de la transacción -->
+      <p *ngIf="transactionStatus === 'COMPLETED'" style="color: green; margin-top: 10px;">Su pago ha sido exitoso.</p>
+      <p *ngIf="transactionStatus === 'CANCELLED'" style="color: red; margin-top: 10px;">Su pago ha sido cancelado, gracias.</p>
     </form>
+
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
+
+      <!-- Spinner aparece cuando showSpinner es verdadero -->
+      <div *ngIf="showSpinner" class="spinner-container">
+        <div class="spinner"></div>
+        <p>Esperando a su pago...</p>
+      </div>
     </div>
   </div>
 </div>

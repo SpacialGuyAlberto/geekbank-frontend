@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import {BackgroundAnimationService} from "../background-animation.service";
+import {animation} from "@angular/animations";
 
 declare const google: any;
 
@@ -22,9 +24,11 @@ export class LoginComponent implements OnInit {
   message: string = '';
   messageClass: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private animation: BackgroundAnimationService) {}
 
   ngOnInit(): void {
+    this.animation.initializeGraphAnimation()
+
     if (this.authService.isBrowser()) {
       this.authService.loadGoogleScript().then(() => {
         this.authService.initializeGoogleSignIn();

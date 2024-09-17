@@ -1,0 +1,12 @@
+<div class="recommendations-gift-cards-container">
+  <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+    <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+    <div class="gift-card-content">
+      <h3 class="gift-card-title">{{ card.name }}</h3>
+    </div>
+    <div class="gift-card-price">
+      <span>{{ card.price | currency }}</span>
+    </div>
+  </div>
+</div>
+

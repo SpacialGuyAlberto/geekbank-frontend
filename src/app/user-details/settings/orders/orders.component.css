@@ -1,0 +1,149 @@
+.transactions-container {
+  width: 100%;
+  max-width: 1200px; /* Limitar el ancho para pantallas grandes */
+  margin: 0 auto; /* Centrando la sección */
+  padding: 20px;
+  background-color: #f9f9f9; /* Color de fondo claro */
+  border-radius: 10px;
+  color: #333; /* Color del texto más oscuro */
+}
+
+.section-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ff7a00; /* Color destacado */
+  text-align: center; /* Centrar el título */
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap; /* Para que los filtros se adapten en móviles */
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center; /* Centrando los filtros */
+}
+
+.filters input, .filters select, .filters button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #fff; /* Fondo claro para campos */
+  color: #333; /* Texto oscuro */
+}
+
+.filters button {
+  background-color: #ff7a00;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+}
+
+.transaction-table {
+  display: grid;
+  gap: 10px;
+}
+
+.transaction-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #f1f1f1; /* Fondo claro */
+  font-weight: bold;
+  color: #ff7a00; /* Color destacado */
+  text-align: center; /* Centrar el texto */
+  border-radius: 5px;
+}
+
+.transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  transition: background-color 0.3s ease;
+  text-align: center;
+}
+
+.transaction-row:hover {
+  background-color: #f0f0f0;
+}
+
+.status-label {
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.status-label.COMPLETED {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-label.REFUNDED {
+  background-color: #17a2b8;
+  color: #fff;
+}
+
+.status-label.PENDING {
+  background-color: #ffc107;
+  color: #333;
+}
+
+.status-label.CANCELLED {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.transaction-status {
+  padding: 5px 15px;
+  border-radius: 25px;
+  border-width: 2px;
+  border-style: solid;
+  text-align: center;
+  font-weight: bold;
+  display: inline-block;
+  width: 120px;
+}
+
+.transaction-status.PENDING {
+  color: #FFC107;
+  border-color: #FFC107;
+  background-color: transparent;
+}
+
+.transaction-status.COMPLETED {
+  color: #4CAF50;
+  border-color: #4CAF50;
+  background-color: transparent;
+}
+
+.transaction-status.REFUNDED {
+  color: #00BCD4;
+  border-color: #00BCD4;
+  background-color: transparent;
+}
+
+.transaction-status.CANCELLED {
+  color: #F44336;
+  border-color: #F44336;
+  background-color: transparent;
+}
+
+/* Responsividad para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .transaction-header, .transaction-row {
+    grid-template-columns: 1fr; /* Cambiar a una sola columna en móviles */
+    text-align: left; /* Alinear el texto a la izquierda en móviles */
+    padding: 15px;
+  }
+
+  .filters {
+    flex-direction: column; /* Mostrar filtros en columna */
+  }
+
+  .filters input, .filters select, .filters button {
+    width: 100%; /* Asegurarse de que los campos ocupen todo el ancho en móviles */
+  }
+}

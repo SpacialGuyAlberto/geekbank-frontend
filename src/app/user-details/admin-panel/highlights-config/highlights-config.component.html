@@ -1,0 +1,46 @@
+<div class="highlight-dashboard">
+  <div class="search-save-container">
+    <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
+    <button class="save-btn" (click)="save()">Guardar</button>
+  </div>
+
+  <div class="main-content">
+    <!-- Panel izquierdo: Resultados de búsqueda -->
+    <div class="left-panel">
+      <h2>Buscar Tarjetas</h2>
+      <div class="gift-cards-container">
+        <div *ngFor="let card of giftCards" class="gift-card">
+          <div class="gift-card-image-container">
+            <button class="add-highlight-btn" (click)="addToHighlights(card)">+</button>
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+          </div>
+          <div class="gift-card-content">
+            <h3 class="gift-card-title">{{ card.name }}</h3>
+            <div class="gift-card-price">
+              <span>{{ card.price | currency }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Tarjetas agregadas a Highlights -->
+    <div class="right-panel">
+      <h2>Mis Highlights</h2>
+      <div class="gift-cards-container">
+        <div *ngFor="let card of currentHighlights" class="gift-card">
+          <div class="gift-card-image-container">
+            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">-</button>
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+          </div>
+          <div class="gift-card-content">
+            <h3 class="gift-card-title">{{ card.name }}</h3>
+            <div class="gift-card-price">
+              <span>{{ card.price | currency }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
