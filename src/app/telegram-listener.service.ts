@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { interval } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class TelegramListenerService {
 
   private readonly TELEGRAM_BOT_TOKEN = '7022402011:AAHf6k0ZolFa9hwiZMu1srj868j5-eqUecU';
   private readonly BASE_URL = `https://api.telegram.org/bot${this.TELEGRAM_BOT_TOKEN}/getUpdates`;
-  private backendUrl = 'http://localhost:7070/';
+  private backendUrl = environment.apiUrl;
   private lastUpdateId = 0;
 
   constructor(private http: HttpClient) {

@@ -4,6 +4,7 @@ import { firstValueFrom, Observable, tap } from 'rxjs';
 import { Router } from "@angular/router";
 import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
+import {environment} from "../environments/environment";
 
 declare const google: any;
 
@@ -11,8 +12,10 @@ declare const google: any;
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:7070/api/auth';
-  private baseUrl2 = 'http://localhost:7070/api/users';
+
+  private apiUrl = environment.apiUrl
+  private baseUrl =  `${this.apiUrl}/auth`;
+  private baseUrl2 = `${this.apiUrl}/users`;
   private token: string | undefined;
   private emailUser: string | undefined;
 

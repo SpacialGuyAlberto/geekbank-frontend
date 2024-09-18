@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Stomp } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import { Observable, Subject } from 'rxjs';
+import {environment} from "../environments/environment";
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +13,10 @@ export class WebSocketService {
 
   private stompClient: any;
   private transactionStatusSubject: Subject<string> = new Subject<string>();
+  private apiUrl = environment.apiUrl;
 
   connect(): void {
-    const socket = new SockJS('http://localhost:7070/ws');
+    const socket = new SockJS(`${this.apiUrl}/ws`);
     this.stompClient = Stomp.over(socket);
 
     this.stompClient.connect({}, () => {

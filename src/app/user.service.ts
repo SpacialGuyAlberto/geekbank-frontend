@@ -4,12 +4,13 @@ import {Observable, tap} from "rxjs";
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Transaction} from "./transactions.service";
 import {User} from "./models/User";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private baseUrl = 'http://localhost:7070/api/users';
+  private baseUrl = `${environment.apiUrl}/users`;
 
   constructor(private http: HttpClient) { }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {HighlightItemWithGiftcard} from "./models/HighlightItem";
-
+import {environment} from "../environments/environment";
 
 export interface Transaction {
   id: number;
@@ -19,7 +19,7 @@ export interface Transaction {
   providedIn: 'root'
 })
 export class TransactionsService {
-  private apiUrl = 'http://localhost:7070/api/transactions';
+  private apiUrl = `${environment.apiUrl}/transactions`;
 
   constructor(private http: HttpClient) {}
 
