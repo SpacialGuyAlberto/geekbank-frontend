@@ -30,5 +30,5 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             cd "/home/ubuntu/geekbank-frontend"
-            git pull origin Payment-Tigo-Money  # O la rama que estés usando
+            git pull origin master  # O la rama que estés usando
             ./deploy.sh  # Este puede ser un script personalizado para reiniciar servicios o aplicaciones
