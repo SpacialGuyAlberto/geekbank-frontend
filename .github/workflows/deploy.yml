@@ -29,6 +29,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd "/home/ubuntu/geekbank-frontend"
-            git pull origin master  # O la rama que estés usando
-            ./deploy.sh  # Este puede ser un script personalizado para reiniciar servicios o aplicaciones
+            cd /home/ubuntu/GeekBank
+            ./deploy.sh  # Ejecutar el script de despliegue
