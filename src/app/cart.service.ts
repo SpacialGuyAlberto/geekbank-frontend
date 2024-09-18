@@ -3,12 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, BehaviorSubject, map} from 'rxjs';
 import { KinguinGiftCard } from './models/KinguinGiftCard';
 import {CartItemWithGiftcard} from "./models/CartItem";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private baseUrl = 'http://localhost:7070/api/cart';
+  private apiUrl = environment.apiUrl
+  private baseUrl = `${this.apiUrl}/cart`;
   private cartItemCountSubject = new BehaviorSubject<number>(0);
   cartItemCount$: Observable<number> = this.cartItemCountSubject.asObservable();
   private cartItems: KinguinGiftCard[] = [];

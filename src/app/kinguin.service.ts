@@ -3,12 +3,13 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { KinguinGiftCard } from './models/KinguinGiftCard';
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class KinguinService {
-  private apiUrl = 'http://localhost:7070/api/kinguin/gift-cards';
+  private apiUrl = `${environment.apiUrl}/kinguin/gift-cards`;
 
   constructor(private http: HttpClient) {}
 
