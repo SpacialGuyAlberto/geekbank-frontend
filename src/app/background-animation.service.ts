@@ -26,8 +26,8 @@ export class BackgroundAnimationService {
 
     let nodes: Array<any> = [];
     let edges: Array<any> = [];
-    const nodeCount = 1;
-    const maxDistance = 1;
+    const nodeCount = 50;
+    const maxDistance = 60;
     const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#A133FF', '#FFBD33'];
 
     const createNodes = () => {
@@ -75,7 +75,7 @@ export class BackgroundAnimationService {
     }
 
     const drawGraph = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(2, 3, canvas.width, canvas.height);
 
       // Aplica el desenfoque gaussiano
       ctx.filter = 'blur(2.5px)';
@@ -100,16 +100,16 @@ export class BackgroundAnimationService {
       ctx.filter = 'none';
     }
 
-    // const animate = () => {
-    //   updateNodes();
-    //   connectNodes();
-    //   drawGraph();
-    //   requestAnimationFrame(animate);
-    // }
+    const animate = () => {
+      updateNodes();
+      connectNodes();
+      drawGraph();
+      requestAnimationFrame(animate);
+    }
 
     createNodes();
     connectNodes();
-    // animate();
+    animate();
 
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
