@@ -32,12 +32,15 @@ body, html {
   width: 100%;
   max-width: 400px;
   padding: 20px;
-  background-color: #021526;
+  background-color: rgba(2, 21, 38, 5); /* transparencia aplicada */
   border: 2px solid #1261A0;
+  border-radius: 15px; /* borde redondeado */
   color: #88D66C;
   text-align: center;
   z-index: 2;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Sombra para dar profundidad */
 }
+
 
 .login-title {
   color: #FB773C;
@@ -129,5 +132,17 @@ button:focus {
   background-size: cover;
   width: 24px;
   height: 24px;
+}
+
+
+@media (max-width: 768px) {
+  .login-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .form-group input {
+    width: calc(100% - 16px);
+  }
 }
 

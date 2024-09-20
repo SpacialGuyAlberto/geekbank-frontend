@@ -1,12 +1,14 @@
-body, html {
-   margin: 0;
-   padding: 0;
-   width: 100%;
-   height: 100%;
-   overflow: hidden;
-   font-family: 'Courier New', Courier, monospace;
-   background-color: #0B0D19;
- }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* Centrar horizontalmente */
+  align-items: center; /* Centrar verticalmente */
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19;
+}
 
 .graph-container {
   position: relative;
@@ -24,65 +26,94 @@ body, html {
 }
 
 .register-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+  position: relative;
+  margin: 3rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: auto;
   max-width: 400px;
   padding: 20px;
-  background-color: #021526;
+  background-color: rgba(2, 21, 38, 0.8);
   border: 2px solid #1261A0;
+  border-radius: 15px;
   color: #88D66C;
   text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  transition: height 0.5s ease-in-out;
   z-index: 2;
 }
 
+
 .register-title {
-  color: #FB773C;
+  color: #00d4ff; /* Azul neón turquesa */
   font-size: 1.5rem;
   margin-bottom: 10px;
 }
 
 .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   margin-bottom: 15px;
-  text-align: left;
 }
+
+.form-group.visible {
+  opacity: 1;
+}
+
 
 .form-group label {
   color: #88D66C;
   font-size: 1rem;
   margin-bottom: 5px;
-  display: block;
+  text-align: center;
 }
 
 .form-group input {
-  width: calc(100% - 24px);
+  width: 100%;
+  max-width: 300px;
   padding: 12px;
   border: 2px solid #88D66C;
-  background-color: #0B0D19;
-  color: #E1E6F1;
+  background-color: #0B0D19 !important;
+  color: #88D66C !important; /* Forzar el color del texto */
   font-size: 1rem;
   outline: none;
   margin-bottom: 20px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+.form-group input::placeholder {
+  color: #88D66C; /* Cambia el color del placeholder a verde */
 }
 
 .form-group input:focus {
-  border-color: #FB773C;
+  border-color: #FB773C; /* Cambia el color del borde cuando tiene foco */
+  box-shadow: 0 0 10px rgba(251, 119, 60, 0.7); /* Agrega un resplandor alrededor */
+  outline: none; /* Asegura que no haya contorno por defecto */
 }
 
 button {
   padding: 12px 20px;
-  background-color: #1261A0;
-  border: 2px solid #1D4B8F;
-  color: #E1E6F1;
+  background-color: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto;
 }
 
 button:hover {
-  background-color: #1D4B8F;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: rgba(255, 255, 255, 1);
 }
 
 button:active {
@@ -91,7 +122,7 @@ button:active {
 
 button:focus {
   outline: none;
-  box-shadow: 0 0 10px #1D4B8F;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .success-message {
@@ -104,27 +135,93 @@ button:focus {
   margin-top: 15px;
 }
 
-/* Adaptaciones para móviles */
+.form-group input:focus {
+  border-color: #FB773C; /* Cambia el color del borde cuando tiene foco */
+  box-shadow: 0 0 10px rgba(251, 119, 60, 0.7); /* Agrega un resplandor alrededor */
+  outline: none; /* Asegura que no haya contorno por defecto */
+}
+
+.input-container {
+  position: relative;
+}
+
+.valid-feedback, .invalid-feedback {
+  font-size: 1.5rem;
+  position: absolute;
+  right: -35px; /* Asegura que el ícono esté a la derecha del input */
+  top: 8px; /* Ajusta la posición vertical del ícono */
+}
+
+.valid-feedback {
+  color: #88D66C; /* Verde para el check */
+}
+
+.invalid-feedback {
+  color: #EB3678; /* Rojo para el error */
+}
+
+/* Estilos iniciales sin opacidad 0 */
+/*.form-group {*/
+/*  opacity: 1; !* Visibilidad total al cargar *!*/
+/*  transform: translateX(0);*/
+/*  transition: transform 0.5s ease, opacity 0.5s ease; !* Transiciones suaves *!*/
+/*}*/
+
+/*!* Cuando la animación se aplica (después de presionar Continue) *!*/
+/*.form-group.hidden {*/
+/*  opacity: 0; !* Ocultar suavemente cuando se aplica *!*/
+/*  transform: translateX(-100%); !* Deslizar hacia la izquierda *!*/
+/*}*/
+
+/*.form-group.next-hidden {*/
+/*  opacity: 0;*/
+/*  transform: translateX(100%); !* Deslizar hacia la derecha *!*/
+/*}*/
+
+
+/* Animation classes for sliding transitions */
+
 @media (max-width: 480px) {
+  /* Make the register container adapt to smaller screens */
   .register-container {
-    width: 90%;
-    padding: 15px;
+    width: 90%; /* Ensure the container takes 90% of the screen width */
+    padding: 15px; /* Reduce padding to make more space */
+  }
+
+  /* Adjust font size for better readability */
+  .register-title {
+    font-size: 1.2rem; /* Slightly smaller for mobile */
+  }
+
+  /* Adjust container and input field size for small screens */
+  .form-group input {
+    font-size: 0.9rem; /* Smaller text size */
+    padding: 10px; /* Reduce padding */
+  }
+
+  /* Adjust button size for better touch interaction */
+  button {
+    font-size: 0.9rem; /* Smaller button text */
+    padding: 10px 15px; /* Reduce button size for mobile */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .register-container {
+    width: 80%; /* Slightly larger container on tablets */
   }
 
   .register-title {
-    font-size: 1.2rem;
-  }
-
-  .register-container p {
-    font-size: 0.9rem;
+    font-size: 1.3rem; /* Adjust title size */
   }
 
   .form-group input {
-    font-size: 0.9rem;
-    padding: 10px;
+    font-size: 1rem; /* Keep the input fields readable */
+    padding: 12px; /* Normal padding */
   }
 
   button {
-    font-size: 0.9rem;
+    font-size: 1rem; /* Normal button size */
+    padding: 12px 20px; /* Slightly larger buttons */
   }
 }

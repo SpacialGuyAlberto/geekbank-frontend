@@ -4,7 +4,7 @@
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas>
   <div class="login-container">
-    <h2 class="login-title">Welcome back to Astralis!</h2>
+    <h2 id="animated-text" class="login-title"></h2> <!-- Aquí irá el texto animado -->
     <p>Enter your details below to continue</p>
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
@@ -21,6 +21,25 @@
     <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
   </div>
 </div>
+
+<!-- Script para la animación del texto -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const text = "Bienvenido a Astralis!";
+    const animatedTextElement = document.getElementById("animated-text");
+    let index = 0;
+
+    function typeWriter() {
+      if (index < text.length) {
+        animatedTextElement.innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeWriter, 100); // Velocidad de aparición de las letras
+      }
+    }
+    typeWriter();
+  });
+</script>
+
 <script src="animationScript.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script src="customGoogleButton.js"></script>
