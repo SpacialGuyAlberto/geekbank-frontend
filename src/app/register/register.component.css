@@ -160,6 +160,44 @@ button:focus {
   color: #EB3678; /* Rojo para el error */
 }
 
+.password-strength-container {
+  width: 100%;
+  background-color: #e0e0e0;
+  border-radius: 5px;
+  margin-top: 10px;
+  height: 5px;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0;
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.low-strength {
+  background-color: red;
+  width: 33%;
+}
+
+.medium-strength {
+  background-color: orange;
+  width: 66%;
+}
+
+.high-strength {
+  background-color: green;
+  width: 100%;
+}
+
+.password-strength-text {
+  margin-top: 5px;
+  font-size: 0.9rem;
+  color: #fff;
+}
+
+
 /* Estilos iniciales sin opacidad 0 */
 /*.form-group {*/
 /*  opacity: 1; !* Visibilidad total al cargar *!*/

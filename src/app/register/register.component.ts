@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -21,17 +21,26 @@ import {response} from "express";
   ],
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
+  @ViewChild('nameInput') nameInput!: ElementRef;
+  @ViewChild('emailInput') emailInput!: ElementRef;
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+
   name: string = '';
   email: string = '';
   password: string = '';
   message: string = '';
   messageClass: string = '';
-  currentStep: number = 1; // Inicialmente solo se mostrará el primer input
+  currentStep: number = 1;
   direction: string = 'next';
   emailValid: boolean = false;
   passwordValid: boolean = false;
-  emailTouched: boolean = false; // Control para saber si el campo ha sido revisado
-  passwordTouched: boolean = false; // Control para saber si el campo ha sido revisado
+  emailTouched: boolean = false;
+  passwordTouched: boolean = false;
+  passwordStrengthLevel: string = '';
+  passwordStrengthText: string = '';
+  private emailTypingTimeout: any;
+  private passwordTypingTimeout: any;
+  submitted: boolean = false;
   constructor(private authService: AuthService, private animation: BackgroundAnimationService) { }
 
   ngOnInit(): void {
@@ -39,6 +48,16 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
+    this.submitted = true; // Marcar que se ha intentado enviar el formulario
+
+    // Si la contraseña no es válida, no continuar
+    // if (!this.isPasswordValid()) {
+    //   this.message = 'Password must be at least 6 characters';
+    //   this.messageClass = 'error-message';
+    //   return;
+    // }
+
+    // Intentar registrar solo si todo es válido
     this.authService.register(this.email, this.password, this.name).subscribe(
       response => {
         if (response.status === 200) {
@@ -58,6 +77,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.animateText("Welcome to Astralis!", 100);
+    this.nameInput.nativeElement.focus();
   }
 
   animateText(text: string, speed: number) {
@@ -80,32 +100,87 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   nextStep() {
-    if (this.currentStep === 1 && !this.name) {
-      this.message = "Please enter your name";
-      this.messageClass = "error-message";
-      return;
+    // Validar el campo de nombre en el primer paso
+    if (this.currentStep === 1) {
+      if (!this.name || this.name.trim().length === 0) {
+        this.message = "Please enter your name";
+        this.messageClass = "error-message";
+        return;
+      }
+      this.currentStep++; // Avanzar al siguiente paso
+      setTimeout(() => this.emailInput.nativeElement.focus(), 100); // Foco en el email después del nombre
     }
 
-    if (this.currentStep === 2) {
+    // Validar el campo de email en el segundo paso
+    else if (this.currentStep === 2) {
       this.emailTouched = true;
-      if (!this.isEmailValid()) {
+      if (this.email.length === 0 || !this.isEmailValid()) {
         this.message = "Please enter a valid email";
         this.messageClass = "error-message";
         return;
       }
+      this.currentStep++; // Avanzar al siguiente paso
+      setTimeout(() => this.passwordInput.nativeElement.focus(), 100); // Foco en el password después del email
     }
 
-    if (this.currentStep === 3) {
-      this.passwordTouched = true;
-      if (!this.isPasswordValid()) {
+    // Validar el campo de contraseña en el tercer paso
+    else if (this.currentStep === 3) {
+      if (!this.passwordTouched) {
+        // Si el campo de contraseña no ha sido tocado aún, simplemente avanzar sin mensaje
+        this.message = '';
+      } else if (!this.isPasswordValid() || this.password.length > 0) {
         this.message = "Password must be at least 6 characters";
         this.messageClass = "error-message";
         return;
       }
+      this.message = "Form complete and valid!";
+      this.messageClass = "success-message";
     }
 
-    this.message = "";
-    this.currentStep++; // Avanzamos al siguiente campo
+  }
+
+  onPasswordBlur() {
+    this.passwordTouched = true; // Marcar el campo como "tocado" si el usuario deja el campo
+  }
+
+
+
+  onEmailKeyUp() {
+    clearTimeout(this.emailTypingTimeout);
+    this.emailTypingTimeout = setTimeout(() => {
+      if (this.email.length > 0) {
+        this.emailTouched = true;
+        this.emailValid = this.isEmailValid();
+      } else {
+        this.emailTouched = false;
+        this.emailValid = false;
+      }
+    }, 700);
+  }
+
+  onPasswordKeyUp() {
+    clearTimeout(this.passwordTypingTimeout);
+
+    this.passwordTypingTimeout = setTimeout(() => {
+      if (this.password.length > 0) {
+        this.passwordTouched = true;
+        this.passwordValid = this.isPasswordValid();
+        this.calculatePasswordStrength();
+      } else {
+        // Si el usuario borra todo, no mostrar ningún mensaje ni iconos
+        this.passwordTouched = false;
+        this.passwordValid = false;
+        this.passwordStrengthLevel = '';
+        this.passwordStrengthText = '';
+      }
+    }, 2000);
+  }
+
+  onEmailKeyPress(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      this.emailTouched = true;
+      this.isEmailValid();
+    }
   }
 
   previousStep() {
@@ -129,6 +204,37 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
   }
 
+  calculatePasswordStrength() {
+    const password = this.password;
+    let strength = 0;
+
+    // Calcular el nivel de seguridad basado en las siguientes reglas
+    if (password.length >= 6) {
+      strength++;
+    }
+    if (/[A-Z]/.test(password)) {
+      strength++;
+    }
+    if (/[0-9]/.test(password)) {
+      strength++;
+    }
+    if (/[^A-Za-z0-9]/.test(password)) {
+      strength++;
+    }
+
+    // Actualizar el nivel de seguridad y el texto según la fuerza
+    if (strength <= 1) {
+      this.passwordStrengthLevel = 'low-strength';
+      this.passwordStrengthText = 'Weak';
+    } else if (strength === 2) {
+      this.passwordStrengthLevel = 'medium-strength';
+      this.passwordStrengthText = 'Medium';
+    } else {
+      this.passwordStrengthLevel = 'high-strength';
+      this.passwordStrengthText = 'Strong';
+    }
+  }
+
   isEmailValid(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     this.emailValid = emailRegex.test(this.email);
@@ -140,4 +246,35 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     return this.passwordValid;
   }
 
+  checkNameAndNextStep() {
+    if (this.name.length > 0) {
+      this.nextStep();
+    } else {
+      this.message = "Please enter your name";
+      this.messageClass = "error-message";
+    }
+  }
+
+  // Método para verificar el email al presionar "Enter"
+  checkEmailAndNextStep() {
+    if (this.isEmailValid()) {
+      this.nextStep();
+    } else {
+      this.message = "Please enter a valid email";
+      this.messageClass = "error-message";
+    }
+  }
+
+  // Método para verificar la contraseña al presionar "Enter"
+  // checkPasswordAndNextStep() {
+  //   if (this.isPasswordValid()) {
+  //     this.nextStep();
+  //   } else {
+  //     this.message = "Password must be at least 6 characters";
+  //     this.messageClass = "error-message";
+  //   }
+  // }
+
+
+  protected readonly SubmitEvent = SubmitEvent;
 }
