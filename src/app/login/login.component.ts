@@ -2,21 +2,23 @@ import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Router } from '@angular/router';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
+import {CommonModule, NgClass} from '@angular/common'; // Importa CommonModule
 import { AuthService } from '../auth.service';
 import { BackgroundAnimationService } from "../background-animation.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {response} from "express";
+
+declare const google: any;
 
 @Component({
   selector: 'app-login',
-  standalone: true,
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  standalone: true,
   imports: [
     FormsModule,
-    HttpClientModule,
-    RouterModule,
-    CommonModule // Asegúrate de importar CommonModule
+    NgClass
   ],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewInit {
   @ViewChild('emailInput') emailInput!: ElementRef;
@@ -34,14 +36,18 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    private animation: BackgroundAnimationService
-  ) { }
+  constructor(private authService: AuthService, private router: Router, private animation: BackgroundAnimationService) {}
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
+    this.animation.initializeGraphAnimation()
+
+    if (this.authService.isBrowser()) {
+      this.authService.loadGoogleScript().then(() => {
+        this.authService.initializeGoogleSignIn();
+      }).catch(error => {
+        console.error('Error loading Google script', error);
+      });
+    }
   }
 
   ngAfterViewInit(): void {
@@ -68,19 +74,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    this.submitted = true; // Marcar que se ha intentado enviar el formulario
-
-    // Validar email y contraseña antes de intentar el login
-    if (!this.isEmailValid() || !this.isPasswordValid()) {
-      this.message = 'Please provide valid credentials.';
-      this.messageClass = 'error-message';
-      return;
-    }
-
-    // Intentar el login solo si todo es válido
     this.authService.login(this.email, this.password).subscribe(
       response => {
         if (response.status === 200) {
+          const authResult = response.body;
+          this.authService.setSession(authResult);
           this.router.navigate(['/home']);
         } else {
           this.message = 'Login failed. Please try again.';
@@ -93,6 +91,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
 
   onEmailKeyUp() {
     clearTimeout(this.emailTypingTimeout);
@@ -144,4 +143,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.passwordValid = this.password.length >= 6;
     return this.passwordValid;
   }
+
+
 }
