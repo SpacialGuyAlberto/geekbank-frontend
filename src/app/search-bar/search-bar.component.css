@@ -3,42 +3,61 @@
   justify-content: center;
   align-items: center;
   margin: 20px 0;
-  background-color: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  padding: 10px;
-  width: 100%; /* Aumenta el tamaño total */
-  max-width: 800px; /* Ajusta el tamaño máximo */
+  background: none; /* Elimina el fondo innecesario */
+  padding: 15px;
+  width: 100%;
+  max-width: 800px; /* Ancho máximo */
+  border-radius: 15px; /* Bordes redondeados */
 }
 
 .search-bar input[type="text"] {
   width: 100%;
-  padding: 15px 25px; /* Aumenta el tamaño de padding */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  background: #021526; /* Fondo oscuro retro */
-  color: #88D66C; /* Texto verde claro */
-  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  padding: 15px 25px;
+  border: 2px solid rgba(136, 214, 108, 0.5); /* Borde verde claro con transparencia */
+  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
+  color: #88D66C;
+  font-size: 1.5rem; /* Tamaño de fuente grande */
+  font-family: 'Courier New', monospace; /* Fuente más futurista */
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px; /* Bordes redondeados */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3); /* Resplandor alrededor del campo de texto */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque tipo cristal */
 }
 
 .search-bar input[type="text"]::placeholder {
-  color: #88D66C; /* Placeholder verde claro */
-  font-size: 1.5rem; /* Aumenta el tamaño del placeholder */
+  color: rgba(136, 214, 108, 0.8); /* Placeholder verde con transparencia */
+  font-size: 1.5rem;
+  text-shadow: 0 0 8px rgba(136, 214, 108, 0.6); /* Efecto de resplandor en el placeholder */
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: #00d4ff; /* Borde azul neón al hacer focus */
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); /* Resplandor azul alrededor */
 }
 
 .search-bar button {
-  margin-left: -50px;
+  margin-left: -45px;
   background: none;
   border: none;
   cursor: pointer;
   outline: none;
+  transition: transform 0.3s ease;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1); /* Zoom en hover */
 }
 
 .search-bar .search-icon {
-  width: 32px; /* Aumenta el tamaño del ícono */
+  width: 32px; /* Tamaño del ícono */
   height: 32px;
-  filter: invert(75%); /* Ajusta el color del ícono */
+  filter: invert(75%) sepia(100%) saturate(1000%) hue-rotate(90deg); /* Ajuste de color del ícono para que sea verde neón */
+  transition: filter 0.3s ease;
+}
+
+.search-bar button:hover .search-icon {
+  filter: invert(100%) sepia(100%) saturate(1000%) hue-rotate(180deg); /* Efecto brillante en hover */
 }
 
 /* Responsividad */
@@ -48,11 +67,11 @@
   }
 
   .search-bar input[type="text"] {
-    font-size: 1.2rem; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+    font-size: 1.2rem;
   }
 
   .search-bar .search-icon {
-    width: 24px; /* Ajusta el tamaño del ícono para pantallas más pequeñas */
+    width: 24px;
     height: 24px;
   }
 }

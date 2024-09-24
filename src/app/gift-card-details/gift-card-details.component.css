@@ -31,9 +31,13 @@ body, html {
   gap: 16px;
   margin: 20px auto;
   max-width: 80%;
-  background-color: var(--primary-color); /* Fondo principal */
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
   color: #88D66C;
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Soft neon border */
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
   z-index: 2;
+  padding: 20px;
 }
 
 .gift-card-image-container {
@@ -50,15 +54,18 @@ body, html {
   width: 100%;
   height: auto;
   object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .gift-card-info-card {
   flex: 0.2;
-  background-color: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Bordes verdes claros */
-  border-radius: 2px;
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -140,18 +147,17 @@ body, html {
 
 button {
   padding: 15px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
+  border: 2px solid #88D66C;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
-  width: 100%;
-  flex: 1;
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  font-family: 'Press Start 2P', cursive;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-to-cart {
   background-color: #88D66C; /* Fondo verde claro */
-  color: 0C2D57; /* Texto oscuro */
+  color: #0C2D57; /* Texto oscuro */
 }
 
 .add-to-cart:hover {
@@ -174,4 +180,15 @@ button {
 
 .back:hover {
   background-color: #163b70; /* Cambio a azul acento más oscuro en hover */
+}
+
+@media (max-width: 768px) {
+  .gift-card-image-container,
+  .gift-card-info-card {
+    max-width: 100%;
+  }
+
+  .button-container {
+    width: 100%;
+  }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {HomeService} from "../home.service";
@@ -6,7 +6,9 @@ import {FreeFireGiftCardComponent} from "../free-fire-gift-card/free-fire-gift-c
 import {KinguinGiftCardsComponent} from "../kinguin-gift-cards/kinguin-gift-cards.component";
 import {NgModel} from "@angular/forms";
 import { HighlightsComponent } from '../highlights/highlights.component'; // Importa el componente
-
+import {RecommendationsComponent} from "../recommendations/recommendations.component";
+import {FiltersComponent} from "../filters/filters.component";
+import {BackgroundAnimationService} from "../background-animation.service";
 
 interface onInit {
 }
@@ -21,7 +23,9 @@ interface onInit {
     CommonModule,
     FreeFireGiftCardComponent,
     KinguinGiftCardsComponent,
-    HighlightsComponent
+    HighlightsComponent,
+    RecommendationsComponent,
+    FiltersComponent
   ]
 })
 // export class HomeComponent implements onInit {
@@ -56,14 +60,21 @@ interface onInit {
 //   }
 //
 // }
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   username: string = '';
+
+  constructor(private backgroundAnimation: BackgroundAnimationService) { }
 
   ngOnInit() {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       this.username = storedUsername;
     }
+  }
+
+  ngAfterViewInit(): void {
+    // Inicializar la animación del canvas después de que se cargue la vista
+    this.backgroundAnimation.initializeGraphAnimation();
   }
 }
 

@@ -36,10 +36,10 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
 
-  constructor(private authService: AuthService, private router: Router, private animation: BackgroundAnimationService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation()
+    // this.animation.initializeGraphAnimation()
 
     if (this.authService.isBrowser()) {
       this.authService.loadGoogleScript().then(() => {
@@ -79,7 +79,14 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if (response.status === 200) {
           const authResult = response.body;
           this.authService.setSession(authResult);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home']).then((success: boolean) => {
+            if (success) {
+              console.log('Navigation to home was successful!');
+            } else {
+              console.log('Navigation to home failed.');
+            }
+          });
+
         } else {
           this.message = 'Login failed. Please try again.';
           this.messageClass = 'error-message';

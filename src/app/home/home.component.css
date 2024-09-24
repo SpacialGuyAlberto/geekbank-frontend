@@ -1,73 +1,180 @@
-:host {
-  background-color: #04060F; /* Fondo principal gris oscuro */
-  display: block;
-  min-height: 100vh;
-  height: auto;
+/* Contenedor general */
+
+.graph-container {
+  position: absolute; /* Cambiado de fixed a absolute */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; /* Ocupará todo el contenido */
+  z-index: -1; /* Detrás del contenido */
+}
+
+#graphCanvas {
+  width: 100%;
+  height: 100%; /* Dejar que el canvas ocupe la altura del contenido */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #0B0D19;
+}
+.home-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Una columna por defecto */
+  grid-gap: 25%;
   width: 100%;
   padding: 20px;
-  color: #009FBD;
-  position: relative; /* Añadir si no está */
-  z-index: 0; /* Debe ser inferior al z-index del canvas */
+  background-color: var(--primary-color);
+  justify-items: center; /* Centra el contenido en la columna */
+  margin-top: 10rem;
 }
 
-/* Estilos para los títulos y textos */
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Press Start 2P', cursive; /* Estilo de fuente retro */
-  color: #FB773C; /* Naranja retro para títulos */
-  text-transform: uppercase; /* Convierte los textos a mayúsculas */
+.highlight-recommendations {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
+  width: 100%;
+  margin: 20px 0;
+  justify-content: center;
+  align-items: center;
 }
 
-p, a, span, label {
-  font-family: 'VT323', monospace; /* Fuente retro para textos generales */
-  color: #EB3678; /* Color rosado brillante */
+ /*Sección de Highlights*/
+.highlights-section {
+  border-radius: 10px;
+  padding: 20px;
+  width: 100%;
+  max-width: 600px; /* Limita el ancho máximo */
+  display: grid;
+  justify-items: center;
 }
 
-/* Ajustes para botones */
-button {
-  background-color: #4F1787; /* Fondo púrpura oscuro para los botones */
-  color: #EB3678; /* Texto de color rosado brillante */
-  border: 2px solid #180161; /* Bordes oscuros */
-  padding: 10px 20px;
+/*!* Sección de Recomendaciones *!*/
+.recommendations-section {
+  border-radius: 10px;
+  padding: 1rem;
+  width: 100%;
+  max-width: 600px; /* Limita el ancho máximo */
+  display: grid;
+  margin-left: 2rem;
+  justify-items: center;
+}
+
+/* Estilo de las tarjetas de Recomendaciones */
+.recommendations .gift-card {
+  width: 100%;
+  max-width: 250px;
+  background-color: rgba(2, 21, 38, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.recommendations .gift-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.recommendations .gift-card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.recommendations .gift-card-title {
+  font-size: 1.3rem;
+  color: #00d4ff;
+  margin-bottom: 10px;
   text-transform: uppercase;
-  font-family: 'Press Start 2P', cursive;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #180161; /* Cambio a un púrpura más oscuro en hover */
+.recommendations .gift-card-price {
+  font-size: 1.1rem;
+  color: #88D66C;
+  font-weight: bold;
 }
 
-/* Ajustes para entradas de texto y formularios */
-input[type="text"], select, textarea {
-  background-color: #180161; /* Fondo oscuro para inputs */
-  border: 2px solid #4F1787; /* Borde púrpura oscuro */
-  color: #EB3678; /* Texto rosado */
-  font-family: 'VT323', monospace;
-  padding: 10px;
+/* Sección de Gift Cards Principales */
+.main-gift-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adaptable */
+  grid-gap: 20px;
   width: 100%;
-  box-sizing: border-box;
 }
 
-input[type="text"]::placeholder, textarea::placeholder {
-  color: #FB773C; /* Color del placeholder */
+/* Gift Cards Principales Estilos */
+.main-gift-cards .gift-card {
+  background-color: rgba(2, 21, 38, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Estilos adicionales */
-.container {
-  background-color: #180161; /* Contenedor principal en púrpura oscuro */
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra ligera */
+.main-gift-cards .gift-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
-.pagination button {
-  background-color: #4F1787;
-  color: #EB3678;
-  border: 2px solid #180161;
+.main-gift-cards .gift-card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
 }
 
-.pagination button.active {
-  background-color: #FB773C;
-  color: #180161;
+.main-gift-cards .gift-card-title {
+  font-size: 1.3rem;
+  color: #00d4ff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.main-gift-cards .gift-card-price {
+  font-size: 1.1rem;
+  color: #88D66C;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .highlight-recommendations {
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+  }
+
+  .main-gift-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adaptable a pantallas pequeñas */
+    grid-gap: 10px;
+  }
+
+  .main-gift-cards .gift-card {
+    min-width: calc(50% - 10px); /* Dos columnas por fila */
+  }
+
+  .gift-card-image {
+    height: 120px;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .main-gift-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .gift-card {
+    min-width: 100%;
+  }
 }

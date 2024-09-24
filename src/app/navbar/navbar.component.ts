@@ -7,18 +7,21 @@ import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core'; // Importa TranslateService
 import { ChangeDetectorRef } from '@angular/core';
+import {SearchBarComponent} from "../search-bar/search-bar.component";
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [
-    RouterLink,
-    NgIf,
-    MatIconModule,
-    FormsModule,
-    RouterModule,
-    TranslateModule // Asegúrate de importar TranslateModule
-  ],
+    imports: [
+        RouterLink,
+        NgIf,
+        MatIconModule,
+        FormsModule,
+        RouterModule,
+        TranslateModule,
+        SearchBarComponent,
+        // Asegúrate de importar TranslateModule
+    ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -28,6 +31,7 @@ export class NavbarComponent implements OnInit {
   isLanguageMenuOpen: boolean = false; // Controla si el menú está abierto o no
   loginLabel: string = ''; // Variable para almacenar la traducción de 'Login'
   registerLabel: string = ''; // Variable para almacenar la traducción de 'Register'
+  showNavbar: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -35,7 +39,7 @@ export class NavbarComponent implements OnInit {
     private cartService: CartService,
     protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef // Inyecta TranslateService
+    private cd: ChangeDetectorRef // Inyecta TranslateServic
   ) {
 
     this.translate.addLangs(['en', 'es', 'de']);  // Idiomas disponibles
@@ -46,6 +50,13 @@ export class NavbarComponent implements OnInit {
     this.translate.addLangs(['en', 'es', 'de']); // Add available languages
     this.translate.setDefaultLang('en'); // Set default language
     this.selectedLanguage = 'en'; // Or read from a saved state (localStorage, etc.)
+
+
+    this.router.events.subscribe(() => {
+      // Ocultar la navbar en /user-details y /admin-panel
+      const hiddenRoutes = ['/user-details', '/admin-panel'];
+      this.showNavbar = !hiddenRoutes.includes(this.router.url);
+    });
   }
 
   // Método para cambiar el idioma

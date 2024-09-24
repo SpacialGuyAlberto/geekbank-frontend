@@ -1,9 +1,25 @@
-<div class="home-container">
-  <!-- Otros contenidos de la vista de Home -->
-  <div class="gift-cards-wrapper">
-    <div class="gift-cards-container">
-      <app-kinguin-gift-cards></app-kinguin-gift-cards>
-    </div>
-  </div>
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
 </div>
 
+<div class="home-container">
+  <!-- Wrapper para todo el contenido -->
+  <div class="gift-cards-wrapper">
+
+    <!-- Destacados y Recomendaciones -->
+    <div class="highlight-recommendations">
+      <div class="highlights-section">
+        <app-highlights></app-highlights>
+      </div>
+      <div class="recommendations-section">
+        <app-recommendations></app-recommendations>
+      </div>
+    </div>
+
+    <!-- Gift Cards Principales -->
+    <div class="main-gift-cards">
+      <app-kinguin-gift-cards></app-kinguin-gift-cards>
+    </div>
+
+  </div>
+</div>
