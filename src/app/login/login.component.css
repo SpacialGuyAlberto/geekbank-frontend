@@ -33,22 +33,22 @@ html, body {
   align-items: center;
   justify-content: center;
   width: auto;
-  max-width: 400px;
-  padding: 20px;
+  max-width: 25rem; /* 400px to rem */
+  padding: 1.25rem; /* 20px to rem */
   background-color: rgba(2, 21, 38, 0.8);
-  border: 2px solid #1261A0;
-  border-radius: 15px;
+  border: 0.125rem solid #1261A0; /* 2px to rem */
+  border-radius: 0.9375rem; /* 15px to rem */
   color: #88D66C;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5); /* 4px to 20px converted to rem */
   transition: height 0.5s ease-in-out;
   z-index: 2;
 }
 
 .login-title {
-  color: #00d4ff; /* Azul neón turquesa */
+  color: #00d4ff;
   font-size: 1.5rem;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px to rem */
 }
 
 .form-group {
@@ -56,27 +56,27 @@ html, body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem; /* 15px to rem */
 }
 
 .form-group label {
   color: #88D66C;
   font-size: 1rem;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem; /* 5px to rem */
   text-align: center;
 }
 
 .form-group input {
   width: 100%;
-  max-width: 300px;
-  padding: 12px;
-  border: 2px solid #88D66C;
+  max-width: 18.75rem; /* 300px to rem */
+  padding: 0.75rem; /* 12px to rem */
+  border: 0.125rem solid #88D66C; /* 2px to rem */
   background-color: #0B0D19 !important;
   color: #88D66C !important;
   font-size: 1rem;
   outline: none;
-  margin-bottom: 20px;
-  border-radius: 10px;
+  margin-bottom: 1.25rem; /* 20px to rem */
+  border-radius: 0.625rem; /* 10px to rem */
   box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -87,19 +87,19 @@ html, body {
 
 .form-group input:focus {
   border-color: #FB773C;
-  box-shadow: 0 0 10px rgba(251, 119, 60, 0.7);
+  box-shadow: 0 0 0.625rem rgba(251, 119, 60, 0.7); /* 10px to rem */
   outline: none;
 }
 
 button {
-  padding: 12px 20px;
+  padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
   background-color: transparent;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px to rem */
   color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px to rem */
   display: block;
   margin: 0 auto;
 }
@@ -116,24 +116,24 @@ button:active {
 
 button:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0.3125rem rgba(255, 255, 255, 0.5); /* 5px to rem */
 }
 
 .success-message {
   color: #88D66C;
-  margin-top: 15px;
+  margin-top: 0.9375rem; /* 15px to rem */
 }
 
 .error-message {
   color: #EB3678;
-  margin-top: 15px;
+  margin-top: 0.9375rem; /* 15px to rem */
 }
 
 /* Estilos para dispositivos móviles y pantallas pequeñas */
 @media (max-width: 480px) {
   .login-container {
     width: 90%;
-    padding: 15px;
+    padding: 0.9375rem; /* 15px to rem */
   }
 
   .login-title {
@@ -142,12 +142,12 @@ button:focus {
 
   .form-group input {
     font-size: 0.9rem;
-    padding: 10px;
+    padding: 0.625rem; /* 10px to rem */
   }
 
   button {
     font-size: 0.9rem;
-    padding: 10px 15px;
+    padding: 0.625rem 0.9375rem; /* 10px to 15px to rem */
   }
 }
 
@@ -163,67 +163,67 @@ button:focus {
 
   .form-group input {
     font-size: 1rem;
-    padding: 12px;
+    padding: 0.75rem; /* 12px to rem */
   }
 
   button {
     font-size: 1rem;
-    padding: 12px 20px;
+    padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
   }
 }
 
 /* Ajustar el espacio para el botón de Google */
 #google-signin-button {
-  margin-top: 20px; /* Espaciado mayor entre el botón de Login y Google */
+  margin-top: 1.25rem; /* 20px to rem */
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease; /* Animación para hacerlo suave */
+  transition: all 0.3s ease;
 }
 
 #google-signin-button:hover {
-  transform: scale(1.05); /* Efecto de hover para que el botón crezca ligeramente */
+  transform: scale(1.05);
 }
 
 #google-signin-button::after {
-  content: 'Continue with Google'; /* Añadir texto descriptivo */
+  content: 'Continue with Google';
   font-family: 'Courier New', Courier, monospace;
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7); /* Color de texto acorde con el tema espacial */
+  color: rgba(255, 255, 255, 0.7);
   background-color: transparent;
-  margin-left: 10px;
+  margin-left: 0.625rem; /* 10px to rem */
   display: inline-block;
 }
 
 /* Icono personalizado para Google */
 #google-signin-button img {
-  width: 24px;
-  height: 24px;
-  margin-right: 10px; /* Margen entre el logo y el texto */
+  width: 1.5rem; /* 24px to rem */
+  height: 1.5rem;
+  margin-right: 0.625rem; /* 10px to rem */
 }
 
 /* Añadir sombra para el botón de Google */
 #google-signin-button {
-  border: 2px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
-  padding: 10px 20px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Efecto de neón */
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px to rem */
+  padding: 0.625rem 1.25rem; /* 10px to 20px to rem */
+  border-radius: 0.625rem; /* 10px to rem */
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0.9375rem rgba(0, 255, 255, 0.4); /* 15px to rem */
 }
 
 #google-signin-button:hover {
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Aumentar sombra al hacer hover */
+  box-shadow: 0 0 1.25rem rgba(0, 255, 255, 0.7); /* 20px to rem */
 }
 
 /* Para dispositivos móviles */
 @media (max-width: 480px) {
   #google-signin-button::after {
-    font-size: 0.9rem; /* Ajustar tamaño de fuente en pantallas pequeñas */
+    font-size: 0.9rem;
   }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
   #google-signin-button::after {
-    font-size: 1rem; /* Ajuste del tamaño del texto para tablets */
+    font-size: 1rem;
   }
 }
