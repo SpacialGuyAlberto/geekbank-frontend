@@ -6,6 +6,7 @@ import { CurrencyPipe, NgForOf } from "@angular/common";
 import {HighlightService} from "../../../highlights.service";
 import {OnInit} from "@angular/core";
 import {HighlightItemWithGiftcard} from "../../../models/HighlightItem";
+import {KinguinService} from "../../../kinguin.service";
 
 @Component({
   selector: 'app-highlights-config',
@@ -24,17 +25,22 @@ export class HighlightsConfigComponent {
   currentHighlights: KinguinGiftCard[] = [];
   card: KinguinGiftCard | undefined;
 
-  constructor(private highlightService: HighlightService) {}
+  constructor(private highlightService: HighlightService, private kinguinService: KinguinService) {}
 
   ngOnInit() {
     this.highlightService.getHighlights().subscribe(data =>
         data.map( item => this.currentHighlights.push(item.giftcard))
     );
+
+    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
+      this.giftCards = data;
+    });
   }
 
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
     console.log('Search Results in Gift Cards Component: ', this.giftCards);
+
   }
 
   addToHighlights(card: KinguinGiftCard): void {

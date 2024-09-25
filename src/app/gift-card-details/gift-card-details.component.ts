@@ -12,6 +12,8 @@ import {BackgroundAnimationService} from "../background-animation.service";
 import {CartComponent} from "../cart/cart.component";
 import {CurrencyService} from "../currency.service";
 import {FormsModule} from "@angular/forms";
+import {AuthService} from "../auth.service";
+
 @Component({
   selector: 'app-gift-card-details',
   standalone: true,
@@ -37,6 +39,7 @@ export class GiftCardDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private authService: AuthService,
     private kinguinService: KinguinService,
     private router: Router,
     private cartService: CartService,
@@ -67,6 +70,10 @@ export class GiftCardDetailsComponent implements OnInit {
   //   });
   // }
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   checkIfInCart(kinguinId: number): void {
     this.cartService.isItemInCart(kinguinId).subscribe(isInCart => {
       this.isInCart = isInCart;
@@ -96,6 +103,11 @@ export class GiftCardDetailsComponent implements OnInit {
   }
 
   toggleCart(giftCard: KinguinGiftCard): void {
+    if (!this.isLoggedIn()) {
+      this.showSnackBar('You are not login. Please log in to add your products to the cart');
+      return;
+    }
+
     if (this.isInCart) {
       this.cartService.removeCartItem(giftCard.kinguinId).subscribe(() => {
         this.isInCart = false;
@@ -111,8 +123,11 @@ export class GiftCardDetailsComponent implements OnInit {
         this.showSnackBar('Product added to cart: ' + giftCard.kinguinId);
       });
     }
-    this.loadCartItemCount()
-    localStorage.setItem('cartItemCount', JSON.stringify(this.cartItemCount));
+    this.loadCartItemCount();
+  }
+
+  redirectToLogin(): void {
+    this.router.navigate(['/login']);
   }
 
   emitCartItemCount(): void {

@@ -1,5 +1,6 @@
 <div class="highlight-dashboard">
   <div class="search-save-container">
+    <!-- Incluimos el componente de búsqueda con el evento output -->
     <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
     <button class="save-btn" (click)="save()">Guardar</button>
   </div>
@@ -9,8 +10,10 @@
     <div class="left-panel">
       <h2>Buscar Tarjetas</h2>
       <div class="gift-cards-container">
+        <!-- Lista de tarjetas obtenidas de la búsqueda -->
         <div *ngFor="let card of giftCards" class="gift-card">
           <div class="gift-card-image-container">
+            <!-- Botón para añadir a highlights -->
             <button class="add-highlight-btn" (click)="addToHighlights(card)">+</button>
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
           </div>
@@ -24,12 +27,14 @@
       </div>
     </div>
 
-    <!-- Panel derecho: Tarjetas agregadas a Highlights -->
+    <!-- Panel derecho: Tarjetas añadidas a Highlights -->
     <div class="right-panel">
       <h2>Mis Highlights</h2>
       <div class="gift-cards-container">
+        <!-- Lista de tarjetas en los highlights actuales -->
         <div *ngFor="let card of currentHighlights" class="gift-card">
           <div class="gift-card-image-container">
+            <!-- Botón para eliminar de los highlights -->
             <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">-</button>
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
           </div>

@@ -2,31 +2,45 @@
 <html lang="en">
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas>
-  <div *ngIf="giftCard" class="gift-card-details-container">
-  <div class="gift-card-image-container">
-    <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
-    <div class="add-info-content">
-      <h3 class="add-info-title"> Platforms </h3>
-      <p class="highlight-card-type">Android</p>
-      <p class="highlight-card-platform">Xbox</p>
-    </div>
-  </div>
-  <div class="gift-card-info-card">
-    <h2 class="gift-card-region">
-      <i class="material-icons check-icon">check_circle</i>
-      {{ giftCard.regionalLimitations }}
-    </h2>
 
-    <h2 class="gift-card-title">{{ giftCard.name }}</h2>
-    <div class="gift-card-price" [ngModel]="exchangeRate" >{{ (giftCard.price * exchangeRate).toFixed(2) | currency }}</div>
-    <div class="button-container">
-      <button (click)="toggleCart(giftCard)" class="add-to-cart">
-        {{ isInCart ? 'Remove from Cart' : 'Add to Cart' }}
-      </button>
-      <button (click)="buyNow(giftCard)" class="buy-now">Buy Now</button>
-      <button (click)="goBack()" class="back">Back</button>
+  <div *ngIf="giftCard" class="gift-card-details-container">
+    <div class="gift-card-image-container">
+      <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
+      <div class="add-info-content">
+        <h3 class="add-info-title">Platforms</h3>
+        <p class="highlight-card-type">Android</p>
+        <p class="highlight-card-platform">Xbox</p>
+      </div>
+    </div>
+
+    <div class="gift-card-info-card">
+      <h2 class="gift-card-region">
+        <i class="material-icons check-icon">check_circle</i>
+        {{ giftCard.regionalLimitations }}
+      </h2>
+
+      <h2 class="gift-card-title">{{ giftCard.name }}</h2>
+      <div class="gift-card-price" [ngModel]="exchangeRate">
+        {{ (giftCard.price * exchangeRate).toFixed(2) | currency }}
+      </div>
+
+      <!-- Mostrar botones solo si el usuario está loggeado -->
+      <div *ngIf="isLoggedIn(); else notLoggedInMessage" class="button-container">
+        <button (click)="toggleCart(giftCard)" class="add-to-cart">
+          {{ isInCart ? 'Remove from Cart' : 'Add to Cart' }}
+        </button>
+        <button (click)="buyNow(giftCard)" class="buy-now">Buy Now</button>
+      </div>
+
+      <!-- Mostrar el mensaje de no loggeado -->
+      <ng-template #notLoggedInMessage>
+        <div class="not-logged-in-message">
+          <h2>Your are not logged in.</h2>
+          <p>Please log in to add the products to the car.</p>
+          <button (click)="redirectToLogin()" class="login-btn">Sign In</button>
+        </div>
+      </ng-template>
     </div>
   </div>
-</div>
 </div>
 </html>

@@ -75,8 +75,6 @@ body, html {
   font-weight: bold;
 }
 
-/* Load More Button */
-/* Contenedor del botón de cargar más */
 .load-more-container {
   display: flex;
   justify-content: center;
@@ -85,65 +83,33 @@ body, html {
 
 /* Botón de cargar más - estilo más discreto */
 .load-more-button {
-  background: #021526; /* Fondo sólido oscuro */
-  color: #88D66C; /* Texto verde neón más apagado */
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1rem;
-  padding: 10px 30px;
-  border: 1px solid rgba(136, 214, 108, 0.5); /* Bordes más sutiles */
-  border-radius: 30px;
-  text-transform: uppercase;
+  background: none; /* Sin fondo */
+  color: transparent; /* Elimina el texto visible */
+  border: none; /* Sin borde */
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(136, 214, 108, 0.3); /* Sombra más suave */
-  transition: all 0.3s ease;
+  outline: none;
   position: relative;
-  z-index: 1;
-  overflow: hidden;
+  padding: 10px;
 }
 
-.load-more-button:hover {
-  background: #0A1D38; /* Cambio a un azul oscuro en hover */
-  color: #88D66C; /* Mantiene el color verde neón, pero sutil */
-  border-color: rgba(136, 214, 108, 0.8); /* Bordes ligeramente más brillantes en hover */
-  box-shadow: 0 6px 15px rgba(136, 214, 108, 0.4); /* Sombra ligeramente más intensa */
+.load-more-button:hover .material-symbols-outlined {
+  color: #88D66C; /* Color verde neón en hover */
+  transform: translateY(3px); /* Movimiento leve hacia abajo */
+  transition: transform 0.3s ease, color 0.3s ease;
 }
 
-.load-more-button:before {
-  content: '';
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border-radius: 30px;
-  background: rgba(255, 255, 255, 0.05); /* Fondo más discreto */
-  z-index: -1;
-  transition: all 0.4s ease;
+/* Icono de flecha (expand_more) estilo discreto */
+.load-more-button .material-symbols-outlined {
+  font-size: 2rem; /* Ajusta el tamaño del ícono */
+  color: rgba(255, 255, 255, 0.5); /* Color inicial más tenue */
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.load-more-button:hover:before {
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1); /* Efecto sutil de brillo interior */
+/* Efecto de hover */
+.load-more-button:hover .material-symbols-outlined {
+  color: #88D66C; /* Cambia el color a verde neón en hover */
+  transform: translateY(3px); /* Movimiento leve hacia abajo */
 }
-
-.arrow-down {
-  display: inline-block;
-  margin-right: 8px;
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 8px solid #88D66C; /* Color verde de la flecha */
-  transition: transform 0.3s ease;
-}
-
-.load-more-button:hover .arrow-down {
-  transform: translateY(3px); /* Movimiento ligero de la flecha en hover */
-}
-
 
 /* Estilo móvil */
 @media (max-width: 768px) {

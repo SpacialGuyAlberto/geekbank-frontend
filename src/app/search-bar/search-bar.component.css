@@ -1,43 +1,37 @@
 .search-bar {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-  background: none; /* Elimina el fondo innecesario */
-  padding: 15px;
-  width: 100%;
-  max-width: 800px; /* Ancho máximo */
-  border-radius: 15px; /* Bordes redondeados */
+  border-radius: 25px; /* Bordes más redondeados */
+  backdrop-filter: blur(15px); /* Efecto de desenfoque de fondo tipo vidrio */
+   /* Borde blanco translúcido */
 }
 
 .search-bar input[type="text"] {
   width: 100%;
-  padding: 15px 25px;
-  border: 2px solid rgba(136, 214, 108, 0.5); /* Borde verde claro con transparencia */
+  padding: 10px 20px; /* Reducido para hacerlo más elegante */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco translúcido más ligero */
   background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
-  color: #88D66C;
-  font-size: 1.5rem; /* Tamaño de fuente grande */
-  font-family: 'Courier New', monospace; /* Fuente más futurista */
+  color: #ffffff; /* Color de texto blanco */
+  font-size: 1.2rem; /* Tamaño de fuente más pequeño */
+  font-family: 'Courier New', monospace; /* Fuente futurista */
   outline: none;
-  border-radius: 10px; /* Bordes redondeados */
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3); /* Resplandor alrededor del campo de texto */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque tipo cristal */
+  border-radius: 25px; /* Bordes redondeados */
+  transition: border-color 0.3s ease;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+  box-shadow: none; /* Eliminar cualquier sombra o resplandor */
 }
 
 .search-bar input[type="text"]::placeholder {
-  color: rgba(136, 214, 108, 0.8); /* Placeholder verde con transparencia */
-  font-size: 1.5rem;
-  text-shadow: 0 0 8px rgba(136, 214, 108, 0.6); /* Efecto de resplandor en el placeholder */
+  color: rgba(255, 255, 255, 0.6); /* Placeholder blanco translúcido */
+  font-size: 1.2rem;
 }
 
 .search-bar input[type="text"]:focus {
-  border-color: #00d4ff; /* Borde azul neón al hacer focus */
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.8); /* Resplandor azul alrededor */
+  border-color: rgba(255, 255, 255, 1); /* Borde blanco más intenso al hacer focus */
+  box-shadow: none; /* Elimina el resplandor al hacer focus */
 }
 
 .search-bar button {
-  margin-left: -45px;
+  margin-left: -35px; /* Ajusta el margen para que el botón esté más alineado */
   background: none;
   border: none;
   cursor: pointer;
@@ -50,14 +44,14 @@
 }
 
 .search-bar .search-icon {
-  width: 32px; /* Tamaño del ícono */
-  height: 32px;
-  filter: invert(75%) sepia(100%) saturate(1000%) hue-rotate(90deg); /* Ajuste de color del ícono para que sea verde neón */
+  width: 24px; /* Tamaño más pequeño del ícono */
+  height: 24px;
+  filter: invert(85%) sepia(20%) saturate(300%) hue-rotate(200deg); /* Ajuste de color del ícono a blanco */
   transition: filter 0.3s ease;
 }
 
 .search-bar button:hover .search-icon {
-  filter: invert(100%) sepia(100%) saturate(1000%) hue-rotate(180deg); /* Efecto brillante en hover */
+  filter: invert(100%) sepia(100%) saturate(500%) hue-rotate(180deg); /* Efecto brillante en hover */
 }
 
 /* Responsividad */
@@ -67,11 +61,11 @@
   }
 
   .search-bar input[type="text"] {
-    font-size: 1.2rem;
+    font-size: 1rem; /* Tamaño de fuente más pequeño para móviles */
   }
 
   .search-bar .search-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 }

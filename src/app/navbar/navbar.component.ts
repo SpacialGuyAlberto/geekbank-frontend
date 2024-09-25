@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, ActivatedRoute, RouterModule } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,20 +8,21 @@ import { FormsModule } from '@angular/forms';
 import { TranslateService, TranslateModule } from '@ngx-translate/core'; // Importa TranslateService
 import { ChangeDetectorRef } from '@angular/core';
 import {SearchBarComponent} from "../search-bar/search-bar.component";
+import { filter } from 'rxjs/operators'; // Necesario para filtrar eventos de navegación
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-    imports: [
-        RouterLink,
-        NgIf,
-        MatIconModule,
-        FormsModule,
-        RouterModule,
-        TranslateModule,
-        SearchBarComponent,
-        // Asegúrate de importar TranslateModule
-    ],
+  imports: [
+    RouterLink,
+    NgIf,
+    MatIconModule,
+    FormsModule,
+    RouterModule,
+    TranslateModule,
+    SearchBarComponent,
+    // Asegúrate de importar TranslateModule
+  ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
   loginLabel: string = ''; // Variable para almacenar la traducción de 'Login'
   registerLabel: string = ''; // Variable para almacenar la traducción de 'Register'
   showNavbar: boolean = true;
+  showSearchBar: boolean = true; // Controla la visibilidad del SearchBar
 
   constructor(
     private authService: AuthService,
@@ -39,9 +41,8 @@ export class NavbarComponent implements OnInit {
     private cartService: CartService,
     protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef // Inyecta TranslateServic
+    private cd: ChangeDetectorRef
   ) {
-
     this.translate.addLangs(['en', 'es', 'de']);  // Idiomas disponibles
     this.translate.setDefaultLang(this.selectedLanguage);
   }
@@ -51,11 +52,24 @@ export class NavbarComponent implements OnInit {
     this.translate.setDefaultLang('en'); // Set default language
     this.selectedLanguage = 'en'; // Or read from a saved state (localStorage, etc.)
 
+    // Suscribirse a eventos de navegación para controlar el SearchBar
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      const hiddenRoutes = ['/login', '/register'];
+      this.showSearchBar = !hiddenRoutes.includes(event.url); // Oculta el SearchBar si la ruta es login o register
+    });
 
     this.router.events.subscribe(() => {
       // Ocultar la navbar en /user-details y /admin-panel
       const hiddenRoutes = ['/user-details', '/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
+    });
+
+    // Suscribirse al observable del contador de ítems del carrito
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartItemCount = count; // Actualiza el contador
+      this.cd.detectChanges(); // Forzar la detección de cambios si es necesario
     });
   }
 
@@ -65,7 +79,7 @@ export class NavbarComponent implements OnInit {
       next: () => {
         this.translate.get("LOGIN").subscribe({
           next: (translation: string) => {
-            console.log('Traducción de LOGIN:', translation); // Esto debería mostrar "Iniciar sesión" en español, por ejemplo
+            console.log('Traducción de LOGIN:', translation);
           },
           error: (err) => {
             console.error('Error al obtener la traducción de LOGIN:', err);
@@ -77,7 +91,6 @@ export class NavbarComponent implements OnInit {
       }
     });
   }
-
 
   // Método para abrir/cerrar el menú de idioma
   toggleLanguageMenu(): void {

@@ -3,7 +3,7 @@
     <span class="app-name" routerLink="/home">Astralis</span>
   </div>
   <div class="navbar-center">
-    <app-search-bar></app-search-bar>
+    <app-search-bar *ngIf="showSearchBar"></app-search-bar> <!-- Ocultar si es login o register -->
   </div>
   <div class="navbar-links">
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
@@ -18,8 +18,5 @@
       </a>
     </li>
 
-    <button class="language-btn" (click)="toggleLanguageMenu()">
-      <mat-icon>language</mat-icon>
-    </button>
   </div>
 </nav>

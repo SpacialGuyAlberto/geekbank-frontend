@@ -28,9 +28,11 @@
 <!--    <button (click)="goToPage(totalPages)">Last</button>-->
 <!--  </div>-->
 
-  <div class="load-more-container" *ngIf="currentIndex < giftCards.length">
+  <div class="load-more-container">
     <button (click)="loadMore()" class="load-more-button">
-      <span class="arrow-down"></span> <!-- Flecha hacia abajo -->
+    <span class="material-symbols-outlined">
+      expand_more
+    </span>
     </button>
   </div>
 

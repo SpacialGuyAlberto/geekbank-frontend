@@ -29,7 +29,7 @@ body, html {
   justify-content: center;
   align-items: stretch;
   gap: 16px;
-  margin: 20px auto;
+  margin: 10rem auto;
   max-width: 80%;
   background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
   color: #88D66C;
@@ -40,6 +40,62 @@ body, html {
   padding: 20px;
 }
 
+.not-logged-in-message {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.4); /* Fondo negro translúcido */
+  color: #ff4d4d; /* Letra roja */
+  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); /* Sombra roja ligera */
+  margin-top: 20px;
+  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
+  transition: all 0.3s ease; /* Transiciones suaves */
+}
+
+.not-logged-in-message h2 {
+  font-size: 1.5rem;
+  color: #ff4d4d; /* Título en rojo */
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5); /* Resplandor ligero */
+  margin-bottom: 10px;
+}
+
+.not-logged-in-message p {
+  font-size: 1rem;
+  color: rgba(255, 77, 77, 0.8); /* Texto en rojo más claro */
+  margin-bottom: 15px;
+}
+
+/* Botón de login */
+.login-btn {
+  background-color: transparent; /* Fondo transparente */
+  color: #ff4d4d; /* Texto en rojo */
+  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
+}
+
+.login-btn:hover {
+  background-color: rgba(255, 77, 77, 0.7); /* Fondo rojo más oscuro en hover */
+  color: #ffffff; /* Texto blanco en hover */
+  transform: scale(1.1); /* Efecto de aumento en hover */
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); /* Resplandor rojo en hover */
+}
+
+/* Ajustes de responsividad */
+@media (max-width: 768px) {
+  .not-logged-in-message {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .login-btn {
+    padding: 8px 16px;
+  }
+}
 .gift-card-image-container {
   flex: 1;
   max-width: 50%;
@@ -151,7 +207,7 @@ button {
   border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
-  font-family: 'Press Start 2P', cursive;
+  font-family: 'Courier New', Courier, monospace;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 

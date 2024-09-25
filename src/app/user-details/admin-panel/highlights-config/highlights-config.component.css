@@ -17,12 +17,12 @@
 
 .search-bar {
   flex-grow: 1;
-  margin-right: 20px;
+  margin-right: 30rem;
 }
 
 .save-btn {
   padding: 12px 25px;
-  background-color: #4CAF50; /* Cambié el color a verde para hacerlo más amigable */
+  background-color: #4CAF50; /* Verde más visible */
   color: white;
   border: none;
   border-radius: 5px;
@@ -30,10 +30,11 @@
   font-weight: bold;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  visibility: visible; /* Asegúrate de que sea visible */
 }
 
 .save-btn:hover {
-  background-color: #43a047; /* Un color verde más oscuro en hover */
+  background-color: #43a047;
 }
 
 /* Panel izquierdo y derecho */
@@ -45,7 +46,7 @@
 
 .left-panel, .right-panel {
   flex: 1;
-  background-color: #2C3E50; /* Color de fondo más oscuro para un look profesional */
+  background-color: #2C3E50;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -66,7 +67,7 @@
 }
 
 .gift-card {
-  background-color: #34495e; /* Azul oscuro, consistente con el resto del dashboard */
+  background-color: #34495e;
   border-radius: 10px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -91,7 +92,7 @@
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #ff9800; /* Cambié el color a naranja para el botón de añadir/eliminar */
+  background-color: #ff9800;
   border: none;
   color: white;
   border-radius: 50%;
@@ -124,6 +125,6 @@
 
 .gift-card-price {
   font-size: 16px;
-  color: #ff9800; /* Naranja para el precio */
+  color: #ff9800;
   font-weight: bold;
 }
