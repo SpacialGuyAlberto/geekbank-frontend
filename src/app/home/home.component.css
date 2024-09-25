@@ -146,35 +146,131 @@
   font-weight: bold;
 }
 
+.filter-giftcard-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 3rem;
+  width: 100%;
+  margin-top: 20px;
+}
+
+
+.filter-section {
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.giftcard-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 20px;
+  width: 100%;
+}
+
+.filters-container {
+  background-color: #021526;
+  border: 2px solid #88D66C;
+  padding: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  color: #88D66C;
+  font-family: 'Press Start 2P', cursive;
+  width: 100%;
+}
+
+.filters-container h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  color: #FB773C;
+}
+
+
 @media (max-width: 768px) {
-  .highlight-recommendations {
-    grid-template-columns: 1fr;
-    grid-gap: 10px;
+  /* Mostrar el botón de filtrar solo si está en etapa de búsqueda */
+  .toggle-filter-btn {
+    display: block;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100;
+    padding: 12px 20px;
+    background-color: #6EC1FF;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 255, 255, 0.7);
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s ease;
   }
 
-  .main-gift-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adaptable a pantallas pequeñas */
-    grid-gap: 10px;
+  .toggle-filter-btn.hidden {
+    display: none; /* Ocultar el botón cuando no está en búsqueda */
   }
 
-  .main-gift-cards .gift-card {
-    min-width: calc(50% - 10px); /* Dos columnas por fila */
+  .giftcard-section {
+    margin-top: 60px;
+    grid-template-columns: repeat(2, 1fr); /* Mantener un grid 2x2 */
+    grid-gap: 10px;
+    width: 100%;
+  }
+
+  .gift-card {
+    min-width: calc(50% - 10px); /* Dos columnas por fila en pantallas pequeñas */
   }
 
   .gift-card-image {
     height: 120px;
   }
+
+  /* El filtro estará oculto inicialmente en pantallas móviles */
+  .filter-section {
+    display: none;
+  }
+
+  /* Filtro visible al presionar el botón de Filtrar */
+  .mobile-filter-visible {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85); /* Oscurecer el fondo para resaltar el filtro */
+    z-index: 200;
+    padding: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* Hacer scroll si es necesario */
+  }
+
+  /* Cuando el filtro está visible, las giftcards deben estar debajo */
+  .filter-giftcard-container {
+    position: relative;
+    z-index: 50;
+  }
 }
 
-
 @media (max-width: 480px) {
-
-  .main-gift-cards {
-    grid-template-columns: 1fr;
+  .giftcard-section {
+    grid-template-columns: 1fr; /* Mostrar gift cards en una sola columna en pantallas muy pequeñas */
   }
 
   .gift-card {
     min-width: 100%;
+  }
+
+  .gift-card-image {
+    height: 100px;
+  }
+
+  .toggle-filter-btn {
+    bottom: 20px;
+    right: 20px;
+    font-size: 0.9rem;
+  }
+
+  .filters-container {
+    max-width: 100%;
+    padding: 15px;
   }
 }

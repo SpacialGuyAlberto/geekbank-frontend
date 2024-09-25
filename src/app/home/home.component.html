@@ -6,20 +6,27 @@
   <!-- Wrapper para todo el contenido -->
   <div class="gift-cards-wrapper">
 
-    <!-- Destacados y Recomendaciones -->
-    <div class="highlight-recommendations">
-      <div class="highlights-section">
-        <app-highlights></app-highlights>
+    <!-- Botón para mostrar/ocultar el filtro en móviles -->
+    <button class="toggle-filter-btn" (click)="toggleFilter()">Filtrar</button>
+
+    <!-- Filtros y Gift Cards en modo móvil -->
+    <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
+
+      <!-- Filtro que se muestra al hacer toggle -->
+      <div class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
+        <app-filters (filtersApplied)="onFiltersApplied()"></app-filters>
       </div>
-      <div class="recommendations-section">
-        <app-recommendations></app-recommendations>
+
+      <!-- Gift Cards -->
+      <div class="giftcard-section">
+        <app-kinguin-gift-cards></app-kinguin-gift-cards>
       </div>
     </div>
 
-    <!-- Gift Cards Principales -->
-    <div class="main-gift-cards">
+    <!-- Gift Cards siempre visibles si se muestran los highlights -->
+    <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
       <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
-
   </div>
 </div>
+

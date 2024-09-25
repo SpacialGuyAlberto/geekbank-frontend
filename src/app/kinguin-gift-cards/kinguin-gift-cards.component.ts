@@ -34,6 +34,12 @@ export class KinguinGiftCardsComponent implements OnInit {
   ngOnInit(): void {
     // this.animation.initializeGraphAnimation();
     this.loadGiftCards(this.currentPage);
+
+    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
+      this.giftCards = data;
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+    });
     this.fetchCurrencyExchange();
   }
 
@@ -73,11 +79,6 @@ export class KinguinGiftCardsComponent implements OnInit {
         console.log('Navigation failed');
       }
     });
-  }
-
-  handleSearchResults(results: KinguinGiftCard[]): void {
-    this.giftCards = results;
-    console.log('Search Results in Gift Cards Component: ', this.giftCards);
   }
 
   fetchCurrencyExchange(): void {

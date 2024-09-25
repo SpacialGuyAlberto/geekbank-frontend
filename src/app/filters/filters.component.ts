@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {KinguinService} from "../kinguin.service";
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {FormsModule} from "@angular/forms";
-import {NgClass, NgForOf} from "@angular/common";
+import { Component, EventEmitter, Output } from '@angular/core';
+import { KinguinService } from "../kinguin.service";
+import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { FormsModule } from "@angular/forms";
+import { NgClass, NgForOf } from "@angular/common";
 
 @Component({
   selector: 'app-filters',
@@ -18,6 +18,11 @@ import {NgClass, NgForOf} from "@angular/common";
 export class FiltersComponent {
   @Output() filteredResults = new EventEmitter<KinguinGiftCard[]>();
   isFilterOpen = false;
+  isFilterVisible: boolean = false;
+  showHighlightsAndRecommendations: boolean = true;
+
+  // Cambié el nombre de este Output para evitar el conflicto
+  @Output() filtersApplied = new EventEmitter<void>();
 
   filters = {
     hideOutOfStock: false,
@@ -52,8 +57,12 @@ export class FiltersComponent {
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
-      this.filteredResults.emit(giftCards)
+      this.filteredResults.emit(giftCards);
       console.log('Filtered Results: ', giftCards);
+
+      // Emitir evento al padre cuando se aplican los filtros
+      this.filtersApplied.emit();
+      this.isFilterVisible = false;
     });
   }
 

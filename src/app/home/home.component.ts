@@ -9,6 +9,7 @@ import { HighlightsComponent } from '../highlights/highlights.component'; // Imp
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {FiltersComponent} from "../filters/filters.component";
 import {BackgroundAnimationService} from "../background-animation.service";
+import {UIStateServiceService} from "../uistate-service.service";
 
 interface onInit {
 }
@@ -62,20 +63,40 @@ interface onInit {
 // }
 export class HomeComponent implements OnInit, AfterViewInit {
   username: string = '';
+  showHighlightsAndRecommendations: boolean = true;
+  isSearching: boolean = false;
+  isFilterVisible: boolean = false;
 
-  constructor(private backgroundAnimation: BackgroundAnimationService) { }
+  constructor(
+    private backgroundAnimation: BackgroundAnimationService,
+    private uiStateService: UIStateServiceService
+  ) { }
 
   ngOnInit() {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       this.username = storedUsername;
     }
+
+    this.uiStateService.showHighlights$.subscribe(show => {
+      this.showHighlightsAndRecommendations = show;
+    });
   }
 
   ngAfterViewInit(): void {
     // Inicializar la animación del canvas después de que se cargue la vista
     this.backgroundAnimation.initializeGraphAnimation();
   }
+
+  toggleFilter() {
+    this.isFilterVisible = !this.isFilterVisible;
+  }
+
+  onFiltersApplied(): void {
+    this.isFilterVisible = false; // Ocultar el filtro cuando se apliquen los filtros
+  }
+
+
 }
 
 
