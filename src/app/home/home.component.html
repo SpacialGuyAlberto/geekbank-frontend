@@ -9,12 +9,21 @@
     <!-- Botón para mostrar/ocultar el filtro en móviles -->
     <button class="toggle-filter-btn" (click)="toggleFilter()">Filtrar</button>
 
+    <!-- Destacados y Recomendaciones -->
+    <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
+      <div class="highlights-section">
+        <app-highlights></app-highlights>
+      </div>
+      <div class="recommendations-section">
+        <app-recommendations></app-recommendations>
+      </div>
+    </div>
+
     <!-- Filtros y Gift Cards en modo móvil -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-
       <!-- Filtro que se muestra al hacer toggle -->
       <div class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
-        <app-filters (filtersApplied)="onFiltersApplied()"></app-filters>
+        <app-filters></app-filters>
       </div>
 
       <!-- Gift Cards -->
@@ -29,4 +38,3 @@
     </div>
   </div>
 </div>
-

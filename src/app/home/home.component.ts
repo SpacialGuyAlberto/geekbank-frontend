@@ -91,11 +91,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
   toggleFilter() {
     this.isFilterVisible = !this.isFilterVisible;
   }
-
-  onFiltersApplied(): void {
-    this.isFilterVisible = false; // Ocultar el filtro cuando se apliquen los filtros
+  applyFilters() {
+    this.isFilterVisible = false;
+    // Aquí puedes agregar lógica adicional si es necesario al aplicar los filtros
   }
-
 
 }
 
