@@ -2,18 +2,21 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  min-height: 100%; /* Asegura que el body tenga al menos el tamaño completo de la pantalla */
   display: flex;
   justify-content: center; /* Centrar horizontalmente */
-  align-items: center; /* Centrar verticalmente */
+  align-items: flex-start; /* Alinea los elementos en la parte superior para que permita scroll */
   font-family: 'Courier New', Courier, monospace;
   background-color: #0B0D19;
+  overflow-x: hidden; /* Evita el scroll horizontal */
 }
 
 .graph-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh; /* Asegura que ocupe toda la pantalla */
+  background-color: #0B0D19; /* Fondo consistente */
+  overflow: hidden;
 }
 
 #graphCanvas {
@@ -21,7 +24,7 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100%; /* Se mantiene estirado al tamaño completo del contenedor */
   z-index: 1;
 }
 
@@ -41,7 +44,6 @@ html, body {
   color: #88D66C;
   text-align: center;
   box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5); /* 4px to 20px converted to rem */
-  transition: height 0.5s ease-in-out;
   z-index: 2;
 }
 
@@ -85,16 +87,6 @@ html, body {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input::placeholder {
-  color: #88D66C;
-}
-
-.form-group input:focus {
-  border-color: #FB773C;
-  box-shadow: 0 0 0.625rem rgba(251, 119, 60, 0.7); /* 10px to rem */
-  outline: none;
-}
-
 button {
   padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
   background-color: transparent;
@@ -131,62 +123,6 @@ button:focus {
 .error-message {
   color: #EB3678;
   margin-top: 0.9375rem; /* 15px to rem */
-}
-
-.input-container {
-  position: relative;
-}
-
-.valid-feedback, .invalid-feedback {
-  font-size: 1.5rem;
-  position: absolute;
-  right: -2.1875rem; /* 35px to rem */
-  top: 0.5rem; /* 8px to rem */
-}
-
-.valid-feedback {
-  color: #88D66C; /* Verde para el check */
-}
-
-.invalid-feedback {
-  color: #EB3678; /* Rojo para el error */
-}
-
-.password-strength-container {
-  width: 100%;
-  background-color: #e0e0e0;
-  border-radius: 0.3125rem; /* 5px to rem */
-  margin-top: 0.625rem; /* 10px to rem */
-  height: 0.3125rem; /* 5px to rem */
-  overflow: hidden;
-}
-
-.password-strength-bar {
-  height: 100%;
-  width: 0;
-  border-radius: 0.3125rem; /* 5px to rem */
-  transition: width 0.5s ease-in-out;
-}
-
-.low-strength {
-  background-color: red;
-  width: 33%;
-}
-
-.medium-strength {
-  background-color: orange;
-  width: 66%;
-}
-
-.high-strength {
-  background-color: green;
-  width: 100%;
-}
-
-.password-strength-text {
-  margin-top: 0.3125rem; /* 5px to rem */
-  font-size: 0.9rem;
-  color: #fff;
 }
 
 /* Estilos para dispositivos móviles y pantallas pequeñas */
