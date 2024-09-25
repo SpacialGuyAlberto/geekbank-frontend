@@ -21,17 +21,25 @@ import {CurrencyService} from "../currency.service";
 })
 export class KinguinGiftCardsComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
-  seachedGiftCards: KinguinGiftCard[] = [];
+  displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
   exchangeRate: number = 0;
   totalPages: number = 3309;
-  searchQuery: string = '';
+  itemsPerPage: number = 8; // Número de tarjetas por carga
+  currentIndex: number = 0; // Índice para el 'Load More'
+  totalItems: number = 8000;
 
-  constructor(private kinguinService: KinguinService, private router: Router, private animation: BackgroundAnimationService, private currencyService: CurrencyService) { }
+  constructor(private kinguinService: KinguinService, private router: Router,  private currencyService: CurrencyService) { }
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
+    // this.animation.initializeGraphAnimation();
     this.loadGiftCards(this.currentPage);
+
+    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
+      this.giftCards = data;
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+    });
     this.fetchCurrencyExchange();
   }
 
@@ -44,8 +52,15 @@ export class KinguinGiftCardsComponent implements OnInit {
         // }
         return card;
       });
-      console.log('Gift Cards: ', this.giftCards);
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage)
+      this.currentIndex = this.itemsPerPage;
     });
+  }
+
+  loadMore(): void {
+    const nextItems = this.giftCards.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
+    this.displayedGiftCards = [...this.displayedGiftCards, ...nextItems];
+    this.currentIndex += this.itemsPerPage;
   }
 
   goToPage(page: number): void {
@@ -64,11 +79,6 @@ export class KinguinGiftCardsComponent implements OnInit {
         console.log('Navigation failed');
       }
     });
-  }
-
-  handleSearchResults(results: KinguinGiftCard[]): void {
-    this.giftCards = results;
-    console.log('Search Results in Gift Cards Component: ', this.giftCards);
   }
 
   fetchCurrencyExchange(): void {

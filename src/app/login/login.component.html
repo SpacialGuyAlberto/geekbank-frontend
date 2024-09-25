@@ -6,8 +6,6 @@
   <div class="login-container">
     <h2 id="animated-text" class="login-title"></h2> <!-- Aquí irá el texto animado -->
     <p>Enter your details below to continue</p>
-
-
     <form (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email">Enter your email*</label>
@@ -24,6 +22,9 @@
       <button type="submit">Login</button>
     </form>
 
+    <div id="google-signin-button">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo">
+    </div>
 
     <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
   </div>
@@ -47,7 +48,7 @@
   });
 </script>
 
-<!--<script src="animationScript.js"></script>-->
-<!--<script src="https://accounts.google.com/gsi/client" async defer></script>-->
-<!--<script src="customGoogleButton.js"></script>-->
+<script src="animationScript.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="customGoogleButton.js"></script>
 

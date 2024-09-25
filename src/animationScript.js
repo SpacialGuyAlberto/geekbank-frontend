@@ -8,7 +8,7 @@ let stars = [];
 let speed = 0.05;
 
 function createStars() {
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 10; i++) {
     stars.push({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
@@ -31,7 +31,7 @@ function drawStars() {
   ctx.fillStyle = 'white';
 
   for (let i = 0; i < stars.length; i++) {
-    let k = 128.0 / stars[i].z;
+    let k = 20.0 / stars[i].z;
     let x = stars[i].x * k + canvas.width / 2;
     let y = stars[i].y * k + canvas.height / 2;
     let size = (1 - stars[i].z / canvas.width) * 5;

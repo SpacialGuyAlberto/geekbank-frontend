@@ -1,48 +1,58 @@
-.highlight-recommendations {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 16px;
-  margin: 20px 0;
-}
+
 
 .highlights-carousel {
   display: flex;
-  justify-content: flex-end;
-  flex: 2;
-  max-width: 70%;
-  background: #021526;
-  border-radius: 2px;
+  justify-content: left;
+  max-width: 60%;
+  border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.7);
   margin-left: auto;
-  border: 2px solid #88D66C; /* Bordes del color del texto */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: transform 0.5s ease, border-color 0.5s ease;
+}
+
+.highlights-carousel:hover {
+  transform: scale(1.02);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.5s ease-in-out;
-  width: 100%;
+  width: 105%;
 }
 
 .highlight-card {
   min-width: 100%;
-  background: #12223C;
-  border-radius: 2px;
+  background: rgba(18, 34, 60, 0.8); /* Fondo más oscuro con transparencia */
+  border-radius: 15px; /* Bordes redondeados */
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border: 2px solid #88D66C; /* Bordes del color del texto */
+  justify-content: center;
+  border: 2px solid rgba(136, 214, 108, 0.4); /* Bordes semi-transparentes */
+}
+
+
+.highlight-card:hover {
+  transform: translateY(-10px) scale(1.05); /* Elevación y zoom en hover */
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.5); /* Resplandor en hover */
+  border-color: rgba(255, 255, 255, 0.6); /* Bordes más brillantes */
 }
 
 .highlight-card-image {
   width: 100%;
   height: auto;
   object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra sobre la imagen */
+  transition: box-shadow 0.4s ease;
 }
+
 
 .highlight-card-content {
   padding: 20px;
@@ -50,42 +60,20 @@
 }
 
 .highlight-card-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem; /* Título más grande */
   margin: 10px 0 5px;
-  color: #88D66C;
+  color: #00d4ff; /* Azul neón */
+  text-transform: uppercase; /* Texto en mayúsculas */
+  letter-spacing: 1px; /* Espaciado adicional entre letras */
 }
 
 .highlight-card-price {
-  font-size: 1rem;
-  color: #88D66C; /* Color del texto */
+  font-size: 1.2rem;
+  color: #88D66C; /* Verde neón */
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-@media (max-width: 768px) {
-  .highlight-card-image {
-    height: 200px;
-  }
-
-  .highlight-card-title {
-    font-size: 1.2rem;
-  }
-
-  .highlight-card-price {
-    font-size: 1rem;
-  }
-}
-
-/* Estilo de la recomendación */
-.recommendations-gift-cards-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: auto auto;
-  gap: 8px;
-  padding: 20px;
-  margin: -1.2rem;
-  max-width: 30%;
-}
 
 .gift-card {
   position: relative;
@@ -135,18 +123,89 @@
   box-sizing: border-box;
 }
 
+
+.highlight-card:hover .highlight-card-image {
+  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.7); /* Resplandor de la imagen en hover */
+}
+
+.highlight-card:hover .highlight-card-title {
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Resplandor del título en hover */
+}
+
+/* Adaptación para pantallas medianas (tablets, por ejemplo) */
+@media (max-width: 1024px) {
+  .highlights-carousel {
+    max-width: 60%;
+    justify-content: center;
+    margin: auto;
+  }
+}
+
+/* Adaptación para pantallas pequeñas (smartphones) */
 @media (max-width: 768px) {
-  .highlights-and-giftcards {
+  .highlights-carousel {
+    display: flex;
+    justify-content: left;
+    height: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.7);
+    margin-left: auto;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.5s ease, border-color 0.5s ease;
+  }
+
+  .highlight-card {
+    min-width: 100%;
+    border-radius: 15px; /* Bordes redondeados */
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    display: flex;
     flex-direction: column;
-    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(136, 214, 108, 0.4); /* Bordes semi-transparentes */
   }
 
-  .highlights-carousel, .gift-cards-container {
-    max-width: 100%;
+  .highlight-card-title {
+    font-size: 1.2rem;
   }
 
-  .gift-cards-container {
-    padding: 0;
-    margin-top: 20px;
+  .highlight-card-price {
+    font-size: 1rem;
+  }
+
+  .highlight-card-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra sobre la imagen */
+    transition: box-shadow 0.4s ease;
+  }
+}
+
+/* Ajuste adicional para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  /*.highlights-carousel {*/
+  /*  max-width: 90%;*/
+  /*  max-height: 90%;*/
+  /*  margin: auto;*/
+  /*}*/
+
+  .highlight-card {
+    min-width: 100%;
+  }
+
+  .highlight-card-title {
+    font-size: 1rem;
+  }
+
+  .highlight-card-price {
+    font-size: 0.9rem;
+  }
+
+  .highlight-card-image {
+    height: 150px;
   }
 }

@@ -1,108 +1,145 @@
+/* Estilos generales */
 .navbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
   align-items: center;
-  background-color: #00253d;
   padding: 10px 20px;
+  background-color: #0A0A15;
+  border-bottom: 2px solid #0E1C28;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
 }
 
+/* Alineación del logo */
 .navbar-brand {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
+  font-size: 1.7rem;
+  color: #00D4FF;
+  font-family: 'Courier New', Courier, monospace;
   cursor: pointer;
 }
 
+/* Centro: Barra de búsqueda */
+.navbar-center {
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
+  max-width: 100%; /* Ajuste al tamaño máximo del contenedor */
+}
+
+/* Alineación de los íconos a la derecha */
 .navbar-links {
   display: flex;
   align-items: center;
 }
 
-.nav-link {
-  color: white;
-  margin-right: 15px;
+/* Estilos de enlaces */
+.navbar .nav-link {
+  color: #00FFB9;
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 20px;
+  font-size: 1.1rem;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
+.navbar .nav-link:hover {
+  color: #FF5733;
+}
+
+/* Estilos de íconos */
 .clickable-icon {
-  font-size: 24px;
-  color: white;
+  color: #88D66C;
+  font-size: 1.7rem;
+  margin-right: 20px;
   cursor: pointer;
-  margin-right: 15px;
+  transition: color 0.3s ease;
 }
 
+.clickable-icon:hover {
+  color: #FF5733;
+}
+
+/* Estilo para el contador del carrito */
 .cart-icon-container {
   position: relative;
 }
 
 .cart-count {
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
-  border-radius: 50%;
+  top: -10px;
+  right: -10px;
+  background-color: #EB3678;
   color: white;
-  padding: 0 5px;
-  font-size: 12px;
-}
-
-.language-dropdown {
-  position: relative;
-  z-index: 2;
+  font-size: 0.8rem;
+  padding: 2px 5px;
+  border-radius: 50%;
 }
 
 .language-btn {
-  background-color: transparent;
+  background: transparent;
   border: none;
-  color: white;
+  color: #88D66C;
   cursor: pointer;
+  font-size: 1rem;
   display: flex;
   align-items: center;
-  font-size: 16px;
-  padding: 5px 10px;
-
+  font-family: 'Courier New', Courier, monospace;
 }
 
-.language-menu {
-  position: absolute;
-  top: 30px;
-  right: 0;
-  background-color: white;
-  list-style: none;
-  padding: 10px 0;
-  border-radius: 4px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  z-index: 2;
+/* Adaptaciones para pantallas pequeñas */
+@media (max-width: 768px) {
+  .navbar {
+    grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
+    grid-template-rows: auto;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    justify-self: start; /* Alinea el logo a la izquierda */
+  }
+
+  .navbar-center {
+    justify-self: center; /* Centra la barra de búsqueda */
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  .navbar-links {
+    justify-self: end; /* Alinea los íconos a la derecha */
+  }
+
+  .clickable-icon {
+    margin-right: 10px;
+  }
 }
 
-.language-menu li {
-  padding: 10px 20px;
-  cursor: pointer;
-  position: relative;
-  z-index: 2/* Permite posicionar elementos hijos como el indicador de hover */
-}
+/* Adaptaciones específicas para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .navbar {
+    max-height: 90%;
+    grid-template-columns: auto 1fr auto; /* Mantiene las 3 columnas */
+    padding: 5px;
+  }
 
-/* Estilos de hover: cambia el fondo, el color del texto y añade una sombra */
-.language-menu li:hover {
-  background-color: #007bff;
-  color: white;
-  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4); /* Sombra en el hover */
-  transform: translateY(-2px); /* Un ligero efecto de elevación */
-  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
-}
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
 
-/* Indicador de hover: línea sutil debajo del elemento */
-.language-menu li::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 3px;
-  background-color: white;
-  transition: width 0.3s;
-}
+  .navbar-center {
+    justify-content: center;
+    padding: 5px;
+  }
 
-.language-menu li:hover::after {
-  width: 100%;
+  .navbar-links {
+    justify-content: flex-end;
+  }
+
+  .clickable-icon {
+    font-size: 1.4rem;
+  }
 }

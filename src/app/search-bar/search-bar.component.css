@@ -1,44 +1,57 @@
 .search-bar {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-  background-color: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  padding: 10px;
-  width: 100%; /* Aumenta el tamaño total */
-  max-width: 800px; /* Ajusta el tamaño máximo */
+  border-radius: 25px; /* Bordes más redondeados */
+  backdrop-filter: blur(15px); /* Efecto de desenfoque de fondo tipo vidrio */
+   /* Borde blanco translúcido */
 }
 
 .search-bar input[type="text"] {
   width: 100%;
-  padding: 15px 25px; /* Aumenta el tamaño de padding */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  background: #021526; /* Fondo oscuro retro */
-  color: #88D66C; /* Texto verde claro */
-  font-size: 1.5rem; /* Aumenta el tamaño de la fuente */
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  padding: 10px 20px; /* Reducido para hacerlo más elegante */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco translúcido más ligero */
+  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
+  color: #ffffff; /* Color de texto blanco */
+  font-size: 1.2rem; /* Tamaño de fuente más pequeño */
+  font-family: 'Courier New', monospace; /* Fuente futurista */
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  border-radius: 25px; /* Bordes redondeados */
+  transition: border-color 0.3s ease;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+  box-shadow: none; /* Eliminar cualquier sombra o resplandor */
 }
 
 .search-bar input[type="text"]::placeholder {
-  color: #88D66C; /* Placeholder verde claro */
-  font-size: 1.5rem; /* Aumenta el tamaño del placeholder */
+  color: rgba(255, 255, 255, 0.6); /* Placeholder blanco translúcido */
+  font-size: 1.2rem;
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: rgba(255, 255, 255, 1); /* Borde blanco más intenso al hacer focus */
+  box-shadow: none; /* Elimina el resplandor al hacer focus */
 }
 
 .search-bar button {
-  margin-left: -50px;
+  margin-left: -35px; /* Ajusta el margen para que el botón esté más alineado */
   background: none;
   border: none;
   cursor: pointer;
   outline: none;
+  transition: transform 0.3s ease;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1); /* Zoom en hover */
 }
 
 .search-bar .search-icon {
-  width: 32px; /* Aumenta el tamaño del ícono */
-  height: 32px;
-  filter: invert(75%); /* Ajusta el color del ícono */
+  width: 24px; /* Tamaño más pequeño del ícono */
+  height: 24px;
+  filter: invert(85%) sepia(20%) saturate(300%) hue-rotate(200deg); /* Ajuste de color del ícono a blanco */
+  transition: filter 0.3s ease;
+}
+
+.search-bar button:hover .search-icon {
+  filter: invert(100%) sepia(100%) saturate(500%) hue-rotate(180deg); /* Efecto brillante en hover */
 }
 
 /* Responsividad */
@@ -48,11 +61,11 @@
   }
 
   .search-bar input[type="text"] {
-    font-size: 1.2rem; /* Ajusta el tamaño de la fuente para pantallas más pequeñas */
+    font-size: 1rem; /* Tamaño de fuente más pequeño para móviles */
   }
 
   .search-bar .search-icon {
-    width: 24px; /* Ajusta el tamaño del ícono para pantallas más pequeñas */
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }
 }

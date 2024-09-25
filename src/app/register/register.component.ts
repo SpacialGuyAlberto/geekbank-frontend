@@ -41,10 +41,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
   submitted: boolean = false;
-  constructor(private authService: AuthService, private animation: BackgroundAnimationService) { }
+
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation()
+    // this.animation.initializeGraphAnimation()
   }
 
   onSubmit() {

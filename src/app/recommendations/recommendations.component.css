@@ -1,80 +1,102 @@
-.recommendations-gift-cards-container {
+/* Contenedor de Recomendaciones con Grid */
+.recommendations {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual ancho */
-  grid-template-rows: auto; /* Una fila automática */
-  gap: 16px; /* Espacio entre tarjetas */
-  padding: 20px;
-  max-width: 30%;
-  background-color: var(--primary-color);
-  border-radius: 2px;
+  grid-template-columns: 2fr 2fr; /* Dos columnas por defecto */
+  grid-gap: 2rem;
+  row-gap: 3rem;
+  width: 70%;
+  border-radius: 10px;
+  justify-items: center;
+}
+
+.recommendations-gift-cards-container {
+  display: contents;
 }
 
 .gift-card {
-  position: relative;
-  width: 9.37rem;
-  background: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Bordes del color del texto */
-  border-radius: 2px; /* Bordes cuadrados */
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
-  transition: transform 0.2s;
+  width: 90%; /* Ocupa todo el espacio de la celda */
+  max-width: 250px;
+  background-color: rgba(2, 21, 38, 0.8);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Glow shadow effect */
 }
 
 .gift-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-10px); /* Floating effect */
+  border-color: rgba(255, 255, 255, 0.7); /* Brighten border on hover */
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); /* Stronger glow effect */
 }
 
 .gift-card-image {
   width: 100%;
-  height: 120px;
+  height: 150px; /* Fija la altura de la imagen para uniformar el tamaño */
   object-fit: cover;
-  background-color: #1A2A40; /* Fondo retro para imágenes */
-}
-
-.gift-card-content {
-  padding: 10px;
-  text-align: center;
-  min-height: 80px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Shadow around image */
 }
 
 .gift-card-title {
-  font-size: 0.875rem;
-  margin: 5px 0;
-  font-weight: bold;
-  color: #88D66C; /* Texto en color verde claro */
+  font-size: 1.3rem;
+  color: #00d4ff; /* Neon turquoise text */
+  margin-bottom: 10px;
+  text-transform: uppercase; /* Bold space-themed text */
 }
 
 .gift-card-price {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 10px 0;
-  background: #1261A0; /* Azul retro */
-  color: var(--primary-color); /* Texto oscuro */
-  text-align: center;
-  font-weight: bold;
   font-size: 1.1rem;
-  box-sizing: border-box;
+  color: #88D66C; /* Green text */
+  font-weight: bold;
 }
 
-.gift-card-price::before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 4px;
-  background: #414141; /* Línea superior */
-  position: absolute;
-  top: -4px;
-  left: 0;
-}
-
+/* Ajustes para móviles */
 @media (max-width: 768px) {
-  .recommendations-gift-cards-container {
-    grid-template-columns: repeat(1, 1fr); /* Una columna en pantallas pequeñas */
+  .recommendations {
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: 2.5rem;
+    padding: 2.5rem;
+    margin: auto;
+    justify-content: center;
   }
 
-  .gift-cards-container {
-    padding: 0;
-    margin-top: 20px;
+  .gift-card {
+    width: 100%; /* Asegura que las tarjetas ocupen todo el espacio disponible */
+    max-width: none; /* Elimina el tamaño máximo en móviles */
+  }
+
+  .gift-card-image {
+    height: 150px; /* Mantiene la altura de la imagen en pantallas pequeñas */
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+
+  .gift-card-title {
+    font-size: 1rem;
+  }
+
+  .gift-card-price {
+    font-size: 1.2rem;
+  }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .recommendations {
+    grid-template-rows: repeat(2, 2fr);; /* Dos columnas en una sola fila */
+    grid-gap: 8px;
+    justify-content: center;
+  }
+
+  .gift-card {
+    width: 100%;
+  }
+
+  .gift-card-image {
+    height: 120px; /* Ajuste de altura para pantallas más pequeñas */
   }
 }

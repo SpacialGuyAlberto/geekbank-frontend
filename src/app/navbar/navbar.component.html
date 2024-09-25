@@ -1,11 +1,13 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="showNavbar">
   <div class="navbar-brand">
     <span class="app-name" routerLink="/home">Astralis</span>
   </div>
-
+  <div class="navbar-center">
+    <app-search-bar *ngIf="showSearchBar"></app-search-bar> <!-- Ocultar si es login o register -->
+  </div>
   <div class="navbar-links">
-    <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">{{ 'LOGIN' | translate }}</a>
-    <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">{{ 'REGISTER' | translate }}</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
     <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
     <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
 
@@ -16,17 +18,5 @@
       </a>
     </li>
 
-    <!-- Dropdown de selección de idioma -->
-<!--    <div class="language-dropdown">-->
-<!--      <button class="language-btn" (click)="toggleLanguageMenu()">-->
-<!--        <mat-icon>language</mat-icon>-->
-<!--        {{ 'LANGUAGE' | translate }}-->
-<!--      </button>-->
-<!--      <ul class="language-menu" *ngIf="isLanguageMenuOpen">-->
-<!--        <li (click)="useLanguage('en')" [class.active]="selectedLanguage === 'en'">English</li>-->
-<!--        <li (click)="useLanguage('es')" [class.active]="selectedLanguage === 'es'">Español</li>-->
-<!--        <li (click)="useLanguage('de')" [class.active]="selectedLanguage === 'de'">Deutsch</li>-->
-<!--      </ul>-->
-<!--    </div>-->
   </div>
 </nav>

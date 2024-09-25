@@ -15,13 +15,14 @@ import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.compon
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
-  { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeComponent},
   { path: 'activate', component: ActivationComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
   { path: '', redirectTo: '/register', pathMatch: 'full' },
-  { path: 'user-details', component: UserDetailsComponent },
+  { path: 'user-details', component: UserDetailsComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
   { path:'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
+  { path: '**', redirectTo: '/home' }
 ];

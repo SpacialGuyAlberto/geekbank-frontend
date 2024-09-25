@@ -27,7 +27,7 @@ html, body {
 
 .login-container {
   position: relative;
-  margin: 3rem auto;
+  margin: 10rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,5 +169,61 @@ button:focus {
   button {
     font-size: 1rem;
     padding: 12px 20px;
+  }
+}
+
+/* Ajustar el espacio para el botón de Google */
+#google-signin-button {
+  margin-top: 20px; /* Espaciado mayor entre el botón de Login y Google */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease; /* Animación para hacerlo suave */
+}
+
+#google-signin-button:hover {
+  transform: scale(1.05); /* Efecto de hover para que el botón crezca ligeramente */
+}
+
+#google-signin-button::after {
+  content: 'Continue with Google'; /* Añadir texto descriptivo */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7); /* Color de texto acorde con el tema espacial */
+  background-color: transparent;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+/* Icono personalizado para Google */
+#google-signin-button img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px; /* Margen entre el logo y el texto */
+}
+
+/* Añadir sombra para el botón de Google */
+#google-signin-button {
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
+  padding: 10px 20px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Efecto de neón */
+}
+
+#google-signin-button:hover {
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Aumentar sombra al hacer hover */
+}
+
+/* Para dispositivos móviles */
+@media (max-width: 480px) {
+  #google-signin-button::after {
+    font-size: 0.9rem; /* Ajustar tamaño de fuente en pantallas pequeñas */
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  #google-signin-button::after {
+    font-size: 1rem; /* Ajuste del tamaño del texto para tablets */
   }
 }

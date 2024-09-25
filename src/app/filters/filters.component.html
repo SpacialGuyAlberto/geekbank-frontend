@@ -1,14 +1,10 @@
-<div class="filter-toggle" (click)="toggleFilter()">
-  <i class="fa fa-filter"></i>
-</div>
-
-<div class="filter-container" [ngClass]="{'open': isFilterOpen}">
+<div class="filter-container">
   <div class="filters-container">
     <h3>Filtros</h3>
 
     <label>
       <input type="checkbox" [(ngModel)]="filters.hideOutOfStock">
-      Ocultar Fuera de Stock
+       Hide Out of Stock
     </label>
 
     <div>

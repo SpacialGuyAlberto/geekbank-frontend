@@ -29,13 +29,73 @@ body, html {
   justify-content: center;
   align-items: stretch;
   gap: 16px;
-  margin: 20px auto;
+  margin: 10rem auto;
   max-width: 80%;
-  background-color: var(--primary-color); /* Fondo principal */
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
   color: #88D66C;
+  border: 2px solid rgba(255, 255, 255, 0.3); /* Soft neon border */
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
   z-index: 2;
+  padding: 20px;
 }
 
+.not-logged-in-message {
+  text-align: center;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.4); /* Fondo negro translúcido */
+  color: #ff4d4d; /* Letra roja */
+  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
+  border-radius: 15px; /* Bordes redondeados */
+  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); /* Sombra roja ligera */
+  margin-top: 20px;
+  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
+  transition: all 0.3s ease; /* Transiciones suaves */
+}
+
+.not-logged-in-message h2 {
+  font-size: 1.5rem;
+  color: #ff4d4d; /* Título en rojo */
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5); /* Resplandor ligero */
+  margin-bottom: 10px;
+}
+
+.not-logged-in-message p {
+  font-size: 1rem;
+  color: rgba(255, 77, 77, 0.8); /* Texto en rojo más claro */
+  margin-bottom: 15px;
+}
+
+/* Botón de login */
+.login-btn {
+  background-color: transparent; /* Fondo transparente */
+  color: #ff4d4d; /* Texto en rojo */
+  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
+}
+
+.login-btn:hover {
+  background-color: rgba(255, 77, 77, 0.7); /* Fondo rojo más oscuro en hover */
+  color: #ffffff; /* Texto blanco en hover */
+  transform: scale(1.1); /* Efecto de aumento en hover */
+  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); /* Resplandor rojo en hover */
+}
+
+/* Ajustes de responsividad */
+@media (max-width: 768px) {
+  .not-logged-in-message {
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .login-btn {
+    padding: 8px 16px;
+  }
+}
 .gift-card-image-container {
   flex: 1;
   max-width: 50%;
@@ -50,15 +110,18 @@ body, html {
   width: 100%;
   height: auto;
   object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 .gift-card-info-card {
   flex: 0.2;
-  background-color: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Bordes verdes claros */
-  border-radius: 2px;
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -140,18 +203,17 @@ body, html {
 
 button {
   padding: 15px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
+  border: 2px solid #88D66C;
+  border-radius: 10px;
   font-size: 1rem;
   cursor: pointer;
-  width: 100%;
-  flex: 1;
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
+  font-family: 'Courier New', Courier, monospace;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-to-cart {
   background-color: #88D66C; /* Fondo verde claro */
-  color: 0C2D57; /* Texto oscuro */
+  color: #0C2D57; /* Texto oscuro */
 }
 
 .add-to-cart:hover {
@@ -174,4 +236,15 @@ button {
 
 .back:hover {
   background-color: #163b70; /* Cambio a azul acento más oscuro en hover */
+}
+
+@media (max-width: 768px) {
+  .gift-card-image-container,
+  .gift-card-info-card {
+    max-width: 100%;
+  }
+
+  .button-container {
+    width: 100%;
+  }
 }

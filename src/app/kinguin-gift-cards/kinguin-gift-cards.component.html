@@ -1,42 +1,43 @@
-<html lang="en">
+
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas>
 <div class="content-container">
-  <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
-  <app-filters (filteredResults)="handleSearchResults($event)"></app-filters>
-
-  <div class="highlight-recommendations">
-    <app-highlights class="highlights"></app-highlights>
-    <app-recommendations class="recommendations"></app-recommendations>
-  </div>
+<!--  <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>-->
 
   <div class="main-content">
-    <div class="centered-gift-cards">
     <div class="gift-cards-container">
-      <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
-        <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+      <div *ngFor="let card of displayedGiftCards" class="gift-card" (click)="viewDetails(card)">
+        <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
         <div class="gift-card-content">
           <h3 class="gift-card-title">{{ card.name }}</h3>
         </div>
         <div class="gift-card-price">
-          <span [ngModel]="exchangeRate">{{ (card.price *  exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>
+          <span [ngModel]="exchangeRate">{{ (card.price * exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>
         </div>
       </div>
     </div>
   </div>
+
+<!--  <div class="pagination">-->
+<!--    <button (click)="goToPage(1)">First</button>-->
+<!--    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>-->
+<!--    <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">-->
+<!--      <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>-->
+<!--    </span>-->
+<!--    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>-->
+<!--    <button (click)="goToPage(totalPages)">Last</button>-->
+<!--  </div>-->
+
+  <div class="load-more-container">
+    <button (click)="loadMore()" class="load-more-button">
+    <span class="material-symbols-outlined">
+      expand_more
+    </span>
+    </button>
   </div>
 
-  <div class="pagination">
-    <button (click)="goToPage(1)">First</button>
-    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
-    <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
-      <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
-    </span>
-    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
-    <button (click)="goToPage(totalPages)">Last</button>
   </div>
   </div>
-  </div>
-</html>
+
 
 

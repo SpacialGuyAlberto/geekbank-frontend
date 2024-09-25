@@ -1,9 +1,38 @@
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
+</div>
+
 <div class="home-container">
-  <!-- Otros contenidos de la vista de Home -->
+  <!-- Wrapper para todo el contenido -->
   <div class="gift-cards-wrapper">
-    <div class="gift-cards-container">
+
+
+    <!-- Destacados y Recomendaciones -->
+    <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
+      <div class="highlights-section">
+        <app-highlights></app-highlights>
+      </div>
+      <div class="recommendations-section">
+        <app-recommendations></app-recommendations>
+      </div>
+    </div>
+
+    <!-- Filtros y Gift Cards en modo móvil -->
+    <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
+      <!-- Filtro que se muestra al hacer toggle -->
+      <div class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
+        <app-filters></app-filters>
+      </div>
+
+      <!-- Gift Cards -->
+      <div class="giftcard-section">
+        <app-kinguin-gift-cards></app-kinguin-gift-cards>
+      </div>
+    </div>
+
+    <!-- Gift Cards siempre visibles si se muestran los highlights -->
+    <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
       <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
   </div>
 </div>
-
