@@ -5,7 +5,7 @@ body, html {
   height: 100%;
   overflow: hidden;
   font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
+  background-color: #0B0D19; /* Fondo oscuro */
 }
 
 .graph-container {
@@ -28,223 +28,204 @@ body, html {
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 16px;
-  margin: 10rem auto;
+  gap: 1rem;
+  margin: 5rem auto;
   max-width: 80%;
-  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
-  color: #88D66C;
-  border: 2px solid rgba(255, 255, 255, 0.3); /* Soft neon border */
-  border-radius: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
+  background-color: rgba(10, 20, 40, 0.7); /* Fondo translúcido más suave */
+  color: #A0E4FF; /* Texto en azul claro */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4); /* Sombra más suave */
   z-index: 2;
-  padding: 20px;
+  padding: 1rem;
+  flex-direction: column; /* Ajusta a columna por defecto */
 }
 
 .not-logged-in-message {
   text-align: center;
-  padding: 20px;
-  background-color: rgba(0, 0, 0, 0.4); /* Fondo negro translúcido */
-  color: #ff4d4d; /* Letra roja */
-  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
-  border-radius: 15px; /* Bordes redondeados */
-  box-shadow: 0 4px 15px rgba(255, 77, 77, 0.3); /* Sombra roja ligera */
-  margin-top: 20px;
-  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
-  transition: all 0.3s ease; /* Transiciones suaves */
+  padding: 1.5rem;
+  background-color: rgba(255, 77, 77, 0.1); /* Fondo translúcido con rojo claro */
+  color: #ff3333; /* Texto en rojo */
+  border: 0.125rem solid rgba(255, 77, 77, 0.7); /* Borde rojo translúcido */
+  border-radius: 0.9375rem;
+  box-shadow: 0 0.625rem 1.25rem rgba(255, 77, 77, 0.4); /* Sombra roja */
+  margin-top: 1.25rem;
+  transition: all 0.3s ease;
+  z-index: 3;
 }
 
 .not-logged-in-message h2 {
   font-size: 1.5rem;
-  color: #ff4d4d; /* Título en rojo */
-  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5); /* Resplandor ligero */
-  margin-bottom: 10px;
+  color: #ff4d4d; /* Rojo más claro */
+  text-shadow: 0 0 0.625rem rgba(255, 77, 77, 0.5); /* Resplandor ligero */
+  margin-bottom: 0.625rem;
 }
 
 .not-logged-in-message p {
   font-size: 1rem;
-  color: rgba(255, 77, 77, 0.8); /* Texto en rojo más claro */
-  margin-bottom: 15px;
+  color: rgba(255, 77, 77, 0.8);
+  margin-bottom: 0.9375rem;
 }
 
 /* Botón de login */
 .login-btn {
-  background-color: transparent; /* Fondo transparente */
-  color: #ff4d4d; /* Texto en rojo */
-  border: 1px solid rgba(255, 77, 77, 0.6); /* Borde rojo más discreto */
-  padding: 10px 20px;
-  border-radius: 8px;
+  background-color: rgba(255, 77, 77, 0.1); /* Fondo translúcido */
+  color: #ff4d4d; /* Texto rojo */
+  border: 0.125rem solid rgba(255, 77, 77, 0.7); /* Borde translúcido */
+  padding: 0.9375rem 1.25rem;
+  border-radius: 0.625rem;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-  font-family: 'Courier New', Courier, monospace; /* Fuente retro */
 }
 
 .login-btn:hover {
-  background-color: rgba(255, 77, 77, 0.7); /* Fondo rojo más oscuro en hover */
-  color: #ffffff; /* Texto blanco en hover */
-  transform: scale(1.1); /* Efecto de aumento en hover */
-  box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); /* Resplandor rojo en hover */
+  background-color: rgba(255, 77, 77, 0.2); /* Fondo rojo translúcido en hover */
+  color: #ffffff;
+  transform: scale(1.05); /* Aumento ligero */
+  box-shadow: 0 0.625rem 0.625rem rgba(255, 77, 77, 0.5);
 }
 
-/* Ajustes de responsividad */
-@media (max-width: 768px) {
-  .not-logged-in-message {
-    padding: 15px;
-    border-radius: 12px;
-  }
-
-  .login-btn {
-    padding: 8px 16px;
+/* Información de la gift card alineada en pantallas grandes */
+@media (min-width: 769px) {
+  .gift-card-details-container {
+    flex-direction: row;
   }
 }
+
 .gift-card-image-container {
   flex: 1;
   max-width: 50%;
-  background-color: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Bordes verdes claros */
-  border-radius: 2px; /* Bordes cuadrados */
+  background-color: rgba(5, 15, 35, 0.9); /* Fondo translúcido */
+  border: 0.125rem solid rgba(136, 214, 108, 0.2); /* Borde translúcido verde claro */
+  border-radius: 0.125rem;
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra intensa */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
 }
 
 .gift-card-image {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  border-radius: 0.625rem;
+  margin-bottom: 0.625rem;
+  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3);
 }
 
 .gift-card-info-card {
-  flex: 0.2;
-  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  flex: 1;
+  background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  max-width: 400px;
+  max-width: 100%;
 }
 
 .gift-card-title {
   font-size: 1.5rem;
-  color: var(--text-color); /* Color del texto claro */
-  margin-bottom: 10px;
+  color: #A0E4FF; /* Azul claro suave */
+  margin-bottom: 0.625rem;
   text-align: center;
 }
 
 .gift-card-region {
   display: flex;
   align-items: center;
-  color: var(--text-color); /* Color del texto claro */
+  color: #A0E4FF;
   font-weight: bold;
 }
 
 .check-icon {
   color: #88D66C; /* Icono en verde claro */
-  margin-right: 8px; /* Espacio entre el icono y el texto */
-}
-
-.gift-card-title, .gift-card-price {
-  margin-bottom: 5px; /* Reduce el espacio debajo del título y el precio */
+  margin-right: 0.5rem;
 }
 
 .gift-card-price {
-  font-size: 3rem;
-  color: var(--highlight-color); /* Color azul retro */
+  font-size: 2.5rem;
+  color: #7EC8E3; /* Azul suave retro */
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1rem;
   text-align: center;
 }
 
 .add-info-content {
-  padding: 20px;
+  padding: 1rem;
   text-align: center;
-  background-color: #021526; /* Fondo oscuro retro */
+  background-color: rgba(5, 15, 35, 0.9); /* Fondo translúcido */
 }
 
 .add-info-title {
   font-size: 1.5rem;
-  color: var(--text-color); /* Color del texto claro */
-  margin: 10px 0 5px;
+  color: #A0E4FF;
+  margin: 0.625rem 0 0.3125rem;
 }
 
 .add-info-price {
   font-size: 1.25rem;
-  color: var(--highlight-color); /* Color azul retro */
+  color: #7EC8E3;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 }
 
-@media (max-width: 768px) {
-  .highlight-card-image {
-    height: 200px; /* Ajusta la altura de la imagen en pantallas más pequeñas */
-  }
-
-  .add-info-title {
-    font-size: 1.2rem;
-  }
-
-  .add-info-price {
-    font-size: 1rem;
-  }
-}
-
-.button-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 70%;
-  margin-bottom: 4.7rem;
-}
-
-button {
-  padding: 15px;
-  border: 2px solid #88D66C;
-  border-radius: 10px;
-  font-size: 1rem;
-  cursor: pointer;
-  font-family: 'Courier New', Courier, monospace;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.add-to-cart {
-  background-color: #88D66C; /* Fondo verde claro */
-  color: #0C2D57; /* Texto oscuro */
-}
-
-.add-to-cart:hover {
-  background-color: #76b35a; /* Cambio a verde más oscuro en hover */
-}
-
-.buy-now {
-  background-color: #1261A0; /* Fondo azul retro */
-  color: var(--primary-color); /* Texto oscuro */
-}
-
-.buy-now:hover {
-  background-color: #104f87; /* Cambio a azul más oscuro en hover */
-}
-
-.back {
-  background-color: #1D4B8F; /* Fondo azul acento */
-  color: var(--primary-color); /* Texto oscuro */
-}
-
-.back:hover {
-  background-color: #163b70; /* Cambio a azul acento más oscuro en hover */
-}
-
+/* Ajustes responsivos */
 @media (max-width: 768px) {
   .gift-card-image-container,
   .gift-card-info-card {
     max-width: 100%;
   }
 
-  .button-container {
-    width: 100%;
+  .gift-card-info-card {
+    margin-top: 1.5rem;
   }
+
+  .gift-card-title {
+    font-size: 1.2rem;
+  }
+
+  .gift-card-price {
+    font-size: 2rem;
+  }
+
+  .check-icon {
+    font-size: 1.5rem;
+  }
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  width: 100%;
+  margin-bottom: 2.9375rem;
+}
+
+button {
+  padding: 0.9375rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.add-to-cart {
+  background-color: rgba(136, 214, 108, 0.2); /* Fondo verde translúcido */
+  color: #88D66C; /* Verde claro */
+}
+
+.add-to-cart:hover {
+  background-color: rgba(118, 179, 90, 0.3); /* Verde más oscuro en hover */
+}
+
+.buy-now {
+  background-color: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
+  color: #A0E4FF; /* Azul claro */
+}
+
+.buy-now:hover {
+  background-color: rgba(16, 79, 135, 0.3); /* Azul más oscuro en hover */
 }

@@ -5,7 +5,7 @@ body, html {
   height: 100%;
   overflow: hidden;
   font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
+  background-color: #0B0D19; /* Fondo oscuro */
 }
 
 .graph-container {
@@ -26,22 +26,22 @@ body, html {
 
 .cart-container {
   width: 80%;
-  margin: 20px auto;
-  background: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-  padding: 20px;
+  margin: 10rem auto;
+  background: rgba(10, 20, 40, 0.7); /* Fondo translúcido más suave */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 1rem; /* Bordes redondeados */
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4); /* Sombra suave */
+  padding: 2rem;
   font-family: 'Courier New', Courier, monospace;
-  color: #88D66C; /* Texto verde claro */
-  position: relative; /* Agregar position para que z-index funcione */
-  z-index: 2; /* Aumentar z-index para que esté encima del canvas */
+  color: #A0E4FF; /* Texto azul claro suave */
+  position: relative;
+  z-index: 2; /* Para que esté por encima del canvas */
 }
 
 .cart-container h2 {
   text-align: left;
-  color: #88D66C; /* Color del texto verde claro */
-  margin-bottom: 20px;
+  color: #A0E4FF; /* Color del texto azul claro */
+  margin-bottom: 1.25rem;
 }
 
 ul {
@@ -53,13 +53,13 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
-  transition: transform 0.3s ease-in-out; /* Añade una animación de transformación */
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 1rem; /* Bordes redondeados */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); /* Sombra más suave */
+  transition: transform 0.3s ease-in-out; /* Animación de transformación */
 }
 
 .cart-item:hover {
@@ -67,46 +67,54 @@ ul {
 }
 
 .gift-card-image {
-  width: 100px; /* Ancho de la imagen */
-  height: auto; /* Mantener la proporción */
-  margin-right: 15px; /* Espacio a la derecha */
-  border-radius: 2px; /* Bordes cuadrados */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
+  width: 9rem; /* Imagen más grande */
+  height: auto;
+  margin-right: 1.5rem; /* Espacio a la derecha */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido suave */
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); /* Sombra más suave */
 }
 
 .item-details {
   flex: 1;
-  color: #88D66C; /* Texto verde claro */
+  color: #A0E4FF; /* Texto azul claro suave */
 }
 
 .item-details p {
-  margin: 5px 0;
+  margin: 0.3125rem 0;
 }
 
 .item-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 1rem;
 }
 
 .item-actions button {
-  padding: 5px 10px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  background: #4F1787; /* Fondo púrpura oscuro */
-  color: #88D66C; /* Texto verde claro */
+  padding: 0.5rem 1rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 0.5rem; /* Bordes redondeados */
+  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
+  color: #A0E4FF; /* Texto azul claro */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
-  position: relative; /* Para la animación de brillo */
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave */
+  font-family: 'Press Start 2P', cursive;
+  position: relative;
   z-index: 0;
-  overflow: hidden; /* Ocultar cualquier exceso */
+  overflow: hidden;
+}
+
+.quantity-display {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #A0E4FF;
+  text-align: center;
+  width: 2rem;
 }
 
 .item-actions button:hover {
-  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
-  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
+  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
 }
 
 .item-actions button:before {
@@ -116,7 +124,7 @@ ul {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(193, 224, 255, 0.5), transparent);
   transition: all 0.5s ease-in-out;
   z-index: -1;
 }
@@ -125,37 +133,33 @@ ul {
   left: 100%;
 }
 
-.item-actions button:active {
-  background: #12013B; /* Púrpura aún más oscuro en active */
-}
-
 .total-price-section {
   text-align: right;
-  color: #88D66C; /* Texto verde claro */
-  margin-top: 20px;
+  color: #A0E4FF; /* Texto azul claro */
+  margin-top: 1.5rem;
 }
 
 .total-price-section h3 {
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
 }
 
 .total-price-section button {
-  padding: 10px 20px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  background: #4F1787; /* Fondo púrpura oscuro */
-  color: #88D66C; /* Texto verde claro */
+  padding: 0.625rem 1.25rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 0.5rem;
+  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
+  color: #A0E4FF; /* Texto azul claro */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
-  position: relative; /* Para la animación de brillo */
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  font-family: 'Press Start 2P', cursive;
+  position: relative;
   z-index: 0;
-  overflow: hidden; /* Ocultar cualquier exceso */
+  overflow: hidden;
 }
 
 .total-price-section button:hover {
-  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
-  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
+  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
 }
 
 .total-price-section button:before {
@@ -165,7 +169,7 @@ ul {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(193, 224, 255, 0.5), transparent);
   transition: all 0.5s ease-in-out;
   z-index: -1;
 }
@@ -180,38 +184,38 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente más oscuro */
+  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .dialog {
-  background: #021526; /* Fondo oscuro retro */
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  padding: 20px;
+  background: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 1rem;
+  padding: 1.5rem;
   text-align: center;
-  color: #88D66C; /* Texto verde claro */
+  color: #A0E4FF; /* Texto azul claro */
 }
 
 .dialog button {
-  padding: 10px 20px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  border-radius: 2px; /* Bordes cuadrados */
-  background: #4F1787; /* Fondo púrpura oscuro */
-  color: #88D66C; /* Texto verde claro */
+  padding: 0.625rem 1.25rem;
+  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border-radius: 0.5rem;
+  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
+  color: #A0E4FF; /* Texto azul claro */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición para fondo y sombra */
-  font-family: 'Press Start 2P', cursive; /* Fuente retro */
-  position: relative; /* Para la animación de brillo */
+  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  font-family: 'Press Start 2P', cursive;
+  position: relative;
   z-index: 0;
-  overflow: hidden; /* Ocultar cualquier exceso */
+  overflow: hidden;
 }
 
 .dialog button:hover {
-  background: #ED5AB3; /* Cambio a color neón rosa al pasar el ratón */
-  box-shadow: 0 0 10px #ED5AB3, 0 0 20px #ED5AB3, 0 0 30px #ED5AB3, 0 0 40px #ED5AB3; /* Efecto neón */
+  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
+  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
 }
 
 .dialog button:before {
@@ -221,7 +225,7 @@ ul {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(237, 90, 179, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(193, 224, 255, 0.5), transparent);
   transition: all 0.5s ease-in-out;
   z-index: -1;
 }
@@ -230,10 +234,36 @@ ul {
   left: 100%;
 }
 
+.material-symbols-outlined {
+  cursor: pointer;
+  font-size: 1.5rem; /* Tamaño del ícono */
+  color: #FF6666; /* Color rojo suave */
+  transition: color 0.3s ease, transform 0.3s ease; /* Transición para color y transformación */
+}
+
+.material-symbols-outlined:hover {
+  color: #FF3333; /* Cambio a un rojo más fuerte en hover */
+  transform: scale(1.1); /* Ligera ampliación al hacer hover */
+}
+
+mat-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #FF6666;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+mat-icon:hover {
+  color: #FF3333;
+  transform: scale(1.1);
+}
+
+
+/* Responsividad */
 @media (max-width: 768px) {
   .cart-container {
-    width: 95%;
-    padding: 15px;
+    width: 85%;
+    padding: 1rem;
   }
 
   .cart-item {
@@ -242,8 +272,8 @@ ul {
   }
 
   .gift-card-image {
-    width: 80px; /* Ajustar el tamaño para pantallas pequeñas */
-    margin-bottom: 10px;
+    width: 8rem; /* Ajustar tamaño */
+    margin-bottom: 1rem;
   }
 
   .item-details, .item-actions {
@@ -256,14 +286,14 @@ ul {
 
   .total-price-section {
     text-align: center;
-    margin-top: 15px;
+    margin-top: 1rem;
   }
 }
 
 @media (max-width: 480px) {
   .cart-container {
-    width: 100%;
-    padding: 10px;
+    width: 85%;
+    padding: 0.625rem;
   }
 
   .cart-item {
@@ -272,7 +302,7 @@ ul {
   }
 
   .gift-card-image {
-    width: 70px; /* Ajustar el tamaño para pantallas más pequeñas */
+    width: 7rem; /* Ajustar tamaño */
   }
 
   .item-actions {
@@ -281,11 +311,11 @@ ul {
 
   .total-price-section {
     text-align: center;
-    margin-top: 10px;
+    margin-top: 0.625rem;
   }
 
   .total-price-section button {
     width: 100%;
-    padding: 10px 0;
+    padding: 0.625rem 0;
   }
 }

@@ -9,7 +9,7 @@
       </div>
       <div>
         <label>Total:</label>
-        <input type="text" name="total" [(ngModel)]="paymentDetails.total" readonly class="retro-input" />
+        <p class="total-amount">{{ (paymentDetails.total).toFixed(2) }} LPS</p> <!-- Aquí el total ya no es un input -->
       </div>
 
       <!-- Mostrar mensaje en lugar del botón dependiendo del estado de la transacción -->

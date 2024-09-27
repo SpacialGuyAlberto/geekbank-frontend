@@ -1,12 +1,12 @@
 /* Estilos generales */
 .navbar {
   display: grid;
-  grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  padding: 10px 20px;
+  padding: 1rem 2rem; /* Adaptado a rem */
   background-color: #0A0A15;
-  border-bottom: 2px solid #0E1C28;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  border-bottom: 0.125rem solid #0E1C28;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.7);
   width: 100%;
   position: fixed;
   top: 0;
@@ -16,7 +16,7 @@
 /* Alineación del logo */
 .navbar-brand {
   font-size: 1.7rem;
-  color: #00D4FF;
+  color: #A0E4FF; /* Color cristalino suave */
   font-family: 'Courier New', Courier, monospace;
   cursor: pointer;
 }
@@ -25,105 +25,90 @@
 .navbar-center {
   display: flex;
   justify-content: center;
-  padding: 0 20px;
-  max-width: 100%; /* Ajuste al tamaño máximo del contenedor */
+  padding: 0 2rem;
+  max-width: 100%;
 }
 
 /* Alineación de los íconos a la derecha */
 .navbar-links {
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* Mover más a la izquierda */
+  gap: 0.5rem; /* Reducir el espacio entre los íconos */
 }
 
 /* Estilos de enlaces */
 .navbar .nav-link {
-  color: #00FFB9;
+  color: #A0E4FF; /* Color cristalino */
   font-family: 'Courier New', Courier, monospace;
-  margin-right: 20px;
+  margin-right: 2rem;
   font-size: 1.1rem;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar .nav-link:hover {
-  color: #FF5733;
+  color: #FF957C; /* Color suave de hover */
 }
 
 /* Estilos de íconos */
 .clickable-icon {
-  color: #88D66C;
+  color: #A0E4FF; /* Color uniforme cristalino cuando loggeado */
   font-size: 1.7rem;
-  margin-right: 20px;
   cursor: pointer;
   transition: color 0.3s ease;
+  margin-right: 0.5rem; /* Reducir el margen derecho para acercarlos más */
 }
 
 .clickable-icon:hover {
-  color: #FF5733;
+  color: #FF957C; /* Suave hover para íconos */
 }
 
 /* Estilo para el contador del carrito */
 .cart-icon-container {
   position: relative;
+  right: 1rem;
 }
 
 .cart-count {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -0.625rem;
+  right: -0.625rem;
   background-color: #EB3678;
   color: white;
   font-size: 0.8rem;
-  padding: 2px 5px;
+  padding: 0.125rem 0.3125rem;
   border-radius: 50%;
-}
-
-.language-btn {
-  background: transparent;
-  border: none;
-  color: #88D66C;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  font-family: 'Courier New', Courier, monospace;
 }
 
 /* Adaptaciones para pantallas pequeñas */
 @media (max-width: 768px) {
   .navbar {
-    grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
-    grid-template-rows: auto;
-    align-items: center;
-    padding: 10px;
+    padding: 1rem;
   }
 
   .navbar-brand {
     font-size: 1.5rem;
-    justify-self: start; /* Alinea el logo a la izquierda */
   }
 
   .navbar-center {
-    justify-self: center; /* Centra la barra de búsqueda */
-    padding: 10px 0;
+    padding: 1rem 0;
     width: 100%;
   }
 
   .navbar-links {
-    justify-self: end; /* Alinea los íconos a la derecha */
+    justify-content: flex-start; /* Mantener los íconos a la izquierda */
   }
 
   .clickable-icon {
-    margin-right: 10px;
+    margin-right: 0.3rem; /* Reducir aún más el espacio entre íconos */
   }
 }
 
 /* Adaptaciones específicas para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .navbar {
-    max-height: 90%;
-    grid-template-columns: auto 1fr auto; /* Mantiene las 3 columnas */
-    padding: 5px;
+    padding: 0.5rem;
   }
 
   .navbar-brand {
@@ -131,15 +116,15 @@
   }
 
   .navbar-center {
-    justify-content: center;
-    padding: 5px;
+    padding: 0.5rem;
   }
 
   .navbar-links {
-    justify-content: flex-end;
+    justify-content: flex-start; /* Alineación a la izquierda */
   }
 
   .clickable-icon {
     font-size: 1.4rem;
+    margin-right: 0.25rem; /* Reducir el espacio en pantallas pequeñas */
   }
 }

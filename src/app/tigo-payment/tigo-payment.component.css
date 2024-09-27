@@ -1,4 +1,4 @@
-/* Estilo retro general */
+/* Estilo espacial general */
 body, html {
   font-family: 'Courier New', Courier, monospace;
   background-color: #0B0D19; /* Fondo oscuro */
@@ -20,89 +20,110 @@ body, html {
   align-items: center;
 }
 
-.modal-content {
-  background-color: #1A2A40; /* Fondo retro oscuro */
-  padding: 20px;
-  border: 2px solid #1261A0; /* Borde azul */
-  color: #E1E6F1; /* Texto claro */
-  width: 320px;
-  position: relative;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Sombra suave */
+/* Total como texto, no como input */
+.total-amount {
+  font-size: 1.5rem; /* Ajusta el tamaño */
+  color: #A0E4FF; /* Mismo color que el resto del texto */
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: bold;
 }
 
+
+/* Contenido del modal */
+.modal-content {
+  background-color: rgba(10, 20, 40, 0.9); /* Fondo translúcido oscuro */
+  padding: 2rem;
+  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
+  color: #A0E4FF; /* Texto claro */
+  width: 25rem; /* Fijar un ancho más pequeño para que sea un cuadro */
+  max-width: 90%; /* Para asegurar que no se desborde en pantallas pequeñas */
+  position: relative;
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.3); /* Sombra suave */
+  border-radius: 1rem; /* Bordes redondeados */
+  text-align: center;
+}
+
+/* Icono de cerrar */
 .close {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  color: #E1E6F1; /* Color del icono de cierre */
-  font-size: 24px;
+  top: 1rem;
+  right: 1rem;
+  color: #A0E4FF; /* Color del icono de cierre */
+  font-size: 1.5rem;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .close:hover {
-  color: #FB773C; /* Naranja retro al pasar el cursor */
+  color: #7EC8E3; /* Azul claro al pasar el cursor */
 }
 
+/* Título */
 h2 {
   text-align: center;
-  margin-bottom: 20px;
-  color: #FB773C; /* Título en naranja retro */
+  margin-bottom: 1.5rem;
+  color: #7EC8E3; /* Título en azul claro */
+  font-size: 1.8rem;
 }
 
-/* Inputs y botones */
+/* Inputs */
 .retro-input {
   width: 90%;
-  padding: 10px;
-  border: 2px solid #88D66C; /* Borde verde claro */
-  background-color: #0B0D19; /* Fondo oscuro */
-  color: #E1E6F1; /* Texto claro */
-  margin-bottom: 15px;
+  padding: 0.75rem;
+  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
+  background-color: rgba(10, 20, 40, 0.8); /* Fondo oscuro translúcido */
+  color: #A0E4FF; /* Texto claro */
+  margin-bottom: 1rem;
   font-size: 1rem;
+  border-radius: 0.5rem;
 }
 
 .retro-input:focus {
-  border-color: #FB773C; /* Borde naranja al enfocar */
+  border-color: #7EC8E3; /* Borde azul claro al enfocar */
   outline: none;
 }
 
+/* Botones */
 .retro-button {
   width: 100%;
-  padding: 12px;
-  background-color: #1261A0; /* Fondo azul */
-  border: 2px solid #1D4B8F; /* Borde azul oscuro */
-  color: #E1E6F1; /* Texto claro */
+  padding: 0.75rem;
+  background-color: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
+  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
+  color: #A0E4FF; /* Texto claro */
   cursor: pointer;
   font-size: 1rem;
   text-transform: uppercase;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 0.5rem;
 }
 
 .retro-button:hover {
-  background-color: #1D4B8F; /* Azul más oscuro en hover */
+  background-color: rgba(18, 97, 160, 0.6); /* Azul más brillante en hover */
+  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
 }
 
 .confirmation {
-  margin-top: 20px;
-  background-color: #12223C; /* Fondo oscuro para la confirmación */
-  padding: 15px;
-  border-radius: 8px;
-  color: #88D66C; /* Texto en verde claro */
+  margin-top: 1.5rem;
+  background-color: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
+  padding: 1rem;
+  border-radius: 0.75rem;
+  color: #A0E4FF; /* Texto en azul claro */
   text-align: center;
 }
 
 /* Spinner */
 .spinner-container {
   text-align: center;
-  margin-top: 20px;
+  margin-top: 1.5rem;
 }
 
 .spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-left-color: #000;
+  border: 0.25rem solid rgba(0, 0, 0, 0.1);
+  border-left-color: #A0E4FF;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   animation: spin 1s linear infinite;
 }
 
@@ -111,3 +132,31 @@ h2 {
   100% { transform: rotate(360deg); }
 }
 
+/* Responsividad */
+@media (max-width: 768px) {
+  .modal-content {
+    width: 80%; /* Reducir el tamaño para pantallas pequeñas */
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .retro-input, .retro-button {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 90%; /* Ancho adaptado para pantallas muy pequeñas */
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+
+  .retro-input, .retro-button {
+    font-size: 0.75rem;
+  }
+}

@@ -8,6 +8,7 @@ import {CartItemWithGiftcard} from "../models/CartItem";
 import {BackgroundAnimationService} from "../background-animation.service";
 import {CurrencyService} from "../currency.service";
 import {FormsModule} from "@angular/forms";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-cart',
@@ -17,7 +18,8 @@ import {FormsModule} from "@angular/forms";
     NgIf,
     RouterLink,
     TigoPaymentComponent,
-    FormsModule
+    FormsModule,
+    MatIcon
   ],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
