@@ -100,9 +100,10 @@ export class NavbarComponent implements OnInit {
 
   handleSearchResults(results: KinguinGiftCard[]): void {
     if (results.length > 0) {
-      this.closeSearchModal(); // Cierra el modal si hay resultados
+      this.closeSearchModal();
+      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } }); // Navegar al HomeComponent con el parámetro de búsqueda
     } else {
-      this.searchResultsMessage = 'No hay resultados para esta búsqueda'; // Muestra mensaje si no hay resultados
+      this.searchResultsMessage = 'No hay resultados para esta búsqueda';
     }
   }
 

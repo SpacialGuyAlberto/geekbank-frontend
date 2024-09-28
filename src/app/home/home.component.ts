@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {ActivatedRoute, RouterModule} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {HomeService} from "../home.service";
 import {FreeFireGiftCardComponent} from "../free-fire-gift-card/free-fire-gift-card.component";
@@ -11,6 +11,8 @@ import {FiltersComponent} from "../filters/filters.component";
 import {BackgroundAnimationService} from "../background-animation.service";
 import {UIStateServiceService} from "../uistate-service.service";
 import {Subscription} from "rxjs";
+import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import { KinguinService } from '../kinguin.service';
 
 
 @Component({
@@ -35,10 +37,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   isSearching: boolean = false;
   isFilterVisible: boolean = false;
   private uiStateSubscription!: Subscription;
+  searchQuery: string = '';
+  searchResults: KinguinGiftCard[] = [];
 
   constructor(
     private backgroundAnimation: BackgroundAnimationService,
-    private uiStateService: UIStateServiceService
+    private uiStateService: UIStateServiceService,
+    private route: ActivatedRoute,
+    private kinguinService: KinguinService
   ) { }
 
   ngOnInit() {
@@ -49,6 +55,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.uiStateService.showHighlights$.subscribe(show => {
       this.showHighlightsAndRecommendations = show;
+    });
+
+    this.route.queryParams.subscribe(params => {
+      if (params['search']) {
+        this.searchQuery = params['search'];
+        this.executeSearch();
+      }
     });
   }
 
@@ -66,6 +79,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.uiStateSubscription) {
       this.uiStateSubscription.unsubscribe();
+    }
+  }
+
+  executeSearch() {
+    if (this.searchQuery.trim() !== '') {
+      this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
+        this.searchResults = data;
+      });
     }
   }
 
