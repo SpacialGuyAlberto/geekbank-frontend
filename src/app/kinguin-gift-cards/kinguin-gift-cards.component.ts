@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { KinguinService } from "../kinguin.service";
@@ -11,15 +11,24 @@ import {RecommendationsComponent} from "../recommendations/recommendations.compo
 import {FiltersComponent} from "../filters/filters.component";
 import {BackgroundAnimationService} from "../background-animation.service";
 import {CurrencyService} from "../currency.service";
+import {Subscription} from "rxjs";
+import {UIStateServiceService} from "../uistate-service.service";
+
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule, PaginationComponent, FormsModule, SearchBarComponent, HighlightsComponent, RecommendationsComponent, FiltersComponent]
+  imports: [CommonModule,
+    PaginationComponent,
+    FormsModule,
+    SearchBarComponent,
+    HighlightsComponent,
+    RecommendationsComponent,
+    FiltersComponent]
 })
-export class KinguinGiftCardsComponent implements OnInit {
+export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
   giftCards: KinguinGiftCard[] = [];
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
@@ -28,17 +37,29 @@ export class KinguinGiftCardsComponent implements OnInit {
   itemsPerPage: number = 8; // Número de tarjetas por carga
   currentIndex: number = 0; // Índice para el 'Load More'
   totalItems: number = 8000;
+  isSearching: boolean = false;
+  private giftCardsSubscription!: Subscription;
 
-  constructor(private kinguinService: KinguinService, private router: Router,  private currencyService: CurrencyService) { }
+  constructor(private kinguinService: KinguinService,
+              private router: Router,
+              private currencyService: CurrencyService,
+              private cd: ChangeDetectorRef,
+              private uiStateService: UIStateServiceService
+              ) { }
 
   ngOnInit(): void {
     // this.animation.initializeGraphAnimation();
-    this.loadGiftCards(this.currentPage);
-
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
+      this.cd.detectChanges();
+    });
+
+    this.uiStateService.showHighlights$.subscribe(show => {
+      if (show){
+        this.loadGiftCards(this.currentPage)
+      }
     });
     this.fetchCurrencyExchange();
   }
@@ -86,4 +107,11 @@ export class KinguinGiftCardsComponent implements OnInit {
       this.exchangeRate = data['conversion_rate']
     });
   }
+  ngOnDestroy(): void {
+    // Cancela la suscripción cuando el componente se destruye para evitar fugas de memoria
+    if (this.giftCardsSubscription) {
+      this.giftCardsSubscription.unsubscribe();
+    }
+  }
+
 }

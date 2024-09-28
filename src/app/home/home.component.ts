@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {HomeService} from "../home.service";
@@ -10,9 +10,8 @@ import {RecommendationsComponent} from "../recommendations/recommendations.compo
 import {FiltersComponent} from "../filters/filters.component";
 import {BackgroundAnimationService} from "../background-animation.service";
 import {UIStateServiceService} from "../uistate-service.service";
+import {Subscription} from "rxjs";
 
-interface onInit {
-}
 
 @Component({
   selector: 'app-home',
@@ -29,43 +28,13 @@ interface onInit {
     FiltersComponent
   ]
 })
-// export class HomeComponent implements onInit {
-//   username: string = '';
-//   homeData: any;
-//   errorMessage: string = '';
-//
-//   constructor(private homeService: HomeService) {}
-//
-//   ngOnInit() {
-//     const storedUsername = localStorage.getItem('username');
-//
-//     if (storedUsername) {
-//       this.username = storedUsername;
-//     }
-//     this.loadHomeData();
-//   }
-//   loadHomeData(): void {
-//     this.homeService.getHomeData().subscribe(
-//       data => {
-//         this.homeData = data;
-//       },
-//       error => {
-//         if (error.status === 401) {
-//           this.errorMessage = error.error.error;
-//         } else {
-//           this.errorMessage = 'Error fetching home data';
-//         }
-//         console.error('Error fetching home data', error);
-//       }
-//     );
-//   }
-//
-// }
-export class HomeComponent implements OnInit, AfterViewInit {
+
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = '';
   showHighlightsAndRecommendations: boolean = true;
   isSearching: boolean = false;
   isFilterVisible: boolean = false;
+  private uiStateSubscription!: Subscription;
 
   constructor(
     private backgroundAnimation: BackgroundAnimationService,
@@ -84,7 +53,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // Inicializar la animación del canvas después de que se cargue la vista
     this.backgroundAnimation.initializeGraphAnimation();
   }
 
@@ -93,7 +61,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   applyFilters() {
     this.isFilterVisible = false;
-    // Aquí puedes agregar lógica adicional si es necesario al aplicar los filtros
+  }
+
+  ngOnDestroy(): void {
+    if (this.uiStateSubscription) {
+      this.uiStateSubscription.unsubscribe();
+    }
   }
 
 }

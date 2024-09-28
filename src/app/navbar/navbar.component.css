@@ -1,73 +1,90 @@
-/* Estilos generales */
+/* Navbar */
 .navbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem; /* Adaptado a rem */
+  padding: 1rem;
   background-color: #0A0A15;
   border-bottom: 0.125rem solid #0E1C28;
   box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.7);
-  width: 100%;
+  width: 100vw;
   position: fixed;
   top: 0;
   z-index: 1000;
 }
 
-/* Alineación del logo */
+/* Logo */
 .navbar-brand {
-  font-size: 1.7rem;
-  color: #A0E4FF; /* Color cristalino suave */
-  font-family: 'Courier New', Courier, monospace;
-  cursor: pointer;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: #A0E4FF;
+  margin-left: clamp(1.5rem, 10vw, 15rem);
 }
 
-/* Centro: Barra de búsqueda */
+/* Barra de búsqueda */
 .navbar-center {
+  flex: 1;
   display: flex;
   justify-content: center;
   padding: 0 2rem;
-  max-width: 100%;
 }
 
-/* Alineación de los íconos a la derecha */
+/* Links e íconos */
 .navbar-links {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Mover más a la izquierda */
-  gap: 0.5rem; /* Reducir el espacio entre los íconos */
+  gap: 1rem;
+  margin-left: auto;
+  justify-content: flex-end;
+  margin-right: clamp(1rem, 5vw, 15rem);
 }
 
-/* Estilos de enlaces */
+/* Ajustes de tamaño dinámico para los links */
+.navbar-links a,
+.navbar-links mat-icon {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  transition: transform 0.3s ease;
+}
+
+/* Links */
 .navbar .nav-link {
-  color: #A0E4FF; /* Color cristalino */
-  font-family: 'Courier New', Courier, monospace;
-  margin-right: 2rem;
-  font-size: 1.1rem;
+  color: #A0E4FF;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar .nav-link:hover {
-  color: #FF957C; /* Color suave de hover */
+  color: #FF957C;
 }
 
-/* Estilos de íconos */
+/* Íconos */
 .clickable-icon {
-  color: #A0E4FF; /* Color uniforme cristalino cuando loggeado */
-  font-size: 1.7rem;
+  color: #A0E4FF;
   cursor: pointer;
-  transition: color 0.3s ease;
-  margin-right: 0.5rem; /* Reducir el margen derecho para acercarlos más */
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .clickable-icon:hover {
-  color: #FF957C; /* Suave hover para íconos */
+  color: #FF957C;
+  transform: scale(1.1);
 }
 
-/* Estilo para el contador del carrito */
+/* Carrito */
 .cart-icon-container {
   position: relative;
-  right: 1rem;
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-icon-container a mat-icon {
+  color: #A0E4FF;
+}
+
+.cart-icon-container:hover a mat-icon {
+  color: #FF957C;
+  transform: scale(1.1);
 }
 
 .cart-count {
@@ -81,7 +98,69 @@
   border-radius: 50%;
 }
 
-/* Adaptaciones para pantallas pequeñas */
+/* Modal de búsqueda */
+.search-modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+}
+
+.search-modal-content {
+  background-color: #0A0A15;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4);
+  position: relative;
+  max-width: 400px;
+  width: 80%;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Search Bar dentro del modal */
+.search-bar {
+  display: flex;
+  width: 100%;
+  border-radius: 25px;
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.2rem;
+  outline: none;
+  border-radius: 25px;
+}
+
+.search-bar button {
+  margin-left: -35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1);
+}
+
+/* Responsividad */
 @media (max-width: 768px) {
   .navbar {
     padding: 1rem;
@@ -89,23 +168,27 @@
 
   .navbar-brand {
     font-size: 1.5rem;
+    margin-left: clamp(1rem, 3vw, 5rem);
   }
 
   .navbar-center {
-    padding: 1rem 0;
-    width: 100%;
+    display: none; /* Oculta la barra de búsqueda en pantallas pequeñas */
   }
 
   .navbar-links {
-    justify-content: flex-start; /* Mantener los íconos a la izquierda */
+    gap: 0.5rem;
+    margin-right: clamp(1rem, 3vw, 5rem);
   }
 
   .clickable-icon {
-    margin-right: 0.3rem; /* Reducir aún más el espacio entre íconos */
+    font-size: 1.4rem;
+  }
+
+  .cart-icon-container {
+    font-size: 1.4rem;
   }
 }
 
-/* Adaptaciones específicas para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .navbar {
     padding: 0.5rem;
@@ -115,16 +198,16 @@
     font-size: 1.2rem;
   }
 
-  .navbar-center {
-    padding: 0.5rem;
-  }
-
   .navbar-links {
-    justify-content: flex-start; /* Alineación a la izquierda */
+    gap: 0.3rem;
+    margin-right: clamp(0.5rem, 2vw, 3rem);
   }
 
   .clickable-icon {
-    font-size: 1.4rem;
-    margin-right: 0.25rem; /* Reducir el espacio en pantallas pequeñas */
+    font-size: 1.2rem;
+  }
+
+  .cart-icon-container {
+    font-size: 1.2rem;
   }
 }
