@@ -1,6 +1,6 @@
 <nav class="navbar" *ngIf="showNavbar">
   <div class="navbar-brand">
-    <span class="app-name" routerLink="/home">Astralis</span>
+    <span class="app-name" (click)="goToHome()" style="cursor: pointer;">Astralis</span>
   </div>
 
   <!-- Barra de búsqueda visible solo en pantallas grandes -->

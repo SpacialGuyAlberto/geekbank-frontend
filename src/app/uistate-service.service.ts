@@ -14,4 +14,5 @@ export class UIStateServiceService {
   setShowHighlights(value: boolean) {
     this.showHighlightsSubject.next(value);
   }
+
 }

@@ -10,6 +10,8 @@ import { ChangeDetectorRef } from '@angular/core';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import {UIStateServiceService} from "../uistate-service.service";
+
 
 @Component({
   selector: 'app-navbar',
@@ -43,7 +45,8 @@ export class NavbarComponent implements OnInit {
     private cartService: CartService,
     protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private uiStateService: UIStateServiceService
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -105,6 +108,11 @@ export class NavbarComponent implements OnInit {
     } else {
       this.searchResultsMessage = 'No hay resultados para esta búsqueda';
     }
+  }
+
+  goToHome() {
+    this.uiStateService.setShowHighlights(true); // Restablece el valor de showHighlights a true
+    this.router.navigate(['/home']); // Redirige al HomeComponent
   }
 
   checkScreenSize() {
