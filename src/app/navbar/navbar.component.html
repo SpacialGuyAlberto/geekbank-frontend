@@ -1,13 +1,20 @@
 <nav class="navbar" *ngIf="showNavbar">
   <div class="navbar-brand">
-    <span class="app-name" routerLink="/home">Astralis</span>
+    <span class="app-name" (click)="goToHome()" style="cursor: pointer;">Astralis</span>
   </div>
-  <div class="navbar-center">
-    <app-search-bar *ngIf="showSearchBar"></app-search-bar> <!-- Ocultar si es login o register -->
+
+  <!-- Barra de búsqueda visible solo en pantallas grandes -->
+  <div class="navbar-center" *ngIf="!isSmallScreen">
+    <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar> <!-- Recibe resultados de búsqueda -->
   </div>
+
   <div class="navbar-links">
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
+
+    <!-- Ícono de búsqueda visible solo en pantallas pequeñas -->
+    <mat-icon *ngIf="isSmallScreen" (click)="openSearchModal()" class="clickable-icon">search</mat-icon>
+
     <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
     <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
 
@@ -17,6 +24,15 @@
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
     </li>
-
   </div>
 </nav>
+
+<!-- Modal de búsqueda para pantallas pequeñas -->
+<div class="search-modal" *ngIf="showSearchModal">
+  <div class="search-modal-content">
+    <span class="close-modal" (click)="closeSearchModal()">&times;</span>
+    <!-- Usamos el componente app-search-bar dentro del modal y asignamos la función de búsqueda -->
+    <app-search-bar (searchResults)="closeSearchModal()" ></app-search-bar>
+    <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p> <!-- Muestra mensaje si no hay resultados -->
+  </div>
+</div>

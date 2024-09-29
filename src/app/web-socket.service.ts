@@ -27,7 +27,7 @@ export class WebSocketService {
 
     socket.onclose = () => {
       console.log('WebSocket connection closed');
-      this.reconnect(); // Intentar reconectar
+      this.reconnect();
     };
   }
 

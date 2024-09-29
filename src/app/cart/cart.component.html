@@ -12,8 +12,10 @@
         <p [ngModel]="exchangeRate">Subtotal: {{ (item.cartItem.quantity * item.giftcard.price  * exchangeRate).toFixed(2)}} LPS</p> <!-- Precio total por ítem -->
       </div>
       <div class="item-actions">
-        <button (click)="removeCartItem(Number(item.cartItem.productId))">Remove</button>
+<!--        <button (click)="removeCartItem(Number(item.cartItem.productId))">Remove</button>-->
+        <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
         <button (click)="incrementProductQuantity(item)">+</button>
+        <p class="quantity-display" >{{ item.cartItem.quantity }}</p>
         <button (click)="decreaseProductQuantity(item)">-</button>
       </div>
     </li>

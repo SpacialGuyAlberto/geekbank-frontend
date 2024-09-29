@@ -5,10 +5,13 @@ import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
-import { TranslateService, TranslateModule } from '@ngx-translate/core'; // Importa TranslateService
+import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { ChangeDetectorRef } from '@angular/core';
-import {SearchBarComponent} from "../search-bar/search-bar.component";
-import { filter } from 'rxjs/operators'; // Necesario para filtrar eventos de navegación
+import { SearchBarComponent } from "../search-bar/search-bar.component";
+import { filter } from 'rxjs/operators';
+import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import {UIStateServiceService} from "../uistate-service.service";
+
 
 @Component({
   selector: 'app-navbar',
@@ -21,19 +24,20 @@ import { filter } from 'rxjs/operators'; // Necesario para filtrar eventos de na
     RouterModule,
     TranslateModule,
     SearchBarComponent,
-    // Asegúrate de importar TranslateModule
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
   cartItemCount: number = 0;
-  selectedLanguage: string = 'en'; // Idioma por defecto
-  isLanguageMenuOpen: boolean = false; // Controla si el menú está abierto o no
-  loginLabel: string = ''; // Variable para almacenar la traducción de 'Login'
-  registerLabel: string = ''; // Variable para almacenar la traducción de 'Register'
+  selectedLanguage: string = 'en';
+  isLanguageMenuOpen: boolean = false;
   showNavbar: boolean = true;
-  showSearchBar: boolean = true; // Controla la visibilidad del SearchBar
+  showSearchBar: boolean = true;
+  showSearchModal: boolean = false;
+  searchQuery: string = '';
+  isSmallScreen: boolean = false;
+  searchResultsMessage: string = '';
 
   constructor(
     private authService: AuthService,
@@ -41,58 +45,41 @@ export class NavbarComponent implements OnInit {
     private cartService: CartService,
     protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private uiStateService: UIStateServiceService
   ) {
-    this.translate.addLangs(['en', 'es', 'de']);  // Idiomas disponibles
+    this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
   }
 
   ngOnInit(): void {
-    this.translate.addLangs(['en', 'es', 'de']); // Add available languages
-    this.translate.setDefaultLang('en'); // Set default language
-    this.selectedLanguage = 'en'; // Or read from a saved state (localStorage, etc.)
+    this.translate.addLangs(['en', 'es', 'de']);
+    this.translate.setDefaultLang('en');
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
 
-    // Suscribirse a eventos de navegación para controlar el SearchBar
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
       const hiddenRoutes = ['/login', '/register'];
-      this.showSearchBar = !hiddenRoutes.includes(event.url); // Oculta el SearchBar si la ruta es login o register
+      this.showSearchBar = !hiddenRoutes.includes(event.url);
     });
 
     this.router.events.subscribe(() => {
-      // Ocultar la navbar en /user-details y /admin-panel
       const hiddenRoutes = ['/user-details', '/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
     });
 
-    // Suscribirse al observable del contador de ítems del carrito
     this.cartService.cartItemCount$.subscribe(count => {
-      this.cartItemCount = count; // Actualiza el contador
-      this.cd.detectChanges(); // Forzar la detección de cambios si es necesario
+      this.cartItemCount = count;
+      this.cd.detectChanges();
     });
   }
 
-  // Método para cambiar el idioma
   useLanguage(language: string): void {
-    this.translate.use(language).subscribe({
-      next: () => {
-        this.translate.get("LOGIN").subscribe({
-          next: (translation: string) => {
-            console.log('Traducción de LOGIN:', translation);
-          },
-          error: (err) => {
-            console.error('Error al obtener la traducción de LOGIN:', err);
-          }
-        });
-      },
-      error: (err) => {
-        console.error('Error al cambiar el idioma:', err);
-      }
-    });
+    this.translate.use(language).subscribe();
   }
 
-  // Método para abrir/cerrar el menú de idioma
   toggleLanguageMenu(): void {
     this.isLanguageMenuOpen = !this.isLanguageMenuOpen;
   }
@@ -103,5 +90,32 @@ export class NavbarComponent implements OnInit {
 
   async logout() {
     await this.authService.performLogout(this.router);
+  }
+
+  openSearchModal() {
+    this.showSearchModal = true;
+    this.searchResultsMessage = '';
+  }
+
+  closeSearchModal() {
+    this.showSearchModal = false;
+  }
+
+  handleSearchResults(results: KinguinGiftCard[]): void {
+    if (results.length > 0) {
+      this.closeSearchModal();
+      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } }); // Navegar al HomeComponent con el parámetro de búsqueda
+    } else {
+      this.searchResultsMessage = 'No hay resultados para esta búsqueda';
+    }
+  }
+
+  goToHome() {
+    this.uiStateService.setShowHighlights(true); // Restablece el valor de showHighlights a true
+    this.router.navigate(['/home']); // Redirige al HomeComponent
+  }
+
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 768;
   }
 }

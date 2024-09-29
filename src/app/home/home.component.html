@@ -6,8 +6,6 @@
   <!-- Wrapper para todo el contenido -->
   <div class="gift-cards-wrapper">
 
-
-    <!-- Destacados y Recomendaciones -->
     <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
       <div class="highlights-section">
         <app-highlights></app-highlights>
@@ -17,22 +15,35 @@
       </div>
     </div>
 
-    <!-- Filtros y Gift Cards en modo móvil -->
+    <!-- Muestra las tarjetas principales -->
+    <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
+      <app-kinguin-gift-cards></app-kinguin-gift-cards>
+    </div>
+
+    <!-- Filtros y resultados filtrados -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-      <!-- Filtro que se muestra al hacer toggle -->
-      <div class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
+      <!-- Filtros visibles en pantallas grandes -->
+      <div *ngIf="!isSmallScreen" class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
         <app-filters></app-filters>
       </div>
 
-      <!-- Gift Cards -->
+      <!-- Filtros como modal en pantallas pequeñas -->
+      <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
+        <span class="material-symbols-outlined">tune</span>
+      </button>
+
+
+      <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
+        <div class="modal-content">
+          <span class="close" (click)="closeFilterModal()">&times;</span>
+          <app-filters (applyFilters)="applyFilters()"></app-filters>
+        </div>
+      </div>
+
+      <!-- Resultados de la búsqueda -->
       <div class="giftcard-section">
         <app-kinguin-gift-cards></app-kinguin-gift-cards>
       </div>
-    </div>
-
-    <!-- Gift Cards siempre visibles si se muestran los highlights -->
-    <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
-      <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
   </div>
 </div>

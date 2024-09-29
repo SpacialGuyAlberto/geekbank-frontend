@@ -1,145 +1,213 @@
-/* Estilos generales */
+/* Navbar */
 .navbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 1rem;
   background-color: #0A0A15;
-  border-bottom: 2px solid #0E1C28;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-  width: 100%;
+  border-bottom: 0.125rem solid #0E1C28;
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.7);
+  width: 100vw;
   position: fixed;
   top: 0;
   z-index: 1000;
 }
 
-/* Alineación del logo */
+/* Logo */
 .navbar-brand {
-  font-size: 1.7rem;
-  color: #00D4FF;
-  font-family: 'Courier New', Courier, monospace;
-  cursor: pointer;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: #A0E4FF;
+  margin-left: clamp(1.5rem, 10vw, 15rem);
 }
 
-/* Centro: Barra de búsqueda */
+/* Barra de búsqueda */
 .navbar-center {
+  flex: 1;
   display: flex;
   justify-content: center;
-  padding: 0 20px;
-  max-width: 100%; /* Ajuste al tamaño máximo del contenedor */
+  padding: 0 2rem;
 }
 
-/* Alineación de los íconos a la derecha */
+/* Links e íconos */
 .navbar-links {
   display: flex;
   align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+  justify-content: flex-end;
+  margin-right: clamp(1rem, 5vw, 15rem);
 }
 
-/* Estilos de enlaces */
+/* Ajustes de tamaño dinámico para los links */
+.navbar-links a,
+.navbar-links mat-icon {
+  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  transition: transform 0.3s ease;
+}
+
+/* Links */
 .navbar .nav-link {
-  color: #00FFB9;
-  font-family: 'Courier New', Courier, monospace;
-  margin-right: 20px;
-  font-size: 1.1rem;
+  color: #A0E4FF;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .navbar .nav-link:hover {
-  color: #FF5733;
+  color: #FF957C;
 }
 
-/* Estilos de íconos */
+/* Íconos */
 .clickable-icon {
-  color: #88D66C;
-  font-size: 1.7rem;
-  margin-right: 20px;
+  color: #A0E4FF;
   cursor: pointer;
-  transition: color 0.3s ease;
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .clickable-icon:hover {
-  color: #FF5733;
+  color: #FF957C;
+  transform: scale(1.1);
 }
 
-/* Estilo para el contador del carrito */
+/* Carrito */
 .cart-icon-container {
   position: relative;
+  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-icon-container a mat-icon {
+  color: #A0E4FF;
+}
+
+.cart-icon-container:hover a mat-icon {
+  color: #FF957C;
+  transform: scale(1.1);
 }
 
 .cart-count {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -0.625rem;
+  right: -0.625rem;
   background-color: #EB3678;
   color: white;
   font-size: 0.8rem;
-  padding: 2px 5px;
+  padding: 0.125rem 0.3125rem;
   border-radius: 50%;
 }
 
-.language-btn {
-  background: transparent;
-  border: none;
-  color: #88D66C;
-  cursor: pointer;
-  font-size: 1rem;
+/* Modal de búsqueda */
+.search-modal {
   display: flex;
+  justify-content: center;
   align-items: center;
-  font-family: 'Courier New', Courier, monospace;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
 }
 
-/* Adaptaciones para pantallas pequeñas */
+.search-modal-content {
+  background-color: #0A0A15;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4);
+  position: relative;
+  max-width: 400px;
+  width: 80%;
+}
+
+.close-modal {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* Search Bar dentro del modal */
+.search-bar {
+  display: flex;
+  width: 100%;
+  border-radius: 25px;
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 1.2rem;
+  outline: none;
+  border-radius: 25px;
+}
+
+.search-bar button {
+  margin-left: -35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1);
+}
+
+/* Responsividad */
 @media (max-width: 768px) {
   .navbar {
-    grid-template-columns: auto 1fr auto; /* Tres columnas: logo, barra de búsqueda, íconos */
-    grid-template-rows: auto;
-    align-items: center;
-    padding: 10px;
+    padding: 1rem;
   }
 
   .navbar-brand {
     font-size: 1.5rem;
-    justify-self: start; /* Alinea el logo a la izquierda */
+    margin-left: clamp(1rem, 3vw, 5rem);
   }
 
   .navbar-center {
-    justify-self: center; /* Centra la barra de búsqueda */
-    padding: 10px 0;
-    width: 100%;
+    display: none; /* Oculta la barra de búsqueda en pantallas pequeñas */
   }
 
   .navbar-links {
-    justify-self: end; /* Alinea los íconos a la derecha */
+    gap: 0.5rem;
+    margin-right: clamp(1rem, 3vw, 5rem);
   }
 
   .clickable-icon {
-    margin-right: 10px;
+    font-size: 1.4rem;
+  }
+
+  .cart-icon-container {
+    font-size: 1.4rem;
   }
 }
 
-/* Adaptaciones específicas para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .navbar {
-    max-height: 90%;
-    grid-template-columns: auto 1fr auto; /* Mantiene las 3 columnas */
-    padding: 5px;
+    padding: 0.5rem;
   }
 
   .navbar-brand {
     font-size: 1.2rem;
   }
 
-  .navbar-center {
-    justify-content: center;
-    padding: 5px;
-  }
-
   .navbar-links {
-    justify-content: flex-end;
+    gap: 0.3rem;
+    margin-right: clamp(0.5rem, 2vw, 3rem);
   }
 
   .clickable-icon {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+  }
+
+  .cart-icon-container {
+    font-size: 1.2rem;
   }
 }
