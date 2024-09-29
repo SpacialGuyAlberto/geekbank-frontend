@@ -1,10 +1,10 @@
 .graph-container {
-  position: absolute; /* Cambiado de fixed a absolute */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%; /* Ocupará todo el contenido */
-  z-index: -1; /* Detrás del contenido */
+  z-index: -1;
 }
 
 #graphCanvas {
@@ -16,79 +16,77 @@
   z-index: 1;
   background-color: #0B0D19;
 }
+
 .home-container {
   display: grid;
-  grid-template-columns: 1fr; /* Una columna por defecto */
-  grid-gap: 25%;
+  grid-template-columns: 1fr;
+  grid-gap: 5rem; /* Espacio proporcional entre los elementos */
   width: 100%;
-  padding: 20px;
+  padding: 2rem;
   background-color: var(--primary-color);
-  justify-items: center; /* Centra el contenido en la columna */
+  justify-items: center;
   margin-top: 10rem;
 }
 
 .highlight-recommendations {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-gap: 40px;
+  grid-gap: 2.5rem;
   width: 100%;
-  margin: 20px 0;
+  margin: 2rem 0;
   justify-content: center;
   align-items: center;
 }
 
-/*Sección de Highlights*/
 .highlights-section {
-  border-radius: 10px;
-  padding: 20px;
+  border-radius: 1rem;
+  padding: 2rem;
   width: 100%;
-  max-width: 600px; /* Limita el ancho máximo */
+  max-width: 37.5rem; /* 600px in rem */
   display: grid;
   justify-items: center;
 }
 
-/*!* Sección de Recomendaciones *!*/
 .recommendations-section {
-  border-radius: 10px;
+  border-radius: 1rem;
   padding: 1rem;
   width: 100%;
-  max-width: 600px; /* Limita el ancho máximo */
+  max-width: 37.5rem; /* 600px in rem */
   display: grid;
   margin-left: 2rem;
   justify-items: center;
 }
 
-/* Estilo de las tarjetas de Recomendaciones */
 .recommendations .gift-card {
   width: 100%;
-  max-width: 250px;
+  max-width: 15.625rem; /* 250px in rem */
   background-color: rgba(2, 21, 38, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 15px;
+  border-radius: 1rem;
+  border: 0.063rem solid rgba(255, 255, 255, 0.3);
+  padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px in rem */
 }
 
 .recommendations .gift-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-0.625rem); /* 10px in rem */
   border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 1.875rem rgba(255, 255, 255, 0.5); /* 30px in rem */
 }
 
 .recommendations .gift-card-image {
   width: 100%;
-  height: 150px;
+  height: 9.375rem; /* 150px in rem */
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: 1rem;
+  margin-bottom: 0.625rem; /* 10px in rem */
 }
 
 .recommendations .gift-card-title {
   font-size: 1.3rem;
   color: #00d4ff;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px in rem */
   text-transform: uppercase;
 }
 
@@ -98,43 +96,41 @@
   font-weight: bold;
 }
 
-/* Sección de Gift Cards Principales */
 .main-gift-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adaptable */
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr)); /* 250px in rem */
+  grid-gap: 1.25rem; /* 20px in rem */
   width: 100%;
 }
 
-/* Gift Cards Principales Estilos */
 .main-gift-cards .gift-card {
   background-color: rgba(2, 21, 38, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 15px;
+  border-radius: 1rem;
+  border: 0.063rem solid rgba(255, 255, 255, 0.3);
+  padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px in rem */
 }
 
 .main-gift-cards .gift-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-0.625rem); /* 10px in rem */
   border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 1.875rem rgba(255, 255, 255, 0.5); /* 30px in rem */
 }
 
 .main-gift-cards .gift-card-image {
   width: 100%;
-  height: 150px;
+  height: 9.375rem; /* 150px in rem */
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: 1rem;
+  margin-bottom: 0.625rem; /* 10px in rem */
 }
 
 .main-gift-cards .gift-card-title {
   font-size: 1.3rem;
   color: #00d4ff;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px in rem */
   text-transform: uppercase;
 }
 
@@ -149,52 +145,87 @@
   grid-template-columns: 1fr 3fr;
   gap: 3rem;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 
-
 .filter-section {
-  padding: 15px;
-  border-radius: 8px;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
 }
 
 .giftcard-section {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr)); /* 250px in rem */
+  grid-gap: 1.25rem; /* 20px in rem */
   width: 100%;
 }
 
 .filters-container {
   background-color: #021526;
-  border: 2px solid #88D66C;
-  padding: 15px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  border: 0.125rem solid #88D66C;
+  padding: 1.25rem;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5); /* Sombra en rem */
   color: #88D66C;
   font-family: 'Press Start 2P', cursive;
   width: 100%;
 }
 
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
+.modal-content {
+  background-color: #0B0D19;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* Sombra */
+  position: relative;
+}
+
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 2rem;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+/* Estilos de pantallas pequeñas */
 @media (max-width: 768px) {
   .highlight-recommendations {
     grid-template-columns: 1fr;
-    grid-gap: 10px;
+    grid-gap: 1rem;
+    padding: -7rem;
+    margin-left: -2rem;
   }
+  .highlights-section, .recommendations-section {
+    width: 90%; /* Reducir el ancho proporcionalmente en pantallas pequeñas */
+    max-width: 90%; /* Asegurar que no se extienda más allá del 90% del contenedor */
+  }
+
 
   .main-gift-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Adaptable a pantallas pequeñas */
-    grid-gap: 10px;
-  }
-
-  .main-gift-cards .gift-card {
-    min-width: calc(50% - 10px); /* Dos columnas por fila */
+    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr)); /* 150px in rem */
+    grid-gap: 0.625rem; /* 10px in rem */
   }
 
   .gift-card-image {
-    height: 120px;
+    height: 7.5rem; /* 120px in rem */
   }
+
   .filters-container {
     width: 90%;
   }
@@ -203,25 +234,74 @@
     grid-template-columns: 1fr;
   }
 
+  .filter-button {
+    background-color: #88D66C;
+    color: #021526;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 20px 0;
+    text-transform: uppercase;
+    font-weight: bold;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .filter-button:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Fondo más visible al hacer hover */
+    box-shadow: 0 0 20px rgba(136, 214, 108, 0.7), 0 0 30px rgba(136, 214, 108, 0.5); /* Efecto de resplandor verde */
+    transform: scale(1.05); /* Aumenta ligeramente el tamaño */
+  }
+
+  .filter-button span {
+    font-size: 2rem; /* Tamaño del ícono */
+    margin-right: 0.5rem; /* Espacio entre el ícono y el texto */
+  }
+
+  .filter-button:active {
+    transform: scale(0.95); /* Efecto de click */
+    background-color: rgba(255, 255, 255, 0.3); /* Fondo un poco más claro al hacer click */
+  }
+
+
   .giftcard-section {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr)); /* 150px in rem */
+    grid-gap: 0.625rem; /* 10px in rem */
   }
 
   .gift-card-image {
-    height: 120px;
+    height: 7.5rem; /* 120px in rem */
   }
-
 }
 
 
-@media (max-width: 480px) {
 
+
+@media (max-width: 480px) {
   .main-gift-cards {
     grid-template-columns: 1fr;
   }
 
   .gift-card {
     min-width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .modal {
+    display: none; /* Ocultar el modal en pantallas grandes */
+  }
+
+  .filter-button {
+    display: none; /* No mostrar el botón de filtros en pantallas grandes */
+  }
+
+  .filter-section {
+    display: block; /* Mostrar la sección de filtros normalmente */
   }
 }

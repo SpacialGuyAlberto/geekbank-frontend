@@ -13,59 +13,108 @@ body, html {
   overflow-y: auto; /* Permite scroll vertical */
 }
 
-
+/* Ajustes generales para el contenedor */
 .content-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  padding: 1rem;
   width: 100%;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+/* Ajustes para pantallas medianas y móviles */
+@media (max-width: 768px) {
+  .content-container {
+    padding: 1rem; /* Reducimos el padding en pantallas móviles */
+  }
+
+  .gift-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(120px, 1fr)); /* Grid dinámico de 2 columnas */
+    grid-gap: 1rem; /* Espaciado entre tarjetas */
+    width: 100%;
+    margin: 0 auto; /* Centrar el grid */
+    justify-content: center; /* Centrar el contenido dentro del grid */
+  }
+
+  .gift-card {
+    padding: 0.75rem;
+    max-width: 100%; /* Aseguramos que la tarjeta no supere el ancho del contenedor */
+  }
+
+  .gift-card-title {
+    font-size: 0.9rem; /* Texto más pequeño en pantallas móviles */
+  }
+
+  .gift-card-price {
+    font-size: 0.8rem;
+  }
+}
+
+/* Vista para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .gift-cards-container {
+    grid-template-columns: repeat(2, minmax(100px, 1fr)); /* Mantén el grid de 2 columnas */
+    grid-gap: 0.75rem; /* Un poco más de espacio entre las tarjetas */
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .gift-card {
+    width: 100%; /* Asegura que las tarjetas ocupen todo el espacio disponible */
+    padding: 0.5rem;
+  }
+
+  .gift-card-image {
+    height: 7.5rem; /* Ajustar la altura de la imagen */
+    object-fit: cover; /* Aseguramos que las imágenes mantengan su relación de aspecto */
+  }
+}
+
 
 .main-content {
   width: 100%;
-  max-width: 1200px;
+  max-width: 75rem; /* 1200px in rem */
   background-color: var(--primary-color);
-  border-radius: 8px;
-  padding: 20px;
+  border-radius: 0.5rem;
+  padding: 2rem;
 }
 
 /* Gift Cards */
 .gift-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(15.625rem, 1fr)); /* 250px in rem */
+  gap: 1.25rem; /* 20px in rem */
   width: 100%;
 }
 
 .gift-card {
   background-color: rgba(2, 21, 38, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 15px;
+  border-radius: 0.625rem; /* 10px in rem */
+  border: 0.063rem solid rgba(255, 255, 255, 0.3); /* 1px */
+  padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px in rem */
 }
 
 .gift-card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-0.625rem); /* 10px in rem */
   border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 1.875rem rgba(255, 255, 255, 0.5); /* 30px in rem */
 }
 
 .gift-card-image {
   width: 100%;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  border-radius: 0.625rem; /* 10px in rem */
+  margin-bottom: 0.625rem; /* 10px in rem */
+  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3); /* 15px in rem */
 }
 
 .gift-card-title {
   font-size: 1.3rem;
   color: #00d4ff; /* Neon turquoise text */
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px in rem */
   text-transform: uppercase;
 }
 
@@ -78,82 +127,83 @@ body, html {
 .load-more-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 2rem;
 }
 
-/* Botón de cargar más - estilo más discreto */
 .load-more-button {
-  background: none; /* Sin fondo */
-  color: transparent; /* Elimina el texto visible */
-  border: none; /* Sin borde */
+  background: none;
+  color: transparent;
+  border: none;
   cursor: pointer;
   outline: none;
   position: relative;
-  padding: 10px;
+  padding: 1rem; /* 10px in rem */
 }
 
 .load-more-button:hover .material-symbols-outlined {
-  color: #88D66C; /* Color verde neón en hover */
-  transform: translateY(3px); /* Movimiento leve hacia abajo */
+  color: #88D66C;
+  transform: translateY(0.1875rem); /* 3px in rem */
   transition: transform 0.3s ease, color 0.3s ease;
 }
 
-/* Icono de flecha (expand_more) estilo discreto */
 .load-more-button .material-symbols-outlined {
-  font-size: 2rem; /* Ajusta el tamaño del ícono */
-  color: rgba(255, 255, 255, 0.5); /* Color inicial más tenue */
+  font-size: 2rem;
+  color: rgba(255, 255, 255, 0.5);
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 /* Efecto de hover */
 .load-more-button:hover .material-symbols-outlined {
-  color: #88D66C; /* Cambia el color a verde neón en hover */
-  transform: translateY(3px); /* Movimiento leve hacia abajo */
+  color: #88D66C;
+  transform: translateY(0.1875rem); /* 3px in rem */
 }
+
 
 /* Estilo móvil */
 @media (max-width: 768px) {
-
-
-
-
-  .gift-card {
-    min-width: calc(50% - 10px);
-    background: rgba(2, 21, 38, 0.8);
-    border-radius: 10px;
-    padding: 10px;
-    text-align: center;
-    transition: transform 0.3s ease;
+  .content-container {
+    padding: 1rem; /* Reducimos el padding en pantallas móviles */
   }
 
   .gift-cards-container {
-    display: flex;
-    overflow-x: scroll;
-    scroll-behavior: smooth;
-    gap: 16px;
-    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(120px, 1fr)); /* Grid dinámico de 2 columnas */
+    grid-gap: 1rem; /* Espaciado entre tarjetas */
     width: 100%;
+    margin: 0 auto; /* Centrar el grid */
+    justify-content: center; /* Centrar el contenido dentro del grid */
   }
 
-  .gift-card-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+  .gift-card {
+    padding: 0.75rem;
+    max-width: 100%; /* Aseguramos que la tarjeta no supere el ancho del contenedor */
+  }
+
+  .gift-card-title {
+    font-size: 0.9rem; /* Texto más pequeño en pantallas móviles */
+  }
+
+  .gift-card-price {
+    font-size: 0.8rem;
   }
 }
 
+/* Vista para pantallas muy pequeñas */
 @media (max-width: 480px) {
-  .highlight-card {
-    min-width: 100%;
+  .gift-cards-container {
+    grid-template-columns: repeat(2, minmax(100px, 1fr)); /* Mantén el grid de 2 columnas */
+    grid-gap: 0.75rem; /* Un poco más de espacio entre las tarjetas */
+    padding: 1rem;
+    width: 100%;
   }
 
   .gift-card {
-    min-width: calc(100% - 10px);
+    width: 100%; /* Asegura que las tarjetas ocupen todo el espacio disponible */
+    padding: 0.5rem;
   }
 
-  .gift-cards-container {
-    gap: 8px;
+  .gift-card-image {
+    height: 7.5rem; /* Ajustar la altura de la imagen */
+    object-fit: cover; /* Aseguramos que las imágenes mantengan su relación de aspecto */
   }
 }

@@ -1,21 +1,19 @@
-
-
 .highlights-carousel {
   display: flex;
   justify-content: left;
   max-width: 60%;
-  border-radius: 15px;
+  border-radius: 0.9375rem; /* 15px en rem */
   overflow: hidden;
-  box-shadow: 0 8px 5px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px en rem */
   margin-left: auto;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px en rem */
   transition: transform 0.5s ease, border-color 0.5s ease;
 }
 
 .highlights-carousel:hover {
   transform: scale(1.02);
   border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.3); /* 12px y 30px en rem */
 }
 
 .carousel-track {
@@ -26,63 +24,60 @@
 
 .highlight-card {
   min-width: 100%;
-  background: rgba(18, 34, 60, 0.8); /* Fondo más oscuro con transparencia */
-  border-radius: 15px; /* Bordes redondeados */
+  background: rgba(18, 34, 60, 0.8);
+  border-radius: 0.9375rem; /* 15px en rem */
   overflow: hidden;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5); /* 8px y 20px en rem */
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 2px solid rgba(136, 214, 108, 0.4); /* Bordes semi-transparentes */
+  border: 0.125rem solid rgba(136, 214, 108, 0.4); /* 2px en rem */
 }
 
-
 .highlight-card:hover {
-  transform: translateY(-10px) scale(1.05); /* Elevación y zoom en hover */
-  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.5); /* Resplandor en hover */
-  border-color: rgba(255, 255, 255, 0.6); /* Bordes más brillantes */
+  transform: translateY(-0.625rem) scale(1.05); /* 10px en rem */
+  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.5); /* 12px y 30px en rem */
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .highlight-card-image {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra sobre la imagen */
+  border-radius: 0.625rem; /* 10px en rem */
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px en rem */
   transition: box-shadow 0.4s ease;
 }
 
-
 .highlight-card-content {
-  padding: 20px;
+  padding: 1.25rem; /* 20px en rem */
   text-align: center;
 }
 
 .highlight-card-title {
-  font-size: 1.4rem; /* Título más grande */
-  margin: 10px 0 5px;
-  color: #00d4ff; /* Azul neón */
-  text-transform: uppercase; /* Texto en mayúsculas */
-  letter-spacing: 1px; /* Espaciado adicional entre letras */
+  font-size: 1.4rem;
+  margin: 0.625rem 0 0.3125rem; /* 10px y 5px en rem */
+  color: #00d4ff;
+  text-transform: uppercase;
+  letter-spacing: 0.0625rem; /* 1px en rem */
 }
 
 .highlight-card-price {
   font-size: 1.2rem;
-  color: #88D66C; /* Verde neón */
+  color: #88D66C;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* 10px en rem */
 }
-
 
 .gift-card {
   position: relative;
-  width: 9.37rem;
+  width: 9.375rem; /* 150px en rem */
   background: #021526;
-  border: 2px solid #88D66C; /* Bordes del color del texto */
-  border-radius: 2px;
+  border: 0.125rem solid #88D66C; /* 2px en rem */
+  border-radius: 0.125rem; /* 2px en rem */
   overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5); /* 4px y 8px en rem */
   transition: transform 0.2s;
 }
 
@@ -92,20 +87,20 @@
 
 .gift-card-image {
   width: 100%;
-  height: 120px;
+  height: 7.5rem; /* 120px en rem */
   object-fit: cover;
   background-color: #1A2A40;
 }
 
 .gift-card-content {
-  padding: 10px;
+  padding: 0.625rem; /* 10px en rem */
   text-align: center;
-  min-height: 80px;
+  min-height: 5rem; /* 80px en rem */
 }
 
 .gift-card-title {
   font-size: 0.875rem;
-  margin: 5px 0;
+  margin: 0.3125rem 0; /* 5px en rem */
   font-weight: bold;
   color: #88D66C;
 }
@@ -114,7 +109,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  padding: 10px 0;
+  padding: 0.625rem 0; /* 10px en rem */
   background: #1261A0;
   color: #0B0D19;
   text-align: center;
@@ -123,13 +118,12 @@
   box-sizing: border-box;
 }
 
-
 .highlight-card:hover .highlight-card-image {
-  box-shadow: 0 8px 30px rgba(0, 255, 255, 0.7); /* Resplandor de la imagen en hover */
+  box-shadow: 0 0.5rem 1.875rem rgba(0, 255, 255, 0.7); /* 8px y 30px en rem */
 }
 
 .highlight-card:hover .highlight-card-title {
-  text-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Resplandor del título en hover */
+  text-shadow: 0 0 0.9375rem rgba(0, 255, 255, 0.8); /* 15px en rem */
 }
 
 /* Adaptación para pantallas medianas (tablets, por ejemplo) */
@@ -145,26 +139,26 @@
 @media (max-width: 768px) {
   .highlights-carousel {
     display: flex;
-    justify-content: left;
+    justify-content: center;
     height: 100%;
-    border-radius: 15px;
+    border-radius: 0.9375rem; /* 15px en rem */
     overflow: hidden;
-    box-shadow: 0 8px 5px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px en rem */
     margin-left: auto;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px en rem */
     transition: transform 0.5s ease, border-color 0.5s ease;
   }
 
   .highlight-card {
     min-width: 100%;
-    border-radius: 15px; /* Bordes redondeados */
+    border-radius: 0.9375rem; /* 15px en rem */
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); /* Sombra alrededor */
+    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5); /* 8px y 20px en rem */
     transition: transform 0.4s ease, box-shadow 0.4s ease;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    border: 2px solid rgba(136, 214, 108, 0.4); /* Bordes semi-transparentes */
+    border: 0.125rem solid rgba(136, 214, 108, 0.4); /* 2px en rem */
   }
 
   .highlight-card-title {
@@ -179,20 +173,14 @@
     width: 100%;
     height: auto;
     object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); /* Sombra sobre la imagen */
+    border-radius: 0.625rem; /* 10px en rem */
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px en rem */
     transition: box-shadow 0.4s ease;
   }
 }
 
 /* Ajuste adicional para pantallas muy pequeñas */
 @media (max-width: 480px) {
-  /*.highlights-carousel {*/
-  /*  max-width: 90%;*/
-  /*  max-height: 90%;*/
-  /*  margin: auto;*/
-  /*}*/
-
   .highlight-card {
     min-width: 100%;
   }
@@ -206,6 +194,6 @@
   }
 
   .highlight-card-image {
-    height: 150px;
+    height: 9.375rem; /* 150px en rem */
   }
 }

@@ -34,6 +34,7 @@ import { KinguinService } from '../kinguin.service';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = '';
   showHighlightsAndRecommendations: boolean = true;
+  isSmallScreen: boolean = false;
   isSearching: boolean = false;
   isFilterVisible: boolean = false;
   private uiStateSubscription!: Subscription;
@@ -49,6 +50,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     const storedUsername = localStorage.getItem('username');
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+
     if (storedUsername) {
       this.username = storedUsername;
     }
@@ -74,6 +78,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   applyFilters() {
     this.isFilterVisible = false;
+    this.showHighlightsAndRecommendations = false;
   }
 
   ngOnDestroy(): void {
@@ -81,6 +86,19 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       this.uiStateSubscription.unsubscribe();
     }
   }
+  checkScreenSize() {
+    this.isSmallScreen = window.innerWidth <= 768;
+  }
+
+  openFilterModal() {
+    this.isFilterVisible = true;
+  }
+
+  // Cierra el modal de filtros
+  closeFilterModal() {
+    this.isFilterVisible = false;
+  }
+
 
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
@@ -89,5 +107,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
   }
+
+
 
 }

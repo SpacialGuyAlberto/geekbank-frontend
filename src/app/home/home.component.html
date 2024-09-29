@@ -14,14 +14,33 @@
         <app-recommendations></app-recommendations>
       </div>
     </div>
+
+    <!-- Muestra las tarjetas principales -->
     <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
       <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
 
+    <!-- Filtros y resultados filtrados -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-      <div class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
+      <!-- Filtros visibles en pantallas grandes -->
+      <div *ngIf="!isSmallScreen" class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
         <app-filters></app-filters>
       </div>
+
+      <!-- Filtros como modal en pantallas pequeñas -->
+      <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
+        <span class="material-symbols-outlined">tune</span> Filtrar
+      </button>
+
+
+      <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
+        <div class="modal-content">
+          <span class="close" (click)="closeFilterModal()">&times;</span>
+          <app-filters (applyFilters)="applyFilters()"></app-filters>
+        </div>
+      </div>
+
+      <!-- Resultados de la búsqueda -->
       <div class="giftcard-section">
         <app-kinguin-gift-cards></app-kinguin-gift-cards>
       </div>

@@ -1,11 +1,11 @@
 /* Contenedor de Recomendaciones con Grid */
 .recommendations {
   display: grid;
-  grid-template-columns: 2fr 2fr; /* Dos columnas por defecto */
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas por defecto */
   grid-gap: 2rem;
   row-gap: 3rem;
   width: 70%;
-  border-radius: 10px;
+  border-radius: 0.625rem; /* 10px en rem */
   justify-items: center;
 }
 
@@ -15,36 +15,36 @@
 
 .gift-card {
   width: 90%; /* Ocupa todo el espacio de la celda */
-  max-width: 250px;
+  max-width: 15.625rem; /* 250px en rem */
   background-color: rgba(2, 21, 38, 0.8);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 15px;
+  border-radius: 0.625rem; /* 10px en rem */
+  border: 0.0625rem solid rgba(255, 255, 255, 0.3); /* 1px en rem */
+  padding: 0.9375rem; /* 15px en rem */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Glow shadow effect */
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px en rem */
 }
 
 .gift-card:hover {
-  transform: translateY(-10px); /* Floating effect */
-  border-color: rgba(255, 255, 255, 0.7); /* Brighten border on hover */
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); /* Stronger glow effect */
+  transform: translateY(-0.625rem); /* 10px en rem */
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 1.875rem rgba(255, 255, 255, 0.5); /* 30px en rem */
 }
 
 .gift-card-image {
   width: 100%;
-  height: 150px; /* Fija la altura de la imagen para uniformar el tamaño */
+  height: 9.375rem; /* 150px en rem */
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Shadow around image */
+  border-radius: 0.625rem; /* 10px en rem */
+  margin-bottom: 0.625rem; /* 10px en rem */
+  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3); /* 15px en rem */
 }
 
 .gift-card-title {
   font-size: 1.3rem;
   color: #00d4ff; /* Neon turquoise text */
-  margin-bottom: 10px;
-  text-transform: uppercase; /* Bold space-themed text */
+  margin-bottom: 0.625rem; /* 10px en rem */
+  text-transform: uppercase;
 }
 
 .gift-card-price {
@@ -69,10 +69,10 @@
   }
 
   .gift-card-image {
-    height: 150px; /* Mantiene la altura de la imagen en pantallas pequeñas */
+    height: 9.375rem; /* 150px en rem */
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 0.625rem; /* 10px en rem */
+    margin-bottom: 0.625rem; /* 10px en rem */
   }
 
   .gift-card-title {
@@ -87,8 +87,8 @@
 /* Ajustes adicionales para pantallas muy pequeñas */
 @media (max-width: 480px) {
   .recommendations {
-    grid-template-rows: repeat(2, 2fr);; /* Dos columnas en una sola fila */
-    grid-gap: 8px;
+    grid-template-rows: repeat(2, 1fr); /* Dos columnas en una sola fila */
+    grid-gap: 0.5rem; /* 8px en rem */
     justify-content: center;
   }
 
@@ -97,6 +97,6 @@
   }
 
   .gift-card-image {
-    height: 120px; /* Ajuste de altura para pantallas más pequeñas */
+    height: 7.5rem; /* 120px en rem */
   }
 }
