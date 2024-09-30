@@ -1,149 +1,166 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Permitir desplazamiento global */
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19; /* Fondo oscuro */
+}
+
 .transactions-container {
   width: 100%;
-  max-width: 1200px; /* Limitar el ancho para pantallas grandes */
-  margin: 0 auto; /* Centrando la sección */
-  padding: 20px;
-  background-color: #f9f9f9; /* Color de fondo claro */
-  border-radius: 10px;
-  color: #333; /* Color del texto más oscuro */
+  max-width: 50rem; /* Ajuste para pantallas grandes */
+  margin: 0 auto; /* Centrar el contenedor */
+  padding: 2rem;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto; /* Permitir el scroll */
+  max-height: calc(100vh - 4rem); /* Limitar la altura del contenedor */
 }
 
 .section-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #ff7a00; /* Color destacado */
-  text-align: center; /* Centrar el título */
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .filters {
   display: flex;
-  flex-wrap: wrap; /* Para que los filtros se adapten en móviles */
-  gap: 10px;
-  margin-bottom: 20px;
-  justify-content: center; /* Centrando los filtros */
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
 }
 
 .filters input, .filters select, .filters button {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #fff; /* Fondo claro para campos */
-  color: #333; /* Texto oscuro */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #555;
+  background-color: #333;
+  color: #fff;
 }
 
 .filters button {
   background-color: #ff7a00;
   border: none;
   cursor: pointer;
-  color: #fff;
-  font-weight: bold;
 }
 
 .transaction-table {
   display: grid;
-  gap: 10px;
+  gap: 1rem;
 }
 
 .transaction-header {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 10px;
-  background-color: #f1f1f1; /* Fondo claro */
+  padding: 1rem;
+  background-color: #1c1c1c;
   font-weight: bold;
-  color: #ff7a00; /* Color destacado */
-  text-align: center; /* Centrar el texto */
-  border-radius: 5px;
+  color: #ff7a00;
 }
 
 .transaction-row {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 10px;
-  background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05); /* Sombra ligera */
+  padding: 1rem;
+  background-color: #333;
+  border-radius: 0.5rem;
   transition: background-color 0.3s ease;
-  text-align: center;
 }
 
 .transaction-row:hover {
-  background-color: #f0f0f0;
-}
-
-.status-label {
-  padding: 5px 10px;
-  border-radius: 5px;
-  text-align: center;
-}
-
-.status-label.COMPLETED {
-  background-color: #28a745;
-  color: #fff;
-}
-
-.status-label.REFUNDED {
-  background-color: #17a2b8;
-  color: #fff;
-}
-
-.status-label.PENDING {
-  background-color: #ffc107;
-  color: #333;
-}
-
-.status-label.CANCELLED {
-  background-color: #dc3545;
-  color: #fff;
+  background-color: #444;
 }
 
 .transaction-status {
-  padding: 5px 15px;
-  border-radius: 25px;
-  border-width: 2px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2.5rem;
+  border-width: 0.2rem;
   border-style: solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
-  width: 120px;
+  min-width: 10rem;
 }
 
 .transaction-status.PENDING {
-  color: #FFC107;
-  border-color: #FFC107;
-  background-color: transparent;
+  color: #ffc107;
+  border-color: #ffc107;
 }
 
 .transaction-status.COMPLETED {
-  color: #4CAF50;
-  border-color: #4CAF50;
-  background-color: transparent;
+  color: #4caf50;
+  border-color: #4caf50;
 }
 
 .transaction-status.REFUNDED {
-  color: #00BCD4;
-  border-color: #00BCD4;
-  background-color: transparent;
+  color: #00bcd4;
+  border-color: #00bcd4;
 }
 
 .transaction-status.CANCELLED {
-  color: #F44336;
-  border-color: #F44336;
-  background-color: transparent;
+  color: #f44336;
+  border-color: #f44336;
 }
 
-/* Responsividad para pantallas más pequeñas */
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagination button {
+  padding: 0.8rem 1.5rem;
+  margin: 0 0.5rem;
+  border: none;
+  background-color: #ff7a00;
+  color: white;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.pagination button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
+  .transactions-container {
+    max-width: 100%; /* Usar todo el ancho disponible en móviles */
+    padding: 1rem;
+    overflow-y: auto; /* Permitir el scroll dentro del contenedor */
+    height: auto; /* Asegurar que crezca según el contenido */
+  }
+
   .transaction-header, .transaction-row {
-    grid-template-columns: 1fr; /* Cambiar a una sola columna en móviles */
-    text-align: left; /* Alinear el texto a la izquierda en móviles */
-    padding: 15px;
+    display: block; /* Cambiar de tabla a formato de bloque en móviles */
+    text-align: left;
+  }
+
+  .transaction-header span, .transaction-row span {
+    display: block; /* Cada dato de la tabla en una nueva línea */
+    margin-bottom: 0.5rem;
+  }
+
+  .transaction-status {
+    margin-top: 0.5rem;
+    min-width: unset;
   }
 
   .filters {
-    flex-direction: column; /* Mostrar filtros en columna */
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 
   .filters input, .filters select, .filters button {
-    width: 100%; /* Asegurarse de que los campos ocupen todo el ancho en móviles */
+    width: 100%;
+    margin-bottom: 1rem;
   }
 }

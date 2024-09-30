@@ -1,10 +1,10 @@
 <div class="account-settings-container">
 
-
   <section class="account-content">
     <div class="main-box">
       <h2>Account Details</h2>
       <form (ngSubmit)="updatePersonalInfo()">
+        <!-- Nombre -->
         <div class="field">
           <label for="name">Name:</label>
           <span *ngIf="!editingName">{{ user.name }}</span>
@@ -12,6 +12,7 @@
           <i class="fas fa-pencil-alt" (click)="toggleEdit('name')"></i>
         </div>
 
+        <!-- Email -->
         <div class="field">
           <label for="email">Email:</label>
           <span *ngIf="!editingEmail">{{ user.email }}</span>
@@ -19,6 +20,7 @@
           <i class="fas fa-pencil-alt" (click)="toggleEdit('email')"></i>
         </div>
 
+        <!-- Teléfono -->
         <div class="field">
           <label for="phone">Phone:</label>
           <span *ngIf="!editingPhone">{{ user.phone }}</span>
@@ -26,10 +28,55 @@
           <i class="fas fa-pencil-alt" (click)="toggleEdit('phone')"></i>
         </div>
 
-        <!-- Otros campos aquí -->
+        <!-- Balance -->
+        <div class="field">
+          <label for="balance">Balance:</label>
+          <span>{{ user.balance | currency:'USD' }}</span>
+        </div>
 
         <button type="submit">Update Account Info</button>
       </form>
+
+      <!-- Preferencias de comunicación -->
+      <div class="preferences">
+        <h3>Communication Preferences</h3>
+        <label>
+          <input type="checkbox" [(ngModel)]="user.preferences.promotions" />
+          Receive Promotions
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates" />
+          Receive Order Updates
+        </label>
+      </div>
     </div>
+
+    <!-- Direcciones -->
+    <div class="addresses-box">
+      <h3>Addresses</h3>
+      <ul>
+        <li *ngFor="let address of user.addresses">
+          {{ address.street }}, {{ address.city }}
+          <i class="fas fa-edit" (click)="editAddress(address)"></i>
+          <i class="fas fa-trash" (click)="deleteAddress(address)"></i>
+        </li>
+      </ul>
+      <button (click)="addNewAddress()">Add New Address</button>
+    </div>
+
+    <!-- Métodos de Pago -->
+    <div class="payment-box">
+      <h3>Payment Methods</h3>
+      <ul>
+        <li *ngFor="let payment of user.paymentMethods">
+          {{ payment.type }} - {{ payment.lastFourDigits }}
+          <i class="fas fa-edit" (click)="editPaymentMethod(payment)"></i>
+          <i class="fas fa-trash" (click)="deletePaymentMethod(payment)"></i>
+        </li>
+      </ul>
+      <button (click)="addNewPaymentMethod()">Add New Payment Method</button>
+    </div>
+
   </section>
+
 </div>

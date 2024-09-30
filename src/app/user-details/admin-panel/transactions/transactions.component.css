@@ -1,25 +1,38 @@
+html, body {
+  height: 100%;
+  overflow-y: auto; /* Permitir scroll en todo el documento */
+  margin: 0;
+}
+
 .transactions-container {
   width: 100%;
-  padding: 20px;
+  max-width: 50rem; /* Ajuste para pantallas grandes */
+  margin: 0 auto; /* Centrar el contenedor */
+  padding: 2rem;
   background-color: #2d2d2d;
-  border-radius: 10px;
+  border-radius: 1rem;
   color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  overflow-y: auto; /* Habilitar el scroll dentro del contenedor */
 }
 
 .section-title {
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
 }
 
 .filters input, .filters select, .filters button {
-  padding: 10px;
-  border-radius: 5px;
+  padding: 1rem;
+  border-radius: 0.5rem;
   border: 1px solid #555;
   background-color: #333;
   color: #fff;
@@ -33,13 +46,13 @@
 
 .transaction-table {
   display: grid;
-  gap: 10px;
+  gap: 1rem;
 }
 
 .transaction-header {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 10px;
+  padding: 1rem;
   background-color: #1c1c1c;
   font-weight: bold;
   color: #ff7a00;
@@ -48,9 +61,9 @@
 .transaction-row {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 10px;
+  padding: 1rem;
   background-color: #333;
-  border-radius: 5px;
+  border-radius: 0.5rem;
   transition: background-color 0.3s ease;
 }
 
@@ -59,36 +72,95 @@
 }
 
 .transaction-status {
-  padding: 5px 15px;
-  border-radius: 25px;
-  border-width: 2px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2.5rem;
+  border-width: 0.2rem;
   border-style: solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
-  width: 120px;
+  min-width: 10rem;
 }
 
 .transaction-status.PENDING {
-  color: #FFC107; /* Color de texto */
-  border-color: #FFC107; /* Color del borde */
-  background-color: transparent; /* Sin fondo */
+  color: #ffc107;
+  border-color: #ffc107;
 }
 
 .transaction-status.COMPLETED {
-  color: #4CAF50; /* Verde */
-  border-color: #4CAF50; /* Color del borde */
-  background-color: transparent; /* Sin fondo */
+  color: #4caf50;
+  border-color: #4caf50;
 }
 
 .transaction-status.REFUNDED {
-  color: #00BCD4; /* Azul claro */
-  border-color: #00BCD4;
-  background-color: transparent; /* Sin fondo */
+  color: #00bcd4;
+  border-color: #00bcd4;
 }
 
 .transaction-status.CANCELLED {
-  color: #F44336; /* Rojo */
-  border-color: #F44336;
-  background-color: transparent; /* Sin fondo */
+  color: #f44336;
+  border-color: #f44336;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.pagination button {
+  padding: 0.8rem 1.5rem;
+  margin: 0 0.5rem;
+  border: none;
+  background-color: #ff7a00;
+  color: white;
+  cursor: pointer;
+  border-radius: 0.5rem;
+}
+
+.pagination button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  html, body {
+    height: 100%;
+    overflow-y: auto; /* Habilitar scroll en móviles */
+  }
+
+  .transactions-container {
+    max-width: 100%; /* Usar todo el ancho disponible en móviles */
+    padding: 1rem;
+    overflow-y: auto; /* Permitir el scroll dentro del contenedor */
+    height: auto; /* Asegurar que crezca según el contenido */
+  }
+
+  .transaction-header, .transaction-row {
+    display: block; /* Cambiar de tabla a formato de bloque en móviles */
+    text-align: left;
+  }
+
+  .transaction-header span, .transaction-row span {
+    display: block; /* Cada dato de la tabla en una nueva línea */
+    margin-bottom: 0.5rem;
+  }
+
+  .transaction-status {
+    margin-top: 0.5rem;
+    min-width: unset;
+  }
+
+  .filters {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  .filters input, .filters select, .filters button {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
 }

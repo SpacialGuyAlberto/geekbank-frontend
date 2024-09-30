@@ -1,132 +1,212 @@
-/* Contenedor principal */
+/* Contenedor principal de configuración de cuenta */
 .account-settings-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.5); /* Fondo oscuro con menos opacidad */
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5); /* Sombra profunda */
+  color: #E1E6F1;
+  /*backdrop-filter: blur(1px); !* Reducir el efecto de desenfoque *!*/
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  min-height: 100vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Título principal */
+h2 {
+  color: #F4D35E;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-shadow: none; /* Eliminar la sombra de texto para mayor claridad */
+}
+
+/* Campo individual (flex para organizar label y campo) */
+.field {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
 }
 
-/* Sidebar de navegación */
-.account-sidebar {
-  width: 100%; /* 100% para pantallas pequeñas */
-  background-color: #00253d;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+/* Etiquetas de campo */
+.field label {
+  font-weight: bold;
+  margin-right: 1rem;
+  color: #FF6B35;
+  flex: 1;
 }
 
-/* Para pantallas grandes */
-@media (min-width: 768px) {
-  .account-settings-container {
-    flex-direction: row; /* Mostrar la barra lateral y el contenido en filas */
-  }
-
-  .account-sidebar {
-    width: 250px; /* Ajustar el ancho de la barra lateral */
-    margin-bottom: 0; /* Eliminar el margen inferior */
-  }
+/* Estilos para los inputs de texto */
+.field input {
+  width: 100%;
+  max-width: 300px;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0.25rem;
+  background-color: rgba(36, 59, 83, 0.8); /* Aumentar opacidad para mejorar la legibilidad */
+  color: #FFF;
+  flex: 2;
 }
 
-.account-nav ul {
+.field input:focus {
+  border-color: #FF6B35;
+  outline: none;
+}
+
+/* Botón principal */
+button[type="submit"] {
+  background: rgba(255, 107, 53, 0.2); /* Mantener el color del botón pero con transparencia */
+  border: 1px solid rgba(255, 107, 53, 0.4); /* Borde con transparencia */
+}
+
+button[type="submit"]:hover {
+  background-color: rgba(255, 107, 53, 0.35); /* Mayor transparencia al hacer hover */
+}
+
+/* Preferencias de comunicación */
+.preferences {
+  margin-top: 2rem;
+}
+
+.preferences h3 {
+  color: #F4D35E;
+}
+
+.preferences label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #E1E1E1;
+}
+
+/* Iconos para editar, borrar */
+i.fa-pencil-alt, i.fa-edit, i.fa-trash {
+  cursor: pointer;
+  margin-left: 0.5rem;
+  color: #FF6B35;
+}
+
+i.fa-pencil-alt:hover, i.fa-edit:hover, i.fa-trash:hover {
+  color: #FFD700;
+}
+
+/* Cajas de direcciones y métodos de pago */
+.addresses-box, .payment-box {
+  margin-top: 2rem;
+}
+
+.addresses-box ul, .payment-box ul {
   list-style: none;
   padding: 0;
 }
 
-.account-nav .nav-item {
-  color: #fff;
+.addresses-box li, .payment-box li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  color: #E1E6F1;
+}
+
+/* Botones secundarios */
+button {
+  background: rgba(255, 255, 255, 0.15); /* Fondo con menor transparencia */
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde suave y sutil */
+  padding: 0.75rem;
+  border-radius: 0.75rem; /* Borde redondeado */
+  backdrop-filter: blur(8px); /* Efecto de vidrio esmerilado reducido */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1); /* Sombra más tenue */
   font-size: 1.1rem;
-  padding: 10px 0;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
 }
 
-/* Contenido de la cuenta */
-.account-content {
-  flex-grow: 1;
-  padding: 20px;
-  background-color: #f1f4f9;
-  margin-left: 0;
+button:hover {
+  background-color: rgba(255, 255, 255, 0.2); /* Un poco más de brillo al hacer hover */
+  transform: scale(1.03); /* Ligero aumento de tamaño */
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2); /* Brillo sutil al pasar el cursor */
 }
 
-.main-box {
-  background-color: #f1f1f1;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+button[type="submit"] {
+  background: rgba(255, 107, 53, 0.15); /* Naranja con menor transparencia */
+  border: 1px solid rgba(255, 107, 53, 0.3); /* Borde más suave */
 }
 
-h2 {
-  color: #ff5722;
-  margin-bottom: 20px;
+button[type="submit"]:hover {
+  background-color: rgba(255, 107, 53, 0.25); /* Brillo ligero al hacer hover */
+  box-shadow: 0 2px 8px rgba(255, 107, 53, 0.2); /* Sombra más suave en hover */
 }
 
-.field {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-}
 
-.field label {
-  flex-basis: 150px;
-  color: #333;
-  font-weight: bold;
-}
 
-/* Para pantallas más pequeñas, hacer que las etiquetas y los campos de entrada se apilen */
-@media (max-width: 767px) {
+/* Responsividad para pantallas pequeñas */
+@media (max-width: 600px) {
+
+  /* Ajustar el tamaño y permitir scroll en pantallas pequeñas */
+  .account-settings-container {
+    padding: 1rem;
+    max-height: 100vh;
+    overflow-y: auto;
+  }
+
   .field {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .field label {
-    flex-basis: auto;
-    margin-bottom: 5px;
+  .field input {
+    max-width: 100%;
+  }
+
+  button[type="submit"] {
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Optimización para pantallas muy pequeñas */
+@media (max-width: 400px) {
+  .account-settings-container {
+    margin: 1rem;
+    padding: 1rem;
+    max-width: 100%;
+    height: auto;
+    overflow-y: auto;
+  }
+
+  .field {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .field input {
     width: 100%;
+    padding: 0.5rem;
   }
-}
 
-.field span,
-.field input {
-  flex-grow: 1;
-  padding: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
+  button[type="submit"] {
+    font-size: 0.85rem;
+  }
 
-.field input {
-  background-color: #fff;
-}
+  h2 {
+    font-size: 1.4rem;
+  }
 
-.field i {
-  margin-left: 10px;
-  cursor: pointer;
-  color: #666;
-}
+  .preferences {
+    margin-top: 1rem;
+  }
 
-.field i:hover {
-  color: #ff5722;
-}
+  .addresses-box, .payment-box {
+    margin-top: 1rem;
+  }
 
-button {
-  background-color: #ff5722;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #e64a19;
-}
-
-/* Estilo del gradiente en la selección de la sidebar */
-.sidebar .nav-item.active {
-  background: linear-gradient(90deg, #ff5722, #ff9100);
-  color: #fff;
-}
-
-.sidebar .nav-item.active:hover {
-  background: linear-gradient(90deg, #ff9100, #ff5722);
+  button {
+    font-size: 0.9rem;
+    padding: 0.5rem;
+  }
 }

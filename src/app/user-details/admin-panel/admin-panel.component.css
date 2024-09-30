@@ -5,16 +5,36 @@
 }
 
 .sidebar {
-  width: 250px;
-  background-color: #00253d; /* Azul oscuro */
-  padding: 20px;
+  width: 15rem; /* Adaptado a rem */
+  background-color: #00253d;
+  padding: 1.25rem; /* Adaptado a rem */
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.sidebar.is-collapsed {
-  transform: translateX(-250px); /* Ocultar el sidebar cuando está colapsada */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.modal-sidebar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* Mantener adaptable a pantallas pequeñas */
+  background-color: #00253d;
+  padding: 1.25rem; /* Adaptado a rem */
+  border-radius: 0.625rem; /* Adaptado a rem (10px) */
+  z-index: 1001;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.5); /* 4px, 10px */
 }
 
 .sidebar ul {
@@ -23,160 +43,104 @@
 }
 
 .sidebar li {
-  margin: 20px 0;
+  margin: 1.25rem 0; /* Adaptado a rem (20px) */
 }
 
-.sidebar a {
+.sidebar a,
+.sidebar .nav-item {
   text-decoration: none;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 1.125rem; /* Adaptado a rem (18px) */
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 0.625rem; /* Adaptado a rem (10px) */
+  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
   transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.sidebar a:hover {
-  background-color: #004466; /* Cambia el color al pasar el mouse */
-}
-.sidebar a.active {
-  background: linear-gradient(90deg, rgba(255,87,34,1) 0%, rgba(255,193,7,1) 50%);
-  color: #ffffff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.sidebar a i {
-  margin-right: 10px;
-}
-
-/* Botón de hamburguesa para móviles */
-.hamburger-btn {
-  display: none; /* Oculto por defecto en pantallas grandes */
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background-color: #00253d;
-  color: white;
-  border: none;
-  font-size: 24px;
-  padding: 10px;
-  border-radius: 5px;
   cursor: pointer;
 }
 
-.hamburger-btn:focus {
-  outline: none;
+.close-btn {
+  position: absolute;
+  top: 0.625rem; /* Adaptado a rem (10px) */
+  right: 0.625rem; /* Adaptado a rem (10px) */
+  cursor: pointer;
+  font-size: 1.5rem; /* Adaptado a rem (24px) */
+  color: white;
 }
 
-/* Sidebar colapsada en móviles */
-.sidebar.is-collapsed {
-  transform: translateX(-100%);
+.sidebar a i,
+.sidebar .nav-item i {
+  margin-right: 0.625rem; /* Adaptado a rem (10px) */
+  font-size: 1.25rem; /* Adaptado a rem (20px) */
 }
 
+.sidebar a:hover,
+.sidebar .nav-item:hover {
+  background-color: #005f73;
+}
+
+.sidebar .nav-item.active {
+  background: linear-gradient(90deg, rgba(255, 87, 34, 1) 0%, rgba(255, 193, 7, 1) 50%);
+  color: #ffffff;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2); /* 4px, 10px */
+}
+
+/* Sub-secciones */
+.sub-sections {
+  padding-left: 1.25rem; /* Adaptado a rem (20px) */
+}
+
+.sub-nav-item {
+  font-size: 1rem; /* Adaptado a rem (16px) */
+  color: #b3b3b3;
+  cursor: pointer;
+  margin-top: 0.625rem; /* Adaptado a rem (10px) */
+  padding-left: 0.9375rem; /* Adaptado a rem (15px) */
+}
+
+.sub-nav-item:hover {
+  color: #ff5722;
+}
+
+/* Contenido */
 .main-content {
   flex-grow: 1;
-  padding: 20px;
+  padding: 1.25rem; /* Adaptado a rem (20px) */
   background-color: #f1f4f9;
 }
 
-/* Cajas de métricas clave */
-.metrics-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
+h2 {
+  color: #00253d;
+  margin-bottom: 0.625rem; /* Adaptado a rem (10px) */
 }
 
-.metric-box {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+p {
+  font-size: 1.125rem; /* Adaptado a rem (18px) */
+}
+
+/* Botón hamburguesa para pantallas pequeñas */
+.hamburger-btn {
+  display: none;
+  position: absolute;
+  top: 1.25rem; /* Adaptado a rem (20px) */
+  left: 1.25rem; /* Adaptado a rem (20px) */
+  background-color: #00253d;
+  color: white;
+  border: none;
+  font-size: 1.5rem; /* Adaptado a rem (24px) */
+  padding: 0.625rem; /* Adaptado a rem (10px) */
+  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
   cursor: pointer;
 }
 
-.metric-box:hover {
-  transform: scale(1.05);
-}
-
-/* Estilos individuales para las cards */
-.metric-box.locations {
-  background-color: #00796b; /* Verde oscuro */
-  color: #ffffff;
-}
-
-.metric-box.shops {
-  background-color: #ffa726; /* Naranja */
-  color: #ffffff;
-}
-
-.metric-box.products {
-  background-color: #d32f2f; /* Rojo */
-  color: #ffffff;
-}
-
-.metric-box.revenue {
-  background-color: #7e57c2; /* Morado */
-  color: #ffffff;
-}
-
-.metric-box i {
-  font-size: 30px;
-  margin-bottom: 10px;
-}
-
-.metric-box p {
-  margin: 0;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* Gráficos */
-.charts-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-
-.chart-box {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.chart-box h3 {
-  margin-bottom: 20px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-/* Estilos responsive para pantallas pequeñas */
-@media (max-width: 768px) {
-  .sidebar {
-    position: absolute;
-    height: 100%;
-    z-index: 2;
-    transform: translateX(-250px);
-  }
-
-  .sidebar.is-collapsed {
-    transform: translateX(0); /* Muestra el menú cuando se presiona el botón */
-  }
-
+@media (max-width: 48rem) {
+  /* Pantallas de 768px o menos */
   .hamburger-btn {
-    display: block; /* Mostrar botón hamburguesa en móviles */
+    display: block;
   }
 
   .main-content {
-    margin-left: 0; /* Elimina el margen del panel en móviles */
+    margin-left: 0;
   }
 }
+

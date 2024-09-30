@@ -41,7 +41,7 @@
 /* Ajustes de tamaño dinámico para los links */
 .navbar-links a,
 .navbar-links mat-icon {
-  font-size: clamp(1.2rem, 2vw, 1.7rem);
+  font-size: clamp(1.1rem, 1.8vw, 1.5rem); /* Reducción del tamaño */
   transition: transform 0.3s ease;
 }
 
@@ -53,26 +53,26 @@
 }
 
 .navbar .nav-link:hover {
-  color: #FF957C;
+  color: #99CCFF; /* Color azul claro especial */
 }
 
 /* Íconos */
 .clickable-icon {
   color: #A0E4FF;
   cursor: pointer;
-  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  font-size: clamp(1.2rem, 1.8vw, 2rem); /* Reducción del tamaño de los iconos */
   transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .clickable-icon:hover {
-  color: #FF957C;
-  transform: scale(1.1);
+  color: #99CCFF; /* Cambiar el color a un azul más claro en hover */
+  transform: scale(1.05); /* Ligeramente más pequeño en hover */
 }
 
 /* Carrito */
 .cart-icon-container {
   position: relative;
-  font-size: clamp(1.5rem, 2vw, 2.5rem);
+  font-size: clamp(1.2rem, 1.8vw, 2rem); /* Reducción del tamaño del icono del carrito */
   list-style: none;
   margin: 0;
   padding: 0;
@@ -83,8 +83,8 @@
 }
 
 .cart-icon-container:hover a mat-icon {
-  color: #FF957C;
-  transform: scale(1.1);
+  color: #99CCFF;
+  transform: scale(1.05); /* Reducción del hover en el carrito */
 }
 
 .cart-count {
@@ -181,11 +181,11 @@
   }
 
   .clickable-icon {
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Reducido para pantallas pequeñas */
   }
 
   .cart-icon-container {
-    font-size: 1.4rem;
+    font-size: 1.2rem; /* Reducido para pantallas pequeñas */
   }
 }
 
@@ -204,10 +204,10 @@
   }
 
   .clickable-icon {
-    font-size: 1.2rem;
+    font-size: 1rem; /* Aún más pequeño para pantallas muy pequeñas */
   }
 
   .cart-icon-container {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 }

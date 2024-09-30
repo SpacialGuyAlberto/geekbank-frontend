@@ -1,64 +1,53 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Oculta el overflow a nivel del body */
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #0B0D19;
+}
+
 .clients-dashboard {
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra todo el contenido horizontalmente */
+  height: 100%; /* Ocupar toda la altura disponible */
 }
 
-.search-add-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 800px; /* Limita el ancho máximo del contenedor */
-  margin-bottom: 20px;
-}
-
-.search-bar {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-width: 300px; /* Ajusta el ancho máximo */
-}
-
-.add-client-btn {
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-client-btn:hover {
-  background-color: #218838;
+.scrollable {
+  overflow-y: auto; /* Hacer que este div sea scrollable */
+  max-height: 100vh; /* Ajustar la altura máxima para activar el scroll */
+  padding: 1rem; /* Espaciado interno */
 }
 
 .clients-list-container {
-  margin-bottom: 40px;
+  flex-grow: 1; /* Permitir que crezca y ocupe todo el espacio disponible */
+  margin-bottom: 2.5rem;
   width: 100%;
-  max-width: 1200px; /* Limita el ancho máximo */
+  max-width: 75rem; /* 1200px en rem */
   display: flex;
-  justify-content: center; /* Centra los elementos */
+  justify-content: center;
+  flex-grow: 1; /* Permitir que el contenedor crezca para ocupar espacio */
 }
 
 .client-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center; /* Centra los elementos flexibles */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
+  gap: 1.25rem;
+  width: 100%;
+  justify-items: center;
 }
 
 .client-card {
   background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  border-radius: 0.625rem;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
+  padding: 0.9375rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  width: 200px;
+  width: 12.5rem; /* 200px en rem */
   transition: transform 0.3s ease;
 }
 
@@ -67,9 +56,9 @@
 }
 
 .client-photo-container {
-  width: 80px;
-  height: 80px;
-  margin-bottom: 10px;
+  width: 5rem; /* 80px en rem */
+  height: 5rem;
+  margin-bottom: 0.625rem;
 }
 
 .client-photo {
@@ -82,7 +71,7 @@
 .client-name {
   font-size: 1.1rem;
   color: #007bff;
-  margin-bottom: 5px;
+  margin-bottom: 0.3125rem;
 }
 
 .client-info p {
@@ -90,29 +79,32 @@
   color: #666;
 }
 
-/* Sección de transacciones */
-
 .transactions-container {
   width: 100%;
-  max-width: 1000px; /* Limita el ancho máximo */
-  margin: 20px auto; /* Centra el contenedor */
-  padding: 20px;
+  max-width: 62.5rem; /* 1000px en rem */
+  margin: 1.25rem auto;
+  padding: 1.25rem;
   background-color: #2d2d2d;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   color: #ffffff;
-  max-height: 500px; /* Limita la altura máxima del contenedor */
-  overflow-y: auto; /* Habilita el desplazamiento vertical */
+  max-height: 31.25rem; /* 500px en rem */
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centramos el contenido */
 }
 
 .transaction-table {
   display: grid;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
-.transaction-header, .transaction-row {
+.transaction-header,
+.transaction-row {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 10px;
+  padding: 0.625rem;
   background-color: #333;
 }
 
@@ -123,7 +115,7 @@
 }
 
 .transaction-row {
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   transition: background-color 0.3s ease;
 }
 
@@ -132,36 +124,36 @@
 }
 
 .transaction-status {
-  padding: 5px 15px;
-  border-radius: 25px;
-  border-width: 2px;
+  padding: 0.3125rem 0.9375rem;
+  border-radius: 1.5625rem;
+  border-width: 0.125rem;
   border-style: solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
-  width: 120px;
+  width: 7.5rem; /* 120px en rem */
 }
 
 .no-transactions {
   text-align: center;
   color: #ff7a00;
-  font-size: 18px;
-  margin-top: 20px;
+  font-size: 1.125rem;
+  margin-top: 1.25rem;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .pagination button {
-  padding: 10px 15px;
-  margin: 0 5px;
+  padding: 0.625rem 0.9375rem;
+  margin: 0 0.3125rem;
   border: none;
   background-color: #007bff;
   color: #fff;
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   cursor: pointer;
 }
 
@@ -198,18 +190,67 @@
   background-color: transparent;
 }
 
-/* Para pantallas pequeñas */
-@media (max-width: 768px) {
-  .transaction-header, .transaction-row {
-    grid-template-columns: 1fr 1fr;
-  }
+.search-add-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 50rem; /* 800px en rem */
+  margin-bottom: 1.25rem;
+}
 
-  .transactions-container {
-    max-height: 300px;
+.search-bar {
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
+  border: 0.0625rem solid #ccc;
+  width: 100%;
+  max-width: 18.75rem; /* 300px en rem */
+}
+
+.add-client-btn {
+  padding: 0.625rem 1.25rem;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+}
+
+.add-client-btn:hover {
+  background-color: #218838;
+}
+
+.add-client-btn:active {
+  transform: scale(0.98); /* Efecto de clic */
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  .clients-list-container {
+    max-height: 50vh; /* Limitar la altura y permitir scroll solo en móviles */
+    overflow-y: auto;
   }
 
   .client-cards-container {
+    grid-template-columns: 1fr; /* Mostrar una columna en pantallas pequeñas */
+  }
+
+  .transactions-container {
+    max-height: 18.75rem; /* 300px en rem */
+    justify-content: center;
+  }
+
+  .search-add-container {
     flex-direction: column;
     align-items: center;
+    gap: 1rem;
+  }
+
+  .search-bar,
+  .add-client-btn {
+    width: 100%; /* Ocupa todo el ancho en móviles */
+  }
+
+  .add-client-btn {
+    margin-top: 1rem;
   }
 }

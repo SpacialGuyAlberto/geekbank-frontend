@@ -26,6 +26,10 @@ export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];
   orderHistory: Order[] = [];
   transactions: Transaction[] = [];
+  paginatedTransactions: any[] = []; // Para las transacciones mostradas en la página actual
+  currentPage: number = 1;
+  itemsPerPage: number = 5; // Cambia el número de elementos por página
+  totalPages: number = 0;
 
   @Input() user: any = {
     email: '',
@@ -48,7 +52,32 @@ export class OrdersComponent implements OnInit {
     // this.loadRecentOrders();
     // this.loadOrderHistory();
     this.loadTransactions();
+    this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
+    this.updatePaginatedTransactions();
   }
+
+
+  updatePaginatedTransactions(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedTransactions = this.transactions.slice(startIndex, endIndex);
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.updatePaginatedTransactions();
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedTransactions();
+    }
+  }
+
+
 
   loadRecentOrders(): void {
     this.recentOrders = [
@@ -83,14 +112,19 @@ export class OrdersComponent implements OnInit {
   }
 
   loadTransactions(): void {
+    this.transactionService.getTransactionsById(this.user.id).subscribe(
+      (data: Transaction[]) => {
+        this.transactions = data;
 
-      this.transactionService.getTransactionsById(this.user.id).subscribe(
-        (data: Transaction[]) => {
-          this.transactions = data;
-        }
-      )
+        // Una vez que las transacciones están cargadas, calcula las páginas
+        this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
 
+        // Actualiza las transacciones paginadas
+        this.updatePaginatedTransactions();
+      }
+    );
   }
+
 
   filterOrders() {
     this.recentOrders = this.recentOrders.filter(order => {

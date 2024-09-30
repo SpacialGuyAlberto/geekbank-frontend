@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import { AuthService } from '../auth.service';
 import { User } from '../models/User';
 import { CommonModule } from '@angular/common';
@@ -26,8 +26,14 @@ export class UserDetailsComponent implements OnInit {
   selectedSection: string = 'account-info'
   isCollapsed: boolean = false;
   isAccountInfoOpen: boolean = false;
+  isSmallScreen: boolean = false;
 
   constructor(private authService: AuthService, private animation: BackgroundAnimationService,  private router: Router) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isSmallScreen = window.innerWidth <= 768;
+  }
 
   ngOnInit(): void {
     this.animation.initializeGraphAnimation();
@@ -37,30 +43,39 @@ export class UserDetailsComponent implements OnInit {
       sessionStorage.setItem("email", data.email)
       console.log(this.user);
     });
-    this.selectSection('products');
+    this.selectSection('account-details');
+    this.isSmallScreen = window.innerWidth <= 768;
 
   }
 
 
   selectSection(section: string) {
+    console.log('Sección seleccionada:', section);  // Verificar la selección
     this.selectedSection = section;
-    if (window.innerWidth <= 768) {
-      // Si está en móvil, colapsa el menú automáticamente al seleccionar una sección
-      this.isCollapsed = true;
+    if (this.isSmallScreen) {
+      this.isCollapsed = false;  // Cambiar a false para ocultar el modal
     }
   }
+
+
+
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
 
   navigateToAdminPanel(): void {
     this.router.navigate(['/admin-panel']);
+    this.closeSidebarOnMobile();
   }
+
   toggleAccountInfoSubsections() {
     this.isAccountInfoOpen = !this.isAccountInfoOpen;
-    // Si las subsecciones están abiertas, selecciona 'account-info' por defecto
-    if (!this.isAccountInfoOpen) {
-      this.selectedSection = 'account-info';
+  }
+
+  closeSidebarOnMobile() {
+    if (this.isSmallScreen) {
+      this.isCollapsed = false; // Asegúrate de que se cierra el modal en vista móvil
     }
   }
+
 }

@@ -1,0 +1,18 @@
+<div class="manual-sales-container">
+  <!-- Ventas Pendientes -->
+  <div class="pending-sales">
+    <h2>Ventas Manuales Pendientes</h2>
+    <div class="sales-list">
+      <div class="sale-item" *ngFor="let sale of pendingSales">
+        <div class="sale-info">
+          <p><strong>ID:</strong> {{ sale.id }}</p>
+          <p><strong>Plataforma:</strong> {{ sale.platform }}</p>
+          <p><strong>Producto:</strong> {{ sale.product }}</p>
+          <p><strong>Monto:</strong> {{ sale.amount }}</p>
+          <p><strong>Fecha:</strong> {{ sale.date }}</p>
+        </div>
+        <button class="complete-sale-btn" (click)="completeSale(sale.id)">Completar</button>
+      </div>
+    </div>
+  </div>
+</div>

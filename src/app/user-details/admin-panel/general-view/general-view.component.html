@@ -1,0 +1,54 @@
+<div class="dashboard-summary">
+  <div class="summary-cards">
+    <!-- Ventas Totales -->
+    <div class="summary-card">
+      <h3>Ventas Totales</h3>
+      <p>{{ totalSales | currency }}</p>
+    </div>
+
+    <!-- Ganancias Totales -->
+    <div class="summary-card">
+      <h3>Ganancias</h3>
+      <p>{{ totalProfit | currency }}</p>
+    </div>
+
+    <!-- Número de Clientes -->
+    <div class="summary-card">
+      <h3>Número de Clientes</h3>
+      <p>{{ totalClients }}</p>
+    </div>
+
+    <!-- Transacciones Completadas -->
+    <div class="summary-card">
+      <h3>Transacciones Completadas</h3>
+      <p>{{ completedTransactions }}</p>
+    </div>
+
+    <!-- Pedidos Pendientes -->
+    <div class="summary-card">
+      <h3>Pedidos Pendientes</h3>
+      <p>{{ pendingOrders }}</p>
+    </div>
+
+    <!-- Productos en Inventario -->
+    <div class="summary-card">
+      <h3>Productos en Inventario</h3>
+      <p>{{ totalProducts }}</p>
+    </div>
+  </div>
+
+  <!-- Gráficos -->
+  <div class="charts-section">
+    <!-- Gráfico de Ventas Mensuales -->
+    <div class="chart-container">
+      <h3>Ventas Mensuales</h3>
+      <canvas id="monthlySalesChart"></canvas>
+    </div>
+
+    <!-- Gráfico de Categorías más Vendidas -->
+    <div class="chart-container">
+      <h3>Categorías más Vendidas</h3>
+      <canvas id="topCategoriesChart"></canvas>
+    </div>
+  </div>
+</div>

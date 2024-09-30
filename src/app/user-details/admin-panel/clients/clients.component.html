@@ -1,4 +1,4 @@
-<div class="clients-dashboard">
+<div class="clients-dashboard scrollable">
   <!-- Sección de búsqueda y agregar nuevo cliente -->
   <div class="search-add-container">
     <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" class="search-bar" />
@@ -20,7 +20,6 @@
       </div>
     </div>
   </div>
-
 
   <div class="transactions-container">
     <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
@@ -63,4 +62,3 @@
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
   </div>
 </div>
-
