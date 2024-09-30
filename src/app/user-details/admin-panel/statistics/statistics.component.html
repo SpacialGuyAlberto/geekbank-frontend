@@ -22,33 +22,36 @@
   </div>
 
   <!-- Contenido de gráficos según la pestaña seleccionada -->
-  <div class="chart-container" *ngIf="selectedTab === 'sales'">
-    <h3>Ventas Mensuales</h3>
-    <canvas id="salesChart"></canvas>
+  <div class="charts-grid">
+    <div class="chart-container" *ngIf="selectedTab === 'sales'">
+      <h3>Ventas Mensuales</h3>
+      <canvas id="salesChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'category'">
+      <h3>Ventas por Categoría</h3>
+      <canvas id="salesByCategoryChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'behavior'">
+      <h3>Comportamiento del Cliente</h3>
+      <canvas id="customerBehaviorChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'traffic'">
+      <h3>Tráfico por Canal</h3>
+      <canvas id="trafficSourcesChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'inventory'">
+      <h3>Inventario</h3>
+      <canvas id="inventoryChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'orders'">
+      <h3>Pedidos Totales</h3>
+      <canvas id="ordersChart"></canvas>
+    </div>
   </div>
 
-  <div class="chart-container" *ngIf="selectedTab === 'category'">
-    <h3>Ventas por Categoría</h3>
-    <canvas id="salesByCategoryChart"></canvas>
-  </div>
-
-  <div class="chart-container" *ngIf="selectedTab === 'behavior'">
-    <h3>Comportamiento del Cliente</h3>
-    <canvas id="customerBehaviorChart"></canvas>
-  </div>
-
-  <div class="chart-container" *ngIf="selectedTab === 'traffic'">
-    <h3>Tráfico por Canal</h3>
-    <canvas id="trafficSourcesChart"></canvas>
-  </div>
-
-  <div class="chart-container" *ngIf="selectedTab === 'inventory'">
-    <h3>Inventario</h3>
-    <canvas id="inventoryChart"></canvas>
-  </div>
-
-  <div class="chart-container" *ngIf="selectedTab === 'orders'">
-    <h3>Pedidos Totales</h3>
-    <canvas id="ordersChart"></canvas>
-  </div>
 </div>

@@ -280,8 +280,6 @@
 }
 
 
-
-
 @media (max-width: 480px) {
   .main-gift-cards {
     grid-template-columns: 1fr;

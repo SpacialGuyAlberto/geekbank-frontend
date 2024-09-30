@@ -26,7 +26,7 @@
       <span>Monto</span>
     </div>
 
-    <div *ngFor="let transaction of transactions" class="transaction-row">
+    <div *ngFor="let transaction of paginatedTransactions" class="transaction-row">
       <span>{{ transaction.id }}</span>
       <span>{{ transaction.timestamp | date:'dd-MM-yyyy' }}</span>
       <span>{{ transaction.description }}</span>
@@ -34,4 +34,10 @@
       <span>{{ transaction.amount | currency }}</span>
     </div>
   </div>
+
+  <div class="pagination">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+
 </div>

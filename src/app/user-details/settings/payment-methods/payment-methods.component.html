@@ -1,27 +1,95 @@
 <div class="payment-methods-container">
   <h2>Métodos de Pago</h2>
 
+  <!-- Métodos de pago actuales -->
   <div class="current-payment-methods">
     <h3>Mis Métodos de Pago</h3>
+
     <div *ngFor="let paymentMethod of paymentMethods" class="payment-method-item">
-      <p>{{ paymentMethod.type }} terminada en {{ paymentMethod.lastFourDigits }}</p>
-      <p>Expiración: {{ paymentMethod.expiryDate }}</p>
-      <button (click)="editPaymentMethod(paymentMethod)">Editar</button>
-      <button (click)="removePaymentMethod(paymentMethod)">Eliminar</button>
+      <!-- Íconos dinámicos según el tipo de método de pago -->
+      <fa-icon *ngIf="paymentMethod.type === 'Tarjeta' && paymentMethod.provider === 'Visa'" [icon]="['fab', 'cc-visa']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'Tarjeta' && paymentMethod.provider === 'MasterCard'" [icon]="['fab', 'cc-mastercard']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'PayPal'" [icon]="['fab', 'paypal']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'Google Pay'" [icon]="['fab', 'google-pay']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'Wallet Virtual'" [icon]="['fas', 'wallet']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'Blockchain' && paymentMethod.cryptoCurrency === 'Bitcoin'" [icon]="['fab', 'bitcoin']"></fa-icon>
+      <fa-icon *ngIf="paymentMethod.type === 'Blockchain' && paymentMethod.cryptoCurrency === 'Ethereum'" [icon]="['fab', 'ethereum']"></fa-icon>
+
+      <div class="payment-details">
+        <p><strong>Tipo:</strong> {{ paymentMethod.type }} ({{ paymentMethod.provider || 'N/A' }})</p>
+        <p><strong>Últimos 4 dígitos:</strong> {{ paymentMethod.lastFourDigits || 'No aplica' }}</p>
+        <p><strong>Expiración:</strong> {{ paymentMethod.expiryDate || 'No aplica' }}</p>
+        <p><strong>Monedero Virtual:</strong> {{ paymentMethod.walletAddress || 'No disponible' }}</p>
+        <p><strong>País:</strong> {{ paymentMethod.country || 'Desconocido' }}</p>
+        <p><strong>Criptomoneda:</strong> {{ paymentMethod.cryptoCurrency || 'No disponible' }}</p>
+      </div>
+      <div class="action-buttons">
+        <button (click)="editPaymentMethod(paymentMethod)">Editar</button>
+        <button (click)="removePaymentMethod(paymentMethod)">Eliminar</button>
+      </div>
     </div>
   </div>
 
+  <!-- Añadir nuevo método de pago -->
   <div class="add-payment-method">
     <h3>Añadir Nuevo Método de Pago</h3>
     <form (ngSubmit)="addPaymentMethod()">
-      <label for="type">Tipo</label>
-      <input type="text" id="type" [(ngModel)]="newPaymentMethod.type" name="type" required>
+      <label for="type">Tipo de Método</label>
+      <select id="type" [(ngModel)]="newPaymentMethod.type" name="type" required>
+        <option value="Tarjeta">Tarjeta de Crédito/Débito</option>
+        <option value="PayPal">PayPal</option>
+        <option value="Google Pay">Google Pay</option>
+        <option value="Wallet Virtual">Monedero Virtual</option>
+        <option value="Blockchain">Blockchain</option>
+      </select>
 
-      <label for="cardNumber">Número de Tarjeta</label>
-      <input type="text" id="cardNumber" [(ngModel)]="newPaymentMethod.cardNumber" name="cardNumber" required>
+      <!-- Si el método es Tarjeta -->
+      <div *ngIf="newPaymentMethod.type === 'Tarjeta'">
+        <label for="provider">Proveedor</label>
+        <select id="provider" [(ngModel)]="newPaymentMethod.provider" name="provider" required>
+          <option value="Visa">Visa</option>
+          <option value="MasterCard">MasterCard</option>
+          <option value="Amex">Amex</option>
+        </select>
 
-      <label for="expiryDate">Fecha de Expiración</label>
-      <input type="text" id="expiryDate" [(ngModel)]="newPaymentMethod.expiryDate" name="expiryDate" required>
+        <label for="cardNumber">Número de Tarjeta</label>
+        <input type="text" id="cardNumber" [(ngModel)]="newPaymentMethod.cardNumber" name="cardNumber" required>
+
+        <label for="expiryDate">Fecha de Expiración</label>
+        <input type="text" id="expiryDate" [(ngModel)]="newPaymentMethod.expiryDate" name="expiryDate" required>
+      </div>
+
+      <!-- Si el método es PayPal o Google Pay -->
+      <div *ngIf="newPaymentMethod.type === 'PayPal' || newPaymentMethod.type === 'Google Pay'">
+        <label for="email">Correo Electrónico</label>
+        <input type="email" id="email" [(ngModel)]="newPaymentMethod.email" name="email" required>
+      </div>
+
+      <!-- Si el método es Monedero Virtual -->
+      <div *ngIf="newPaymentMethod.type === 'Wallet Virtual'">
+        <label for="walletAddress">Dirección del Monedero</label>
+        <input type="text" id="walletAddress" [(ngModel)]="newPaymentMethod.walletAddress" name="walletAddress" required>
+
+        <label for="cryptoCurrency">Criptomoneda</label>
+        <select id="cryptoCurrency" [(ngModel)]="newPaymentMethod.cryptoCurrency" name="cryptoCurrency" required>
+          <option value="Bitcoin">Bitcoin</option>
+          <option value="Ethereum">Ethereum</option>
+          <option value="USDT">USDT</option>
+        </select>
+      </div>
+
+      <!-- Si el método es Blockchain -->
+      <div *ngIf="newPaymentMethod.type === 'Blockchain'">
+        <label for="blockchainNetwork">Red de Blockchain</label>
+        <select id="blockchainNetwork" [(ngModel)]="newPaymentMethod.blockchainNetwork" name="blockchainNetwork" required>
+          <option value="Bitcoin">Bitcoin</option>
+          <option value="Ethereum">Ethereum</option>
+          <option value="Solana">Solana</option>
+        </select>
+
+        <label for="walletAddress">Dirección de la Billetera</label>
+        <input type="text" id="walletAddress" [(ngModel)]="newPaymentMethod.walletAddress" name="walletAddress" required>
+      </div>
 
       <button type="submit">Añadir Método de Pago</button>
     </form>

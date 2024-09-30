@@ -13,14 +13,14 @@
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
 
     <!-- Ícono de búsqueda visible solo en pantallas pequeñas -->
-    <mat-icon *ngIf="isSmallScreen" (click)="openSearchModal()" class="clickable-icon">search</mat-icon>
+    <i *ngIf="isSmallScreen" (click)="openSearchModal()" class="fa-solid fa-magnifying-glass clickable-icon"></i>
 
-    <mat-icon *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="clickable-icon">account_circle</mat-icon>
-    <mat-icon *ngIf="isLoggedIn()" (click)="logout()" class="clickable-icon">exit_to_app</mat-icon>
+    <i *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="fa-solid fa-user clickable-icon"></i>
+    <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
 
     <li *ngIf="isLoggedIn()" class="cart-icon-container">
       <a routerLink="/cart">
-        <mat-icon>shopping_cart</mat-icon>
+        <i class="fa-solid fa-cart-shopping"></i>
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
     </li>
@@ -32,7 +32,7 @@
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
     <!-- Usamos el componente app-search-bar dentro del modal y asignamos la función de búsqueda -->
-    <app-search-bar (searchResults)="closeSearchModal()" ></app-search-bar>
+    <app-search-bar (searchResults)="closeSearchModal()"></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p> <!-- Muestra mensaje si no hay resultados -->
   </div>
 </div>

@@ -5,16 +5,36 @@
 }
 
 .sidebar {
-  width: 250px;
+  width: 15rem; /* Adaptado a rem */
   background-color: #00253d;
-  padding: 20px;
+  padding: 1.25rem; /* Adaptado a rem */
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
+  z-index: 1000;
 }
 
-.sidebar.is-collapsed {
-  transform: translateX(-100%); /* Colapsar la sidebar en pantallas pequeñas */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+
+.modal-sidebar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%; /* Mantener adaptable a pantallas pequeñas */
+  background-color: #00253d;
+  padding: 1.25rem; /* Adaptado a rem */
+  border-radius: 0.625rem; /* Adaptado a rem (10px) */
+  z-index: 1001;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.5); /* 4px, 10px */
 }
 
 .sidebar ul {
@@ -23,26 +43,35 @@
 }
 
 .sidebar li {
-  margin: 20px 0;
+  margin: 1.25rem 0; /* Adaptado a rem (20px) */
 }
 
 .sidebar a,
 .sidebar .nav-item {
   text-decoration: none;
   color: #ffffff;
-  font-size: 18px;
+  font-size: 1.125rem; /* Adaptado a rem (18px) */
   display: flex;
   align-items: center;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 0.625rem; /* Adaptado a rem (10px) */
+  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
   transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
 }
 
+.close-btn {
+  position: absolute;
+  top: 0.625rem; /* Adaptado a rem (10px) */
+  right: 0.625rem; /* Adaptado a rem (10px) */
+  cursor: pointer;
+  font-size: 1.5rem; /* Adaptado a rem (24px) */
+  color: white;
+}
+
 .sidebar a i,
 .sidebar .nav-item i {
-  margin-right: 10px;
-  font-size: 20px;
+  margin-right: 0.625rem; /* Adaptado a rem (10px) */
+  font-size: 1.25rem; /* Adaptado a rem (20px) */
 }
 
 .sidebar a:hover,
@@ -51,26 +80,22 @@
 }
 
 .sidebar .nav-item.active {
-  background: linear-gradient(90deg, rgba(255,87,34,1) 0%, rgba(255,193,7,1) 50%);
+  background: linear-gradient(90deg, rgba(255, 87, 34, 1) 0%, rgba(255, 193, 7, 1) 50%);
   color: #ffffff;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2); /* 4px, 10px */
 }
 
 /* Sub-secciones */
 .sub-sections {
-  padding-left: 20px;
+  padding-left: 1.25rem; /* Adaptado a rem (20px) */
 }
 
 .sub-nav-item {
-  font-size: 16px;
+  font-size: 1rem; /* Adaptado a rem (16px) */
   color: #b3b3b3;
   cursor: pointer;
-  margin-top: 10px;
-  padding-left: 15px;
-}
-
-.sub-nav-item.active {
-  color: #ff5722;
+  margin-top: 0.625rem; /* Adaptado a rem (10px) */
+  padding-left: 0.9375rem; /* Adaptado a rem (15px) */
 }
 
 .sub-nav-item:hover {
@@ -80,56 +105,41 @@
 /* Contenido */
 .main-content {
   flex-grow: 1;
-  padding: 20px;
-  background-color: #f1f4f9;
+  padding: 1.25rem; /* Adaptado a rem (20px) */
+  background: #0B192C;
 }
 
 h2 {
   color: #00253d;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem; /* Adaptado a rem (10px) */
 }
 
 p {
-  font-size: 18px;
+  font-size: 1.125rem; /* Adaptado a rem (18px) */
 }
 
 /* Botón hamburguesa para pantallas pequeñas */
 .hamburger-btn {
-  display: none; /* Oculto por defecto */
+  display: none;
   position: absolute;
-  top: 20px;
-  left: 20px;
+  top: 1.25rem; /* Adaptado a rem (20px) */
+  left: 1.25rem; /* Adaptado a rem (20px) */
   background-color: #00253d;
   color: white;
   border: none;
-  font-size: 24px;
-  padding: 10px;
-  border-radius: 5px;
+  font-size: 1.5rem; /* Adaptado a rem (24px) */
+  padding: 0.625rem; /* Adaptado a rem (10px) */
+  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
   cursor: pointer;
 }
 
-.hamburger-btn:focus {
-  outline: none;
-}
-
-/* Para pantallas pequeñas */
-@media (max-width: 768px) {
-  .sidebar {
-    position: absolute;
-    height: 100%;
-    z-index: 2;
-    transform: translateX(-100%); /* Ocultar el menú inicialmente */
-  }
-
-  .sidebar.is-collapsed {
-    transform: translateX(0); /* Mostrar el menú cuando no está colapsado */
-  }
-
+@media (max-width: 48rem) {
+  /* Pantallas de 768px o menos */
   .hamburger-btn {
-    display: block; /* Mostrar el botón hamburguesa en pantallas pequeñas */
+    display: block;
   }
 
   .main-content {
-    margin-left: 0; /* Asegura que el contenido se ajuste en pantallas pequeñas */
+    margin-left: 0;
   }
 }

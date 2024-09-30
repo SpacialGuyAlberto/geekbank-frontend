@@ -1,0 +1,33 @@
+<div class="transaction-monitor-container">
+  <h2>Estado de Transacciones en Vivo</h2>
+
+  <!-- Gráficos para cada estado -->
+  <div class="charts-grid">
+    <div>
+      <h3>Completadas</h3>
+      <canvas id="completedChart"></canvas>
+    </div>
+    <div>
+      <h3>Pendientes</h3>
+      <canvas id="pendingChart"></canvas>
+    </div>
+    <div>
+      <h3>Canceladas</h3>
+      <canvas id="canceledChart"></canvas>
+    </div>
+    <div>
+      <h3>Reembolsadas</h3>
+      <canvas id="refundedChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Ticker de transacciones recientes -->
+  <div class="transaction-status">
+    <h3>Transacciones Recientes</h3>
+    <ul>
+      <li *ngFor="let transaction of transactions">
+        <span [ngClass]="transaction.status">{{ transaction.id }}: {{ transaction.status }}</span>
+      </li>
+    </ul>
+  </div>
+</div>

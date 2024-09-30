@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
-import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {PasswordModalComponent} from "./password-modal-component/password-modal-component.component";
 
 @Component({
@@ -15,6 +15,7 @@ import {PasswordModalComponent} from "./password-modal-component/password-modal-
     PasswordModalComponent,
     NgIf,
     DatePipe,
+    CurrencyPipe,
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
@@ -23,11 +24,18 @@ export class AccountInfoComponent {
 
   @Input()
   user: any = {
-    name: '',
-    email: '',
-    phone: '',
-    addresses: [],
-    paymentMethods: [],
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    phone: '1234567890',
+    balance: 350.75,  // Añadiendo el balance
+    addresses: [
+      { street: '123 Main St', city: 'New York' },
+      { street: '456 Oak St', city: 'San Francisco' }
+    ],
+    paymentMethods: [
+      { type: 'Visa', lastFourDigits: '4242' },
+      { type: 'MasterCard', lastFourDigits: '1234' }
+    ],
     preferences: {
       promotions: true,
       orderUpdates: true
@@ -80,6 +88,8 @@ export class AccountInfoComponent {
       console.log('Validation failed.');
     }
   }
+
+
 
   handlePasswordConfirmation(isConfirmed: boolean) {
     this.isPasswordModalOpen = false;

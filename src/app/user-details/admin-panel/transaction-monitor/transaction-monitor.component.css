@@ -1,0 +1,54 @@
+.transaction-monitor-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  color: #e1e6f1;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 20px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 300px;
+  margin-bottom: 20px;
+}
+
+.transaction-status {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.transaction-status ul {
+  list-style: none;
+  padding: 0;
+}
+
+.transaction-status li {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.pending {
+  color: #ffcc00;
+}
+
+.completed {
+  color: #28a745;
+}
+
+.canceled {
+  color: #dc3545;
+}
+
+.refunded {
+  color: #007bff;
+}

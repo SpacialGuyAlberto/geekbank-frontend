@@ -1,15 +1,18 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, HostListener } from '@angular/core';
 import { FormsModule } from "@angular/forms";
+import { GeneralViewComponent } from "./general-view/general-view.component";
 import { CurrencyPipe, DatePipe, NgIf } from "@angular/common";
 import { ClientsComponent } from './clients/clients.component';
 import { ProductsComponent } from './products/products.component';
 import { HighlightsConfigComponent } from './highlights-config/highlights-config.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-// import { BackgroundAnimationService } from "../background-animation.service";
+import { TransactionMonitorComponent } from "./transaction-monitor/transaction-monitor.component";
 // @ts-ignore
 import { Chart } from 'chart.js';
-import {BackgroundAnimationService} from "../../background-animation.service";
+import { BackgroundAnimationService } from "../../background-animation.service";
+import { ManualSalesComponent } from "./manual-sales/manual-sales.component";
+import { interval } from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel',
@@ -18,10 +21,13 @@ import {BackgroundAnimationService} from "../../background-animation.service";
     FormsModule,
     DatePipe,
     CurrencyPipe,
+    GeneralViewComponent,
     ClientsComponent,
     ProductsComponent,
+    ManualSalesComponent,
     HighlightsConfigComponent,
     TransactionsComponent,
+    TransactionMonitorComponent,
     StatisticsComponent,
     NgIf,
   ],
@@ -29,18 +35,27 @@ import {BackgroundAnimationService} from "../../background-animation.service";
   styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements AfterViewInit {
-  selectedSection: string = 'general'; // Cambia a 'general' para la vista inicial
+  selectedSection: string = 'general';
   isCollapsed = false;
+  isSmallScreen: boolean = false;
+  chart: Chart | undefined;
+
   constructor(private animation: BackgroundAnimationService) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.isSmallScreen = window.innerWidth <= 768;
+  }
 
   ngOnInit() {
     this.animation.initializeGraphAnimation();
+    this.selectSection('general');
+    this.isSmallScreen = window.innerWidth <= 768;
   }
 
   selectSection(section: string) {
     this.selectedSection = section;
     if (window.innerWidth <= 768) {
-      // Si está en móvil, colapsa el menú automáticamente al seleccionar una sección
       this.isCollapsed = false;
     }
   }
@@ -49,40 +64,63 @@ export class AdminPanelComponent implements AfterViewInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  createSalesChart() {
+  // Gráfico con actualizaciones en tiempo real para simular el mercado financiero
+  createDynamicChart() {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-    new Chart(ctx, {
+    this.chart = new Chart(ctx, {
       type: 'line',
       data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'],
+        labels: Array.from({ length: 20 }, (_, i) => `T-${i + 1}`), // Genera etiquetas "T-1", "T-2", etc.
         datasets: [{
-          label: 'Ventas mensuales',
-          data: [100, 150, 200, 120, 240, 350, 400, 450, 420],
+          label: 'Transacciones en vivo',
+          data: Array.from({ length: 20 }, () => this.getRandomTransactionValue()), // Valores iniciales aleatorios
           borderColor: 'rgba(75, 192, 192, 1)',
-          fill: false
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+          tension: 0.4 // Para un gráfico más fluido
         }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        },
+        animation: {
+          duration: 1000,
+          easing: 'easeInOutQuad'
+        }
       }
     });
+
+    // Simula actualizaciones dinámicas de transacciones
+    interval(2000).subscribe(() => {
+      this.updateChart();
+    });
+  }
+
+  // Devuelve un valor de transacción aleatorio, simulando valores de cambio dinámicos
+  getRandomTransactionValue(): number {
+    return Math.floor(Math.random() * (500 - 100 + 1)) + 100; // Valores entre 100 y 500
+  }
+
+  // Actualiza el gráfico con nuevos datos de transacciones
+  updateChart() {
+    if (this.chart) {
+      // Elimina el primer dato y añade un nuevo valor aleatorio
+      this.chart.data.datasets[0].data.shift();
+      this.chart.data.datasets[0].data.push(this.getRandomTransactionValue());
+      this.chart.update();
+    }
   }
 
   ngAfterViewInit() {
-    this.createSalesChart();
-    this.createCategoryChart();
+    this.createDynamicChart();
   }
 
-  createCategoryChart() {
-    const ctx = document.getElementById('categoryChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: ['Electrónica', 'Ropa', 'Juguetes', 'Comida'],
-        datasets: [{
-          data: [30, 25, 20, 25],
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
-        }]
-      }
-    });
+  closeSidebarOnMobile() {
+    if (this.isSmallScreen) {
+      this.isCollapsed = false;
+    }
   }
-
-
 }
