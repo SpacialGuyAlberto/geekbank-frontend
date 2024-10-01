@@ -1,217 +1,34 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Oculta el overflow a nivel del body */
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
-}
 
 .clients-dashboard {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Ocupar toda la altura disponible */
-}
-
-.scrollable {
-  overflow-y: auto; /* Hacer que este div sea scrollable */
-  max-height: 100vh; /* Ajustar la altura máxima para activar el scroll */
-  padding: 1rem; /* Espaciado interno */
-}
-
-.clients-list-container {
-  flex-grow: 1; /* Permitir que crezca y ocupe todo el espacio disponible */
-  margin-bottom: 2.5rem;
   width: 100%;
-  max-width: 75rem; /* 1200px en rem */
-  display: flex;
-  justify-content: center;
-  flex-grow: 1; /* Permitir que el contenedor crezca para ocupar espacio */
+  height: 100vh;
+  background-color: #0B0D19;
+  padding: 1rem;
 }
 
-.client-cards-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
-  gap: 1.25rem;
-  width: 100%;
-  justify-items: center;
-}
-
-.client-card {
-  background-color: #fff;
-  border-radius: 0.625rem;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
-  padding: 0.9375rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 12.5rem; /* 200px en rem */
-  transition: transform 0.3s ease;
-}
-
-.client-card:hover {
-  transform: scale(1.05);
-}
-
-.client-photo-container {
-  width: 5rem; /* 80px en rem */
-  height: 5rem;
-  margin-bottom: 0.625rem;
-}
-
-.client-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.client-name {
-  font-size: 1.1rem;
-  color: #007bff;
-  margin-bottom: 0.3125rem;
-}
-
-.client-info p {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.transactions-container {
-  width: 100%;
-  max-width: 62.5rem; /* 1000px en rem */
-  margin: 1.25rem auto;
-  padding: 1.25rem;
-  background-color: #2d2d2d;
-  border-radius: 0.625rem;
-  color: #ffffff;
-  max-height: 31.25rem; /* 500px en rem */
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Centramos el contenido */
-}
-
-.transaction-table {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.transaction-header,
-.transaction-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 0.625rem;
-  background-color: #333;
-}
-
-.transaction-header {
-  background-color: #1c1c1c;
-  font-weight: bold;
-  color: #ff7a00;
-}
-
-.transaction-row {
-  border-radius: 0.3125rem;
-  transition: background-color 0.3s ease;
-}
-
-.transaction-row:hover {
-  background-color: #444;
-}
-
-.transaction-status {
-  padding: 0.3125rem 0.9375rem;
-  border-radius: 1.5625rem;
-  border-width: 0.125rem;
-  border-style: solid;
-  text-align: center;
-  font-weight: bold;
-  display: inline-block;
-  width: 7.5rem; /* 120px en rem */
-}
-
-.no-transactions {
-  text-align: center;
-  color: #ff7a00;
-  font-size: 1.125rem;
-  margin-top: 1.25rem;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.25rem;
-}
-
-.pagination button {
-  padding: 0.625rem 0.9375rem;
-  margin: 0 0.3125rem;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 0.3125rem;
-  cursor: pointer;
-}
-
-.pagination button:hover {
-  background-color: #0056b3;
-}
-
-.pagination button.active {
-  background-color: #ff7a00;
-  color: #fff;
-}
-
-.transaction-status.PENDING {
-  color: #FFC107;
-  border-color: #FFC107;
-  background-color: transparent;
-}
-
-.transaction-status.COMPLETED {
-  color: #4CAF50;
-  border-color: #4CAF50;
-  background-color: transparent;
-}
-
-.transaction-status.REFUNDED {
-  color: #00BCD4;
-  border-color: #00BCD4;
-  background-color: transparent;
-}
-
-.transaction-status.CANCELLED {
-  color: #F44336;
-  border-color: #F44336;
-  background-color: transparent;
-}
-
-.search-add-container {
+/* Controles en la parte superior */
+.top-controls {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  max-width: 50rem; /* 800px en rem */
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .search-bar {
-  padding: 0.625rem;
-  border-radius: 0.3125rem;
-  border: 0.0625rem solid #ccc;
   width: 100%;
-  max-width: 18.75rem; /* 300px en rem */
+  max-width: 300px;
+  padding: 0.5rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
 }
 
 .add-client-btn {
-  padding: 0.625rem 1.25rem;
+  padding: 0.5rem 1rem;
   background-color: #28a745;
   color: #fff;
   border: none;
-  border-radius: 0.3125rem;
+  border-radius: 5px;
   cursor: pointer;
 }
 
@@ -219,38 +36,149 @@ html, body {
   background-color: #218838;
 }
 
-.add-client-btn:active {
-  transform: scale(0.98); /* Efecto de clic */
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  overflow: hidden;
 }
 
-/* Ajustes para pantallas pequeñas */
+/* Sección izquierda: Lista de clientes */
+.clients-list {
+  width: 30%;
+  background-color: #2d2d2d;
+  padding: 1rem;
+  overflow-y: auto;
+  border-right: 1px solid #444;
+}
+
+.clients-list h2 {
+  color: #ffcc00;
+  margin-bottom: 1rem;
+}
+
+.client-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.client-card {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.client-card:hover {
+  background-color: #f5f5f5;
+}
+
+.client-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.client-name {
+  font-size: 1.2rem;
+  color: #007bff;
+}
+
+/* Sección derecha: Detalles del cliente */
+.client-details {
+  flex-grow: 1;
+  padding: 1.5rem;
+  background-color: #2d2d2d;
+  color: white;
+}
+
+.client-info-details {
+  margin-bottom: 2rem;
+}
+
+.client-info-details p {
+  margin-bottom: 0.5rem;
+}
+
+.edit-btn, .delete-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Transacciones */
+.transactions-list {
+  margin-top: 2rem;
+}
+
+.transaction-table {
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+}
+
+.transaction-header, .transaction-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  padding: 0.5rem;
+  background-color: #333;
+  border-radius: 5px;
+}
+
+.transaction-header {
+  background-color: #444;
+  font-weight: bold;
+}
+
+.transaction-status {
+  padding: 0.5rem;
+  text-align: center;
+  border-radius: 5px;
+  color: white;
+}
+
+/* Colores para los diferentes estados de transacciones */
+.transaction-status.PENDING {
+  background-color: #FFC107;
+}
+
+.transaction-status.COMPLETED {
+  background-color: #28a745;
+}
+
+.transaction-status.CANCELLED {
+  background-color: #dc3545;
+}
+
+.transaction-status.REFUNDED {
+  background-color: #007bff;
+}
+
+/* Responsividad para pantallas pequeñas */
 @media (max-width: 768px) {
-  .clients-list-container {
-    max-height: 50vh; /* Limitar la altura y permitir scroll solo en móviles */
-    overflow-y: auto;
-  }
-
-  .client-cards-container {
-    grid-template-columns: 1fr; /* Mostrar una columna en pantallas pequeñas */
-  }
-
-  .transactions-container {
-    max-height: 18.75rem; /* 300px en rem */
-    justify-content: center;
-  }
-
-  .search-add-container {
+  .main-content {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
   }
 
-  .search-bar,
-  .add-client-btn {
-    width: 100%; /* Ocupa todo el ancho en móviles */
+  .clients-list {
+    width: 100%;
+    border-right: none;
   }
 
-  .add-client-btn {
+  .client-details {
     margin-top: 1rem;
   }
 }

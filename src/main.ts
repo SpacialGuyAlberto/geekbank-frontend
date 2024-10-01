@@ -5,10 +5,13 @@ import { provideHttpClient } from '@angular/common/http';  // Aquí añadimos pr
 import {routes} from "./app/app.routes";
 import { importProvidersFrom } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-browser/animations";
+
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(routes),
+    provideAnimations(),
     provideHttpClient(),
     importProvidersFrom(TranslateModule.forRoot())  // Configuración de ngx-translate
   ]

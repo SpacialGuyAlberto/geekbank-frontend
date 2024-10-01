@@ -1,64 +1,55 @@
-<div class="clients-dashboard scrollable">
-  <!-- Sección de búsqueda y agregar nuevo cliente -->
-  <div class="search-add-container">
+<div class="clients-dashboard">
+
+  <div class="top-controls">
     <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" class="search-bar" />
     <button class="add-client-btn" (click)="addClient()">+ Nuevo Cliente</button>
   </div>
 
-  <!-- Lista de clientes -->
-  <div class="clients-list-container">
-    <div class="client-cards-container">
-      <div *ngFor="let client of filteredUsers" class="client-card" (click)="showTransactions(client)">
-        <div class="client-photo-container">
-          <!-- Si el cliente no tiene foto, usa el avatar por defecto -->
-          <img [src]="'assets/blank-profile-picture-973460_1280.png'" alt="{{ client.name }}" class="client-photo" />
-        </div>
-        <div class="client-info">
-          <h3 class="client-name">{{ client.name }}</h3>
-          <p>Última actividad: {{ client.email }} min</p>
+  <div class="main-content">
+    <div class="clients-list">
+      <h2>Clientes</h2>
+      <div class="client-cards-list">
+        <div *ngFor="let client of filteredUsers" class="client-card" (click)="showClientDetails(client)">
+          <div class="client-info">
+            <h3 class="client-name">{{ client.name }}</h3>
+            <p>Email: {{ client.email }}</p>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="transactions-container">
-    <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
-    <div *ngIf="selectedClient" class="transactions-list">
-      <h2>Transacciones de {{ selectedClient.name }}</h2>
-
-      <!-- Si no hay transacciones, muestra el mensaje -->
-      <div *ngIf="!visibleTransactions.length" class="no-transactions">
-        No transactions for this customer.
+    <div class="client-details" *ngIf="selectedClient">
+      <h2>Detalles de {{ selectedClient.name }}</h2>
+      <div class="client-info-details">
+        <p><strong>Email:</strong> {{ selectedClient.email }}</p>
+<!--        <p><strong>Última actividad:</strong> {{ selectedClient. }} min</p>-->
+        <button class="edit-btn" (click)="editClient(selectedClient)">Editar Cliente</button>
+        <button class="delete-btn" (click)="deleteClient(selectedClient)">Eliminar Cliente</button>
       </div>
 
-      <!-- Tabla de transacciones -->
-      <div *ngIf="visibleTransactions.length" class="transaction-table">
-        <div class="transaction-header">
-          <span>ID de Transacción</span>
-          <span>Fecha</span>
-          <span>Descripción</span>
-          <span>Estado</span>
-          <span>Monto</span>
-        </div>
+      <!-- Transacciones -->
+<!--      <div class="transactions-list">-->
+<!--        <h3>Transacciones</h3>-->
+<!--        <div class="transaction-table">-->
+<!--          <div class="transaction-header">-->
+<!--            <span>ID de Transacción</span>-->
+<!--            <span>Fecha</span>-->
+<!--            <span>Descripción</span>-->
+<!--            <span>Estado</span>-->
+<!--            <span>Monto</span>-->
+<!--          </div>-->
 
-        <div *ngFor="let transaction of visibleTransactions" class="transaction-row">
-          <span>{{ transaction.id }}</span>
-          <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
-          <span>{{ transaction.description }}</span>
-          <td>
-            <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-          </td>
-          <span>{{ transaction.amount | currency }}</span>
-        </div>
-      </div>
+<!--          <div *ngFor="let transaction of visibleTransactions" class="transaction-row">-->
+<!--            <span>{{ transaction.id }}</span>-->
+<!--            <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>-->
+<!--            <span>{{ transaction.description }}</span>-->
+<!--            <span class="transaction-status" [ngClass]="transaction.status">{{ transaction.status }}</span>-->
+<!--            <span>{{ transaction.amount | currency }}</span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+      <app-transactions></app-transactions>
     </div>
-  </div>
-
-  <div class="pagination" *ngIf="totalPages > 1">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-    <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)" [class.active]="currentPage === (i + 1)">
-      {{ i + 1 }}
-    </button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
   </div>
 </div>
+

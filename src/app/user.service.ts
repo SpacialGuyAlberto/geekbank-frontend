@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import {AbstractControl} from "@angular/forms";
-import {Observable, tap} from "rxjs";
+import {BehaviorSubject, Observable, tap} from "rxjs";
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import {Transaction} from "./transactions.service";
 import {User} from "./models/User";
 import {environment} from "../environments/environment";
+import {KinguinGiftCard} from "./models/KinguinGiftCard";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private baseUrl = `${environment.apiUrl}/users`;
+  private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+
 
   constructor(private http: HttpClient) { }
 

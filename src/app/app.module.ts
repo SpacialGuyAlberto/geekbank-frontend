@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {BrowserAnimationsModule, provideAnimations} from '@angular/platform-browser/animations';
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisterComponent } from './register/register.component';
 import {LoginComponent} from "./login/login.component";
@@ -24,6 +24,7 @@ import {ChangePasswordComponent} from "./user-details/settings/account-info/chan
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {  provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -41,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatButtonModule,
     SocialLoginModule,
+    NoopAnimationsModule,
     AppRoutingModule,
     RegisterComponent,
     AppComponent,
@@ -59,7 +61,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // StoreModule.forFeature('cart', cartReducer),
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [  HttpClient, TelegramListenerService, provideHttpClient(withInterceptorsFromDi())
+  providers: [  HttpClient, TelegramListenerService, provideHttpClient(withInterceptorsFromDi()), provideAnimations()
   ],
   bootstrap: []
 })

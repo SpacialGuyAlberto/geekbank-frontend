@@ -5,3 +5,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Cambiar el color del fondo del elemento seleccionado */
+.custom-select-panel .mat-option-text {
+  color: #ff7a00 !important;  /* Cambia el color del texto */
+}
+
+.custom-select-panel .mat-option:hover {
+  background-color: #ff7a00 !important;  /* Cambia el fondo al hacer hover */
+  color: white !important;  /* Cambia el color del texto cuando se selecciona */
+}
+
+.custom-select-panel .mat-option.mat-selected {
+  color: #ff7a00 !important;  /* Color del texto de la opción seleccionada */
+}

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, NgIterable} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe} from "@angular/common";
 import {User} from "../../../models/User";
 import {UserService} from "../../../user.service";
 import {Transaction, TransactionsService} from "../../../transactions.service";
+import {TransactionsComponent} from "../transactions/transactions.component";
 
 @Component({
   selector: 'app-clients',
@@ -17,13 +18,14 @@ import {Transaction, TransactionsService} from "../../../transactions.service";
     NgForOf,
     NgIf,
     NgClass,
-    UpperCasePipe
+    UpperCasePipe,
+    TransactionsComponent
   ],
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent {
   searchQuery: string = '';
-  selectedClient: any = null;
+  selectedClient: User | undefined;
   users: User[] = [];
   transactions: Transaction[] = [];
   photo: string = "C:\\Users\\LuisA\\Documents\\GeekCoin\\geekbank-frontend\\src\\assets\\blank-profile-picture-973460_1280.png";
@@ -32,6 +34,8 @@ export class ClientsComponent {
   itemsPerPage: number = 5;
   totalPages: number = 0;
   visibleTransactions: Transaction[] = [];
+  activeTab: string | undefined;
+  filteredClients: (NgIterable<User> & NgIterable<any>) | undefined | null;
 
   constructor(private userService: UserService, private transactionService: TransactionsService){}
 
@@ -45,14 +49,6 @@ export class ClientsComponent {
       this.users = data;
       console.log(data);
     })
-  }
-
-  fetchTransactionsForUser(userId: number | undefined){
-    this.transactionService.getTransactionsById(userId).subscribe(data => {
-      this.transactions = data;
-      console.log(data);
-    })
-    console.log('Fetching transactions')
   }
 
   fetchTransactionsPerPage(userId: number | undefined){
@@ -102,5 +98,22 @@ export class ClientsComponent {
       this.currentPage++;
       this.updateVisibleTransactions();
     }
+  }
+
+  showClientDetails(client: User) {
+    this.selectedClient = client;
+    this.updateVisibleTransactions()
+  }
+
+  editClient(client: User) {
+
+  }
+
+  deleteClient(client: User) {
+
+  }
+
+  selectTab(info: string) {
+
   }
 }

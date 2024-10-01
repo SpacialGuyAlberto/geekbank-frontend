@@ -3,6 +3,18 @@
 
   <!-- Filtros -->
   <div class="filters">
+    <mat-form-field class="dropdown" appearance="fill" style="--mat-mdc-form-field-fill-border-color: #ff7a00; color: #ff7a00;">
+      <mat-label>Customers</mat-label>
+      <mat-select [formControl]="usersControl" panelClass="custom-panel" style="color: #ff7a00; border-color: #ff7a00;"
+                  (selectionChange)="onUserSelected($event)">
+        <mat-option *ngFor="let user of users" [value]="user.id"
+                    [ngStyle]="{'color': (String(usersControl.value) === String(user.id) ? '#ff7a00' : '#fff')}">
+          {{ user.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
     <input type="date" placeholder="Desde" [(ngModel)]="startDate">
     <input type="date" placeholder="Hasta" [(ngModel)]="endDate">
     <button (click)="filterTransactions()">Filtrar</button>
@@ -19,7 +31,7 @@
       <span>Monto</span>
     </div>
 
-    <div *ngFor="let transaction of transactions" class="transaction-row">
+    <div *ngFor="let transaction of displayedTransactions" class="transaction-row">
       <span>{{ transaction.id }}</span>
       <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
       <span>{{ transaction.description }}</span>
@@ -29,4 +41,15 @@
       <span>{{ transaction.amount | currency }}</span>
     </div>
   </div>
+
+    <div class="pagination">
+      <button (click)="goToPage(1)">First</button>
+      <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+      <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
+        <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+      </span>
+      <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+      <button (click)="goToPage(totalPages)">Last</button>
+    </div>
+
 </div>

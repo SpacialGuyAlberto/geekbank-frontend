@@ -1,19 +1,14 @@
-html, body {
-  height: 100%;
-  overflow-y: auto; /* Permitir scroll en todo el documento */
-  margin: 0;
-}
-
 .transactions-container {
   width: 100%;
-  max-width: 50rem; /* Ajuste para pantallas grandes */
-  margin: 0 auto; /* Centrar el contenedor */
+  height: 80%;
+  max-width: 60rem;
+  margin: 0 auto;
   padding: 2rem;
   background-color: #2d2d2d;
   border-radius: 1rem;
   color: #ffffff;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  overflow-y: auto; /* Habilitar el scroll dentro del contenedor */
+  overflow-y: auto;
 }
 
 .section-title {
@@ -42,6 +37,13 @@ html, body {
   background-color: #ff7a00;
   border: none;
   cursor: pointer;
+}
+
+.dropdown {
+  border-radius: 0.5rem;
+  color: #ff7a00;
+  background-color: #333;
+  border: 1px solid #555;
 }
 
 .transaction-table {
@@ -102,7 +104,6 @@ html, body {
   border-color: #f44336;
 }
 
-/* Paginación */
 .pagination {
   display: flex;
   justify-content: center;
@@ -126,26 +127,15 @@ html, body {
 
 /* Ajustes para pantallas pequeñas */
 @media (max-width: 768px) {
-  html, body {
-    height: 100%;
-    overflow-y: auto; /* Habilitar scroll en móviles */
-  }
-
   .transactions-container {
-    max-width: 100%; /* Usar todo el ancho disponible en móviles */
+    max-width: 100%;
     padding: 1rem;
-    overflow-y: auto; /* Permitir el scroll dentro del contenedor */
-    height: auto; /* Asegurar que crezca según el contenido */
+    height: auto;
   }
 
   .transaction-header, .transaction-row {
-    display: block; /* Cambiar de tabla a formato de bloque en móviles */
+    display: block;
     text-align: left;
-  }
-
-  .transaction-header span, .transaction-row span {
-    display: block; /* Cada dato de la tabla en una nueva línea */
-    margin-bottom: 0.5rem;
   }
 
   .transaction-status {

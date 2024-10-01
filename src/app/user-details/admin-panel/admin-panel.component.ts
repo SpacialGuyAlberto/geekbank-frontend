@@ -49,7 +49,7 @@ export class AdminPanelComponent implements AfterViewInit {
 
   ngOnInit() {
     this.animation.initializeGraphAnimation();
-    this.selectSection('general');
+    this.selectSection('transactions');
     this.isSmallScreen = window.innerWidth <= 768;
   }
 
@@ -64,7 +64,6 @@ export class AdminPanelComponent implements AfterViewInit {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  // Gráfico con actualizaciones en tiempo real para simular el mercado financiero
   createDynamicChart() {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
     this.chart = new Chart(ctx, {
@@ -77,7 +76,7 @@ export class AdminPanelComponent implements AfterViewInit {
           borderColor: 'rgba(75, 192, 192, 1)',
           backgroundColor: 'rgba(75, 192, 192, 0.2)',
           fill: true,
-          tension: 0.4 // Para un gráfico más fluido
+          tension: 0.4
         }]
       },
       options: {
@@ -93,7 +92,6 @@ export class AdminPanelComponent implements AfterViewInit {
       }
     });
 
-    // Simula actualizaciones dinámicas de transacciones
     interval(2000).subscribe(() => {
       this.updateChart();
     });
