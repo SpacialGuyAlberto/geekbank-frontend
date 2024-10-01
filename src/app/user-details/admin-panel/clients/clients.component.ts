@@ -66,7 +66,6 @@ export class ClientsComponent {
     this.visibleTransactions = this.transactions.slice(startIndex, endIndex);
   }
 
-
   get filteredUsers() {
     return this.users.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
   }

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewEncapsulation} from '@angular/core';
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
 import {Transaction, TransactionsService} from "../../../transactions.service";
@@ -32,19 +32,19 @@ import {MatOptgroup, MatOption, MatSelect, MatSelectChange, MatSelectModule} fro
   styleUrls: ['./transactions.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TransactionsComponent implements OnInit, AfterViewInit {
+export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
+  @Input() selectedUserFromClients : User | undefined;
   startDate: any;
   users: User[] = [];
   user: User | undefined;
-  selectedUserId: string = '';
   endDate: any;
   transactions: any[] = [];
   usersControl = new FormControl('');
   currentPage: number = 1;
   displayedTransactions: Transaction[] = [];
   itemsPerPage: number = 10;
-  currentIndex: number = 0;
   totalPages: number = 0;
+  blockDropDown: boolean = false;
 
   constructor(private transactionService: TransactionsService, private userService: UserService) {}
 
@@ -72,6 +72,19 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.updateTotalPages();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Verificar si hay un cliente seleccionado desde el componente de clientes
+    if (changes['selectedUserFromClients'] && this.selectedUserFromClients) {
+      this.fetchTransactionsForUser(this.selectedUserFromClients.id); // Cargar las transacciones para el cliente seleccionado
+      this.user = this.selectedUserFromClients;
+    }
+    // @ts-ignore
+    this.usersControl.setValue(this.selectedUserFromClients.id)
+    if (this.selectedUserFromClients){
+      this.blockDropDown = true;
+    }
   }
 
   protected readonly String = String;
@@ -119,4 +132,5 @@ export class TransactionsComponent implements OnInit, AfterViewInit {
     this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
     console.log('Total de páginas:', this.totalPages);
   }
+
 }

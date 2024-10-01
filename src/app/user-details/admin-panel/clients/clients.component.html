@@ -26,29 +26,7 @@
         <button class="edit-btn" (click)="editClient(selectedClient)">Editar Cliente</button>
         <button class="delete-btn" (click)="deleteClient(selectedClient)">Eliminar Cliente</button>
       </div>
-
-      <!-- Transacciones -->
-<!--      <div class="transactions-list">-->
-<!--        <h3>Transacciones</h3>-->
-<!--        <div class="transaction-table">-->
-<!--          <div class="transaction-header">-->
-<!--            <span>ID de Transacción</span>-->
-<!--            <span>Fecha</span>-->
-<!--            <span>Descripción</span>-->
-<!--            <span>Estado</span>-->
-<!--            <span>Monto</span>-->
-<!--          </div>-->
-
-<!--          <div *ngFor="let transaction of visibleTransactions" class="transaction-row">-->
-<!--            <span>{{ transaction.id }}</span>-->
-<!--            <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>-->
-<!--            <span>{{ transaction.description }}</span>-->
-<!--            <span class="transaction-status" [ngClass]="transaction.status">{{ transaction.status }}</span>-->
-<!--            <span>{{ transaction.amount | currency }}</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-      <app-transactions></app-transactions>
+      <app-transactions [selectedUserFromClients]="selectedClient"></app-transactions>
     </div>
   </div>
 </div>

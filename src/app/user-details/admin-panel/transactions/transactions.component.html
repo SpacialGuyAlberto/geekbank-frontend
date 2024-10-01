@@ -2,12 +2,12 @@
   <h2 class="section-title">Transacciones</h2>
 
   <!-- Filtros -->
-  <div class="filters">
-    <mat-form-field class="dropdown" appearance="fill" style="--mat-mdc-form-field-fill-border-color: #ff7a00; color: #ff7a00;">
-      <mat-label>Customers</mat-label>
+  <div class="filters" >
+    <mat-form-field class="dropdown" appearance="fill" style="--mat-mdc-form-field-fill-border-color: #ff7a00; color: #ff7a00;" >
+      <mat-label >Customers</mat-label>
       <mat-select [formControl]="usersControl" panelClass="custom-panel" style="color: #ff7a00; border-color: #ff7a00;"
-                  (selectionChange)="onUserSelected($event)">
-        <mat-option *ngFor="let user of users" [value]="user.id"
+                  (selectionChange)="onUserSelected($event)" [disabled]="blockDropDown">
+        <mat-option *ngFor="let user of users" [value]="user.id" [disabled]="blockDropDown"
                     [ngStyle]="{'color': (String(usersControl.value) === String(user.id) ? '#ff7a00' : '#fff')}">
           {{ user.name }}
         </mat-option>
