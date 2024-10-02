@@ -57,8 +57,6 @@ export class UserDetailsComponent implements OnInit {
     }
   }
 
-
-
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }

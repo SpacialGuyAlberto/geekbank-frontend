@@ -2,11 +2,11 @@
 
   <div class="top-controls">
     <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" class="search-bar" />
-    <button class="add-client-btn" (click)="addClient()">+ Nuevo Cliente</button>
+    <button class="add-client-btn" (click)="addClient()" *ngIf="!createNewCustomer">+ Nuevo Cliente</button>
   </div>
 
   <div class="main-content">
-    <div class="clients-list">
+    <div class="clients-list" [ngClass]="{'full-grid': !selectedClient}">
       <h2>Clientes</h2>
       <div class="client-cards-list">
         <div *ngFor="let client of filteredUsers" class="client-card" (click)="showClientDetails(client)">
@@ -16,17 +16,30 @@
           </div>
         </div>
       </div>
+
+      <div class="pagination">
+        <button (click)="goToPage(1)">First</button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+        <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
+          <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+        </span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+        <button (click)="goToPage(totalPages)">Last</button>
+      </div>
     </div>
 
-    <div class="client-details" *ngIf="selectedClient">
-      <h2>Detalles de {{ selectedClient.name }}</h2>
+    <div class="client-details"  *ngIf="selectedClient" [ngClass]="{'visible': selectedClient}">
+      <button class="close-btn" (click)="closeClientDetails()">X</button>
+      <h2>Detalles de {{ selectedClient?.name }}</h2>
       <div class="client-info-details">
-        <p><strong>Email:</strong> {{ selectedClient.email }}</p>
-<!--        <p><strong>Última actividad:</strong> {{ selectedClient. }} min</p>-->
-        <button class="edit-btn" (click)="editClient(selectedClient)">Editar Cliente</button>
-        <button class="delete-btn" (click)="deleteClient(selectedClient)">Eliminar Cliente</button>
+        <p><strong>Email:</strong> {{ selectedClient?.email }}</p>
+<!--        <button class="edit-btn" (click)="editClient(selectedClient)">Editar Cliente</button>-->
+<!--        <button class="delete-btn" (click)="deleteClient(selectedClient)">Eliminar Cliente</button>-->
       </div>
       <app-transactions [selectedUserFromClients]="selectedClient"></app-transactions>
+    </div>
+    <div class="customer-creation" *ngIf="createNewCustomer">
+      <app-create-customer></app-create-customer>
     </div>
   </div>
 </div>

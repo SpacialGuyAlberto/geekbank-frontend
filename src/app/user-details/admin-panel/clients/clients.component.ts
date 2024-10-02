@@ -1,10 +1,11 @@
-import {Component, NgIterable} from '@angular/core';
+import {AfterViewInit, Component, NgIterable, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe} from "@angular/common";
 import {User} from "../../../models/User";
 import {UserService} from "../../../user.service";
 import {Transaction, TransactionsService} from "../../../transactions.service";
 import {TransactionsComponent} from "../transactions/transactions.component";
+import {CreateCustomerComponent} from "../create-customer/create-customer.component";
 
 @Component({
   selector: 'app-clients',
@@ -19,19 +20,21 @@ import {TransactionsComponent} from "../transactions/transactions.component";
     NgIf,
     NgClass,
     UpperCasePipe,
-    TransactionsComponent
+    TransactionsComponent,
+    CreateCustomerComponent
   ],
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent {
+export class ClientsComponent implements OnInit, AfterViewInit{
   searchQuery: string = '';
+  createNewCustomer: boolean = false;
   selectedClient: User | undefined;
+  displayedUsers: User[] = [];
   users: User[] = [];
   transactions: Transaction[] = [];
   photo: string = "C:\\Users\\LuisA\\Documents\\GeekCoin\\geekbank-frontend\\src\\assets\\blank-profile-picture-973460_1280.png";
-
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 20;
   totalPages: number = 0;
   visibleTransactions: Transaction[] = [];
   activeTab: string | undefined;
@@ -41,6 +44,11 @@ export class ClientsComponent {
 
   ngOnInit() {
     this.fetchAllUsers()
+    this.updateDisplayedUsers();
+  }
+
+  ngAfterViewInit(): void {
+    this.updateTotalPages();
   }
 
   fetchAllUsers(){
@@ -51,68 +59,65 @@ export class ClientsComponent {
     })
   }
 
-  fetchTransactionsPerPage(userId: number | undefined){
-    this.transactionService.getTransactionsById(userId).subscribe(data => {
-      this.transactions = data;
-      this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
-      this.updateVisibleTransactions();
-    })
-    console.log('Fetching transactions')
-  }
 
-  updateVisibleTransactions(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.visibleTransactions = this.transactions.slice(startIndex, endIndex);
-  }
 
   get filteredUsers() {
+    if (this.searchQuery === '') {
+      this.updateDisplayedUsers()
+      return this.displayedUsers;
+    }
     return this.users.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
   }
 
-  showTransactions(client: User) {
-    this.selectedClient = client;
-    //this.fetchTransactionsForUser(client.id)
-    this.fetchTransactionsPerPage(client.id)
+  updateDisplayedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedUsers = this.users.slice(startIndex, endIndex);
+    this.updateTotalPages();
   }
 
   addClient() {
     console.log('Agregar nuevo cliente');
+    this.createNewCustomer = true;
+  }
+
+  toggleCustomerCreation(){
+    this.createNewCustomer = !this.createNewCustomer;
   }
 
   goToPage(page: number): void {
     this.currentPage = page;
-    this.updateVisibleTransactions();
+    //this.updateVisibleTransactions();
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateVisibleTransactions();
+      //this.updateVisibleTransactions();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateVisibleTransactions();
+      //this.updateVisibleTransactions();
     }
   }
 
   showClientDetails(client: User) {
     this.selectedClient = client;
-    this.updateVisibleTransactions()
+    if (this.createNewCustomer){
+      this.toggleCustomerCreation();
+    }
   }
 
-  editClient(client: User) {
+
+  closeClientDetails() {
 
   }
 
-  deleteClient(client: User) {
-
-  }
-
-  selectTab(info: string) {
-
+  updateTotalPages(): void {
+    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+    console.log('Total de páginas:', this.totalPages);
   }
 }

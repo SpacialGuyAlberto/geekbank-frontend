@@ -46,6 +46,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
   totalPages: number = 0;
   blockDropDown: boolean = false;
 
+
   constructor(private transactionService: TransactionsService, private userService: UserService) {}
 
   ngOnInit() {
@@ -75,7 +76,6 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Verificar si hay un cliente seleccionado desde el componente de clientes
     if (changes['selectedUserFromClients'] && this.selectedUserFromClients) {
       this.fetchTransactionsForUser(this.selectedUserFromClients.id); // Cargar las transacciones para el cliente seleccionado
       this.user = this.selectedUserFromClients;
