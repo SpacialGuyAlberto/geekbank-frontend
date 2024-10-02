@@ -1,0 +1,78 @@
+.create-client-container {
+  width: 100%;
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #2d2d2d;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #ff7a00;
+}
+
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-field {
+  width: 100%;
+  background-color: #333;
+  border-radius: 0.5rem;
+  color: #fff;
+}
+
+.input-field input {
+  color: #fff;
+}
+
+.mat-form-field-label {
+  color: #ff7a00;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #333;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-underline::before {
+  background-color: #ff7a00;
+}
+
+.mat-form-field-appearance-fill .mat-form-field-underline::after {
+  background-color: #ff7a00;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.5rem;
+}
+
+button.mat-raised-button {
+  color: #fff;
+  background-color: #ff7a00;
+}
+
+button.mat-raised-button[disabled] {
+  background-color: #555;
+}
+
+button.mat-raised-button[mat-button] {
+  background-color: #ff7a00;
+}
+
+button.mat-raised-button[mat-warn-button] {
+  background-color: #f44336;
+}

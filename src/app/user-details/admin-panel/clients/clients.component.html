@@ -9,7 +9,10 @@
     <div class="clients-list" [ngClass]="{'full-grid': !selectedClient}">
       <h2>Clientes</h2>
       <div class="client-cards-list">
-        <div *ngFor="let client of filteredUsers" class="client-card" (click)="showClientDetails(client)">
+        <div *ngFor="let client of filteredUsers"
+             class="client-card"
+             (click)="showClientDetails(client)"
+              [ngClass]="{'selected' : client === selectedClient}">
           <div class="client-info">
             <h3 class="client-name">{{ client.name }}</h3>
             <p>Email: {{ client.email }}</p>

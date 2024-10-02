@@ -46,7 +46,6 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
   totalPages: number = 0;
   blockDropDown: boolean = false;
 
-
   constructor(private transactionService: TransactionsService, private userService: UserService) {}
 
   ngOnInit() {

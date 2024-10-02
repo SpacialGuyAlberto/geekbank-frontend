@@ -1,0 +1,25 @@
+<div class="create-client-container">
+  <h2 class="section-title">Agregar Nuevo Cliente</h2>
+
+  <form class="client-form">
+    <mat-form-field class="input-field">
+      <mat-label>Nombre</mat-label>
+      <input matInput placeholder="Ingrese el nombre" [(ngModel)]="client.name" name="name" required>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="Ingrese el correo electrónico" [(ngModel)]="client.email" name="email" required>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <mat-label>Teléfono</mat-label>
+      <input matInput type="tel" placeholder="Ingrese el teléfono" [(ngModel)]="client.phone" name="phone" required>
+    </mat-form-field>
+
+    <div class="form-buttons">
+      <button mat-raised-button color="primary" type="submit">Agregar Cliente</button>
+      <button mat-raised-button color="warn" type="button">Cancelar</button>
+    </div>
+  </form>
+</div>

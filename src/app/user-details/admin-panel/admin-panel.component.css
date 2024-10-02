@@ -1,40 +1,16 @@
-/* Estilos de la Dashboard */
 .admin-dashboard {
   display: flex;
   height: 100vh;
 }
 
 .sidebar {
-  width: 15rem; /* Adaptado a rem */
-  background-color: #00253d;
-  padding: 1.25rem; /* Adaptado a rem */
+  width: 15rem;
+  background-color: #333;
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
   z-index: 1000;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-}
-
-.modal-sidebar {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 90%; /* Mantener adaptable a pantallas pequeñas */
-  background-color: #00253d;
-  padding: 1.25rem; /* Adaptado a rem */
-  border-radius: 0.625rem; /* Adaptado a rem (10px) */
-  z-index: 1001;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.5); /* 4px, 10px */
 }
 
 .sidebar ul {
@@ -43,98 +19,61 @@
 }
 
 .sidebar li {
-  margin: 1.25rem 0; /* Adaptado a rem (20px) */
+  margin: 1.25rem 0;
 }
 
-.sidebar a,
-.sidebar .nav-item {
+.sidebar a {
   text-decoration: none;
   color: #ffffff;
-  font-size: 1.125rem; /* Adaptado a rem (18px) */
+  font-size: 1.125rem;
   display: flex;
   align-items: center;
-  padding: 0.625rem; /* Adaptado a rem (10px) */
-  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
   transition: background-color 0.3s ease, color 0.3s ease;
   cursor: pointer;
 }
 
-.close-btn {
-  position: absolute;
-  top: 0.625rem; /* Adaptado a rem (10px) */
-  right: 0.625rem; /* Adaptado a rem (10px) */
-  cursor: pointer;
-  font-size: 1.5rem; /* Adaptado a rem (24px) */
-  color: white;
+.sidebar a i {
+  margin-right: 0.625rem;
+  font-size: 1.25rem;
 }
 
-.sidebar a i,
-.sidebar .nav-item i {
-  margin-right: 0.625rem; /* Adaptado a rem (10px) */
-  font-size: 1.25rem; /* Adaptado a rem (20px) */
+.sidebar a:hover {
+  background-color: #fbcf49;
 }
 
-.sidebar a:hover,
-.sidebar .nav-item:hover {
-  background-color: #005f73;
+sidebar a i:hover {
+  opacity: 1;
 }
 
-.sidebar .nav-item.active {
+.sidebar .active {
   background: linear-gradient(90deg, rgba(255, 87, 34, 1) 0%, rgba(255, 193, 7, 1) 50%);
   color: #ffffff;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2); /* 4px, 10px */
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
 }
 
-/* Sub-secciones */
-.sub-sections {
-  padding-left: 1.25rem; /* Adaptado a rem (20px) */
-}
-
-.sub-nav-item {
-  font-size: 1rem; /* Adaptado a rem (16px) */
-  color: #b3b3b3;
-  cursor: pointer;
-  margin-top: 0.625rem; /* Adaptado a rem (10px) */
-  padding-left: 0.9375rem; /* Adaptado a rem (15px) */
-}
-
-.sub-nav-item:hover {
-  color: #ff5722;
-}
-
-/* Contenido */
 .main-content {
   flex-grow: 1;
-  padding: 1.25rem; /* Adaptado a rem (20px) */
+  padding: 1.25rem;
   background-color: #f1f4f9;
 }
 
-h2 {
-  color: #00253d;
-  margin-bottom: 0.625rem; /* Adaptado a rem (10px) */
-}
-
-p {
-  font-size: 1.125rem; /* Adaptado a rem (18px) */
-}
-
-/* Botón hamburguesa para pantallas pequeñas */
 .hamburger-btn {
   display: none;
   position: absolute;
-  top: 1.25rem; /* Adaptado a rem (20px) */
-  left: 1.25rem; /* Adaptado a rem (20px) */
+  top: 1.25rem;
+  left: 1.25rem;
   background-color: #00253d;
   color: white;
   border: none;
-  font-size: 1.5rem; /* Adaptado a rem (24px) */
-  padding: 0.625rem; /* Adaptado a rem (10px) */
-  border-radius: 0.3125rem; /* Adaptado a rem (5px) */
+  font-size: 1.5rem;
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
   cursor: pointer;
 }
 
 @media (max-width: 48rem) {
-  /* Pantallas de 768px o menos */
   .hamburger-btn {
     display: block;
   }
@@ -143,4 +82,3 @@ p {
     margin-left: 0;
   }
 }
-

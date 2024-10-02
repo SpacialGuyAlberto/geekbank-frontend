@@ -59,8 +59,6 @@ export class ClientsComponent implements OnInit, AfterViewInit{
     })
   }
 
-
-
   get filteredUsers() {
     if (this.searchQuery === '') {
       this.updateDisplayedUsers()
