@@ -4,7 +4,7 @@
   gap: 1rem;
   width: 100%;
   height: 100vh;
-  background-color: #0B0D19;
+  background-color: #333;
   padding: 1rem;
 }
 
@@ -24,13 +24,6 @@
   border-radius: 0.5rem;
 }
 
-.search-bar {
-  width: 100%;
-  max-width: 250px;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
 
 .add-product-btn {
   padding: 0.5rem 1rem;
@@ -56,14 +49,16 @@
 }
 
 .products-list {
-  background-color: #2d2d2d;
+  background-color: #333;
   border-radius: 1rem;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   color: #fff;
   overflow-y: auto;
   flex: 1;
+  padding: 1.5rem;
   transition: flex 0.3s ease;
   max-height: calc(100vh - 200px);
+  scrollbar-width: none;
 }
 
 .products-list h2 {
@@ -112,15 +107,118 @@
   background-color: #2d2d2d;
   padding: 2rem;
   border-radius: 1rem;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
-  flex: 0;
-  transition: flex 0.3s ease;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  color: white;
+  flex: 1;
   overflow-y: auto;
 }
 
-.product-details.visible {
-  flex: 1;
+.product-details h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #ff7a00;
 }
+
+.product-info-details p {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #bbb;
+}
+
+.product-image img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.screenshot-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.screenshot-gallery img {
+  width: 100px;
+  height: auto;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.screenshot-gallery img:hover {
+  transform: scale(1.1);
+}
+
+.video-gallery {
+  margin-top: 1rem;
+}
+
+.video-gallery iframe {
+  margin-top: 1rem;
+  width: 100%;
+  max-width: 560px;
+  height: 315px;
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table th, .table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #444;
+  color: #fff;
+}
+
+.table th {
+  background-color: #ff7a00;
+}
+
+.table td {
+  background-color: #333;
+}
+
+.table td button {
+  background-color: #ff7a00;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.table td button:hover {
+  background-color: #e66a00;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff7a00;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+
+.close-btn:hover {
+  background-color: #e66a00;
+}
+
+h3 {
+  color: #ff7a00;
+  margin-top: 2rem;
+}
+
 
 .close-btn {
   position: absolute;
@@ -171,6 +269,67 @@
 
 .pagination button.active {
   background-color: #bf5700;
+}
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center; /* Alinear ícono y texto verticalmente */
+  border-radius: 25px; /* Bordes más redondeados */
+  backdrop-filter: blur(15px); /* Efecto de desenfoque de fondo tipo vidrio */
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* Placeholder blanco translúcido */
+  font-size: 1.2rem;
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: rgba(255, 255, 255, 1); /* Borde blanco más intenso al hacer focus */
+  box-shadow: none; /* Elimina el resplandor al hacer focus */
+}
+
+.search-bar button {
+  margin-left: -35px; /* Ajusta el margen para que el botón esté más alineado */
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s ease;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1); /* Zoom en hover */
+}
+
+.search-bar i {
+  position: absolute;
+  left: 15px; /* Colocar el ícono a la izquierda dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6); /* Color del ícono */
+  font-size: 1.2rem;
+  pointer-events: none; /* Evitar que el ícono interfiera con la escritura */
+  transition: color 0.3s ease;
+}
+
+.search-bar button:hover .search-icon {
+  filter: invert(100%) sepia(100%) saturate(500%) hue-rotate(180deg); /* Efecto brillante en hover */
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px 20px 10px 40px; /* Añadir espacio a la izquierda para el ícono */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco translúcido más ligero */
+  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
+  color: #ffffff; /* Color de texto blanco */
+  font-size: 1.2rem; /* Tamaño de fuente más pequeño */
+  font-family: 'Courier New', monospace; /* Fuente futurista */
+  outline: none;
+  border-radius: 25px; /* Bordes redondeados */
+  transition: border-color 0.3s ease;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+  box-shadow: none; /* Eliminar cualquier sombra o resplandor */
 }
 
 /* Responsividad para pantallas pequeñas */

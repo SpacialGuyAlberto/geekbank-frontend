@@ -1,9 +1,13 @@
 <div class="products-dashboard">
 
   <div class="top-controls">
-    <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchQuery" class="search-bar" />
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchQuery" (input)="searchProducts()" />
+      <i class="fas fa-search"></i>
+    </div>
     <button class="add-product-btn" (click)="addProduct()" *ngIf="!createNewProduct">+ Nuevo Producto</button>
   </div>
+
 
   <div class="main-content">
     <div class="products-list" [ngClass]="{'full-grid': !selectedProduct}">
@@ -11,7 +15,7 @@
       <div class="product-cards-list">
         <div *ngFor="let product of filteredProducts"
              class="product-card"
-             (click)="showProductDetails(product)"
+             (click)="toggleProductDetails(product)"
              [ngClass]="{'selected' : product === selectedProduct}">
           <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
@@ -32,15 +36,81 @@
       </div>
     </div>
 
-    <div class="product-details"  *ngIf="selectedProduct" [ngClass]="{'visible': selectedProduct}">
+    <div class="product-details" *ngIf="selectedProduct" [ngClass]="{'visible': selectedProduct}">
       <button class="close-btn" (click)="closeProductDetails()">X</button>
+
       <h2>Detalles de {{ selectedProduct?.name }}</h2>
+
       <div class="product-info-details">
+        <!-- Información básica del producto -->
         <p><strong>Precio:</strong> {{ selectedProduct?.price | currency }}</p>
-<!--        <p><strong>Stock:</strong> {{ selectedProduct?.stock }}</p>-->
+        <p><strong>Descripción:</strong> {{ selectedProduct?.description }}</p>
+<!--        <p><strong>Desarrolladores:</strong> {{ selectedProduct?.developers.join(', ') }}</p>-->
+<!--        <p><strong>Publicadores:</strong> {{ selectedProduct?.publishers.join(', ') }}</p>-->
+        <p><strong>Plataforma:</strong> {{ selectedProduct?.platform }}</p>
+        <p><strong>Fecha de lanzamiento:</strong> {{ selectedProduct?.releaseDate | date:'longDate' }}</p>
+        <p><strong>Calificación por edad:</strong> {{ selectedProduct?.ageRating }}</p>
+<!--        <p><strong>Géneros:</strong> {{ selectedProduct?.genres.join(', ') }}</p>-->
+
+        <!-- Imagen principal del producto -->
+        <div class="product-image">
+          <img ngSrc="selectedProduct?.images.cover.thumbnail" alt="Imagen del producto">
+        </div>
+
+        <!-- Limitaciones regionales -->
+        <p><strong>Limitaciones regionales:</strong> {{ selectedProduct?.regionalLimitations }}</p>
+
+        <!-- Requisitos del sistema -->
+        <div *ngIf="selectedProduct?.systemRequirements?.length">
+          <h3>Requisitos del sistema:</h3>
+          <ul>
+            <li *ngFor="let req of selectedProduct?.systemRequirements">
+              <strong>{{ req.system }}:</strong> {{ req.requirement.join(', ') }}
+            </li>
+          </ul>
+        </div>
+
+        <!-- Ofertas del producto -->
+        <div *ngIf="selectedProduct?.offers?.length">
+          <h3>Ofertas disponibles:</h3>
+          <table>
+            <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Vendedor</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let offer of selectedProduct?.offers">
+              <td>{{ offer.name }}</td>
+              <td>{{ offer.price | currency }}</td>
+              <td>{{ offer.availableQty }}</td>
+              <td>{{ offer.merchantName }}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Imágenes adicionales -->
+        <div *ngIf="selectedProduct?.screenshots?.length">
+          <h3>Imágenes:</h3>
+          <div class="screenshot-gallery">
+<!--            <img *ngFor="let screenshot of selectedProduct?.screenshots" ngSrc="screenshot.url" alt="Captura de pantalla">-->
+          </div>
+        </div>
+
+        <!-- Videos -->
+        <div *ngIf="selectedProduct?.videos?.length">
+          <h3>Videos:</h3>
+          <div class="video-gallery">
+            <iframe *ngFor="let video of selectedProduct?.videos" width="560" height="315" [src]="'https://www.youtube.com/embed/' + video.videoId" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
       </div>
-      <!-- Aquí podrías agregar más detalles o acciones específicas para el producto -->
     </div>
+
 
     <div class="product-creation" *ngIf="createNewProduct">
 <!--      <app-create-product></app-create-product>-->

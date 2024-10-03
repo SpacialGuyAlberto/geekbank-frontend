@@ -6,6 +6,7 @@ import {UserService} from "../../../user.service";
 import {Transaction, TransactionsService} from "../../../transactions.service";
 import {TransactionsComponent} from "../transactions/transactions.component";
 import {CreateCustomerComponent} from "../create-customer/create-customer.component";
+import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
 
 @Component({
   selector: 'app-clients',
@@ -81,6 +82,26 @@ export class ClientsComponent implements OnInit, AfterViewInit{
 
   toggleCustomerCreation(){
     this.createNewCustomer = !this.createNewCustomer;
+  }
+
+  // toggleProductDetails(product: KinguinGiftCard) {
+  //   if (product == this.selectedProduct){
+  //     this.selectedProduct = undefined;
+  //   }
+  //   else {
+  //     this.selectedProduct = product;
+  //   }
+  // }
+
+  toggleUserDetails(client: User) {
+    if (client == this.selectedClient){
+      this.selectedClient = undefined;
+    } else {
+      this.selectedClient = client;
+    }
+    if (this.createNewCustomer){
+      this.toggleCustomerCreation();
+    }
   }
 
   goToPage(page: number): void {

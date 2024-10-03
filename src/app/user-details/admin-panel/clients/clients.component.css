@@ -25,13 +25,7 @@
   border-radius: 0.5rem;
 }
 
-.search-bar {
-  width: 100%;
-  max-width: 250px;
-  padding: 0.5rem;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+
 
 .add-client-btn {
   padding: 0.5rem 1rem;
@@ -199,6 +193,68 @@
 
 .pagination button.active {
   background-color:  #bf5700;
+}
+
+
+.search-bar {
+  position: relative;
+  display: flex;
+  align-items: center; /* Alinear ícono y texto verticalmente */
+  border-radius: 25px; /* Bordes más redondeados */
+  backdrop-filter: blur(15px); /* Efecto de desenfoque de fondo tipo vidrio */
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* Placeholder blanco translúcido */
+  font-size: 1.2rem;
+}
+
+.search-bar input[type="text"]:focus {
+  border-color: rgba(255, 255, 255, 1); /* Borde blanco más intenso al hacer focus */
+  box-shadow: none; /* Elimina el resplandor al hacer focus */
+}
+
+.search-bar button {
+  margin-left: -35px; /* Ajusta el margen para que el botón esté más alineado */
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.3s ease;
+}
+
+.search-bar button:hover {
+  transform: scale(1.1); /* Zoom en hover */
+}
+
+.search-bar i {
+  position: absolute;
+  left: 15px; /* Colocar el ícono a la izquierda dentro del input */
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.6); /* Color del ícono */
+  font-size: 1.2rem;
+  pointer-events: none; /* Evitar que el ícono interfiera con la escritura */
+  transition: color 0.3s ease;
+}
+
+.search-bar button:hover .search-icon {
+  filter: invert(100%) sepia(100%) saturate(500%) hue-rotate(180deg); /* Efecto brillante en hover */
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px 20px 10px 40px; /* Añadir espacio a la izquierda para el ícono */
+  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco translúcido más ligero */
+  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
+  color: #ffffff; /* Color de texto blanco */
+  font-size: 1.2rem; /* Tamaño de fuente más pequeño */
+  font-family: 'Courier New', monospace; /* Fuente futurista */
+  outline: none;
+  border-radius: 25px; /* Bordes redondeados */
+  transition: border-color 0.3s ease;
+  backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
+  box-shadow: none; /* Eliminar cualquier sombra o resplandor */
 }
 
 

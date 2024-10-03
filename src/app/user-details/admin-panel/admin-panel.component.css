@@ -56,7 +56,7 @@ sidebar a i:hover {
 .main-content {
   flex-grow: 1;
   padding: 1.25rem;
-  background-color: #f1f4f9;
+  background-color: #333;
 }
 
 .hamburger-btn {
