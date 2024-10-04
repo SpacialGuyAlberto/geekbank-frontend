@@ -11,6 +11,7 @@ import {UserDetailsComponent} from "./user-details/user-details.component";
 import {CartComponent} from "./cart/cart.component";
 import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
 import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.component";
+import {SetPasswordComponent} from "./set-password/set-password.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -24,5 +25,6 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path:'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
+  { path: 'set-password', component: SetPasswordComponent },
   { path: '**', redirectTo: '/home' }
 ];

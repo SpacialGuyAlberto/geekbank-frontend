@@ -1,25 +1,34 @@
 <div class="create-client-container">
   <h2 class="section-title">Agregar Nuevo Cliente</h2>
 
-  <form class="client-form">
-    <mat-form-field class="input-field">
-      <mat-label>Nombre</mat-label>
-      <input matInput placeholder="Ingrese el nombre" [(ngModel)]="client.name" name="name" required>
-    </mat-form-field>
-
-    <mat-form-field class="input-field">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" placeholder="Ingrese el correo electrónico" [(ngModel)]="client.email" name="email" required>
-    </mat-form-field>
-
-    <mat-form-field class="input-field">
-      <mat-label>Teléfono</mat-label>
-      <input matInput type="tel" placeholder="Ingrese el teléfono" [(ngModel)]="client.phone" name="phone" required>
-    </mat-form-field>
-
-    <div class="form-buttons">
-      <button mat-raised-button color="primary" type="submit">Agregar Cliente</button>
-      <button mat-raised-button color="warn" type="button">Cancelar</button>
+  <form (ngSubmit)="onSubmit()">
+    <!-- Campo de nombre -->
+    <div class="form-group">
+      <label for="name">Nombre*</label>
+      <input type="text" id="name" [(ngModel)]="name" name="name" #nameInput required />
     </div>
+
+    <!-- Campo de email -->
+    <div class="form-group">
+      <label for="email">Email*</label>
+      <div class="input-container">
+        <input
+          type="email"
+          id="email"
+          #emailInput
+          [(ngModel)]="email"
+          name="email"
+          (blur)="emailTouched = true; isEmailValid()"
+          (keyup)="onEmailKeyUp()"
+          required
+        />
+        <span *ngIf="emailTouched && emailValid && email.length > 0" class="valid-feedback">✔</span>
+        <span *ngIf="emailTouched && !emailValid && email.length > 0" class="invalid-feedback">✘</span>
+      </div>
+    </div>
+
+    <button type="submit">Registrar Cliente</button>
   </form>
+
+  <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
 </div>

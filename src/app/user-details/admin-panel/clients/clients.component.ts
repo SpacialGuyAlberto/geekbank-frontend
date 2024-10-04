@@ -7,6 +7,7 @@ import {Transaction, TransactionsService} from "../../../transactions.service";
 import {TransactionsComponent} from "../transactions/transactions.component";
 import {CreateCustomerComponent} from "../create-customer/create-customer.component";
 import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
+import {RegisterComponent} from "../../../register/register.component";
 
 @Component({
   selector: 'app-clients',
@@ -22,7 +23,8 @@ import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
     NgClass,
     UpperCasePipe,
     TransactionsComponent,
-    CreateCustomerComponent
+    CreateCustomerComponent,
+    RegisterComponent
   ],
   styleUrls: ['./clients.component.css']
 })

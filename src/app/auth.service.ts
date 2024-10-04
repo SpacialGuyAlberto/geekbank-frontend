@@ -56,6 +56,13 @@ export class AuthService {
     );
   }
 
+  registerClientAsAdmin(email: string,  name: string) {
+    const url = `${this.apiUrl}/auth/registerUserByAdmin`; // Asegúrate de que este endpoint exista en tu backend
+    const body = { email, name };
+    return this.http.post(url, body, { observe: 'response' });
+  }
+
+
   resetPassword(oldPassword: AbstractControl | null, newPassword: AbstractControl | null): Observable<any> {
     const email = sessionStorage.getItem("email");
 
@@ -207,7 +214,6 @@ export class AuthService {
     sessionStorage.setItem('userId', authResult.userId);
     localStorage.setItem('email', authResult.email);
   }
-
 
   getUserId(): string {
     return localStorage.getItem('userId') || '';

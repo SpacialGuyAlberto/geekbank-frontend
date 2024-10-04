@@ -38,6 +38,12 @@ export class UserService {
     );
   }
 
+  setPassword(token: string, password: string) {
+    const url = `${this.baseUrl}/setPassword`;
+    const body = { token, password };
+    return this.http.post(url, body, { observe: 'response' });
+  }
+
   setToken(token: string): void {
     if (this.isBrowser()) {
       if (token) {
