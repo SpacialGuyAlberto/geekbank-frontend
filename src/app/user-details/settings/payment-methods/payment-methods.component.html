@@ -14,7 +14,7 @@
       <i *ngIf="paymentMethod.type === 'Wallet Virtual'" class="fas fa-wallet payment-icon"></i>
       <i *ngIf="paymentMethod.type === 'Blockchain' && paymentMethod.cryptoCurrency === 'Bitcoin'" class="fa-brands fa-bitcoin payment-icon"></i>
       <i *ngIf="paymentMethod.type === 'Blockchain' && paymentMethod.cryptoCurrency === 'Ethereum'" class="fa-brands fa-ethereum payment-icon"></i>
-      <i *ngIf="!paymentMethod.icon" class="fas fa-credit-card payment-icon"></i>
+<!--      <i *ngIf="!paymentMethod.icon" class="fas fa-credit-card payment-icon"></i>-->
 
       <div class="payment-details">
         <p><strong>Tipo:</strong> {{ paymentMethod.type }} {{ paymentMethod.provider ? '(' + paymentMethod.provider + ')' : '' }}</p>

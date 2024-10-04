@@ -3,12 +3,12 @@
 
 
 :root {
-  --primary-bg-color: #F0F2F5; /* Fondo general más claro */
-  --secondary-bg-color: #FFFFFF; /* Fondo de las tarjetas */
+  --primary-bg-color: #F0F2F5;
+  --secondary-bg-color: #FFFFFF;
   --primary-text-color: #333333;
   --secondary-text-color: #555555;
   --accent-color: #007BFF;
-  --border-color: #CCCCCC; /* Borde más visible */
+  --border-color: #CCCCCC;
   --error-color: #FF4D4F;
 }
 
@@ -45,7 +45,7 @@ h2, h3 {
 .action-buttons button:hover {
   background-color: var(--accent-color);
   border-color: var(--accent-color);
-  color: #FFFFFF;
+  color: #333;
 }
 
 .payment-methods-container {
@@ -57,7 +57,7 @@ h2, h3 {
   border: 1px solid rgba(255, 255, 255, 0.2); /* Borde claro y transparente */
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); /* Sombra profunda */
   backdrop-filter: blur(10px); /* Efecto frosted glass */
-  color: #E1E6F1;
+  color: #333;
   transition: all 0.3s ease;
 }
 
@@ -82,19 +82,20 @@ h3 {
 }
 
 .payment-method-item {
-  background: #FFFFFF;
+  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
   padding: 20px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
   margin-bottom: 20px;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .payment-method-item:hover {
   transform: scale(1.05); /* Efecto de agrandamiento */
+  background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e0 100%);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6); /* Aumenta la sombra */
 }
 

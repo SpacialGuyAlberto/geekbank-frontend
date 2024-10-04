@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {faCcMastercard, faCcVisa, faCcAmex, faCcPaypal} from "@fortawesome/free-brands-svg-icons";
 
@@ -22,7 +22,7 @@ interface PaymentMethod {
   selector: 'app-payment-methods',
   templateUrl: './payment-methods.component.html',
   standalone: true,
-  imports: [FormsModule, NgIf, FontAwesomeModule],
+  imports: [FormsModule, NgIf, FontAwesomeModule, NgForOf],
   styleUrls: ['./payment-methods.component.css']
 })
 export class PaymentMethodsComponent implements OnInit {
