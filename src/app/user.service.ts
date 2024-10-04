@@ -14,7 +14,6 @@ export class UserService {
   private baseUrl = `${environment.apiUrl}/users`;
   private usersSubject: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
 
-
   constructor(private http: HttpClient) { }
 
   updateDetails(password: string, email: string, phoneNumber: string, name: string): Observable<any> {
@@ -41,7 +40,14 @@ export class UserService {
   setPassword(token: string, password: string) {
     const url = `${this.baseUrl}/setPassword`;
     const body = { token, password };
-    return this.http.post(url, body, { observe: 'response' });
+    return this.http.post(url, body, { observe: 'response', responseType:  'text' as 'json'  }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
+        if (token) {
+          this.setToken(token);
+        }
+      })
+    );
   }
 
   setToken(token: string): void {
@@ -63,8 +69,6 @@ export class UserService {
   }
 
 }
-
-
 
 // getTransactions(): Observable<Transaction[]> {
 //   return this.http.get<Transaction[]>(`${this.apiUrl}`);

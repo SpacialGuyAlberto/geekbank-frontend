@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angula
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth.service';
 import {NgClass, NgIf} from "@angular/common";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-create-customer',
@@ -38,9 +39,9 @@ export class CreateCustomerComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Lógica para registrar el cliente sin contraseña
-    this.authService.registerClientAsAdmin(this.email, this.name).subscribe(
-      response => {
+    this.authService.registerClientAsAdmin(this.email, this.name).subscribe({
+      next: (response: HttpResponse<any>) => {
+        console.log('Respuesta completa:', response);
         if (response.status === 200) {
           this.message = 'Cliente registrado exitosamente.';
           this.messageClass = 'success-message';
@@ -50,12 +51,14 @@ export class CreateCustomerComponent implements OnInit, AfterViewInit {
           this.messageClass = 'error-message';
         }
       },
-      error => {
+      error: error => {
+        console.error('Error:', error);
         this.message = 'Error al registrar el cliente. Por favor, intenta nuevamente.';
         this.messageClass = 'error-message';
       }
-    );
+    });
   }
+
 
   resetForm() {
     this.name = '';
