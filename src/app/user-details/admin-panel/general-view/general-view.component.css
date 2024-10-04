@@ -1,36 +1,74 @@
+/* Estilos Generales */
 .dashboard-summary {
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  background-color: #333; /* Background actualizado */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #fff; /* Color de texto blanco para contraste */
 }
 
+/* Tarjetas Resumen */
 .summary-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
 .summary-card {
-  background-color: #ffffff;
+  background-color: #444; /* Fondo más oscuro para las tarjetas */
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.summary-card h3 {
+.summary-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.summary-card:hover::before {
+  opacity: 1;
+}
+
+.summary-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  color: #ffcc00; /* Color de acento */
+  margin-right: 1rem;
+}
+
+.card-content h3 {
   margin-bottom: 0.5rem;
-  font-size: 1.25rem;
-  color: #333;
+  font-size: 1.1rem;
+  color: #ccc;
 }
 
-.summary-card p {
-  font-size: 1.5rem;
+.card-content p {
+  font-size: 1.8rem;
   font-weight: bold;
-  color: #007bff;
+  color: #fff;
 }
 
+/* Sección de Gráficos */
 .charts-section {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -38,14 +76,47 @@
 }
 
 .chart-container {
-  background-color: #fff;
+  background-color: #444; /* Fondo más oscuro para los gráficos */
   padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.chart-container::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.chart-container:hover::before {
+  opacity: 1;
 }
 
 .chart-container h3 {
   text-align: center;
   margin-bottom: 1rem;
   font-size: 1.25rem;
+  color: #ccc;
+}
+
+/* Estilos para las gráficas de Chart.js */
+canvas {
+  background-color: #555; /* Fondo para las gráficas */
+  border-radius: 0.3rem;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .charts-section {
+    grid-template-columns: 1fr;
+  }
 }

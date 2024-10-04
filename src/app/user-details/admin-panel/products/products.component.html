@@ -1,13 +1,13 @@
 <div class="products-dashboard">
-
   <div class="top-controls">
     <div class="search-bar">
       <input type="text" placeholder="Buscar producto..." [(ngModel)]="searchQuery" (input)="searchProducts()" />
       <i class="fas fa-search"></i>
     </div>
-    <button class="add-product-btn" (click)="addProduct()" *ngIf="!createNewProduct">+ Nuevo Producto</button>
+    <button class="add-product-btn" (click)="addProduct()" *ngIf="!createNewProduct">
+      <i class="fas fa-plus-circle"></i> Nuevo Producto
+    </button>
   </div>
-
 
   <div class="main-content">
     <div class="products-list" [ngClass]="{'full-grid': !selectedProduct}">
@@ -17,48 +17,76 @@
              class="product-card"
              (click)="toggleProductDetails(product)"
              [ngClass]="{'selected' : product === selectedProduct}">
+          <div class="product-image">
+            <!-- Reemplaza 'product.imageUrl' por la propiedad correcta de tu producto -->
+            <img [src]="product.imageUrl || 'assets/default-product.png'" alt="{{ product.name }}">
+          </div>
           <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
             <p>Precio: {{ product.price | currency }}</p>
-<!--            <p>Stock: {{ product.}}</p>-->
           </div>
         </div>
       </div>
 
       <div class="pagination">
-        <button (click)="goToPage(1)">First</button>
-        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+        <button (click)="goToPage(1)" [disabled]="currentPage === 1">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="fas fa-angle-left"></i>
+        </button>
         <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
           <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
         </span>
-        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
-        <button (click)="goToPage(totalPages)">Last</button>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
       </div>
     </div>
 
     <div class="product-details" *ngIf="selectedProduct" [ngClass]="{'visible': selectedProduct}">
-      <button class="close-btn" (click)="closeProductDetails()">X</button>
+      <button class="close-btn" (click)="closeProductDetails()">
+        <i class="fas fa-times"></i>
+      </button>
 
       <h2>Detalles de {{ selectedProduct?.name }}</h2>
 
       <div class="product-info-details">
-        <!-- Información básica del producto -->
-        <p><strong>Precio:</strong> {{ selectedProduct?.price | currency }}</p>
-        <p><strong>Descripción:</strong> {{ selectedProduct?.description }}</p>
-<!--        <p><strong>Desarrolladores:</strong> {{ selectedProduct?.developers.join(', ') }}</p>-->
-<!--        <p><strong>Publicadores:</strong> {{ selectedProduct?.publishers.join(', ') }}</p>-->
-        <p><strong>Plataforma:</strong> {{ selectedProduct?.platform }}</p>
-        <p><strong>Fecha de lanzamiento:</strong> {{ selectedProduct?.releaseDate | date:'longDate' }}</p>
-        <p><strong>Calificación por edad:</strong> {{ selectedProduct?.ageRating }}</p>
-<!--        <p><strong>Géneros:</strong> {{ selectedProduct?.genres.join(', ') }}</p>-->
+        <dl>
+          <div class="detail-item">
+            <dt>Precio:</dt>
+            <dd>{{ selectedProduct?.price | currency }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Descripción:</dt>
+            <dd>{{ selectedProduct?.description }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Plataforma:</dt>
+            <dd>{{ selectedProduct?.platform }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Fecha de lanzamiento:</dt>
+            <dd>{{ selectedProduct?.releaseDate | date:'longDate' }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Calificación por edad:</dt>
+            <dd>{{ selectedProduct?.ageRating }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Limitaciones regionales:</dt>
+            <dd>{{ selectedProduct?.regionalLimitations }}</dd>
+          </div>
+        </dl>
 
         <!-- Imagen principal del producto -->
-        <div class="product-image">
-          <img ngSrc="selectedProduct?.images.cover.thumbnail" alt="Imagen del producto">
+        <div class="product-image-large">
+          <!-- Reemplaza 'selectedProduct.imageUrl' por la propiedad correcta de tu producto -->
+          <img [src]="selectedProduct?.imageUrl || 'assets/default-product.png'" alt="Imagen del producto">
         </div>
-
-        <!-- Limitaciones regionales -->
-        <p><strong>Limitaciones regionales:</strong> {{ selectedProduct?.regionalLimitations }}</p>
 
         <!-- Requisitos del sistema -->
         <div *ngIf="selectedProduct?.systemRequirements?.length">
@@ -73,7 +101,7 @@
         <!-- Ofertas del producto -->
         <div *ngIf="selectedProduct?.offers?.length">
           <h3>Ofertas disponibles:</h3>
-          <table>
+          <table class="offers-table">
             <thead>
             <tr>
               <th>Nombre</th>
@@ -97,7 +125,7 @@
         <div *ngIf="selectedProduct?.screenshots?.length">
           <h3>Imágenes:</h3>
           <div class="screenshot-gallery">
-<!--            <img *ngFor="let screenshot of selectedProduct?.screenshots" ngSrc="screenshot.url" alt="Captura de pantalla">-->
+            <img *ngFor="let screenshot of selectedProduct?.screenshots" [src]="screenshot.url" alt="Captura de pantalla">
           </div>
         </div>
 
@@ -111,9 +139,9 @@
       </div>
     </div>
 
-
     <div class="product-creation" *ngIf="createNewProduct">
-<!--      <app-create-product></app-create-product>-->
+      <!-- Aquí puedes incluir tu componente para crear nuevos productos -->
+      <!-- <app-create-product></app-create-product> -->
     </div>
   </div>
 </div>

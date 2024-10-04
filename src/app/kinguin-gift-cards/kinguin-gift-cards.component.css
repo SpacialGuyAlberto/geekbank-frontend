@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
 :root {
   --primary-color: #0B0D19; /* Fondo principal oscuro */
   --highlight-color: #1261A0; /* Azul para botones y enlaces */
@@ -44,6 +46,7 @@ body, html {
 
   .gift-card-title {
     font-size: 0.9rem; /* Texto más pequeño en pantallas móviles */
+    font-family: 'VT323', monospace;
   }
 
   .gift-card-price {
@@ -116,6 +119,7 @@ body, html {
   color: #00d4ff; /* Neon turquoise text */
   margin-bottom: 0.625rem; /* 10px in rem */
   text-transform: uppercase;
+  font-family: 'VT323', monospace
 }
 
 .gift-card-price {

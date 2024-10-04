@@ -1,21 +1,30 @@
 <div class="highlight-dashboard">
-  <div class="search-save-container">
-    <!-- Incluimos el componente de búsqueda con el evento output -->
-    <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
-    <button class="save-btn" (click)="save()">Guardar</button>
+  <!-- Barra superior con el título y el botón Guardar -->
+  <div class="header">
+    <h1>Configuración de Destacados</h1>
+    <button class="save-btn" (click)="save()">
+      <i class="fas fa-save"></i> Guardar Cambios
+    </button>
   </div>
 
+  <!-- Contenedor principal -->
   <div class="main-content">
     <!-- Panel izquierdo: Resultados de búsqueda -->
     <div class="left-panel">
-      <h2>Buscar Tarjetas</h2>
+      <!-- Barra de búsqueda -->
+      <div class="search-bar-container">
+        <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
+      </div>
+      <h2>Resultados de Búsqueda</h2>
       <div class="gift-cards-container">
         <!-- Lista de tarjetas obtenidas de la búsqueda -->
         <div *ngFor="let card of giftCards" class="gift-card">
           <div class="gift-card-image-container">
-            <!-- Botón para añadir a highlights -->
-            <button class="add-highlight-btn" (click)="addToHighlights(card)">+</button>
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+            <!-- Botón para añadir a highlights -->
+            <button class="add-highlight-btn" (click)="addToHighlights(card)">
+              <i class="fas fa-plus-circle"></i>
+            </button>
           </div>
           <div class="gift-card-content">
             <h3 class="gift-card-title">{{ card.name }}</h3>
@@ -29,14 +38,16 @@
 
     <!-- Panel derecho: Tarjetas añadidas a Highlights -->
     <div class="right-panel">
-      <h2>Mis Highlights</h2>
+      <h2>Mis Destacados</h2>
       <div class="gift-cards-container">
         <!-- Lista de tarjetas en los highlights actuales -->
         <div *ngFor="let card of currentHighlights" class="gift-card">
           <div class="gift-card-image-container">
-            <!-- Botón para eliminar de los highlights -->
-            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">-</button>
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+            <!-- Botón para eliminar de los highlights -->
+            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">
+              <i class="fas fa-minus-circle"></i>
+            </button>
           </div>
           <div class="gift-card-content">
             <h3 class="gift-card-title">{{ card.name }}</h3>

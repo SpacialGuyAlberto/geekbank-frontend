@@ -1,23 +1,34 @@
 <nav class="navbar" *ngIf="showNavbar">
+  <!-- Logo y Nombre de la App -->
   <div class="navbar-brand">
-    <span class="app-name" (click)="goToHome()" style="cursor: pointer;">Astralis</span>
+    <span class="app-name" (click)="goToHome()">Astralis</span>
   </div>
 
   <!-- Barra de búsqueda visible solo en pantallas grandes -->
   <div class="navbar-center" *ngIf="!isSmallScreen">
-    <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar> <!-- Recibe resultados de búsqueda -->
+    <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
   </div>
 
+  <!-- Enlaces del Navbar -->
   <div class="navbar-links">
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
 
     <!-- Ícono de búsqueda visible solo en pantallas pequeñas -->
-    <i *ngIf="isSmallScreen" (click)="openSearchModal()" class="fa-solid fa-magnifying-glass clickable-icon"></i>
+    <i
+      *ngIf="isSmallScreen"
+      (click)="openSearchModal()"
+      class="fa-solid fa-magnifying-glass clickable-icon"
+    ></i>
 
-    <i *ngIf="isLoggedIn()" (click)="router.navigate(['/user-details'])" class="fa-solid fa-user clickable-icon"></i>
+    <i
+      *ngIf="isLoggedIn()"
+      (click)="router.navigate(['/user-details'])"
+      class="fa-solid fa-user clickable-icon"
+    ></i>
     <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
 
+    <!-- Carrito de Compras -->
     <li *ngIf="isLoggedIn()" class="cart-icon-container">
       <a routerLink="/cart">
         <i class="fa-solid fa-cart-shopping"></i>
@@ -31,8 +42,7 @@
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
-    <!-- Usamos el componente app-search-bar dentro del modal y asignamos la función de búsqueda -->
     <app-search-bar (searchResults)="closeSearchModal()"></app-search-bar>
-    <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p> <!-- Muestra mensaje si no hay resultados -->
+    <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
   </div>
 </div>

@@ -1,126 +1,131 @@
-/* Contenedor del filtro con diseño azulado y ajustado al ancho */
+/* Importamos una fuente retro menos exagerada */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+/* Contenedor principal */
 .filter-container {
   width: 100%;
-  max-width: 250px; /* Ancho ajustado al de las gift cards */
+  max-width: 350px;
   margin: 0 auto;
-  background-color: rgba(5, 15, 35, 0.8); /* Fondo oscuro azulado */
-  border: 2px solid #3A9DFF; /* Borde azul claro */
+  background-color: #0A0F1E;
+  border: 2px solid #00D4FF;
   padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
-  color: #3A9DFF; /* Color del texto azul claro */
-  font-family: 'Press Start 2P', cursive;
-  text-align: center;
-  border-radius: 10px; /* Bordes redondeados */
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  transition: all 0.3s ease; /* Transiciones suaves */
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+  color: #E0E6ED;
+  font-family: 'VT323', monospace;
+  border-radius: 10px;
 }
 
-/* Efecto de resplandor al hover más sutil */
-.filter-container:hover {
-  box-shadow: 0 0 15px #3A9DFF, 0 0 30px #3A9DFF; /* Resplandor azul más suave */
-  border-color: #7FBFFF; /* Cambia el borde a un azul más brillante */
+/* Contenedor de los filtros */
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-/* Estilos de texto y encabezados */
+/* Título */
 .filters-container h3 {
-  color: #6EC1FF;
+  color: #00D4FF;
   font-size: 1.2rem;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
+  text-align: center;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px #6EC1FF, 0 0 10px #6EC1FF; /* Efecto más suave */
 }
 
-/* Ajuste de las etiquetas y campos para alineación y consistencia */
-.filters-container label {
-  display: inline-block; /* Asegura que el label se ajuste al texto */
-  width: auto; /* Se adapta al tamaño del contenido */
-  margin-bottom: 8px;
-  font-size: 0.9rem; /* Tamaño de fuente ajustado para mejor lectura */
-  text-align: left; /* Alineación a la izquierda */
-  color: #6EC1FF; /* Color del texto */
+/* Grupo de filtros */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Etiquetas y campos de entrada */
+.filter-group label {
+  font-size: 0.9rem;
+  color: #AAB4C5;
+  margin-bottom: 5px;
+}
+
+.filters-container input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  background-color: #151A2E;
+  border: 2px solid #00D4FF;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 .filters-container select,
-.filters-container input[type="range"],
-.filters-container input[type="checkbox"] {
-  display: block;
+.filters-container input[type="range"] {
   width: 100%;
-  margin-bottom: 15px;
-  background-color: rgba(5, 15, 35, 0.6); /* Fondo semi-transparente */
-  color: #6EC1FF;
-  border: 1px solid #3A9DFF;
   padding: 8px;
-  font-family: 'VT323', monospace;
-  outline: none;
-  transition: all 0.3s ease;
+  background-color: #151A2E;
+  border: 2px solid #00D4FF;
   border-radius: 5px;
+  font-size: 0.9rem;
+  color: #E0E6ED;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
 
-/* Efecto de hover en inputs más sutil */
 .filters-container select:hover,
 .filters-container input[type="range"]:hover,
 .filters-container input[type="checkbox"]:hover {
-  background-color: rgba(5, 15, 35, 0.9);
-  border-color: #7FBFFF; /* Cambio de borde a azul más brillante */
+  border-color: #FFFFFF;
 }
 
-/* Botón de aplicar filtros con un efecto más cristalino y espacial */
+/* Estilo del input range */
+.filters-container input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: #1F2A48;
+  margin-top: 10px;
+}
+
+.filters-container input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  background: #00D4FF;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.filters-container input[type="range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: #00D4FF;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Botón de aplicar filtros */
 .filters-container button {
   width: 100%;
-  padding: 12px 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
-  border: 2px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
-  color: rgba(255, 255, 255, 0.7); /* Color de texto blanco translúcido */
-  font-family: 'Press Start 2P', cursive;
-  cursor: pointer;
+  padding: 12px;
+  background-color: #00D4FF;
+  border: 2px solid #FFFFFF;
+  color: #0A0F1E;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  border-radius: 5px;
   text-transform: uppercase;
-  border-radius: 10px; /* Bordes redondeados */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Efecto de neón */
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .filters-container button:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido más claro al hacer hover */
-  border-color: rgba(255, 255, 255, 0.5); /* Borde más brillante en hover */
-  color: rgba(255, 255, 255, 1); /* Texto blanco brillante en hover */
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Aumenta el resplandor al hacer hover */
+  background-color: #FFFFFF;
+  color: #0A0F1E;
+  transform: translateY(-2px);
 }
 
 .filters-container button:active {
-  background-color: #12223C; /* Color de fondo más oscuro cuando se presiona */
+  transform: translateY(0);
 }
 
-.filters-container button:focus {
-  outline: none;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Resplandor en el foco */
-}
-
-/* Responsividad */
 @media (max-width: 768px) {
   .filter-container {
-    max-width: 90%;
-  }
-
-  .filters-container button {
-    font-size: 0.9rem;
-    padding: 10px 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .filter-container {
     max-width: 100%;
-  }
-
-  .filters-container button {
-    font-size: 1rem;
-    padding: 12px 20px;
+    padding: 15px;
   }
 }

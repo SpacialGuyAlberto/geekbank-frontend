@@ -19,18 +19,22 @@ import {KinguinService} from "../../../kinguin.service";
   templateUrl: './highlights-config.component.html',
   styleUrls: ['./highlights-config.component.css']
 })
-export class HighlightsConfigComponent {
+
+
+export class HighlightsConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
   highlightItems: HighlightItemWithGiftcard[] = [];
   currentHighlights: KinguinGiftCard[] = [];
-  card: KinguinGiftCard | undefined;
 
-  constructor(private highlightService: HighlightService, private kinguinService: KinguinService) {}
+  constructor(
+    private highlightService: HighlightService,
+    private kinguinService: KinguinService
+  ) {}
 
   ngOnInit() {
-    this.highlightService.getHighlights().subscribe(data =>
-        data.map( item => this.currentHighlights.push(item.giftcard))
-    );
+    this.highlightService.getHighlights().subscribe((data) => {
+      data.map((item) => this.currentHighlights.push(item.giftcard));
+    });
 
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data;
@@ -40,25 +44,22 @@ export class HighlightsConfigComponent {
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
     console.log('Search Results in Gift Cards Component: ', this.giftCards);
-
   }
 
   addToHighlights(card: KinguinGiftCard): void {
-    if (!this.currentHighlights.includes(card)){
+    if (!this.currentHighlights.includes(card)) {
       this.currentHighlights.push(card);
     }
   }
 
   removeFromHighlights(cardToRemove: KinguinGiftCard): void {
-    this.currentHighlights = this.currentHighlights.filter(card => card !== cardToRemove);
+    this.currentHighlights = this.currentHighlights.filter((card) => card !== cardToRemove);
   }
 
-
   save(): void {
-    const productIds = this.currentHighlights.map(card => card.kinguinId);
-    const highlightIds = this.highlightItems.map(card => card.giftcard.kinguinId)
+    const productIds = this.currentHighlights.map((card) => card.kinguinId);
 
-    this.highlightService.removeHighlights(productIds).subscribe(
+    this.highlightService.removeHighlights([]).subscribe(
       () => {
         console.log('Previous highlights removed successfully!');
         this.highlightService.addHighlights(productIds).subscribe(

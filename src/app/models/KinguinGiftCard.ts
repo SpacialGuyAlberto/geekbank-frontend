@@ -1,6 +1,7 @@
 // src/app/services/models/KinguinGiftCard.ts
 
 export interface KinguinGiftCard {
+  imageUrl: string;
   name: string;
   description: string;
   coverImage: string;

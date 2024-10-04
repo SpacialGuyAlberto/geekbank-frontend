@@ -2,12 +2,12 @@
   <div class="filters-container">
     <h3>Filtros</h3>
 
-    <label>
-      <input type="checkbox" [(ngModel)]="filters.hideOutOfStock">
-       Hide Out of Stock
-    </label>
+    <div class="filter-group">
+      <label for="hideOutOfStock">Ocultar productos sin stock</label>
+      <input type="checkbox" id="hideOutOfStock" [(ngModel)]="filters.hideOutOfStock">
+    </div>
 
-    <div>
+    <div class="filter-group">
       <label for="platform">Plataforma</label>
       <select id="platform" [(ngModel)]="filters.platform">
         <option value="" disabled selected>Seleccione...</option>
@@ -15,7 +15,7 @@
       </select>
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="region">Región de Activación</label>
       <select id="region" [(ngModel)]="filters.region">
         <option value="" disabled selected>Seleccione...</option>
@@ -23,12 +23,12 @@
       </select>
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="price-range">Rango de Precios</label>
       <input type="range" id="price-range" [(ngModel)]="filters.priceRange" min="0" max="100">
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="os">Sistema Operativo</label>
       <select id="os" [(ngModel)]="filters.os">
         <option value="" disabled selected>Seleccione...</option>
@@ -36,7 +36,7 @@
       </select>
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="genre">Géneros</label>
       <select id="genre" [(ngModel)]="filters.genre">
         <option value="" disabled selected>Seleccione...</option>
@@ -44,7 +44,7 @@
       </select>
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="language">Idiomas del Producto</label>
       <select id="language" [(ngModel)]="filters.language">
         <option value="" disabled selected>Seleccione...</option>
@@ -52,7 +52,7 @@
       </select>
     </div>
 
-    <div>
+    <div class="filter-group">
       <label for="tags">Tags</label>
       <select id="tags" [(ngModel)]="filters.tags">
         <option value="" disabled selected>Seleccione...</option>

@@ -6,6 +6,13 @@ import {UserService} from "../../../user.service";
 import {User} from "../../../models/User";
 import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {MatOptgroup, MatOption, MatSelect, MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @Component({
@@ -26,7 +33,16 @@ import {MatOptgroup, MatOption, MatSelect, MatSelectChange, MatSelectModule} fro
     ReactiveFormsModule,
     MatLabel,
     NgStyle,
-    NgIf
+    NgIf,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
@@ -35,6 +51,8 @@ import {MatOptgroup, MatOption, MatSelect, MatSelectChange, MatSelectModule} fro
 export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() selectedUserFromClients : User | undefined;
   startDate: any;
+  displayedColumns: string[] = ['id', 'fecha', 'descripcion', 'estado', 'monto'];
+
   users: User[] = [];
   user: User | undefined;
   endDate: any;

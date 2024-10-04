@@ -35,17 +35,46 @@ export class GeneralViewComponent {
         datasets: [{
           label: 'Ventas Mensuales',
           data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
-          backgroundColor: '#36A2EB'
+          backgroundColor: '#ffcc00', // Color de las barras
+          borderColor: '#ffcc00',
+          borderWidth: 1
         }]
       },
       options: {
         responsive: true,
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+              color: '#555'
+            },
+            ticks: {
+              color: '#fff'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#fff'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff'
+            }
+          },
+          title: {
+            display: true,
+            text: 'Ventas Mensuales',
+            color: '#fff',
+            font: {
+              size: 18
+            }
           }
         }
       }
+
     });
   }
 
@@ -61,8 +90,24 @@ export class GeneralViewComponent {
         }]
       },
       options: {
-        responsive: true
+        responsive: true,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff' // Color del texto de la leyenda
+            }
+          },
+          title: {
+            display: true,
+            text: 'Categorías más Vendidas',
+            color: '#fff', // Color del título
+            font: {
+              size: 18
+            }
+          }
+        }
       }
     });
   }
+
 }

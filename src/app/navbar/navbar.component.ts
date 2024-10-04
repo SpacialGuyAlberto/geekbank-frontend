@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
   selectedLanguage: string = 'en';
   isLanguageMenuOpen: boolean = false;
   showNavbar: boolean = true;
+  isMenuOpen: boolean = false;
   showSearchBar: boolean = true;
   showSearchModal: boolean = false;
   searchQuery: string = '';
@@ -43,7 +44,6 @@ export class NavbarComponent implements OnInit {
     private authService: AuthService,
     protected router: Router,
     private cartService: CartService,
-    protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService
@@ -58,19 +58,19 @@ export class NavbarComponent implements OnInit {
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const hiddenRoutes = ['/login', '/register'];
-      this.showSearchBar = !hiddenRoutes.includes(event.url);
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        const hiddenRoutes = ['/login', '/register'];
+        this.showSearchBar = !hiddenRoutes.includes(event.url);
+      });
 
     this.router.events.subscribe(() => {
       const hiddenRoutes = ['/user-details', '/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
     });
 
-    this.cartService.cartItemCount$.subscribe(count => {
+    this.cartService.cartItemCount$.subscribe((count) => {
       this.cartItemCount = count;
       this.cd.detectChanges();
     });
@@ -104,18 +104,22 @@ export class NavbarComponent implements OnInit {
   handleSearchResults(results: KinguinGiftCard[]): void {
     if (results.length > 0) {
       this.closeSearchModal();
-      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } }); // Navegar al HomeComponent con el parámetro de búsqueda
+      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } });
     } else {
       this.searchResultsMessage = 'No hay resultados para esta búsqueda';
     }
   }
 
   goToHome() {
-    this.uiStateService.setShowHighlights(true); // Restablece el valor de showHighlights a true
-    this.router.navigate(['/home']); // Redirige al HomeComponent
+    this.uiStateService.setShowHighlights(true);
+    this.router.navigate(['/home']);
   }
 
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth <= 768;
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }

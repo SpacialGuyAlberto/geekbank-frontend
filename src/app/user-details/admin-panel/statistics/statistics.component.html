@@ -1,22 +1,22 @@
 <div class="statistics-dashboard">
   <!-- Menú de pestañas para seleccionar gráficos con iconos -->
   <div class="tabs-menu">
-    <button class="tab-button locations" [ngClass]="{'active': selectedTab === 'sales'}" (click)="selectTab('sales')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'sales'}" (click)="selectTab('sales')">
       <i class="fas fa-shopping-cart"></i> Ventas Mensuales
     </button>
-    <button class="tab-button shops" [ngClass]="{'active': selectedTab === 'category'}" (click)="selectTab('category')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'category'}" (click)="selectTab('category')">
       <i class="fas fa-tags"></i> Ventas por Categoría
     </button>
-    <button class="tab-button products" [ngClass]="{'active': selectedTab === 'behavior'}" (click)="selectTab('behavior')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'behavior'}" (click)="selectTab('behavior')">
       <i class="fas fa-users"></i> Comportamiento del Cliente
     </button>
-    <button class="tab-button traffic" [ngClass]="{'active': selectedTab === 'traffic'}" (click)="selectTab('traffic')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'traffic'}" (click)="selectTab('traffic')">
       <i class="fas fa-chart-line"></i> Tráfico por Canal
     </button>
-    <button class="tab-button inventory" [ngClass]="{'active': selectedTab === 'inventory'}" (click)="selectTab('inventory')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'inventory'}" (click)="selectTab('inventory')">
       <i class="fas fa-boxes"></i> Inventario
     </button>
-    <button class="tab-button orders" [ngClass]="{'active': selectedTab === 'orders'}" (click)="selectTab('orders')">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'orders'}" (click)="selectTab('orders')">
       <i class="fas fa-box"></i> Pedidos Totales
     </button>
   </div>
@@ -53,5 +53,4 @@
       <canvas id="ordersChart"></canvas>
     </div>
   </div>
-
 </div>

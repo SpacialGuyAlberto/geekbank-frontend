@@ -49,7 +49,7 @@ export class AdminPanelComponent implements AfterViewInit {
 
   ngOnInit() {
     this.animation.initializeGraphAnimation();
-    this.selectSection('clients');
+    this.selectSection('general');
     this.isSmallScreen = window.innerWidth <= 768;
   }
 

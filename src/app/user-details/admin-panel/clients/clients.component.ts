@@ -29,6 +29,7 @@ import {RegisterComponent} from "../../../register/register.component";
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit, AfterViewInit{
+  editMode: { [key: string]: boolean } = {};
   searchQuery: string = '';
   createNewCustomer: boolean = false;
   selectedClient: User | undefined;
@@ -94,6 +95,13 @@ export class ClientsComponent implements OnInit, AfterViewInit{
   //     this.selectedProduct = product;
   //   }
   // }
+  toggleEdit(field: string): void {
+    // Si el campo ya está en modo edición, al hacer clic en el lápiz, se guardan los cambios y se sale del modo edición.
+    if (this.editMode[field]) {
+      // Aquí puedes implementar la lógica para guardar los cambios en el servidor si es necesario.
+    }
+    this.editMode[field] = !this.editMode[field];
+  }
 
   toggleUserDetails(client: User) {
     if (client == this.selectedClient){

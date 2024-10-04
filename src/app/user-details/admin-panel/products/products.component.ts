@@ -41,8 +41,12 @@ export class ProductsComponent implements OnInit {
 
   getProducts(): void {
     this.kinguinService.getKinguinGiftCards(this.currentPage).subscribe((data: KinguinGiftCard[]) => {
-      this.products = data;
-      this.allProducts = data; // Almacenar todos los productos para filtrado local
+      this.products = data.map(card => {
+        // Asignar la imagen correcta a una propiedad común 'imageUrl'
+        card.imageUrl = card.images?.cover?.thumbnail || card.coverImageOriginal || card.coverImage || 'assets/default-product.png';
+        return card;
+      });
+      this.allProducts = this.products; // Almacenar todos los productos para filtrado local
     });
   }
 
@@ -51,9 +55,12 @@ export class ProductsComponent implements OnInit {
       this.products = this.allProducts; // Si no hay búsqueda, devolver todos los productos
     } else {
       this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
-        this.products = data;
-        }
-      )
+        this.products = data.map(card => {
+          // Asegurar que las imágenes se asignen también en la búsqueda
+          card.imageUrl = card.images?.cover?.thumbnail || card.coverImageOriginal || card.coverImage || 'assets/default-product.png';
+          return card;
+        });
+      });
     }
   }
 
