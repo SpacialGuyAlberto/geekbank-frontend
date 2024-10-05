@@ -1,12 +1,13 @@
 /* Estructura principal */
 .user-dashboard {
   display: flex;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   height: 100vh;
 }
 
 .sidebar {
   width: 15rem; /* Adaptado a rem */
-  background-color: #00253d;
+
   padding: 1.25rem; /* Adaptado a rem */
   display: flex;
   flex-direction: column;
@@ -106,7 +107,7 @@
 .main-content {
   flex-grow: 1;
   padding: 1.25rem; /* Adaptado a rem (20px) */
-  background: #0B192C;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
 h2 {

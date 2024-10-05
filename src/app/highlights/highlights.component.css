@@ -1,3 +1,4 @@
+
 .highlights-carousel {
   display: flex;
   justify-content: left;
@@ -56,7 +57,8 @@
 }
 
 .highlight-card-title {
-  font-size: 1.4rem;
+  font-family: var(--font-retro);
+  font-size: 1rem;
   margin: 0.625rem 0 0.3125rem; /* 10px y 5px en rem */
   color: #00d4ff;
   text-transform: uppercase;
@@ -65,9 +67,9 @@
 
 .highlight-card-price {
   font-size: 1.2rem;
-  color: #88D66C;
+  color: var(--accent-green);
   font-weight: bold;
-  margin-bottom: 0.625rem; /* 10px en rem */
+  margin-bottom: 0.625rem; /* 10px */
 }
 
 .gift-card {
@@ -107,9 +109,10 @@
 
 .gift-card-price {
   position: absolute;
+  font-family: var(--font-retro);;
   bottom: 0;
   width: 100%;
-  padding: 0.625rem 0; /* 10px en rem */
+  padding: 0.625rem 0; /* 10px */
   background: #1261A0;
   color: #0B0D19;
   text-align: center;
@@ -117,6 +120,7 @@
   font-size: 1.1rem;
   box-sizing: border-box;
 }
+
 
 .highlight-card:hover .highlight-card-image {
   box-shadow: 0 0.5rem 1.875rem rgba(0, 255, 255, 0.7); /* 8px y 30px en rem */

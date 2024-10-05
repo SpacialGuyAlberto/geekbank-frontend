@@ -1,14 +1,19 @@
-
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas>
+</div>
 <div class="content-container">
-
   <div class="main-content">
     <div class="gift-cards-container">
       <div *ngFor="let card of displayedGiftCards" class="gift-card" (click)="viewDetails(card)">
-        <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
+        <div class="image-container">
+          <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
+          <button class="wishlist-button" aria-label="Agregar a Wishlist">
+            <span class="material-icons">favorite_border</span>
+          </button>
+        </div>
         <div class="gift-card-content">
           <h3 class="gift-card-title">{{ card.name }}</h3>
+          <hr class="separator">
           <div class="gift-card-price">
             <span>{{ (card.price * exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>
           </div>
@@ -16,27 +21,10 @@
       </div>
     </div>
 
-
-<!--  <div class="pagination">-->
-<!--    <button (click)="goToPage(1)">First</button>-->
-<!--    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>-->
-<!--    <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">-->
-<!--      <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>-->
-<!--    </span>-->
-<!--    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>-->
-<!--    <button (click)="goToPage(totalPages)">Last</button>-->
-<!--  </div>-->
-
-  <div class="load-more-container">
-    <button (click)="loadMore()" class="load-more-button">
-    <span class="material-symbols-outlined">
-      expand_more
-    </span>
-    </button>
+    <div class="load-more-container">
+      <button (click)="loadMore()" class="load-more-button" aria-label="Cargar más">
+        <span class="material-icons">expand_more</span>
+      </button>
+    </div>
   </div>
-
-  </div>
-  </div>
-
-
-
+</div>

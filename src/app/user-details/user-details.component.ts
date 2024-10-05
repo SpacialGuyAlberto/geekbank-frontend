@@ -28,7 +28,7 @@ export class UserDetailsComponent implements OnInit {
   isAccountInfoOpen: boolean = false;
   isSmallScreen: boolean = false;
 
-  constructor(private authService: AuthService, private animation: BackgroundAnimationService,  private router: Router) {}
+  constructor(private authService: AuthService,  private router: Router) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -36,7 +36,7 @@ export class UserDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
+    // this.animation.initializeGraphAnimation();
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
       console.log(data.email)
@@ -47,7 +47,6 @@ export class UserDetailsComponent implements OnInit {
     this.isSmallScreen = window.innerWidth <= 768;
 
   }
-
 
   selectSection(section: string) {
     console.log('Sección seleccionada:', section);  // Verificar la selección

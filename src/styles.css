@@ -19,3 +19,62 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .custom-select-panel .mat-option.mat-selected {
   color: #ff7a00 !important;  /* Color del texto de la opción seleccionada */
 }
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variables de Color */
+:root {
+  /* Paleta de Colores Galácticos y Psicodélicos */
+  --primary-bg-color: #0a0a23; /* Azul profundo casi negro */
+  --secondary-bg-color: rgba(10, 10, 35, 0.85); /* Azul profundo con transparencia */
+  --accent-color: #ff6ec7; /* Rosa vibrante */
+  --accent-green: #39ff14; /* Verde neón */
+  --accent-purple: #8e44ad; /* Púrpura intenso */
+  --accent-blue: #1e90ff; /* Azul brillante */
+  --text-color: #e0e0e0; /* Gris claro para texto */
+  --border-color: rgba(255, 255, 255, 0.1); /* Borde muy sutil */
+
+  /* Botones con Linear Gradients */
+  --button-add-bg: linear-gradient(45deg, #39ff14, #8e44ad); /* Verde neón a púrpura */
+  --button-add-hover-bg: linear-gradient(45deg, #2ed71f, #7a3ea0); /* Verde más oscuro a púrpura oscuro */
+  --button-buy-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Azul brillante a rosa vibrante */
+  --button-buy-hover-bg: linear-gradient(45deg, #176ab8, #e75fa5); /* Azul oscuro a rosa más oscuro */
+
+  /* Mensaje de No Loggeado */
+  --error-bg: rgba(255, 105, 180, 0.1); /* Rosa claro con transparencia */
+  --error-border: rgba(255, 105, 180, 0.7); /* Rosa vibrante con transparencia */
+  --error-text: #ff69b4; /* Rosa brillante para texto */
+
+  --overlay-bg: rgba(0, 0, 0, 0.5); /* Fondo de superposición */
+
+  /* Tipografía */
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  --font-retro: 'Press Start 2P', cursive;
+
+  /* Transiciones */
+  --transition-speed: 0.3s;
+
+  --success-color: #39ff14;
+  --error-color: #ff69b4;
+  /* Sombras */
+  --box-shadow-light: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombras más profundas */
+  --box-shadow-hover: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.3);
+
+  /* Gradientes */
+  --gradient-bg: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(136, 214, 108, 0.2));
+
+  --primary-color: #0B0D19; /* Fondo principal oscuro */
+  --highlight-color: #1E90FF; /* Azul más brillante para botones y enlaces */
+
+
+  --card-border: rgba(255, 255, 255, 0.6); /* Borde visible */
+  --card-hover-border: rgba(255, 255, 255, 0.9);
+  --price-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Fondo suave debajo del precio */
+  --shadow-color: rgba(0, 0, 0, 0.7); /* Sombra más oscura para mejor contraste */
+
+}

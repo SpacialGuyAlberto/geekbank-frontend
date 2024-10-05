@@ -111,3 +111,19 @@ p a:hover {
   color: #EB3678;
   margin-top: 15px;
 }
+
+
+/* Variables de Color */
+:root {
+  --primary-bg-color: #0f2027; /* Azul oscuro espacial */
+  --secondary-bg-color: #203a43; /* Azul medio oscuro */
+  --tertiary-bg-color: #2c5364; /* Azul grisáceo */
+  --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */
+  --text-color: #E1E6F1; /* Color de texto claro */
+  --accent-pink: #FF6EC7; /* Rosa psicodélico */
+  --accent-green: #A7F432; /* Verde neón */
+  --accent-yellow: #F4D35E; /* Amarillo vibrante */
+  --accent-blue: #7873f5; /* Azul vibrante */
+  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado para botones */
+  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
+}

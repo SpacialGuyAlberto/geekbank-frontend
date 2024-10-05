@@ -1,71 +1,33 @@
 <div class="user-dashboard">
 
-  <!-- Botón de menú hamburguesa solo visible en pantallas pequeñas -->
-  <button class="hamburger-btn" (click)="toggleSidebar()">
-    <i class="fas fa-bars"></i>
-  </button>
-
-  <!-- Sidebar de navegación -->
-  <div class="modal-overlay" *ngIf="isSmallScreen && isCollapsed" (click)="toggleSidebar()"></div>
-  <div class="modal-sidebar" *ngIf="isSmallScreen && isCollapsed">
-    <span class="close-btn" (click)="toggleSidebar()">&#10005;</span>
-    <nav class="sidebar">
-      <ul>
-        <li>
-          <div class="nav-item" (click)="toggleAccountInfoSubsections(); closeSidebarOnMobile()" [class.active]="isAccountInfoOpen || selectedSection === 'account-info'">
-            <i class="fas fa-user"></i> Account Info
-          </div>
-          <ul *ngIf="isAccountInfoOpen" class="sub-sections">
-            <li><div class="sub-nav-item" (click)="selectSection('account-details'); closeSidebarOnMobile()">Account Details</div></li>
-            <li><div class="sub-nav-item" (click)="selectSection('addresses'); closeSidebarOnMobile()">Addresses</div></li>
-            <li><div class="sub-nav-item" (click)="selectSection('connected-apps'); closeSidebarOnMobile()">Connected Apps</div></li>
-            <li><div class="sub-nav-item" (click)="selectSection('change-password'); closeSidebarOnMobile()">Change Password</div></li>
-            <li><div class="sub-nav-item" (click)="selectSection('login-history'); closeSidebarOnMobile()">Login History</div></li>
-            <li><div class="sub-nav-item" (click)="selectSection('marketing-consent'); closeSidebarOnMobile()">Marketing Consent</div></li>
-          </ul>
-        </li>
-        <li><a (click)="selectSection('orders'); closeSidebarOnMobile()"><i class="fas fa-box"></i> Orders</a></li>
-        <li><a (click)="selectSection('payment-methods'); closeSidebarOnMobile()"><i class="fas fa-credit-card"></i> Payment Methods</a></li>
-        <li *ngIf="user && user.role == 'ADMIN'">
-          <a (click)="navigateToAdminPanel(); closeSidebarOnMobile()"><i class="fas fa-tools"></i> Admin Panel</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- Sidebar para pantallas grandes -->
-  <nav class="sidebar" *ngIf="!isSmallScreen">
-    <!-- El mismo contenido que el modal, pero visible en pantallas grandes -->
-    <ul>
-      <li>
-        <div class="nav-item" (click)="toggleAccountInfoSubsections()" [class.active]="isAccountInfoOpen || selectedSection === 'account-info'">
-          <i class="fas fa-user"></i> Account Info
-        </div>
-        <ul *ngIf="isAccountInfoOpen" class="sub-sections">
-          <li><div class="sub-nav-item" (click)="selectSection('account-details')">Account Details</div></li>
-          <li><div class="sub-nav-item" (click)="selectSection('addresses')">Addresses</div></li>
-          <li><div class="sub-nav-item" (click)="selectSection('connected-apps')">Connected Apps</div></li>
-          <li><div class="sub-nav-item" (click)="selectSection('change-password')">Change Password</div></li>
-          <li><div class="sub-nav-item" (click)="selectSection('login-history')">Login History</div></li>
-          <li><div class="sub-nav-item" (click)="selectSection('marketing-consent')">Marketing Consent</div></li>
-        </ul>
-      </li>
-      <li><a (click)="selectSection('orders')"><i class="fas fa-box"></i> Orders</a></li>
-      <li><a (click)="selectSection('payment-methods')"><i class="fas fa-credit-card"></i> Payment Methods</a></li>
-      <li *ngIf="user && user.role == 'ADMIN'">
-        <a (click)="navigateToAdminPanel()"><i class="fas fa-tools"></i> Admin Panel</a>
-      </li>
-    </ul>
-  </nav>
 
   <main class="main-content">
     <div *ngIf="selectedSection === 'account-info'">
       <h2>{{ user.name }}</h2>
-      <p>Saldo: {{ user.balance }}</p>
+      <p>Saldo: {{ user.balance | currency:'USD' }}</p>
     </div>
-    <div *ngIf="selectedSection === 'account-details'"><app-account-info></app-account-info></div>
-    <div *ngIf="selectedSection === 'change-password'"><app-change-password></app-change-password></div>
-    <div *ngIf="selectedSection === 'orders'"><app-orders [user]="user"></app-orders></div>
-    <div *ngIf="selectedSection === 'payment-methods'"><app-payment-methods></app-payment-methods></div>
+    <div *ngIf="selectedSection === 'account-details'">
+      <app-account-info></app-account-info>
+    </div>
+    <div *ngIf="selectedSection === 'change-password'">
+      <app-change-password></app-change-password>
+    </div>
+    <div *ngIf="selectedSection === 'orders'">
+      <app-orders [user]="user"></app-orders>
+    </div>
+    <div *ngIf="selectedSection === 'payment-methods'">
+      <app-payment-methods></app-payment-methods>
+    </div>
+    <div *ngIf="selectedSection === 'admin-tools' && user.role === 'ADMIN'" class="admin-tools">
+      <h2>Herramientas de Administrador</h2>
+      <ul>
+        <li>
+          <a (click)="navigateToAdminPanel()">
+            <i class="fas fa-tools"></i> Panel de Administración
+          </a>
+        </li>
+        <!-- Puedes agregar más herramientas aquí -->
+      </ul>
+    </div>
   </main>
 </div>

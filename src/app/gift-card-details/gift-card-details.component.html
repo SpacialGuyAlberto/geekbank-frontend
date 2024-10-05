@@ -26,18 +26,25 @@
 
       <!-- Mostrar botones solo si el usuario está loggeado -->
       <div *ngIf="isLoggedIn(); else notLoggedInMessage" class="button-container">
-        <button (click)="toggleCart(giftCard)" class="add-to-cart">
-          {{ isInCart ? 'Remove from Cart' : 'Add to Cart' }}
+        <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
+          <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
+          {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
         </button>
-        <button (click)="buyNow(giftCard)" class="buy-now">Buy Now</button>
+        <button (click)="buyNow(giftCard)" class="btn buy-now">
+          <i class="material-icons">shopping_bag</i>
+          Comprar Ahora
+        </button>
       </div>
 
       <!-- Mostrar el mensaje de no loggeado -->
       <ng-template #notLoggedInMessage>
         <div class="not-logged-in-message">
-          <h2>Your are not logged in.</h2>
-          <p>Please log in to add the products to the car.</p>
-          <button (click)="redirectToLogin()" class="login-btn">Sign In</button>
+          <h2>No has iniciado sesión.</h2>
+          <p>Por favor, inicia sesión para agregar productos al carrito.</p>
+          <button (click)="redirectToLogin()" class="btn login-btn">
+            <i class="material-icons">login</i>
+            Iniciar Sesión
+          </button>
         </div>
       </ng-template>
     </div>

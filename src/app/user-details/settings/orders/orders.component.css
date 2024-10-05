@@ -1,108 +1,166 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto; /* Permitir desplazamiento global */
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19; /* Fondo oscuro */
+/* Importación de fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Variables de Color */
+:root {
+  --primary-bg-color: #0f2027; /* Azul oscuro espacial */
+  --secondary-bg-color: #203a43; /* Azul medio oscuro */
+  --tertiary-bg-color: #2c5364; /* Azul grisáceo */
+  --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */
+  --text-color: #E1E6F1; /* Color de texto claro */
+  --accent-pink: #FF6EC7; /* Rosa psicodélico */
+  --accent-green: #A7F432; /* Verde neón */
+  --accent-red: #FF4C4C; /* Rojo para eliminar */
+  --accent-yellow: #F4D35E; /* Amarillo vibrante */
+  --accent-blue: #7873f5; /* Azul vibrante */
+  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado para botones */
+  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
 }
 
+/* Estilos Generales del Dashboard de Transacciones */
 .transactions-container {
-  width: 100%;
-  max-width: 50rem; /* Ajuste para pantallas grandes */
-  margin: 0 auto; /* Centrar el contenedor */
   padding: 2rem;
-  background-color: #2d2d2d;
-  border-radius: 1rem;
-  color: #ffffff;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-  overflow-y: auto; /* Permitir el scroll */
-  max-height: calc(100vh - 4rem); /* Limitar la altura del contenedor */
+  background: linear-gradient(135deg, var(--primary-bg-color), var(--secondary-bg-color), var(--tertiary-bg-color)); /* Degradado oscuro espacial */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--text-color); /* Texto claro para buen contraste */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  overflow-y: auto; /* Permitir desplazamiento */
 }
 
+/* Títulos */
 .section-title {
   font-size: 2.4rem;
   margin-bottom: 2rem;
   text-align: center;
+  color: var(--accent-yellow); /* Amarillo vibrante */
+  text-shadow: 0 0 10px rgba(255, 211, 94, 0.7); /* Sombra de texto brillante */
 }
 
+/* Filtros */
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
   justify-content: center;
+  background: var(--glass-bg-color); /* Fondo translúcido */
+  padding: 1rem;
+  border-radius: 1rem;
+  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
 }
 
-.filters input, .filters select, .filters button {
-  padding: 1rem;
+.filters input,
+.filters select,
+.filters button {
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 0.5rem;
-  border: 1px solid #555;
-  background-color: #333;
+  background: rgba(36, 59, 83, 0.5); /* Fondo de inputs translúcido */
   color: #fff;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.filters input:focus,
+.filters select:focus {
+  background: rgba(36, 59, 83, 0.7);
+  border-color: var(--accent-pink);
+  outline: none;
 }
 
 .filters button {
-  background-color: #ff7a00;
+  background: var(--button-gradient); /* Degradado psicodélico */
   border: none;
   cursor: pointer;
+  color: #fff;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
+.filters button:hover {
+  background: var(--button-gradient-hover); /* Degradado invertido en hover */
+  transform: scale(1.05); /* Aumento de tamaño en hover */
+  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+}
+
+.filters button i {
+  font-size: 1.2rem;
+}
+
+/* Tabla de Transacciones */
 .transaction-table {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
 }
 
-.transaction-header {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 1rem;
-  background-color: #1c1c1c;
-  font-weight: bold;
-  color: #ff7a00;
-}
-
+.transaction-header,
 .transaction-row {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   padding: 1rem;
-  background-color: #333;
   border-radius: 0.5rem;
+  background: var(--glass-bg-color); /* Fondo translúcido */
+  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Sombra */
+  color: #fff;
+  align-items: center;
   transition: background-color 0.3s ease;
 }
 
-.transaction-row:hover {
-  background-color: #444;
+.transaction-header {
+  font-weight: bold;
+  color: var(--accent-yellow); /* Amarillo vibrante */
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
+.transaction-row {
+  background: var(--glass-bg-color);
+}
+
+.transaction-row:hover {
+  background: rgba(255, 255, 255, 0.05); /* Cambio sutil de fondo al hacer hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumento de sombra */
+}
+
+/* Estilos para Estado de Transacciones */
 .transaction-status {
   padding: 0.5rem 1.5rem;
   border-radius: 2.5rem;
-  border-width: 0.2rem;
-  border-style: solid;
+  border: 0.2rem solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
   min-width: 10rem;
+  color: #fff;
 }
 
 .transaction-status.PENDING {
+  background: rgba(255, 193, 7, 0.2);
   color: #ffc107;
   border-color: #ffc107;
 }
 
 .transaction-status.COMPLETED {
+  background: rgba(76, 175, 80, 0.2);
   color: #4caf50;
   border-color: #4caf50;
 }
 
 .transaction-status.REFUNDED {
+  background: rgba(0, 188, 212, 0.2);
   color: #00bcd4;
   border-color: #00bcd4;
 }
 
 .transaction-status.CANCELLED {
+  background: rgba(244, 67, 54, 0.2);
   color: #f44336;
   border-color: #f44336;
 }
@@ -111,56 +169,106 @@ html, body {
 .pagination {
   display: flex;
   justify-content: center;
+  gap: 1rem;
   margin-top: 2rem;
 }
 
 .pagination button {
-  padding: 0.8rem 1.5rem;
-  margin: 0 0.5rem;
+  background: var(--button-gradient); /* Degradado psicodélico */
   border: none;
-  background-color: #ff7a00;
-  color: white;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  backdrop-filter: blur(5px); /* Efecto vidrioso */
+  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: var(--button-gradient-hover); /* Degradado invertido en hover */
+  transform: scale(1.05); /* Aumento de tamaño en hover */
+  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
 }
 
 .pagination button:disabled {
-  background-color: #555;
+  background: rgba(255, 255, 255, 0.2);
   cursor: not-allowed;
 }
 
-/* Ajustes para pantallas pequeñas */
+.pagination button i {
+  font-size: 1rem;
+}
+
+/* Ajustes Responsivos */
 @media (max-width: 768px) {
-  .transactions-container {
-    max-width: 100%; /* Usar todo el ancho disponible en móviles */
-    padding: 1rem;
-    overflow-y: auto; /* Permitir el scroll dentro del contenedor */
-    height: auto; /* Asegurar que crezca según el contenido */
+  .filters {
+    flex-direction: column;
+    align-items: center;
   }
 
-  .transaction-header, .transaction-row {
-    display: block; /* Cambiar de tabla a formato de bloque en móviles */
-    text-align: left;
+  .transaction-header,
+  .transaction-row {
+    grid-template-columns: 1fr;
   }
 
-  .transaction-header span, .transaction-row span {
-    display: block; /* Cada dato de la tabla en una nueva línea */
+  .transaction-header span,
+  .transaction-row span {
+    display: block;
+    width: 100%;
     margin-bottom: 0.5rem;
   }
 
   .transaction-status {
     margin-top: 0.5rem;
     min-width: unset;
+    width: 100%;
   }
 
-  .filters {
-    display: block;
-    width: 100%;
-    text-align: center;
+  .pagination button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 
-  .filters input, .filters select, .filters button {
+  .section-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .transactions-container {
+    padding: 1rem;
+  }
+
+  .filters input,
+  .filters select,
+  .filters button {
     width: 100%;
-    margin-bottom: 1rem;
+  }
+
+  .transaction-status {
+    width: 100%;
+  }
+}
+
+@media (max-width: 400px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .filters input,
+  .filters select,
+  .filters button {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .pagination button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
   }
 }

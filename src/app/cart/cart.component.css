@@ -92,29 +92,33 @@ ul {
 
 .item-actions button {
   padding: 0.5rem 1rem;
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  border: none;
   border-radius: 0.5rem; /* Bordes redondeados */
-  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
-  color: #A0E4FF; /* Texto azul claro */
+  background: var(--button-buy-bg); /* Fondo con linear gradient */
+  color: #ffffff; /* Texto blanco */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Transición suave */
-  font-family: 'Press Start 2P', cursive;
+  transition: background var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out; /* Transición suave */
+  font-family: 'Open Sans', sans-serif;
   position: relative;
   z-index: 0;
   overflow: hidden;
+  background-size: 200% 200%;
+  font-size: 1rem;
 }
 
 .quantity-display {
   font-size: 1.2rem;
   font-weight: bold;
-  color: #A0E4FF;
+  color: var(--text-color);
   text-align: center;
   width: 2rem;
 }
 
 .item-actions button:hover {
-  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
-  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
+  background: var(--button-buy-hover-bg); /* Fondo más brillante */
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.5); /* Efecto neón azul */
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
 .item-actions button:before {
@@ -135,31 +139,35 @@ ul {
 
 .total-price-section {
   text-align: right;
-  color: #A0E4FF; /* Texto azul claro */
-  margin-top: 1.5rem;
+  color: var(--text-color); /* Texto azul claro */
+  margin-top: 2rem;
 }
 
 .total-price-section h3 {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
 }
 
 .total-price-section button {
   padding: 0.625rem 1.25rem;
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
-  border-radius: 0.5rem;
-  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
-  color: #A0E4FF; /* Texto azul claro */
+  border: none;
+  border-radius: 0.5rem; /* Bordes redondeados */
+  background: var(--button-buy-bg); /* Fondo con linear gradient */
+  color: #ffffff; /* Texto blanco */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: background var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
   font-family: 'Press Start 2P', cursive;
   position: relative;
   z-index: 0;
   overflow: hidden;
+  background-size: 200% 200%;
 }
 
 .total-price-section button:hover {
-  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
-  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
+  background: var(--button-buy-hover-bg); /* Fondo más brillante */
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4); /* Efecto neón azul */
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
 .total-price-section button:before {
@@ -184,38 +192,44 @@ ul {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente oscuro */
+  background: var(--overlay-bg); /* Fondo semi-transparente oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 4; /* Encima de todo */
 }
 
 .dialog {
-  background: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  background: rgba(10, 20, 40, 0.95); /* Fondo oscuro translúcido */
+  border: 0.125rem solid var(--border-color); /* Borde translúcido */
   border-radius: 1rem;
-  padding: 1.5rem;
+  padding: 2rem;
   text-align: center;
-  color: #A0E4FF; /* Texto azul claro */
+  color: var(--text-color); /* Texto azul claro */
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.4); /* Sombra suave */
 }
 
 .dialog button {
-  padding: 0.625rem 1.25rem;
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  padding: 0.75rem 1.5rem;
+  border: none;
   border-radius: 0.5rem;
-  background: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
-  color: #A0E4FF; /* Texto azul claro */
+  background: var(--button-add-bg); /* Fondo con linear gradient */
+  color: #ffffff; /* Texto blanco */
   cursor: pointer;
-  transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  font-family: 'Press Start 2P', cursive;
+  transition: background var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out, transform var(--transition-speed) ease-in-out;
+  font-family: 'Open Sans', sans-serif;
   position: relative;
   z-index: 0;
   overflow: hidden;
+  background-size: 200% 200%;
+  font-size: 1rem;
 }
 
 .dialog button:hover {
-  background: rgba(18, 97, 160, 0.4); /* Fondo más brillante */
-  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
+  background: var(--button-add-hover-bg); /* Fondo más brillante */
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(57, 255, 20, 0.4); /* Efecto neón verde */
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
 .dialog button:before {
@@ -234,12 +248,13 @@ ul {
   left: 100%;
 }
 
-.material-symbols-outlined {
+.material-symbols-outlined, mat-icon {
   cursor: pointer;
   font-size: 1.5rem; /* Tamaño del ícono */
   color: #FF6666; /* Color rojo suave */
-  transition: color 0.3s ease, transform 0.3s ease; /* Transición para color y transformación */
+  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease; /* Transición para color y transformación */
 }
+
 
 .material-symbols-outlined:hover {
   color: #FF3333; /* Cambio a un rojo más fuerte en hover */

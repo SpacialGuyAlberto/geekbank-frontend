@@ -2,7 +2,6 @@ import {Component, NgIterable, OnInit} from '@angular/core';
 import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
 import {KinguinService} from "../../../kinguin.service";
-import {id} from "ngx-charts/release/utils/id";
 import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
 
 @Component({

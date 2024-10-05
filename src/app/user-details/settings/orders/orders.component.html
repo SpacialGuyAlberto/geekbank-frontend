@@ -13,7 +13,9 @@
     </select>
     <input type="date" [(ngModel)]="dateFrom" placeholder="Desde">
     <input type="date" [(ngModel)]="dateTo" placeholder="Hasta">
-    <button (click)="filterTransactions()">Filtrar</button>
+    <button (click)="filterTransactions()">
+      <i class="fas fa-filter"></i> Filtrar
+    </button>
   </div>
 
   <!-- Tabla de Transacciones -->
@@ -35,9 +37,13 @@
     </div>
   </div>
 
+  <!-- Paginación -->
   <div class="pagination">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+    <button (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fas fa-arrow-left"></i> Anterior
+    </button>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Siguiente <i class="fas fa-arrow-right"></i>
+    </button>
   </div>
-
 </div>
