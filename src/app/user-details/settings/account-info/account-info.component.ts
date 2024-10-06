@@ -10,6 +10,7 @@ import {OrdersComponent} from "../orders/orders.component";
 import {AuthService} from "../../../auth.service";
 import {BackgroundAnimationService} from "../../../background-animation.service";
 import {Router} from "@angular/router";
+import {WishlistComponent} from "../wishlist/wishlist.component";
 
 @Component({
   selector: 'app-account-info',
@@ -27,6 +28,7 @@ import {Router} from "@angular/router";
     StatisticsComponent,
     ProductsComponent,
     OrdersComponent,
+    WishlistComponent,
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'

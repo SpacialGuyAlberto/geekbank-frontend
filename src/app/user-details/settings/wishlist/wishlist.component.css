@@ -1,0 +1,111 @@
+/* Estilos generales */
+.wishlist-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  border-radius: 10px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color); /* Color de texto claro */
+}
+
+h2 {
+  text-align: center;
+  color: var(--accent-pink); /* Títulos en rosa psicodélico */
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-shadow: 0 0 10px rgba(255, 110, 199, 0.7); /* Sombra de texto brillante */
+}
+
+/* Estilos para los items del wishlist */
+.wishlist-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.wishlist-item:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg, var(--primary-bg-color), var(--tertiary-bg-color)); /* Degradado de fondo */
+}
+
+.wishlist-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.wishlist-details {
+  flex-grow: 1;
+  margin-left: 1rem;
+}
+
+.wishlist-details h3 {
+  font-size: 1.2rem;
+  color: var(--text-color); /* Color de texto claro */
+  margin-bottom: 0.5rem;
+}
+
+.wishlist-details .price {
+  font-weight: bold;
+  color: var(--accent-green); /* Verde neón */
+}
+
+/* Botón de eliminar */
+.wishlist-actions {
+  display: flex;
+  align-items: center;
+}
+
+.btn-remove {
+  background: var(--button-gradient); /* Degradado psicodélico */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
+}
+
+.btn-remove:hover {
+  background: var(--button-gradient-hover); /* Degradado invertido en hover */
+  transform: scale(1.05); /* Aumentar el tamaño al hacer hover */
+}
+
+.empty-text {
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--text-color); /* Texto claro */
+  margin-top: 2rem;
+}
+
+/* Adaptación para pantallas pequeñas */
+@media (max-width: 768px) {
+  .wishlist-container {
+    padding: 1.5rem;
+  }
+
+  .wishlist-details h3 {
+    font-size: 1.1rem;
+  }
+
+  .wishlist-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .wishlist-actions {
+    align-self: flex-end;
+  }
+}

@@ -38,13 +38,19 @@
     </button>
     <button
       class="tab-button"
+      [ngClass]="{'active': selectedTab === 'wishList'}"
+      (click)="selectTab('wishList')"
+    >
+      <i class="fa-solid fa-heart"></i> Wish List
+    </button>
+    <button
+      class="tab-button"
       *ngIf="user && user.role === 'ADMIN'"
       [ngClass]="{'active': selectedTab === 'admin-tools'}"
       (click)="selectTab('admin-tools')"
     >
       <i class="fas fa-tools"></i> Herramientas de Admin
     </button>
-
   </div>
 
   <!-- Contenido de las Pestañas -->
@@ -60,7 +66,6 @@
           <input *ngIf="editingName" type="text" id="name" [(ngModel)]="user.name" name="name" />
           <i class="fas fa-pencil-alt" (click)="toggleEdit('name')"></i>
         </div>
-
         <!-- Email -->
         <div class="field">
           <label for="email">Email:</label>
@@ -142,6 +147,10 @@
 
     <div class="content-section" *ngIf="selectedTab === 'transactions'">
       <app-orders></app-orders>
+    </div>
+
+    <div class="content-section" *ngIf="selectedTab === 'wishList'">
+      <app-wishlist></app-wishlist>
     </div>
   </div>
 

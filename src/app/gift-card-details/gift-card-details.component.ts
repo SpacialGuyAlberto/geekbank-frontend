@@ -28,7 +28,6 @@ import {AuthService} from "../auth.service";
 })
 export class GiftCardDetailsComponent implements OnInit {
 
-
   giftCard: KinguinGiftCard | undefined;
   isInCart: boolean = false;
   cartItemCount: number = 0;

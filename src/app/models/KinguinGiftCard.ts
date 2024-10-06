@@ -35,6 +35,7 @@ export interface KinguinGiftCard {
   ageRating: string;
   images: Images;
   updatedAt: string;
+  wished: boolean;
 }
 
 export interface Screenshot {

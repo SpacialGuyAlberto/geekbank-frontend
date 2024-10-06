@@ -7,8 +7,13 @@
       <div *ngFor="let card of displayedGiftCards" class="gift-card" (click)="viewDetails(card)">
         <div class="image-container">
           <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
-          <button class="wishlist-button" aria-label="Agregar a Wishlist">
-            <span class="material-icons">favorite_border</span>
+          <button class="wishlist-button"
+                  [ngClass]="{'wished': card.wished}"
+                  (click)="toggleWishList(card, $event)"
+                  aria-label="Agregar a Wishlist">
+      <span class="material-icons">
+        favorite
+      </span>
           </button>
         </div>
         <div class="gift-card-content">
@@ -19,6 +24,7 @@
           </div>
         </div>
       </div>
+
     </div>
 
     <div class="load-more-container">
