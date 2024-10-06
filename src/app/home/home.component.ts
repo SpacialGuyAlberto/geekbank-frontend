@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   searchResults: KinguinGiftCard[] = [];
 
   constructor(
-    private backgroundAnimation: BackgroundAnimationService,
+    // private backgroundAnimation: BackgroundAnimationService,
     private uiStateService: UIStateServiceService,
     private route: ActivatedRoute,
     private kinguinService: KinguinService
@@ -70,7 +70,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.backgroundAnimation.initializeGraphAnimation();
+    // this.backgroundAnimation.initializeGraphAnimation();
   }
 
   toggleFilter() {
