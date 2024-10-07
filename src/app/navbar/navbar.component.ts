@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { NgIf } from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -11,6 +11,7 @@ import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
 import {UIStateServiceService} from "../uistate-service.service";
+import {Subscription} from "rxjs";
 
 
 @Component({
@@ -24,6 +25,7 @@ import {UIStateServiceService} from "../uistate-service.service";
     RouterModule,
     TranslateModule,
     SearchBarComponent,
+    NgClass,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -39,6 +41,8 @@ export class NavbarComponent implements OnInit {
   searchQuery: string = '';
   isSmallScreen: boolean = false;
   searchResultsMessage: string = '';
+  navbarClass: string = '';
+  routerSubscription!: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -58,6 +62,12 @@ export class NavbarComponent implements OnInit {
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
 
+    this.routerSubscription = this.router.events.subscribe( event => {
+      if (event instanceof NavigationEnd){
+        this.updateNavBarStyle(this.router.url)
+      }
+    });
+
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
@@ -66,7 +76,7 @@ export class NavbarComponent implements OnInit {
       });
 
     this.router.events.subscribe(() => {
-      const hiddenRoutes = ['/user-details', '/admin-panel'];
+      const hiddenRoutes = [ '/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
     });
 
@@ -74,6 +84,14 @@ export class NavbarComponent implements OnInit {
       this.cartItemCount = count;
       this.cd.detectChanges();
     });
+  }
+
+  updateNavBarStyle(url: string) : void {
+    if (url.includes('/user-details')){
+      this.navbarClass = 'navbar-user-details'
+    } else {
+      this.navbarClass = 'navbar'
+    }
   }
 
   useLanguage(language: string): void {

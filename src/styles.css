@@ -79,7 +79,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   /*--footer-bg-color: linear-gradient(135deg, rgba(0, 212, 255, 0.2), #0a0a23);; !* Fondo oscuro *!*/
   --footer-bg-color: #010313;;
-  --footer-user-details: linear-gradient(135deg, #103758, #5f575d);
+  --footer-user-details: linear-gradient(135deg, #06373d, #1a0116);
   --footer-admin-panel: linear-gradient(135deg, #000000, #1f1c1d);
   --footer-text-color: #88D66C; /* Texto claro */
   --footer-link-color: #c7eded; /* Enlaces en cian */
@@ -87,5 +87,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --divider-color: #1E90FF;
   --transition-speed: 0.3s;
   --font-primary: 'Roboto', sans-serif;
+
+  --navbar-user-details-bg-color: linear-gradient(135deg, #06373d,  #1a0116);
 
 }

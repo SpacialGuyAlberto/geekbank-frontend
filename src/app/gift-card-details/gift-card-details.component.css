@@ -1,112 +1,43 @@
-/* =======================================
-   Reset Básico y Configuración de Variables CSS
-   ======================================= */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-/*:root {*/
-/*  !* Paleta de Colores Galácticos y Psicodélicos *!*/
-/*  --primary-bg-color: #0a0a23; !* Azul profundo casi negro *!*/
-/*  --secondary-bg-color: rgba(10, 10, 35, 0.85); !* Azul profundo con transparencia *!*/
-/*  --accent-color: #ff6ec7; !* Rosa vibrante *!*/
-/*  --accent-green: #39ff14; !* Verde neón *!*/
-/*  --accent-purple: #8e44ad; !* Púrpura intenso *!*/
-/*  --accent-blue: #1e90ff; !* Azul brillante *!*/
-/*  --text-color: #e0e0e0; !* Gris claro para texto *!*/
-/*  --border-color: rgba(255, 255, 255, 0.1); !* Borde muy sutil *!*/
-
-/*  !* Botones con Linear Gradients *!*/
-/*  --button-add-bg: linear-gradient(45deg, #39ff14, #8e44ad); !* Verde neón a púrpura *!*/
-/*  --button-add-hover-bg: linear-gradient(45deg, #2ed71f, #7a3ea0); !* Verde más oscuro a púrpura oscuro *!*/
-/*  --button-buy-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); !* Azul brillante a rosa vibrante *!*/
-/*  --button-buy-hover-bg: linear-gradient(45deg, #176ab8, #e75fa5); !* Azul oscuro a rosa más oscuro *!*/
-
-/*  !* Mensaje de No Loggeado *!*/
-/*  --error-bg: rgba(255, 105, 180, 0.1); !* Rosa claro con transparencia *!*/
-/*  --error-border: rgba(255, 105, 180, 0.7); !* Rosa vibrante con transparencia *!*/
-/*  --error-text: #ff69b4; !* Rosa brillante para texto *!*/
-
-/*  --overlay-bg: rgba(0, 0, 0, 0.5); !* Fondo de superposición *!*/
-
-/*  !* Tipografía *!*/
-/*  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;*/
-/*  --font-secondary: 'Roboto', sans-serif;*/
-
-/*  !* Transiciones *!*/
-/*  --transition-speed: 0.3s;*/
-/*!*}*!*/
-
-/* =======================================
-   Estilos Globales
-   ======================================= */
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: var(--font-primary);
-  background-color: var(--primary-bg-color); /* Fondo oscuro espacial */
-  color: var(--text-color); /* Texto claro */
-  position: relative;
-}
-
-/* Efecto Estrellado de Fondo (Opcional) */
-body::before {
-  content: "";
+.graph-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-  opacity: 0.05;
-  z-index: 0;
-}
-
-/* =======================================
-   Contenedor del Gráfico
-   ======================================= */
-.graph-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+  height: 100%; /* Ocupará todo el contenido */
+  z-index: -1;
 }
 
 #graphCanvas {
+  width: 100%;
+  height: 100%; /* Dejar que el canvas ocupe la altura del contenido */
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   z-index: 1;
+  background-color: #0B0D19;
 }
 
-/* =======================================
-   Contenedor Principal de Detalles de la Gift Card
-   ======================================= */
 .gift-card-details-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 2rem;
-  margin: 5rem auto;
+  gap: 1rem;
+  margin: 10rem auto;
   max-width: 80%;
-  background: var(--secondary-bg-color); /* Fondo translúcido oscuro */
-  color: var(--text-color); /* Texto claro */
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
+  color: #88D66C;
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Soft neon border */
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.4); /* Sombra más suave */
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
   z-index: 2;
-  padding: 2rem;
-  flex-direction: column; /* Ajusta a columna por defecto */
-  backdrop-filter: blur(10px); /* Efecto de desenfoque */
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, background var(--transition-speed) ease;
+  padding: 1rem;
+
+  /* Asegurar que la columna se ajuste cuando la pantalla sea pequeña */
+  flex-direction: column;
 }
+
 
 .gift-card-details-container:hover {
   transform: scale(1.02); /* Efecto de agrandamiento */

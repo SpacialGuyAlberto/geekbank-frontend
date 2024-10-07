@@ -1,131 +1,127 @@
-/* Importamos una fuente retro menos exagerada */
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
-/* Contenedor principal */
+/* Contenedor Principal */
 .filter-container {
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto;
-  background-color: #0A0F1E;
-  border: 2px solid #00D4FF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  box-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
-  color: #E0E6ED;
-  font-family: 'VT323', monospace;
-  border-radius: 10px;
+  background: none; /* Fondo translúcido */
+  backdrop-filter: blur(15px); /* Aumenta el desenfoque */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25); /* Sombra más sutil */
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* Contenedor de los filtros */
-.filters-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+/* Contenedor de Filtros */
+.filters-wrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: none; /* Fondo translúcido */
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); /* Sombra más ligera */
 }
 
 /* Título */
-.filters-container h3 {
-  color: #00D4FF;
-  font-size: 1.2rem;
-  margin-bottom: 10px;
+.filters-title {
   text-align: center;
-  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: rgba(30, 198, 189, 0.71); /* Títulos en rosa psicodélico */
+  font-size: 1.6em;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-/* Grupo de filtros */
+/* Grupos de Filtros */
 .filter-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
+  color: #f0f0f0;
 }
 
-/* Etiquetas y campos de entrada */
+/* Etiquetas */
 .filter-group label {
-  font-size: 0.9rem;
-  color: #AAB4C5;
   margin-bottom: 5px;
+  font-size: 1em;
+  color: #e0e0e0;
 }
 
-.filters-container input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  background-color: #151A2E;
-  border: 2px solid #00D4FF;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.filters-container select,
-.filters-container input[type="range"] {
-  width: 100%;
-  padding: 8px;
-  background-color: #151A2E;
-  border: 2px solid #00D4FF;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  color: #E0E6ED;
+/* Inputs y Selects */
+.filter-group input[type="checkbox"],
+.filter-group select,
+.filter-group input[type="range"] {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15); /* Fondo más transparente */
+  color: #ffffff;
+  font-size: 1em;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.filters-container select:hover,
-.filters-container input[type="range"]:hover,
-.filters-container input[type="checkbox"]:hover {
-  border-color: #FFFFFF;
+.filter-group input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
 }
 
-/* Estilo del input range */
-.filters-container input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 5px;
-  background: #1F2A48;
-  margin-top: 10px;
+/* Efectos al pasar el ratón */
+.filter-group select:hover,
+.filter-group input[type="range"]:hover,
+.filter-group input[type="checkbox"]:hover {
+  background: rgba(255, 255, 255, 0.25); /* Incrementa la transparencia al interactuar */
+  transform: scale(1.02);
 }
 
-.filters-container input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 15px;
-  height: 15px;
-  background: #00D4FF;
-  cursor: pointer;
-  border-radius: 5px;
+/* Rango de Precios */
+.price-value {
+  margin-top: 5px;
+  font-size: 0.95em;
+  color: #c0c0c0;
+  text-align: right;
 }
 
-.filters-container input[type="range"]::-moz-range-thumb {
-  width: 15px;
-  height: 15px;
-  background: #00D4FF;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-/* Botón de aplicar filtros */
-.filters-container button {
+/* Botón de Aplicar Filtros */
+.apply-filters-button {
   width: 100%;
-  padding: 12px;
-  background-color: #00D4FF;
-  border: 2px solid #FFFFFF;
-  color: #0A0F1E;
-  font-size: 1rem;
+  padding: 14px;
+  background: rgba(107, 115, 255, 0.8); /* Fondo semi-transparente con degradado */
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1.1em;
   cursor: pointer;
-  border-radius: 5px;
-  text-transform: uppercase;
-  font-weight: bold;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
-.filters-container button:hover {
-  background-color: #FFFFFF;
-  color: #0A0F1E;
+.apply-filters-button:hover {
+  background: rgba(87, 91, 255, 0.9); /* Fondo ligeramente más opaco al pasar el ratón */
   transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
-.filters-container button:active {
+.apply-filters-button:active {
   transform: translateY(0);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  .filter-container {
-    max-width: 100%;
-    padding: 15px;
+/* Responsividad */
+@media (max-width: 480px) {
+  .filters-wrapper {
+    padding: 25px;
+  }
+
+  .filters-title {
+    font-size: 1.3em;
+  }
+
+  .filter-group {
+    margin-bottom: 18px;
+  }
+
+  .apply-filters-button {
+    padding: 12px;
+    font-size: 1em;
   }
 }

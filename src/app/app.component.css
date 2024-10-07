@@ -115,7 +115,7 @@ p a:hover {
 
 /* Variables de Color */
 :root {
-  --primary-bg-color: #0f2027; /* Azul oscuro espacial */
+  --primary-bg-color: #020f15; /* Azul oscuro espacial */
   --secondary-bg-color: #203a43; /* Azul medio oscuro */
   --tertiary-bg-color: #2c5364; /* Azul grisáceo */
   --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */

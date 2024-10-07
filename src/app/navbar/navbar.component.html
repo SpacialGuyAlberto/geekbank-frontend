@@ -1,4 +1,4 @@
-<nav class="navbar" *ngIf="showNavbar">
+<nav [ngClass]="navbarClass" *ngIf="showNavbar">
   <!-- Logo y Nombre de la App -->
   <div class="navbar-brand">
     <span class="app-name" (click)="goToHome()">Astralis</span>

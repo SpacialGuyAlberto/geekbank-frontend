@@ -1,6 +1,6 @@
 <div class="filter-container">
-  <div class="filters-container">
-    <h3>Filtros</h3>
+  <div class="filters-wrapper">
+    <h3 class="filters-title">Filtros</h3>
 
     <div class="filter-group">
       <label for="hideOutOfStock">Ocultar productos sin stock</label>
@@ -26,6 +26,7 @@
     <div class="filter-group">
       <label for="price-range">Rango de Precios</label>
       <input type="range" id="price-range" [(ngModel)]="filters.priceRange" min="0" max="100">
+      <span class="price-value">${{ filters.priceRange }}</span>
     </div>
 
     <div class="filter-group">
@@ -60,6 +61,6 @@
       </select>
     </div>
 
-    <button (click)="applyFilters()">Aplicar Filtros</button>
+    <button class="apply-filters-button" (click)="applyFilters()">Aplicar Filtros</button>
   </div>
 </div>
