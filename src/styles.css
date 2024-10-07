@@ -29,7 +29,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Variables de Color */
 :root {
   /* Paleta de Colores Galácticos y Psicodélicos */
-  --primary-bg-color: #0a0a23; /* Azul profundo casi negro */
+  --primary-bg-color: rgba(0, 212, 255, 0.2); /* Azul profundo casi negro */
   --secondary-bg-color: rgba(10, 10, 35, 0.85); /* Azul profundo con transparencia */
   --accent-color: #ff6ec7; /* Rosa vibrante */
   --accent-green: #39ff14; /* Verde neón */
@@ -76,5 +76,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --card-hover-border: rgba(255, 255, 255, 0.9);
   --price-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Fondo suave debajo del precio */
   --shadow-color: rgba(0, 0, 0, 0.7); /* Sombra más oscura para mejor contraste */
+
+  /*--footer-bg-color: linear-gradient(135deg, rgba(0, 212, 255, 0.2), #0a0a23);; !* Fondo oscuro *!*/
+  --footer-bg-color: #010313;;
+  --footer-user-details: linear-gradient(135deg, #103758, #5f575d);
+  --footer-admin-panel: linear-gradient(135deg, #000000, #1f1c1d);
+  --footer-text-color: #88D66C; /* Texto claro */
+  --footer-link-color: #c7eded; /* Enlaces en cian */
+  --footer-link-hover: #1E90FF; /* Color de enlace al hacer hover */
+  --divider-color: #1E90FF;
+  --transition-speed: 0.3s;
+  --font-primary: 'Roboto', sans-serif;
 
 }

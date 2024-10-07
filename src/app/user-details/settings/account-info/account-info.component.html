@@ -1,6 +1,6 @@
 <div class="account-info-dashboard">
   <!-- Menú de Pestañas -->
-  <div class="tabs-menu">
+  <div class="tabs-menu" *ngIf="!isSmallScreen">
     <button
       class="tab-button"
       [ngClass]="{'active': selectedTab === 'details'}"
@@ -34,7 +34,7 @@
       [ngClass]="{'active': selectedTab === 'transactions'}"
       (click)="selectTab('transactions')"
     >
-      <i class="fas fa-money-check-alt"></i> Transactions
+      <i class="fas fa-money-check-alt"></i> Transacciones
     </button>
     <button
       class="tab-button"
@@ -51,6 +51,56 @@
     >
       <i class="fas fa-tools"></i> Herramientas de Admin
     </button>
+  </div>
+
+  <!-- Botón de Hamburguesa para Pantallas Pequeñas -->
+  <button class="hamburger-button" (click)="toggleModal()" aria-label="Abrir Menú">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Modal del Menú en Pantallas Pequeñas -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close-button" (click)="toggleModal()">&times;</span>
+      <h2>Menú de Cuenta</h2>
+      <ul>
+        <li>
+          <a (click)="selectTab('details'); toggleModal()">
+            <i class="fas fa-user"></i> Detalles de la Cuenta
+          </a>
+        </li>
+        <li>
+          <a (click)="selectTab('addresses'); toggleModal()">
+            <i class="fas fa-map-marker-alt"></i> Direcciones
+          </a>
+        </li>
+        <li>
+          <a (click)="selectTab('payment'); toggleModal()">
+            <i class="fas fa-credit-card"></i> Métodos de Pago
+          </a>
+        </li>
+        <li>
+          <a (click)="selectTab('preferences'); toggleModal()">
+            <i class="fas fa-cog"></i> Preferencias
+          </a>
+        </li>
+        <li>
+          <a (click)="selectTab('transactions'); toggleModal()">
+            <i class="fas fa-money-check-alt"></i> Transacciones
+          </a>
+        </li>
+        <li>
+          <a (click)="selectTab('wishList'); toggleModal()">
+            <i class="fa-solid fa-heart"></i> Wish List
+          </a>
+        </li>
+        <li *ngIf="user && user.role === 'ADMIN'">
+          <a (click)="selectTab('admin-tools'); toggleModal()">
+            <i class="fas fa-tools"></i> Herramientas de Admin
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- Contenido de las Pestañas -->
@@ -112,17 +162,6 @@
 
     <!-- Métodos de Pago -->
     <div class="content-section" *ngIf="selectedTab === 'payment'">
-<!--      <h2>Métodos de Pago</h2>-->
-<!--      <ul>-->
-<!--        <li *ngFor="let payment of user.paymentMethods">-->
-<!--          {{ payment.type }} - **** **** **** {{ payment.lastFourDigits }}-->
-<!--          <div>-->
-<!--            <i class="fas fa-edit" (click)="editPaymentMethod(payment)"></i>-->
-<!--            <i class="fas fa-trash" (click)="deletePaymentMethod(payment)"></i>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--      <button (click)="addNewPaymentMethod()">Agregar Método de Pago</button>-->
       <app-payment-methods></app-payment-methods>
     </div>
 

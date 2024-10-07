@@ -10,6 +10,7 @@ import {KinguinGiftCardsComponent} from "./kinguin-gift-cards/kinguin-gift-cards
 import {NgModel} from "@angular/forms";
 import {TelegramListenerService} from "./telegram-listener.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
+import {FooterComponent} from "./footer/footer.component";
 
 
 @Component({
@@ -17,10 +18,8 @@ import {TranslateModule, TranslateService} from "@ngx-translate/core";
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule, HttpClientModule, TranslateModule],
-  providers: [ HttpClient
-
-]
+  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule, HttpClientModule, TranslateModule, FooterComponent],
+  providers: [ HttpClient]
 })
 
 export class AppComponent implements OnInit {

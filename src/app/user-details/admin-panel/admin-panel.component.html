@@ -1,25 +1,57 @@
 <div class="admin-dashboard">
   <!-- Botón de menú hamburguesa solo visible en pantallas pequeñas -->
-  <button class="hamburger-btn" (click)="toggleSidebar()">
+  <button class="hamburger-button" (click)="toggleModal()" aria-label="Abrir Menú">
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Modal overlay -->
-  <div class="modal-overlay" *ngIf="isSmallScreen && isCollapsed" (click)="toggleSidebar()"></div>
-  <div class="modal-sidebar" *ngIf="isSmallScreen && isCollapsed">
-    <span class="close-btn" (click)="toggleSidebar()">&#10005;</span>
-    <nav class="sidebar">
+  <!-- Modal del Menú en Pantallas Pequeñas -->
+  <div class="modal" *ngIf="isModalOpen">
+    <div class="modal-content">
+      <span class="close-button" (click)="toggleModal()">&times;</span>
+      <h2>Menú de Administración</h2>
       <ul>
-        <li><a (click)="selectSection('general'); closeSidebarOnMobile()" [class.active]="selectedSection === 'general'"><i class="fas fa-tachometer-alt"></i> Vista General</a></li>
-        <li><a (click)="selectSection('clients'); closeSidebarOnMobile()" [class.active]="selectedSection === 'clients'"><i class="fas fa-users"></i> Clientes</a></li>
-        <li><a (click)="selectSection('products'); closeSidebarOnMobile()" [class.active]="selectedSection === 'products'"><i class="fas fa-box"></i> Productos</a></li>
-        <li><a (click)="selectSection('products'); closeSidebarOnMobile()" [class.active]="selectedSection === 'manual'"><i class="fa-solid fa-clipboard-list"></i>Manual Sales</a></li>
-        <li><a (click)="selectSection('transactions'); closeSidebarOnMobile()" [class.active]="selectedSection === 'transactions'"><i class="fas fa-money-check-alt"></i> Transacciones</a></li>
-        <li><a (click)="selectSection('statistics'); closeSidebarOnMobile()" [class.active]="selectedSection === 'statistics'"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
-        <li><a (click)="selectSection('monitor'); closeSidebarOnMobile()" [class.active]="selectedSection === 'monitor'"><i class="fa-solid fa-chart-column"></i>Monitor de Transacciones</a></li>
-        <li><a (click)="selectSection('highlights'); closeSidebarOnMobile()" [class.active]="selectedSection === 'highlights'"><i class="fas fa-lightbulb"></i> Highlights</a></li>
+        <li>
+          <a (click)="selectSection('general'); toggleModal()">
+            <i class="fas fa-tachometer-alt"></i> Vista General
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('clients'); toggleModal()">
+            <i class="fas fa-users"></i> Clientes
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('products'); toggleModal()">
+            <i class="fas fa-box"></i> Productos
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('manual'); toggleModal()">
+            <i class="fa-solid fa-clipboard-list"></i> Manual Sales
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('transactions'); toggleModal()">
+            <i class="fas fa-money-check-alt"></i> Transacciones
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('statistics'); toggleModal()">
+            <i class="fas fa-chart-line"></i> Estadísticas
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('monitor'); toggleModal()">
+            <i class="fa-solid fa-chart-column"></i> Monitor de Transacciones
+          </a>
+        </li>
+        <li>
+          <a (click)="selectSection('highlights'); toggleModal()">
+            <i class="fas fa-lightbulb"></i> Highlights
+          </a>
+        </li>
       </ul>
-    </nav>
+    </div>
   </div>
 
   <!-- Sidebar para pantallas grandes -->
@@ -28,39 +60,47 @@
       <li><a (click)="selectSection('general')" [class.active]="selectedSection === 'general'"><i class="fas fa-tachometer-alt"></i> Vista General</a></li>
       <li><a (click)="selectSection('clients')" [class.active]="selectedSection === 'clients'"><i class="fas fa-users"></i> Clientes</a></li>
       <li><a (click)="selectSection('products')" [class.active]="selectedSection === 'products'"><i class="fas fa-box"></i> Productos</a></li>
-      <li><a (click)="selectSection('manual')" [class.active]="selectedSection === 'manual'"><i class="fa-solid fa-clipboard-list"></i>Manual</a></li>
+      <li><a (click)="selectSection('manual')" [class.active]="selectedSection === 'manual'"><i class="fa-solid fa-clipboard-list"></i> Manual</a></li>
       <li><a (click)="selectSection('transactions')" [class.active]="selectedSection === 'transactions'"><i class="fas fa-money-check-alt"></i> Transacciones</a></li>
-      <li><a (click)="selectSection('monitor')" [class.active]="selectedSection === 'monitor'"><i class="fa-solid fa-chart-column"></i>Monitor</a></li>
+      <li><a (click)="selectSection('monitor')" [class.active]="selectedSection === 'monitor'"><i class="fa-solid fa-chart-column"></i> Monitor</a></li>
       <li><a (click)="selectSection('statistics')" [class.active]="selectedSection === 'statistics'"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
       <li><a (click)="selectSection('highlights')" [class.active]="selectedSection === 'highlights'"><i class="fas fa-lightbulb"></i> Highlights</a></li>
     </ul>
   </nav>
 
-  <!-- Contenido principal dinámico -->
-  <main class="main-content">
-    <div *ngIf="selectedSection === 'general'">
-      <app-general-view></app-general-view>
-    </div>
-    <div *ngIf="selectedSection === 'clients'">
-      <app-clients></app-clients>
-    </div>
-    <div *ngIf="selectedSection === 'products'">
-      <app-products></app-products>
-    </div>
-    <div *ngIf="selectedSection === 'manual'">
-      <app-manual-sales></app-manual-sales>
-    </div>
-    <div *ngIf="selectedSection === 'transactions'">
-      <app-transactions></app-transactions>
-    </div>
-    <div *ngIf="selectedSection === 'statistics'">
-      <app-statistics></app-statistics>
-    </div>
-    <div *ngIf="selectedSection === 'monitor'">
-      <app-transaction-monitor></app-transaction-monitor>
-    </div>
-    <div *ngIf="selectedSection === 'highlights'">
-      <app-highlights-config></app-highlights-config>
-    </div>
-  </main>
+  <!-- Contenedor de Contenido y Footer -->
+  <div class="main-wrapper">
+    <main class="main-content">
+      <!-- Contenido dinámico basado en la pestaña seleccionada -->
+      <div *ngIf="selectedSection === 'general'">
+        <app-general-view></app-general-view>
+      </div>
+      <div *ngIf="selectedSection === 'clients'">
+        <app-clients></app-clients>
+      </div>
+      <div *ngIf="selectedSection === 'products'">
+        <app-products></app-products>
+      </div>
+      <div *ngIf="selectedSection === 'manual'">
+        <app-manual-sales></app-manual-sales>
+      </div>
+      <div *ngIf="selectedSection === 'transactions'">
+        <app-transactions></app-transactions>
+      </div>
+      <div *ngIf="selectedSection === 'statistics'">
+        <app-statistics></app-statistics>
+      </div>
+      <div *ngIf="selectedSection === 'monitor'">
+        <app-transaction-monitor></app-transaction-monitor>
+      </div>
+      <div *ngIf="selectedSection === 'highlights'">
+        <app-highlights-config></app-highlights-config>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>&copy; 2024 Tu Empresa. Todos los derechos reservados.</p>
+    </footer>
+  </div>
 </div>

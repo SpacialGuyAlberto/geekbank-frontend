@@ -12,6 +12,7 @@ import {CartComponent} from "./cart/cart.component";
 import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
 import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.component";
 import {SetPasswordComponent} from "./set-password/set-password.component";
+import {AccountInfoComponent} from "./user-details/settings/account-info/account-info.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -21,7 +22,7 @@ export const routes: Routes = [
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
   { path: '', redirectTo: '/register', pathMatch: 'full' },
-  { path: 'user-details', component: UserDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'user-details', component: AccountInfoComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
   { path:'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },

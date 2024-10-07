@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener } from '@angular/core';
+import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { GeneralViewComponent } from "./general-view/general-view.component";
 import { CurrencyPipe, DatePipe, NgIf } from "@angular/common";
@@ -34,17 +34,26 @@ import { interval } from 'rxjs';
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
 })
-export class AdminPanelComponent implements AfterViewInit {
+export class AdminPanelComponent implements OnInit, AfterViewInit {
   selectedSection: string = 'general';
   isCollapsed = false;
   isSmallScreen: boolean = false;
+  isModalOpen: boolean = false;
   chart: Chart | undefined;
+
+  user: any = {
+    role: 'ADMIN', // Simulación de rol, ajusta según tu lógica
+    // Otros atributos de usuario
+  };
 
   constructor(private animation: BackgroundAnimationService) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.isSmallScreen = window.innerWidth <= 768;
+    if (!this.isSmallScreen) {
+      this.isModalOpen = false; // Cerrar modal si la pantalla se agranda
+    }
   }
 
   ngOnInit() {
@@ -55,13 +64,13 @@ export class AdminPanelComponent implements AfterViewInit {
 
   selectSection(section: string) {
     this.selectedSection = section;
-    if (window.innerWidth <= 768) {
-      this.isCollapsed = false;
+    if (this.isSmallScreen) {
+      this.isModalOpen = false; // Cerrar modal al seleccionar una sección
     }
   }
 
-  toggleSidebar() {
-    this.isCollapsed = !this.isCollapsed;
+  toggleModal() {
+    this.isModalOpen = !this.isModalOpen;
   }
 
   createDynamicChart() {
@@ -114,11 +123,5 @@ export class AdminPanelComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.createDynamicChart();
-  }
-
-  closeSidebarOnMobile() {
-    if (this.isSmallScreen) {
-      this.isCollapsed = false;
-    }
   }
 }

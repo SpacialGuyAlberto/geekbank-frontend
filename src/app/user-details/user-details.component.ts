@@ -4,7 +4,6 @@ import { User } from '../models/User';
 import { CommonModule } from '@angular/common';
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {BackgroundAnimationService} from "../background-animation.service";
-import {SettingsComponent} from "./settings/settings.component";
 import {AccountInfoComponent} from "./settings/account-info/account-info.component";
 import {OrdersComponent} from "./settings/orders/orders.component";
 import {PaymentMethodsComponent} from "./settings/payment-methods/payment-methods.component";
@@ -18,7 +17,9 @@ import {ChangePasswordComponent} from "./settings/account-info/change-password/c
   standalone: true,
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.css'],
-  imports: [CommonModule, AdminPanelComponent, SettingsComponent, AccountInfoComponent, OrdersComponent, PaymentMethodsComponent, AdminPanelComponent, RouterOutlet, ChangePasswordComponent]
+  imports: [CommonModule,
+            AdminPanelComponent,
+            AccountInfoComponent, OrdersComponent, PaymentMethodsComponent, AdminPanelComponent, RouterOutlet, ChangePasswordComponent]
 })
 export class UserDetailsComponent implements OnInit {
   user: User | any;

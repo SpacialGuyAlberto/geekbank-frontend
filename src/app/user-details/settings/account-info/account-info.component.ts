@@ -58,7 +58,7 @@ export class AccountInfoComponent implements OnInit {
   };
   isCollapsed: boolean = false;
   isSmallScreen: boolean = false;
-
+  isModalOpen: boolean = false;
 
   selectedTab: string = 'details';
   showSuccessMessage: boolean = false;
@@ -70,7 +70,7 @@ export class AccountInfoComponent implements OnInit {
   private _address: any;
   private _payment: any;
 
-  constructor(private authService: AuthService, private animation: BackgroundAnimationService,  private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -78,7 +78,6 @@ export class AccountInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
       console.log(data.email)
@@ -192,5 +191,16 @@ export class AccountInfoComponent implements OnInit {
     if (this.isSmallScreen) {
       this.isCollapsed = false; // Asegúrate de que se cierra el modal en vista móvil
     }
+  }
+
+  @HostListener('document:keydown.escape', ['$event'])
+  onKeydownHandler(event: KeyboardEvent) {
+    if (this.isModalOpen) {
+      this.toggleModal();
+    }
+  }
+
+  toggleModal(): void {
+    this.isModalOpen = !this.isModalOpen;
   }
 }
