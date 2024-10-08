@@ -3,8 +3,13 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @tailwind base;
+/* Elimina o comenta esta línea */
+
+/* styles.css */
+
 @tailwind components;
 @tailwind utilities;
+/* styles.css */
 
 /* Cambiar el color del fondo del elemento seleccionado */
 .custom-select-panel .mat-option-text {

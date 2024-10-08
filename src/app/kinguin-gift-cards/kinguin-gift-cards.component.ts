@@ -16,7 +16,7 @@ import {WishListService} from "../wish-list.service";
 import {AuthService} from "../auth.service";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {WishItemWithGiftcard} from "../models/WishItem";
-
+import {NotificationService} from "../services/notification.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -53,8 +53,9 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
               private currencyService: CurrencyService,
               private cd: ChangeDetectorRef,
               private uiStateService: UIStateServiceService,
+              private notificationService: NotificationService,
               private snackBar: MatSnackBar,
-              private wishListService: WishListService
+              private wishListService: WishListService,
               ) { }
 
   ngOnInit(): void {
@@ -103,8 +104,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.currentIndex = this.itemsPerPage;
     });
   }
-
-
 
   loadMore(): void {
     const nextItems = this.giftCards.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);

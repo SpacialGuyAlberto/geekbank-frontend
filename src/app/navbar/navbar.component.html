@@ -20,7 +20,7 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
-
+    <app-notification-bell></app-notification-bell>
     <i
       *ngIf="isLoggedIn()"
       (click)="router.navigate(['/user-details'])"

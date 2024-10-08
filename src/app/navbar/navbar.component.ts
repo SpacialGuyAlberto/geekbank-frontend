@@ -12,6 +12,7 @@ import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
 import {UIStateServiceService} from "../uistate-service.service";
 import {Subscription} from "rxjs";
+import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
 
 
 @Component({
@@ -26,6 +27,7 @@ import {Subscription} from "rxjs";
     TranslateModule,
     SearchBarComponent,
     NgClass,
+    NotificationBellComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']

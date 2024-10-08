@@ -1,0 +1,188 @@
+/* src/app/components/notification-bell/notification-bell.component.css */
+
+.notification-bell-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Icono de campanita con colores suaves y transiciones */
+.bell-icon {
+  font-size: 24px;
+  position: relative;
+  color: #ffffff;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.bell-icon.unread {
+  color: #3498db; /* Azul suave para indicar nuevas notificaciones */
+}
+
+.bell-icon:hover {
+  color: #2980b9; /* Azul más oscuro al pasar el mouse */
+  transform: scale(1.1);
+}
+
+/* Badge de notificaciones con colores neutros y sin animaciones */
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  background: rgba(231, 76, 60, 0.9); /* Rojo suave y semi-transparente */
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Dropdown estilizado con efecto de vidrio sutil */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 35px;
+  width: 350px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Encabezado del dropdown con fondo sutil */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.05);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mark-all-button {
+  background: rgba(52, 152, 219, 0.8); /* Azul semi-transparente */
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mark-all-button:hover {
+  background: rgba(41, 128, 185, 0.9); /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-2px);
+}
+
+.dropdown-content {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 10px 0;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Estilo de cada notificación */
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  transition: background 0.3s ease;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.notification-item.unread {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  width: 100%;
+}
+
+.notification-link:hover {
+  text-decoration: underline;
+}
+
+.notification-link img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.notification-link p {
+  margin: 0;
+  font-size: 14px;
+  flex-grow: 1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notification-link small {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: rgba(231, 76, 60, 0.9); /* Rojo suave para el botón de eliminar */
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-button:hover {
+  color: rgba(231, 76, 60, 1); /* Rojo más intenso al pasar el mouse */
+  transform: scale(1.2);
+}
+
+.no-notifications {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 20px;
+  font-size: 14px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 480px) {
+  .dropdown {
+    width: 90vw;
+    right: 5vw;
+  }
+
+  .notification-link img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .dropdown-header {
+    padding: 10px 15px;
+  }
+
+  .mark-all-button {
+    padding: 3px 8px;
+    font-size: 12px;
+  }
+}
