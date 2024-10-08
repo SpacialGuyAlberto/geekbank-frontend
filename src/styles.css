@@ -76,6 +76,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --primary-color: #0B0D19; /* Fondo principal oscuro */
   --highlight-color: #1E90FF; /* Azul más brillante para botones y enlaces */
 
+  --bell-icon-unread-default: linear-gradient(45deg, #1e90ff, #ff6ec7);
+  --bell-icon-unread-admin: linear-gradient(45deg, #d74507, #e0e011);
+  --bell-icon-hover-default: linear-gradient(45deg, #ca0a91, #103758);
+  --bell-icon-hover-admin: linear-gradient(45deg, #d1931f, #c9541c);
 
   --card-border: rgba(255, 255, 255, 0.6); /* Borde visible */
   --card-hover-border: rgba(255, 255, 255, 0.9);
@@ -92,6 +96,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --divider-color: #1E90FF;
   --transition-speed: 0.3s;
   --font-primary: 'Roboto', sans-serif;
+
+
+  --mark-all-button-default: linear-gradient(45deg, #103758, #ca0a91);
+  --mark-all-button-default-hover: linear-gradient(45deg, #164f80, #e30ca3);
+  --mark-all-button-admin: linear-gradient(45deg, #c9541c, #d1931f);
+  --mark-all-button-admin-hover: linear-gradient(45deg, #ca6420, #c9541c);
 
   --navbar-user-details-bg-color: linear-gradient(135deg, #06373d,  #1a0116);
 
