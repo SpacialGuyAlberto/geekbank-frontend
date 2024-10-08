@@ -6,16 +6,8 @@
   cursor: pointer;
 }
 
-.bell-icon-default {
+.bell-icon-default, .bell-icon-admin {
   font-size: 1.5rem; /* 24px */
-  position: relative;
-  color: #ffffff;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.bell-icon-admin {
-  font-size: 1.5rem; /* 24px */
-  position: relative;
   color: #ffffff;
   transition: color 0.3s ease, transform 0.3s ease;
 }
@@ -24,6 +16,11 @@
   background: var(--bell-icon-unread-default); /* Azul suave para indicar nuevas notificaciones */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.bell-icon-default.unread, .bell-icon-admin.unread {
+  /* Mantener la escala del ícono con la transición */
+  transform: scale(1.1);
 }
 
 .bell-icon-admin.unread {
@@ -41,23 +38,31 @@
 
 .bell-icon-admin:hover {
   color: #2980b9; /* Azul más oscuro al pasar el mouse */
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 /* Badge de notificaciones con colores neutros y sin animaciones */
 .badge {
   position: absolute;
-  top: -0.3125rem; /* -5px */
-  right: -0.625rem; /* -10px */
-  background: rgba(231, 76, 60, 0.9); /* Rojo suave y semi-transparente */
+  top: -0.5rem; /* Ajusta la posición superior */
+  right: -0.75rem; /* Ajusta la posición derecha */
+  background: rgba(231, 76, 60, 1); /* Rojo sólido para visibilidad */
   color: white;
   border-radius: 50%;
   padding: 0.125rem 0.375rem; /* 2px 6px */
   font-size: 0.75rem; /* 12px */
   font-weight: bold;
-  box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.2); /* 0 0 5px */
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 2000; /* Asegurar que el badge esté por encima del ícono */
 }
 
+
+.bell-icon-default .badge {
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: #ffffff;
+  text-fill-color: #ffffff;
+}
 /* Dropdown estilizado con efecto de vidrio sutil */
 .dropdown {
   position: absolute;

@@ -44,6 +44,7 @@ export class NavbarComponent implements OnInit {
   isSmallScreen: boolean = false;
   searchResultsMessage: string = '';
   navbarClass: string = '';
+  showMenuModal: boolean = false;
   routerSubscription!: Subscription;
 
   constructor(
@@ -141,5 +142,13 @@ export class NavbarComponent implements OnInit {
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  openMenuModal(): void {
+    this.showMenuModal = true;
+  }
+
+  closeMenuModal(): void {
+    this.showMenuModal = false;
   }
 }

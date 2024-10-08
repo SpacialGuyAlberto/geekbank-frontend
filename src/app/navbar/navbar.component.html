@@ -4,17 +4,14 @@
     <span class="app-name" (click)="goToHome()">Astralis</span>
   </div>
 
-  <!-- Barra de búsqueda visible solo en pantallas grandes -->
   <div class="navbar-center" *ngIf="!isSmallScreen">
     <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
   </div>
 
-  <!-- Enlaces del Navbar -->
   <div class="navbar-links">
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
 
-    <!-- Ícono de búsqueda visible solo en pantallas pequeñas -->
     <i
       *ngIf="isSmallScreen"
       (click)="openSearchModal()"
@@ -36,13 +33,69 @@
       </a>
     </li>
   </div>
+
+  <div class="bell-menu-container" *ngIf="isSmallScreen">
+    <i
+      (click)="openSearchModal()"
+      class="fa-solid fa-magnifying-glass clickable-icon"
+    ></i>
+    <app-notification-bell></app-notification-bell>
+    <div class="navbar-hamburger" *ngIf="isSmallScreen">
+      <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
+    </div>
+  </div>
+
 </nav>
 
-<!-- Modal de búsqueda para pantallas pequeñas -->
+
+
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
     <app-search-bar (searchResults)="closeSearchModal()"></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
+  </div>
+</div>
+
+<div class="menu-modal" *ngIf="showMenuModal">
+  <div class="menu-modal-content">
+    <span class="close-modal" (click)="closeMenuModal()">&times;</span>
+    <div class="menu-links">
+      <ul>
+        <li *ngIf="!isLoggedIn()">
+          <a *ngIf="!isLoggedIn()" routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
+        </li>
+        <li *ngIf="!isLoggedIn()">
+          <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
+        </li>
+        <li>
+          <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <span *ngIf="cartItemCount > 0">({{ cartItemCount }})</span>
+            Carrito
+          </a>
+        </li>
+        <li>
+          <a *ngIf="isLoggedIn()" routerLink="/user-details" class="menu-link" (click)="closeMenuModal()">
+            <i
+              *ngIf="isLoggedIn()"
+              (click)="router.navigate(['/user-details'])"
+              class="fa-solid fa-user clickable-icon"
+            ></i> User Details
+          </a>
+        </li>
+        <li>
+          <a *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()" class="menu-link">
+            <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
+            Log out
+          </a>
+        </li>
+      </ul>
+<!--      <a *ngIf="!isLoggedIn()" routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>-->
+<!--      <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>-->
+<!--      <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">Carrito <span *ngIf="cartItemCount > 0">({{ cartItemCount }})</span></a>-->
+<!--      <a *ngIf="isLoggedIn()" routerLink="/user-details" class="menu-link" (click)="closeMenuModal()">Detalles de Usuario</a>-->
+<!--      <a *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()" class="menu-link">Cerrar Sesión</a>-->
+    </div>
   </div>
 </div>
