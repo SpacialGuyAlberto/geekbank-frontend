@@ -36,6 +36,8 @@ export class GiftCardDetailsComponent implements OnInit {
   exchangeRate: number = 0;
   quantityInCart: number = 0;
   notifMessage: string = '';
+  isFeedbackModalOpen: boolean = false;
+  feedbackMessage: string = '';
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -63,6 +65,21 @@ export class GiftCardDetailsComponent implements OnInit {
         this.checkIfInCart(data.kinguinId);
       });
     }
+  }
+
+  openFeedbackModal(): void {
+    this.isFeedbackModalOpen = true;
+  }
+
+  closeFeedbackModal(): void {
+    this.isFeedbackModalOpen = false;
+    this.feedbackMessage = '';
+  }
+
+  submitFeedback(): void {
+    console.log('Feedback enviado:', this.feedbackMessage);
+    // Aquí podrías implementar la lógica para enviar el feedback a la API
+    this.closeFeedbackModal();
   }
 
   // loadCartItems(): void {

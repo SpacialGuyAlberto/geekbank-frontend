@@ -32,10 +32,6 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    // Si tienes otros componentes no standalone, puedes declararlos aquí
-
-  ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -45,11 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     SocialLoginModule,
     NoopAnimationsModule,
     AppRoutingModule,
-    RegisterComponent,
-    AppComponent,
     ReactiveFormsModule,
-    CartComponent,
-    TransactionsComponent,
     StoreModule.forRoot({cart: cartReducer}),
     TranslateModule.forRoot({
       loader: {
@@ -63,15 +55,13 @@ export function HttpLoaderFactory(http: HttpClient) {
       timeOut: 3000,
       closeButton: true,
       progressBar: true,
-    }),
-
+    })
 
     // StoreModule.forFeature('cart', cartReducer),
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [  HttpClient, TelegramListenerService, provideHttpClient(withInterceptorsFromDi()), provideAnimations()
   ],
-  bootstrap: []
 })
 export class AppModule { }
 

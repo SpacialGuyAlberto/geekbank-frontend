@@ -15,6 +15,7 @@ import {Subscription} from "rxjs";
 import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
 import {SharedService} from "../shared.service";
 import {User} from "../models/User";
+import {BalanceComponent} from "../balance/balance.component";
 
 @Component({
   selector: 'app-navbar',
@@ -29,6 +30,7 @@ import {User} from "../models/User";
     SearchBarComponent,
     NgClass,
     NotificationBellComponent,
+    BalanceComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']

@@ -17,6 +17,7 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
+    <app-balance></app-balance>
     <app-notification-bell></app-notification-bell>
     <i
       *ngIf="isLoggedIn()"
@@ -40,6 +41,7 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
+    <app-balance></app-balance>
     <app-notification-bell></app-notification-bell>
     <div class="navbar-hamburger" *ngIf="isSmallScreen">
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>

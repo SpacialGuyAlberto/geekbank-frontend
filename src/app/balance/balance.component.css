@@ -1,0 +1,151 @@
+.balance-container {
+  position: relative;
+  display: inline-block;
+}
+
+.balance-display {
+  display: flex;
+  align-items: center;
+  background-color: #2b2b2b;
+  border-radius: 25px;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.balance-symbol {
+  margin-right: 0.25rem;
+  color: #b5b5b5;
+}
+
+.balance-amount {
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.add-balance-icon {
+  font-size: 1.25rem;
+  color: #1fd166; /* Color verde */
+  background: #333;
+  padding: 0.25rem;
+  border-radius: 50%;
+}
+
+/* Transparencia para el dropdown */
+.balance-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2); /* 1px solid */
+  border-radius: 10px;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1); /* 0 4px 12px */
+  width: 250px;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  backdrop-filter: blur(8px); /* Efecto de difuminado en el fondo */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  -webkit-backdrop-filter: blur(0.5rem);
+}
+
+.balance-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.balance-label {
+  font-size: 0.875rem;
+  color: #b5b5b5;
+}
+
+.balance-amount-large {
+  color: #1fd166;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.add-balance-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.add-balance-label {
+  color: #b5b5b5;
+  font-size: 0.875rem;
+}
+
+.add-balance-input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.buy-button {
+  background: linear-gradient(45deg, #1e90ff, #00c3ff);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  animation: colorShift 5s ease infinite; /* Añadimos la animación continua */
+  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.buy-button:before {
+
+  background: linear-gradient(45deg, rgba(28, 29, 50, 0.4), rgba(74, 35, 90, 0.4), rgb(33, 9, 9), rgba(173, 216, 230, 1));
+  animation: animatedBorder 5s ease infinite;
+}
+
+@keyframes colorShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.buy-button:hover {
+  background: linear-gradient(45deg, #0d4f8b, #00bfff); /* Cambia los colores en hover */
+  transform: scale(1.1);
+  animation: none; /* Detenemos la animación de color en hover */
+}
+
+
+.gift-balance-section {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.gift-button {
+  background: linear-gradient(45deg, #ff6f61, #ff8c00);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.gift-button:hover {
+  background: linear-gradient(45deg, #d35400, #e74c3c);
+  transform: scale(1.1);
+}

@@ -9,10 +9,12 @@ import {ProductsComponent} from "../../admin-panel/products/products.component";
 import {OrdersComponent} from "../orders/orders.component";
 import {AuthService} from "../../../auth.service";
 import {BackgroundAnimationService} from "../../../background-animation.service";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router, RouterModule} from "@angular/router";
 import {WishlistComponent} from "../wishlist/wishlist.component";
 import {Subscription} from "rxjs";
 import {SharedService} from "../../../shared.service";
+import {filter} from "rxjs/operators";
+
 
 @Component({
   selector: 'app-account-info',
@@ -31,6 +33,7 @@ import {SharedService} from "../../../shared.service";
     ProductsComponent,
     OrdersComponent,
     WishlistComponent,
+    RouterModule
   ],
   templateUrl: './account-info.component.html',
   styleUrl: './account-info.component.css'
@@ -60,6 +63,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       orderUpdates: true
     }
   };
+  balance: number = 0;
   isCollapsed: boolean = false;
   isSmallScreen: boolean = false;
   isModalOpen: boolean = false;
@@ -85,12 +89,19 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
+      this.balance = data.account.balance;
       console.log(data.email)
       sessionStorage.setItem("email", data.email)
       console.log(this.user);
       this.controlSubscription = this.sharedService.selectedTable$.subscribe(tab => {
         this.selectedTab = tab;
       })
+    });
+
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo(0, 0);  // Desplazarse al tope de la página
     });
 
     this.isSmallScreen = window.innerWidth <= 768;
@@ -111,6 +122,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.isVisible = false;
     // Implementa la lógica para cerrar el componente
   }
+
+
 
   // Función para seleccionar la pestaña
   selectTab(tab: string) {

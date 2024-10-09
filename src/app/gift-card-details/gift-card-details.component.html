@@ -1,52 +1,69 @@
-
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
 </div>
 
-  <div *ngIf="giftCard" class="gift-card-details-container">
-    <div class="gift-card-image-container">
-      <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
-      <div class="add-info-content">
-        <h3 class="add-info-title">Platforms</h3>
-        <p class="highlight-card-type">Android</p>
-        <p class="highlight-card-platform">Xbox</p>
+<div *ngIf="giftCard" class="gift-card-details-container">
+  <div class="gift-card-image-container">
+    <!-- Corazón y estrellas de feedback -->
+    <div class="feedback-section">
+      <i class="material-icons heart-icon">favorite_border</i>
+      <div class="star-rating">
+        <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
+        <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
+        <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
+        <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
+        <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
       </div>
     </div>
-
-    <div class="gift-card-info-card">
-      <h2 class="gift-card-region">
-        <i class="material-icons check-icon">check_circle</i>
-        {{ giftCard.regionalLimitations }}
-      </h2>
-
-      <h2 class="gift-card-title">{{ giftCard.name }}</h2>
-      <div class="gift-card-price" [ngModel]="exchangeRate">
-        {{ (giftCard.price * exchangeRate).toFixed(2) | currency }}
-      </div>
-
-      <!-- Mostrar botones solo si el usuario está loggeado -->
-      <div *ngIf="isLoggedIn(); else notLoggedInMessage" class="button-container">
-        <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
-          <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
-          {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
-        </button>
-        <button (click)="buyNow(giftCard)" class="btn buy-now">
-          <i class="material-icons">shopping_bag</i>
-          Comprar Ahora
-        </button>
-      </div>
-
-      <!-- Mostrar el mensaje de no loggeado -->
-      <ng-template #notLoggedInMessage>
-        <div class="not-logged-in-message">
-          <h2>No has iniciado sesión.</h2>
-          <p>Por favor, inicia sesión para agregar productos al carrito.</p>
-          <button (click)="redirectToLogin()" class="btn login-btn">
-            <i class="material-icons">login</i>
-            Iniciar Sesión
-          </button>
-        </div>
-      </ng-template>
+    <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
+    <div class="add-info-content">
+      <h3 class="add-info-title">Platforms</h3>
+      <p class="highlight-card-type">Android</p>
+      <p class="highlight-card-platform">Xbox</p>
     </div>
   </div>
 
+  <div class="gift-card-info-card">
+    <h2 class="gift-card-region">
+      <i class="material-icons check-icon">check_circle</i>
+      {{ giftCard.regionalLimitations }}
+    </h2>
+
+    <h2 class="gift-card-title">{{ giftCard.name }}</h2>
+    <div class="gift-card-price" [ngModel]="exchangeRate">
+      {{ (giftCard.price * exchangeRate).toFixed(2) | currency }}
+    </div>
+
+    <div *ngIf="isLoggedIn(); else notLoggedInMessage" class="button-container">
+      <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
+        <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
+        {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
+      </button>
+      <button (click)="buyNow(giftCard)" class="btn buy-now">
+        <i class="material-icons">shopping_bag</i>
+        Comprar Ahora
+      </button>
+    </div>
+
+    <ng-template #notLoggedInMessage>
+      <div class="not-logged-in-message">
+        <h2>No has iniciado sesión.</h2>
+        <p>Por favor, inicia sesión para agregar productos al carrito.</p>
+        <button (click)="redirectToLogin()" class="btn login-btn">
+          <i class="material-icons">login</i>
+          Iniciar Sesión
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>
+
+<!-- Modal de Feedback -->
+<div class="modal" *ngIf="isFeedbackModalOpen">
+  <div class="modal-content">
+    <h2>Deja tu feedback</h2>
+    <textarea [(ngModel)]="feedbackMessage" placeholder="Escribe tu comentario..."></textarea>
+    <button (click)="submitFeedback()">Enviar Feedback</button>
+    <button (click)="closeFeedbackModal()">Cerrar</button>
+  </div>
+</div>

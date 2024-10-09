@@ -105,4 +105,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
   --navbar-user-details-bg-color: linear-gradient(135deg, #06373d,  #1a0116);
 
+  --buy-balance-button: linear-gradient(135deg, #315415, #2eb810)
+
 }
