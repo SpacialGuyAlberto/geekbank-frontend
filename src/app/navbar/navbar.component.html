@@ -51,7 +51,7 @@
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
-    <app-search-bar (searchResults)="closeSearchModal()"></app-search-bar>
+    <app-search-bar (searchResults)="[closeSearchModal(), handleSearchResults($event)]"></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
   </div>
 </div>
@@ -74,7 +74,7 @@
             Carrito
           </a>
         </li>
-        <li *ngIf="!inUserDetailsRoute" routerLink="/user-details"  (click)="closeMenuModal()">
+        <li *ngIf="!showUserDetailsModal" routerLink="/user-details"  (click)="closeMenuModal()">
           <a  class="menu-link">
             <i class="fas fa-user"></i> Detalles de la Cuenta
           </a>
