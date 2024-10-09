@@ -59,7 +59,7 @@
   </button>
 
   <!-- Modal del Menú en Pantallas Pequeñas -->
-  <div class="modal" *ngIf="isModalOpen">
+  <div class="modal" *ngIf="isModalOpen && isVisible" >
     <div class="modal-content">
       <span class="close-button" (click)="toggleModal()">&times;</span>
       <h2>Menú de Cuenta</h2>

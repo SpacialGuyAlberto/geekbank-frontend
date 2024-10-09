@@ -23,6 +23,7 @@ import {ChangePasswordComponent} from "./settings/account-info/change-password/c
 })
 export class UserDetailsComponent implements OnInit {
   user: User | any;
+
   email: string | undefined;
   selectedSection: string = 'account-info'
   isCollapsed: boolean = false;

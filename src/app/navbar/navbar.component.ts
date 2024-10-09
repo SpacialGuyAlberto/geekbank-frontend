@@ -13,7 +13,8 @@ import { KinguinGiftCard } from '../models/KinguinGiftCard';
 import {UIStateServiceService} from "../uistate-service.service";
 import {Subscription} from "rxjs";
 import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
-
+import {SharedService} from "../shared.service";
+import {User} from "../models/User";
 
 @Component({
   selector: 'app-navbar',
@@ -40,12 +41,15 @@ export class NavbarComponent implements OnInit {
   isMenuOpen: boolean = false;
   showSearchBar: boolean = true;
   showSearchModal: boolean = false;
+  showUserDetailsModal: boolean = false;
   searchQuery: string = '';
   isSmallScreen: boolean = false;
   searchResultsMessage: string = '';
   navbarClass: string = '';
   showMenuModal: boolean = false;
   routerSubscription!: Subscription;
+  user: User | any;
+  inUserDetailsRoute: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -53,7 +57,8 @@ export class NavbarComponent implements OnInit {
     private cartService: CartService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private uiStateService: UIStateServiceService
+    private uiStateService: UIStateServiceService,
+    private sharedService: SharedService
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -68,6 +73,13 @@ export class NavbarComponent implements OnInit {
     this.routerSubscription = this.router.events.subscribe( event => {
       if (event instanceof NavigationEnd){
         this.updateNavBarStyle(this.router.url)
+        if (this.router.url.includes('/user-details')){
+          this.showUserDetailsModal = true;
+          this.inUserDetailsRoute = true;
+        } else {
+          this.showUserDetailsModal = false;
+          this.inUserDetailsRoute = false;
+        }
       }
     });
 
@@ -79,7 +91,7 @@ export class NavbarComponent implements OnInit {
       });
 
     this.router.events.subscribe(() => {
-      const hiddenRoutes = [ '/admin-panel'];
+      const hiddenRoutes = ['/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
     });
 
@@ -87,6 +99,14 @@ export class NavbarComponent implements OnInit {
       this.cartItemCount = count;
       this.cd.detectChanges();
     });
+
+    this.authService.getUserDetails().subscribe(data => {
+      this.user = data;
+      console.log(data.email)
+      sessionStorage.setItem("email", data.email)
+      console.log(this.user);
+    });
+
   }
 
   updateNavBarStyle(url: string) : void {
@@ -150,5 +170,9 @@ export class NavbarComponent implements OnInit {
 
   closeMenuModal(): void {
     this.showMenuModal = false;
+  }
+
+  selectTab(tab: string){
+    this.sharedService.emitTableAction(tab)
   }
 }

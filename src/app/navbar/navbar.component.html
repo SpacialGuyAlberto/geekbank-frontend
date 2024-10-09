@@ -34,6 +34,7 @@
     </li>
   </div>
 
+
   <div class="bell-menu-container" *ngIf="isSmallScreen">
     <i
       (click)="openSearchModal()"
@@ -44,9 +45,7 @@
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
     </div>
   </div>
-
 </nav>
-
 
 
 <div class="search-modal" *ngIf="showSearchModal">
@@ -75,13 +74,44 @@
             Carrito
           </a>
         </li>
-        <li>
-          <a *ngIf="isLoggedIn()" routerLink="/user-details" class="menu-link" (click)="closeMenuModal()">
-            <i
-              *ngIf="isLoggedIn()"
-              (click)="router.navigate(['/user-details'])"
-              class="fa-solid fa-user clickable-icon"
-            ></i> User Details
+        <li *ngIf="!inUserDetailsRoute" routerLink="/user-details"  (click)="closeMenuModal()">
+          <a  class="menu-link">
+            <i class="fas fa-user"></i> Detalles de la Cuenta
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('details')">
+          <a  class="menu-link">
+            <i class="fas fa-user"></i> Detalles de la Cuenta
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('addresses')">
+          <a  class="menu-link">
+            <i class="fas fa-map-marker-alt"></i> Direcciones
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('payment')">
+          <a  class="menu-link" >
+            <i class="fas fa-credit-card"></i> Payment Methods
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('preferences')">
+          <a  class="menu-link" >
+            <i class="fas fa-cog"></i> Preferencias
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('transactions')">
+          <a  class="menu-link" >
+            <i class="fas fa-money-check-alt"></i> Transacciones
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal" (click)="selectTab('wishList')">
+          <a  class="menu-link" >
+            <i class="fa-solid fa-heart"></i> Wish List
+          </a>
+        </li>
+        <li *ngIf="showUserDetailsModal && user.role === 'ADMIN'" (click)="selectTab('admin-tools')">
+          <a  class="menu-link">
+            <i class="fas fa-tools"></i> Admin Tools
           </a>
         </li>
         <li>
@@ -91,11 +121,6 @@
           </a>
         </li>
       </ul>
-<!--      <a *ngIf="!isLoggedIn()" routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>-->
-<!--      <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>-->
-<!--      <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">Carrito <span *ngIf="cartItemCount > 0">({{ cartItemCount }})</span></a>-->
-<!--      <a *ngIf="isLoggedIn()" routerLink="/user-details" class="menu-link" (click)="closeMenuModal()">Detalles de Usuario</a>-->
-<!--      <a *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()" class="menu-link">Cerrar Sesión</a>-->
     </div>
   </div>
 </div>

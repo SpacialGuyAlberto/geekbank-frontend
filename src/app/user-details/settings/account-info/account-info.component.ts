@@ -1,4 +1,4 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
@@ -11,6 +11,8 @@ import {AuthService} from "../../../auth.service";
 import {BackgroundAnimationService} from "../../../background-animation.service";
 import {Router} from "@angular/router";
 import {WishlistComponent} from "../wishlist/wishlist.component";
+import {Subscription} from "rxjs";
+import {SharedService} from "../../../shared.service";
 
 @Component({
   selector: 'app-account-info',
@@ -35,7 +37,9 @@ import {WishlistComponent} from "../wishlist/wishlist.component";
 })
 
 
-export class AccountInfoComponent implements OnInit {
+export class AccountInfoComponent implements OnInit, OnDestroy {
+  isVisible: boolean = false;
+  private controlSubscription!: Subscription;
 
   @Input()
   user: any = {
@@ -63,6 +67,7 @@ export class AccountInfoComponent implements OnInit {
   selectedTab: string = 'details';
   showSuccessMessage: boolean = false;
 
+
   editingName = false;
   editingEmail = false;
   editingPhone = false;
@@ -70,7 +75,7 @@ export class AccountInfoComponent implements OnInit {
   private _address: any;
   private _payment: any;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router, private sharedService: SharedService) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -83,10 +88,28 @@ export class AccountInfoComponent implements OnInit {
       console.log(data.email)
       sessionStorage.setItem("email", data.email)
       console.log(this.user);
+      this.controlSubscription = this.sharedService.selectedTable$.subscribe(tab => {
+        this.selectedTab = tab;
+      })
     });
-    // this.selectSection('account-details');
-    this.isSmallScreen = window.innerWidth <= 768;
 
+    this.isSmallScreen = window.innerWidth <= 768;
+  }
+
+  ngOnDestroy(): void {
+    if (this.controlSubscription) {
+      this.controlSubscription.unsubscribe();
+    }
+  }
+
+  openAccountInfo(): void {
+    this.isVisible = true;
+    console.log('Account Info abierto desde navbar');
+  }
+
+  closeAccountInfo(): void {
+    this.isVisible = false;
+    // Implementa la lógica para cerrar el componente
   }
 
   // Función para seleccionar la pestaña

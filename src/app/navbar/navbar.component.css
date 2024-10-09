@@ -125,6 +125,10 @@ html {
   color: #99ccff;
 }
 
+.none {
+  visibility: collapse;
+}
+
 .cart-count {
   position: absolute;
   top: -0.5rem; /* -8px */
