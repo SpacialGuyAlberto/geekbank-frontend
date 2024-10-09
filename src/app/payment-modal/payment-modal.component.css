@@ -1,0 +1,11 @@
+/* src/app/components/payment-modal/payment-modal.component.css */
+
+mat-dialog-content {
+  min-width: 300px;
+  /* Puedes ajustar el ancho mínimo según tus necesidades */
+}
+
+mat-dialog-actions {
+  margin-top: 20px;
+}
+
