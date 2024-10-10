@@ -1,20 +1,28 @@
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+// account-info.component.ts
+
+import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
-import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {PasswordModalComponent} from "./password-modal-component/password-modal-component.component";
-import {PaymentMethodsComponent} from "../payment-methods/payment-methods.component";
-import {StatisticsComponent} from "../../admin-panel/statistics/statistics.component";
-import {ProductsComponent} from "../../admin-panel/products/products.component";
-import {OrdersComponent} from "../orders/orders.component";
-import {AuthService} from "../../../auth.service";
-import {BackgroundAnimationService} from "../../../background-animation.service";
-import {NavigationEnd, Router, RouterModule} from "@angular/router";
-import {WishlistComponent} from "../wishlist/wishlist.component";
-import {Subscription} from "rxjs";
-import {SharedService} from "../../../shared.service";
-import {filter} from "rxjs/operators";
+import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { PasswordModalComponent } from "./password-modal-component/password-modal-component.component";
+import { PaymentMethodsComponent } from "../payment-methods/payment-methods.component";
+import { StatisticsComponent } from "../../admin-panel/statistics/statistics.component";
+import { ProductsComponent } from "../../admin-panel/products/products.component";
+import { OrdersComponent } from "../orders/orders.component";
+import { AuthService } from "../../../auth.service";
+import { BackgroundAnimationService } from "../../../background-animation.service";
+import { NavigationEnd, Router, RouterModule } from "@angular/router";
+import { WishlistComponent } from "../wishlist/wishlist.component";
+import { Subscription } from "rxjs";
+import { SharedService } from "../../../shared.service";
+import { filter } from "rxjs/operators";
 
+export interface DetailsBody {
+  name: string;
+  email: string;
+  phoneNumber: string; // Asegúrate de usar 'phoneNumber'
+  password?: string;
+}
 
 @Component({
   selector: 'app-account-info',
@@ -36,10 +44,8 @@ import {filter} from "rxjs/operators";
     RouterModule
   ],
   templateUrl: './account-info.component.html',
-  styleUrl: './account-info.component.css'
+  styleUrls: ['./account-info.component.css']
 })
-
-
 export class AccountInfoComponent implements OnInit, OnDestroy {
   isVisible: boolean = false;
   private controlSubscription!: Subscription;
@@ -66,20 +72,32 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   balance: number = 0;
   isCollapsed: boolean = false;
   isSmallScreen: boolean = false;
-  isModalOpen: boolean = false;
-
+  showPasswordModal: boolean = false;
   selectedTab: string = 'details';
   showSuccessMessage: boolean = false;
+  generalErrorMessage: string = '';
+  detailsBody: DetailsBody = {
+    name: '',
+    email: '',
+    phoneNumber: '', // Cambiado de 'phone' a 'phoneNumber'
+  };
 
+  // Propiedades para mensajes de error de validación
+  validationErrors: {
+    name?: string;
+    email?: string;
+    phoneNumber?: string;
+  } = {};
 
   editingName = false;
   editingEmail = false;
   editingPhone = false;
 
-  private _address: any;
-  private _payment: any;
-
-  constructor(private authService: AuthService, private router: Router, private sharedService: SharedService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private sharedService: SharedService
+  ) {}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -90,12 +108,10 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
       this.balance = data.account.balance;
-      console.log(data.email)
-      sessionStorage.setItem("email", data.email)
       console.log(this.user);
       this.controlSubscription = this.sharedService.selectedTable$.subscribe(tab => {
         this.selectedTab = tab;
-      })
+      });
     });
 
     this.router.events.pipe(
@@ -105,6 +121,52 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     });
 
     this.isSmallScreen = window.innerWidth <= 768;
+  }
+
+// account-info.component.ts
+
+  async updatePersonalInfo() {
+    // Reiniciar mensajes de error antes de la validación
+    this.validationErrors = {};
+    this.generalErrorMessage = '';
+
+    const isNameValid = this.validateName(this.detailsBody.name);
+    const isEmailValid = this.validateEmail(this.detailsBody.email);
+    const isPhoneValid = this.validatePhone(this.detailsBody.phoneNumber);
+
+    if (!isNameValid) {
+      this.validationErrors.name = 'El nombre solo debe contener letras y espacios.';
+    }
+
+    if (!isEmailValid) {
+      this.validationErrors.email = 'Por favor, ingresa una dirección de correo electrónico válida.';
+    }
+
+    if (!isPhoneValid) {
+      this.validationErrors.phoneNumber = 'El teléfono debe tener entre 10 y 15 dígitos numéricos.';
+    }
+
+    if (isNameValid && isEmailValid && isPhoneValid) {
+      this.showPasswordModal = true;
+      console.log('Información personal válida y lista para actualizar.');
+    } else {
+      this.generalErrorMessage = 'Por favor, corrige los errores en el formulario.';
+      console.log('Validación fallida.');
+    }
+  }
+
+
+  handlePasswordModalResponse(success: boolean) {
+    if (success) {
+      this.showPasswordModal = false;
+      this.showSuccessMessage = true;
+      setTimeout(() => {
+        this.showSuccessMessage = false;
+      }, 3000);
+      // Opcional: Actualizar los datos del usuario nuevamente si es necesario
+    } else {
+      this.showPasswordModal = false;
+    }
   }
 
   ngOnDestroy(): void {
@@ -123,78 +185,61 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     // Implementa la lógica para cerrar el componente
   }
 
-
-
   // Función para seleccionar la pestaña
   selectTab(tab: string) {
     this.selectedTab = tab;
   }
 
-  // Funciones para editar campos
   toggleEdit(field: string) {
     if (field === 'name') {
       this.editingName = !this.editingName;
+      if (this.validationErrors.name) {
+        delete this.validationErrors.name;
+      }
     } else if (field === 'email') {
       this.editingEmail = !this.editingEmail;
+      if (this.validationErrors.email) {
+        delete this.validationErrors.email;
+      }
     } else if (field === 'phone') {
       this.editingPhone = !this.editingPhone;
+      if (this.validationErrors.phoneNumber) {
+        delete this.validationErrors.phoneNumber;
+      }
     }
   }
 
-  // Función para actualizar información personal
-  updatePersonalInfo() {
-    if (this.validateName(this.user.name) && this.validateEmail(this.user.email) && this.validatePhone(this.user.phone)) {
-      this.showSuccessMessage = true;
-      setTimeout(() => {
-        this.showSuccessMessage = false;
-      }, 5000);
-      console.log('Información personal válida y actualizada.');
-    } else {
-      console.log('Validación fallida.');
-    }
-  }
-
-  // Funciones para direcciones
   editAddress(address: any) {
-    // Implementar lógica de edición
     console.log('Editar dirección:', address);
   }
 
   deleteAddress(address: any) {
-    // Implementar lógica de eliminación
     this.user.addresses = this.user.addresses.filter((a: any) => a !== address);
     console.log('Dirección eliminada:', address);
   }
 
   addNewAddress() {
-    // Implementar lógica para agregar una nueva dirección
     const newAddress = { street: 'Nueva Calle', city: 'Nueva Ciudad' };
     this.user.addresses.push(newAddress);
     console.log('Nueva dirección agregada:', newAddress);
   }
 
-  // Funciones para métodos de pago
   editPaymentMethod(payment: any) {
-    // Implementar lógica de edición
     console.log('Editar método de pago:', payment);
   }
 
   deletePaymentMethod(payment: any) {
-    // Implementar lógica de eliminación
     this.user.paymentMethods = this.user.paymentMethods.filter((p: any) => p !== payment);
     console.log('Método de pago eliminado:', payment);
   }
 
   addNewPaymentMethod() {
-    // Implementar lógica para agregar un nuevo método de pago
     const newPayment = { type: 'Amex', lastFourDigits: '5678' };
     this.user.paymentMethods.push(newPayment);
     console.log('Nuevo método de pago agregado:', newPayment);
   }
 
-  // Función para actualizar preferencias de comunicación
   updateCommunicationPreferences() {
-    // Implementar lógica para actualizar preferencias
     console.log('Preferencias de comunicación actualizadas:', this.user.preferences);
     this.showSuccessMessage = true;
     setTimeout(() => {
@@ -231,12 +276,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
   @HostListener('document:keydown.escape', ['$event'])
   onKeydownHandler(event: KeyboardEvent) {
-    if (this.isModalOpen) {
-      this.toggleModal();
+    if (this.showPasswordModal) {
+      this.showPasswordModal = false;
     }
-  }
-
-  toggleModal(): void {
-    this.isModalOpen = !this.isModalOpen;
   }
 }

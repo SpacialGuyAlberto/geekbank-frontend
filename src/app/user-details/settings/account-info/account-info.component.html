@@ -1,107 +1,8 @@
+<!-- account-info.component.html -->
+
 <div class="account-info-dashboard">
   <!-- Menú de Pestañas -->
-  <div class="tabs-menu" *ngIf="!isSmallScreen">
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'details'}"
-      (click)="selectTab('details')"
-    >
-      <i class="fas fa-user"></i> Detalles de la Cuenta
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'addresses'}"
-      (click)="selectTab('addresses')"
-    >
-      <i class="fas fa-map-marker-alt"></i> Direcciones
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'payment'}"
-      (click)="selectTab('payment')"
-    >
-      <i class="fas fa-credit-card"></i> Métodos de Pago
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'preferences'}"
-      (click)="selectTab('preferences')"
-    >
-      <i class="fas fa-cog"></i> Preferencias
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'transactions'}"
-      (click)="selectTab('transactions')"
-    >
-      <i class="fas fa-money-check-alt"></i> Transacciones
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedTab === 'wishList'}"
-      (click)="selectTab('wishList')"
-    >
-      <i class="fa-solid fa-heart"></i> Wish List
-    </button>
-    <button
-      class="tab-button"
-      *ngIf="user && user.role === 'ADMIN'"
-      [ngClass]="{'active': selectedTab === 'admin-tools'}"
-      (click)="selectTab('admin-tools')"
-    >
-      <i class="fas fa-tools"></i> Herramientas de Admin
-    </button>
-  </div>
-
-  <!-- Botón de Hamburguesa para Pantallas Pequeñas -->
-  <button class="hamburger-button" (click)="toggleModal()" aria-label="Abrir Menú">
-    <i class="fas fa-bars"></i>
-  </button>
-
-  <!-- Modal del Menú en Pantallas Pequeñas -->
-  <div class="modal" *ngIf="isModalOpen && isVisible" >
-    <div class="modal-content">
-      <span class="close-button" (click)="toggleModal()">&times;</span>
-      <h2>Menú de Cuenta</h2>
-      <ul>
-        <li>
-          <a (click)="selectTab('details'); toggleModal()">
-            <i class="fas fa-user"></i> Detalles de la Cuenta
-          </a>
-        </li>
-        <li>
-          <a (click)="selectTab('addresses'); toggleModal()">
-            <i class="fas fa-map-marker-alt"></i> Direcciones
-          </a>
-        </li>
-        <li>
-          <a (click)="selectTab('payment'); toggleModal()">
-            <i class="fas fa-credit-card"></i> Métodos de Pago
-          </a>
-        </li>
-        <li>
-          <a (click)="selectTab('preferences'); toggleModal()">
-            <i class="fas fa-cog"></i> Preferencias
-          </a>
-        </li>
-        <li>
-          <a (click)="selectTab('transactions'); toggleModal()">
-            <i class="fas fa-money-check-alt"></i> Transacciones
-          </a>
-        </li>
-        <li>
-          <a (click)="selectTab('wishList'); toggleModal()">
-            <i class="fa-solid fa-heart"></i> Wish List
-          </a>
-        </li>
-        <li *ngIf="user && user.role === 'ADMIN'">
-          <a (click)="selectTab('admin-tools'); toggleModal()">
-            <i class="fas fa-tools"></i> Herramientas de Admin
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
+  <!-- ... tu código existente para las pestañas -->
 
   <!-- Contenido de las Pestañas -->
   <div class="content-grid">
@@ -113,95 +14,102 @@
         <div class="field">
           <label for="name">Nombre:</label>
           <span *ngIf="!editingName">{{ user.name }}</span>
-          <input *ngIf="editingName" type="text" id="name" [(ngModel)]="user.name" name="name" />
+          <input
+            *ngIf="editingName"
+            type="text"
+            id="name"
+            [(ngModel)]="detailsBody.name"
+            name="name"
+            required
+            minlength="2"
+            maxlength="50"
+            placeholder="Ingresa tu nombre"
+          />
           <i class="fas fa-pencil-alt" (click)="toggleEdit('name')"></i>
+          <!-- Mensaje de error para Nombre -->
+          <div *ngIf="validationErrors.name" class="error-message">
+            {{ validationErrors.name }}
+          </div>
         </div>
+
         <!-- Email -->
         <div class="field">
           <label for="email">Email:</label>
           <span *ngIf="!editingEmail">{{ user.email }}</span>
-          <input *ngIf="editingEmail" type="email" id="email" [(ngModel)]="user.email" name="email" />
+          <input
+            *ngIf="editingEmail"
+            type="email"
+            id="email"
+            [(ngModel)]="detailsBody.email"
+            name="email"
+            required
+            placeholder="Ingresa tu email"
+          />
           <i class="fas fa-pencil-alt" (click)="toggleEdit('email')"></i>
+          <!-- Mensaje de error para Email -->
+          <div *ngIf="validationErrors.email" class="error-message">
+            {{ validationErrors.email }}
+          </div>
         </div>
 
         <!-- Teléfono -->
         <div class="field">
           <label for="phone">Teléfono:</label>
           <span *ngIf="!editingPhone">{{ user.phone }}</span>
-          <input *ngIf="editingPhone" type="tel" id="phone" [(ngModel)]="user.phone" name="phone" />
+          <input
+            *ngIf="editingPhone"
+            type="tel"
+            id="phone"
+            [(ngModel)]="detailsBody.phoneNumber"
+            name="phone"
+            required
+            pattern="[0-9]{10,15}"
+            placeholder="Ingresa tu teléfono"
+          />
           <i class="fas fa-pencil-alt" (click)="toggleEdit('phone')"></i>
+          <!-- Mensaje de error para Teléfono -->
+          <div *ngIf="validationErrors.phoneNumber" class="error-message">
+            {{ validationErrors.phoneNumber }}
+          </div>
+        </div>
+
+        <!-- Mensaje de Error General -->
+        <div *ngIf="generalErrorMessage" class="error-message general-error">
+          {{ generalErrorMessage }}
         </div>
 
         <!-- Balance -->
         <div class="field">
-          <label >Balance: {{balance | currency}}</label>
+          <label>Balance: {{balance | currency}}</label>
           <span>{{ user.balance | currency:'USD' }}</span>
         </div>
 
-        <button type="submit">Actualizar Información</button>
+        <button type="submit">
+          Actualizar Información
+        </button>
       </form>
       <div *ngIf="showSuccessMessage" class="success-message">
         Información actualizada exitosamente.
       </div>
     </div>
 
-    <!-- Direcciones -->
-    <div class="content-section" *ngIf="selectedTab === 'addresses'">
-      <h2>Direcciones</h2>
-      <ul>
-        <li *ngFor="let address of user.addresses">
-          {{ address.street }}, {{ address.city }}
-          <div>
-            <i class="fas fa-edit" (click)="editAddress(address)"></i>
-            <i class="fas fa-trash" (click)="deleteAddress(address)"></i>
-          </div>
-        </li>
-      </ul>
-      <button (click)="addNewAddress()">Agregar Nueva Dirección</button>
-    </div>
-
-    <!-- Métodos de Pago -->
-    <div class="content-section" *ngIf="selectedTab === 'payment'">
-      <app-payment-methods></app-payment-methods>
-    </div>
-
-    <!-- Preferencias de Comunicación -->
-    <div class="content-section" *ngIf="selectedTab === 'preferences'">
-      <h2>Preferencias de Comunicación</h2>
-      <form (ngSubmit)="updateCommunicationPreferences()">
-        <label>
-          <input type="checkbox" [(ngModel)]="user.preferences.promotions" name="promotions" />
-          Recibir Promociones
-        </label>
-        <label>
-          <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates" name="orderUpdates" />
-          Recibir Actualizaciones de Pedidos
-        </label>
-        <button type="submit">Actualizar Preferencias</button>
-      </form>
-      <div *ngIf="showSuccessMessage" class="success-message">
-        Preferencias actualizadas exitosamente.
-      </div>
-    </div>
-
-    <div class="content-section" *ngIf="selectedTab === 'transactions'">
-      <app-orders></app-orders>
-    </div>
-
-    <div class="content-section" *ngIf="selectedTab === 'wishList'">
-      <app-wishlist></app-wishlist>
-    </div>
+    <!-- Resto de las secciones (Direcciones, Métodos de Pago, etc.) -->
+    <!-- ... tu código existente para otras secciones -->
   </div>
 
-  <div class="content-section admin-tools" *ngIf="selectedTab === 'admin-tools' && user.role === 'ADMIN'">
-    <h2>Herramientas de Administrador</h2>
-    <ul>
-      <li>
-        <a (click)="navigateToAdminPanel()">
-          <i class="fas fa-tools"></i> Panel de Administración
-        </a>
-      </li>
-      <!-- Puedes agregar más herramientas aquí -->
-    </ul>
+  <!-- Mensaje de Error General -->
+  <div *ngIf="generalErrorMessage" class="error-message general-error">
+    {{ generalErrorMessage }}
   </div>
+
+  <!-- Modal de Contraseña -->
+  <app-password-modal
+    *ngIf="showPasswordModal"
+    [detailsBody]="detailsBody"
+    [user]="user"
+    (onConfirm)="handlePasswordModalResponse($event)"
+  ></app-password-modal>
+
+  <!-- Resto de tu plantilla -->
+  <!-- ... -->
 </div>
