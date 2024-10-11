@@ -93,13 +93,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       },
       error => {
         console.error('Error placing order', error);
-        this.showSpinner = false; // Ocultar spinner en caso de error
+        this.showSpinner = false;
       }
     );
   }
 
   ngOnDestroy(): void {
-    // Desconectar el WebSocket al destruir el componente
     if (this.transactionSubscription) {
       this.transactionSubscription.unsubscribe();
     }
