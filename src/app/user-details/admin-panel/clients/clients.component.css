@@ -1,256 +1,374 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden; /* Oculta el overflow a nivel del body */
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
-}
-
+/* Estilos generales */
 .clients-dashboard {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Ocupar toda la altura disponible */
-}
-
-.scrollable {
-  overflow-y: auto; /* Hacer que este div sea scrollable */
-  max-height: 100vh; /* Ajustar la altura máxima para activar el scroll */
-  padding: 1rem; /* Espaciado interno */
-}
-
-.clients-list-container {
-  flex-grow: 1; /* Permitir que crezca y ocupe todo el espacio disponible */
-  margin-bottom: 2.5rem;
+  gap: 1rem;
   width: 100%;
-  max-width: 75rem; /* 1200px en rem */
-  display: flex;
-  justify-content: center;
-  flex-grow: 1; /* Permitir que el contenedor crezca para ocupar espacio */
-}
-
-.client-cards-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas por defecto */
-  gap: 1.25rem;
-  width: 100%;
-  justify-items: center;
-}
-
-.client-card {
-  background-color: #fff;
-  border-radius: 0.625rem;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);
-  padding: 0.9375rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 12.5rem; /* 200px en rem */
-  transition: transform 0.3s ease;
-}
-
-.client-card:hover {
-  transform: scale(1.05);
-}
-
-.client-photo-container {
-  width: 5rem; /* 80px en rem */
-  height: 5rem;
-  margin-bottom: 0.625rem;
-}
-
-.client-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-.client-name {
-  font-size: 1.1rem;
-  color: #007bff;
-  margin-bottom: 0.3125rem;
-}
-
-.client-info p {
-  font-size: 0.9rem;
-  color: #666;
-}
-
-.transactions-container {
-  width: 100%;
-  max-width: 62.5rem; /* 1000px en rem */
-  margin: 1.25rem auto;
-  padding: 1.25rem;
-  background-color: #2d2d2d;
-  border-radius: 0.625rem;
-  color: #ffffff;
-  max-height: 31.25rem; /* 500px en rem */
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Centramos el contenido */
-}
-
-.transaction-table {
-  display: grid;
-  gap: 0.625rem;
-}
-
-.transaction-header,
-.transaction-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
-  padding: 0.625rem;
-  background-color: #333;
-}
-
-.transaction-header {
+  min-height: 100vh;
   background-color: #1c1c1c;
-  font-weight: bold;
-  color: #ff7a00;
+  padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.transaction-row {
-  border-radius: 0.3125rem;
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #ff7a00;
+  text-align: center;
+}
+
+/* Controles en la parte superior */
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #262626;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+.top-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background-color: #262626;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Botón "Nuevo Cliente" actualizado */
+.add-client-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.2rem;
+  background-color: #ff7a00; /* Color actualizado */
+  color: #fff;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 1rem;
   transition: background-color 0.3s ease;
 }
 
-.transaction-row:hover {
-  background-color: #444;
+.add-client-btn:hover {
+  background-color: #e66a00; /* Color al pasar el cursor */
 }
 
-.transaction-status {
-  padding: 0.3125rem 0.9375rem;
-  border-radius: 1.5625rem;
-  border-width: 0.125rem;
-  border-style: solid;
-  text-align: center;
-  font-weight: bold;
-  display: inline-block;
-  width: 7.5rem; /* 120px en rem */
+.add-client-btn i {
+  font-size: 1.2rem;
 }
 
-.no-transactions {
+.main-content {
+  display: flex;
+  flex-grow: 1;
+  gap: 1rem;
+  background-color: #262626;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Lista de clientes */
+.clients-list {
+  background-color: #2e2e2e;
+  border-radius: 1rem;
+  color: #fff;
+  overflow-y: auto;
+  flex: 1;
+  padding: 1.5rem;
+  transition: flex 0.3s ease;
+  max-height: calc(100vh - 200px);
+}
+
+.clients-list h2 {
+  color: #ffcc00;
+  margin-bottom: 1.5rem;
   text-align: center;
+}
+
+.client-cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.client-card {
+  background-color: #3a3a3a;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.client-card:hover {
+  background-color: #4a4a4a;
+  transform: translateY(-5px);
+}
+
+.client-card.selected {
+  background-color: #5a5a5a;
+  border: 2px solid #bf5700;
+}
+
+.client-avatar {
+  font-size: 3rem;
   color: #ff7a00;
-  font-size: 1.125rem;
-  margin-top: 1.25rem;
 }
 
+.client-info {
+  font-size: 1rem;
+  color: #ddd;
+  flex: 1;                    /* Permite que el contenedor crezca */
+  min-width: 0;               /* Necesario para que funcione el desbordamiento en flex items */
+}
+
+.client-name {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #ffcc00;
+}
+
+.client-info p {
+  margin: 0.3rem 0;
+  white-space: nowrap;        /* Evita el salto de línea */
+  overflow: hidden;           /* Oculta el texto que se desborda */
+  text-overflow: ellipsis;    /* Agrega puntos suspensivos al final */
+}
+
+/* Estilos para el ícono de edición */
+.edit-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #ff7a00;
+  margin-left: auto;
+  padding: 0;
+  font-size: 1.2rem;
+}
+
+.edit-icon:hover {
+  color: #e66a00;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #444;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item dt, .detail-item dd {
+  flex: 1;
+}
+
+.detail-item dt {
+  font-weight: bold;
+  color: #ff7a00;
+}
+
+.detail-item dd {
+  margin: 0;
+  color: #fff;
+}
+
+.detail-item input, .detail-item select {
+  width: 100%;
+  padding: 0.3rem;
+  border: 1px solid #555;
+  border-radius: 0.3rem;
+  background-color: #2e2e2e;
+  color: #fff;
+}
+
+.detail-item input:focus, .detail-item select:focus {
+  outline: none;
+  border-color: #ff7a00;
+}
+
+
+/* Paginación */
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 1.25rem;
+  align-items: center;
+  margin-top: 1.5rem;
+  gap: 0.5rem;
 }
 
 .pagination button {
-  padding: 0.625rem 0.9375rem;
-  margin: 0 0.3125rem;
+  padding: 0.5rem 0.8rem;
+  background-color: #3a3a3a;
+  color: white;
   border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 0.3125rem;
+  border-radius: 0.3rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .pagination button:hover {
-  background-color: #0056b3;
+  background-color: #4a4a4a;
+}
+
+.pagination button[disabled] {
+  background-color: #888;
+  cursor: not-allowed;
 }
 
 .pagination button.active {
   background-color: #ff7a00;
+}
+
+.pagination button i {
+  font-size: 1rem;
+}
+
+/* Detalles del cliente */
+.client-details {
+  position: relative;
+  background-color: #2e2e2e;
+  padding: 2rem;
+  border-radius: 1rem;
+  flex: 0;
+  transition: flex 0.3s ease;
+  overflow-y: auto;
   color: #fff;
+  max-height: calc(100vh - 200px);
 }
 
-.transaction-status.PENDING {
-  color: #FFC107;
-  border-color: #FFC107;
-  background-color: transparent;
+.client-details.visible {
+  flex: 1;
 }
 
-.transaction-status.COMPLETED {
-  color: #4CAF50;
-  border-color: #4CAF50;
-  background-color: transparent;
+.client-details h2 {
+  color: #ffcc00;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
-.transaction-status.REFUNDED {
-  color: #00BCD4;
-  border-color: #00BCD4;
-  background-color: transparent;
-}
-
-.transaction-status.CANCELLED {
-  color: #F44336;
-  border-color: #F44336;
-  background-color: transparent;
-}
-
-.search-add-container {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 50rem; /* 800px en rem */
-  margin-bottom: 1.25rem;
-}
-
-.search-bar {
-  padding: 0.625rem;
-  border-radius: 0.3125rem;
-  border: 0.0625rem solid #ccc;
-  width: 100%;
-  max-width: 18.75rem; /* 300px en rem */
-}
-
-.add-client-btn {
-  padding: 0.625rem 1.25rem;
-  background-color: #28a745;
-  color: #fff;
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
   border: none;
-  border-radius: 0.3125rem;
+  color: #ff7a00;
+  font-size: 1.5rem;
   cursor: pointer;
 }
 
-.add-client-btn:hover {
-  background-color: #218838;
+.close-btn:hover {
+  color: #e66a00;
 }
 
-.add-client-btn:active {
-  transform: scale(0.98); /* Efecto de clic */
+.client-info-details,
+.account-details {
+  margin-bottom: 2rem;
 }
 
-/* Ajustes para pantallas pequeñas */
-@media (max-width: 768px) {
-  .clients-list-container {
-    max-height: 50vh; /* Limitar la altura y permitir scroll solo en móviles */
-    overflow-y: auto;
-  }
+.client-info-details dl,
+.account-details dl {
+  margin: 0;
+  padding: 0;
+}
 
-  .client-cards-container {
-    grid-template-columns: 1fr; /* Mostrar una columna en pantallas pequeñas */
-  }
+.detail-item {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #444;
+}
 
-  .transactions-container {
-    max-height: 18.75rem; /* 300px en rem */
-    justify-content: center;
-  }
+.detail-item:last-child {
+  border-bottom: none;
+}
 
-  .search-add-container {
+.detail-item dt {
+  flex-basis: 40%;
+  font-weight: bold;
+  color: #ff7a00;
+}
+
+.detail-item dd {
+  flex-basis: 60%;
+  margin: 0;
+  color: #ddd;
+}
+
+.account-details h3 {
+  color: #ffcc00;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.app-transactions {
+  margin-top: 2rem;
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  position: relative;
+  width: 300px;
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 0.6rem 2.5rem 0.6rem 1rem;
+  border: 1px solid #444;
+  border-radius: 0.3rem;
+  background-color: #3a3a3a;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: #bbb;
+}
+
+.search-bar i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bbb;
+  font-size: 1.2rem;
+}
+
+/* Responsividad */
+@media (max-width: 992px) {
+  .main-content {
     flex-direction: column;
-    align-items: center;
-    gap: 1rem;
   }
 
-  .search-bar,
-  .add-client-btn {
-    width: 100%; /* Ocupa todo el ancho en móviles */
+  .clients-list,
+  .client-details.visible {
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .top-controls {
+    flex-direction: column;
+    align-items: flex-start;
   }
 
   .add-client-btn {
+    width: 100%;
+    justify-content: center;
     margin-top: 1rem;
   }
 }

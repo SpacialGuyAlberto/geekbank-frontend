@@ -1,11 +1,41 @@
-/* Estilo espacial general */
-body, html {
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19; /* Fondo oscuro */
-  color: #88D66C; /* Verde claro */
+/* =======================================
+   Reset Básico y Configuración de Variables CSS
+   ======================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Modal */
+/* =======================================
+   Estilos Globales
+   ======================================= */
+body, html {
+  font-family: var(--font-primary);
+  background-color: var(--primary-bg-color); /* Fondo oscuro espacial */
+  color: var(--text-color); /* Texto claro */
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+/* Efecto Estrellado de Fondo */
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
+  opacity: 0.05;
+  z-index: 0;
+}
+
+/* =======================================
+   Modal Component
+   ======================================= */
 .modal {
   position: fixed;
   z-index: 1000;
@@ -14,34 +44,31 @@ body, html {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgba(0, 0, 0, 0.8); /* Fondo semitransparente oscuro */
+  opacity: 0.8;
+  background-color: var(--overlay-bg); /* Fondo semitransparente oscuro */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Total como texto, no como input */
-.total-amount {
-  font-size: 1.5rem; /* Ajusta el tamaño */
-  color: #A0E4FF; /* Mismo color que el resto del texto */
-  margin-top: 0.5rem;
-  text-align: center;
-  font-weight: bold;
-}
-
-
-/* Contenido del modal */
 .modal-content {
-  background-color: rgba(10, 20, 40, 0.9); /* Fondo translúcido oscuro */
+  background-color: rgba(10, 20, 40, 0.95); /* Fondo translúcido oscuro */
   padding: 2rem;
-  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
-  color: #A0E4FF; /* Texto claro */
-  width: 25rem; /* Fijar un ancho más pequeño para que sea un cuadro */
-  max-width: 90%; /* Para asegurar que no se desborde en pantallas pequeñas */
+  border: 0.125rem solid var(--border-color); /* Borde translúcido */
+  color: var(--text-color); /* Texto claro */
+  width: 25rem; /* Ancho fijo */
+  max-width: 90%; /* Para pantallas pequeñas */
   position: relative;
-  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.3); /* Sombra suave */
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.5); /* Sombra más profunda */
   border-radius: 1rem; /* Bordes redondeados */
   text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  font-family: var(--font-primary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* Icono de cerrar */
@@ -49,67 +76,136 @@ body, html {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  color: #A0E4FF; /* Color del icono de cierre */
+  color: var(--text-color); /* Color del icono de cierre */
   font-size: 1.5rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: color var(--transition-speed) ease;
+  font-family: var(--font-secondary);
 }
 
 .close:hover {
-  color: #7EC8E3; /* Azul claro al pasar el cursor */
+  color: var(--accent-blue); /* Cambio a azul claro al pasar el cursor */
 }
 
 /* Título */
-h2 {
-  text-align: center;
+.modal-content h2 {
   margin-bottom: 1.5rem;
-  color: #7EC8E3; /* Título en azul claro */
+  color: var(--accent-color);
   font-size: 1.8rem;
+  font-family: var(--font-retro); /* Fuente retro para el título */
 }
 
-/* Inputs */
+/* Formulario */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
 .retro-input {
-  width: 90%;
+  width: 100%;
   padding: 0.75rem;
-  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
+  border: 0.125rem solid var(--border-color); /* Borde translúcido */
   background-color: rgba(10, 20, 40, 0.8); /* Fondo oscuro translúcido */
-  color: #A0E4FF; /* Texto claro */
-  margin-bottom: 1rem;
+  color: var(--text-color); /* Texto claro */
   font-size: 1rem;
   border-radius: 0.5rem;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  font-family: var(--font-secondary);
 }
 
 .retro-input:focus {
-  border-color: #7EC8E3; /* Borde azul claro al enfocar */
+  border-color: var(--accent-blue); /* Borde azul claro al enfocar */
+  box-shadow: 0 0 0.5rem var(--accent-blue); /* Sombra azul al enfocar */
   outline: none;
+}
+
+/* Total Amount */
+.total-amount {
+  font-size: 1.5rem; /* Tamaño ajustado */
+  color: var(--text-color);
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-family: var(--font-secondary);
 }
 
 /* Botones */
 .retro-button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
-  border: 0.125rem solid rgba(193, 224, 255, 0.2); /* Borde translúcido */
-  color: #A0E4FF; /* Texto claro */
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem; /* Bordes redondeados */
+  background: var(--button-buy-bg); /* Fondo con linear gradient */
+  color: #ffffff; /* Texto blanco */
   cursor: pointer;
-  font-size: 1rem;
-  text-transform: uppercase;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  border-radius: 0.5rem;
+  transition: background var(--transition-speed) ease-in-out, box-shadow var(--transition-speed) ease-in-out;
+  font-family: 'Press Start 2P', cursive;
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+  background-size: 200% 200%;
 }
 
 .retro-button:hover {
-  background-color: rgba(18, 97, 160, 0.6); /* Azul más brillante en hover */
-  box-shadow: 0 0 1rem #7EC8E3, 0 0 2rem #7EC8E3, 0 0 3rem #7EC8E3; /* Efecto neón azul */
+  background: var(--button-buy-hover-bg); /* Fondo más brillante */
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4); /* Efecto neón azul */
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
+.retro-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(193, 224, 255, 0.5), transparent);
+  transition: all 0.5s ease-in-out;
+  z-index: -1;
+}
+
+.retro-button:hover:before {
+  left: 100%;
+}
+
+/* Mensajes de Estado */
+.success-message {
+  color: var(--success-color);
+  margin-top: 1rem;
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-top: 1rem;
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
+/* Confirmación */
 .confirmation {
   margin-top: 1.5rem;
-  background-color: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
+  background: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
   padding: 1rem;
   border-radius: 0.75rem;
-  color: #A0E4FF; /* Texto en azul claro */
+  color: var(--text-color);
   text-align: center;
+  transition: background var(--transition-speed) ease;
+  font-family: var(--font-secondary);
+}
+
+.confirmation p {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
 }
 
 /* Spinner */
@@ -119,12 +215,13 @@ h2 {
 }
 
 .spinner {
-  border: 0.25rem solid rgba(0, 0, 0, 0.1);
-  border-left-color: #A0E4FF;
+  border: 0.25rem solid rgba(255, 255, 255, 0.1);
+  border-left-color: var(--accent-blue);
   border-radius: 50%;
   width: 2.5rem;
   height: 2.5rem;
   animation: spin 1s linear infinite;
+  margin: 0 auto 1rem auto;
 }
 
 @keyframes spin {
@@ -132,31 +229,72 @@ h2 {
   100% { transform: rotate(360deg); }
 }
 
-/* Responsividad */
+/* =======================================
+   Iconos Material
+   ======================================= */
+.material-symbols-outlined, mat-icon {
+  cursor: pointer;
+  font-size: 1.5rem; /* Tamaño del ícono */
+  color: #FF6666; /* Color rojo suave */
+  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease; /* Transición para color y transformación */
+}
+
+.material-symbols-outlined:hover, mat-icon:hover {
+  color: #FF3333; /* Cambio a un rojo más fuerte en hover */
+  transform: scale(1.1); /* Ligera ampliación al hacer hover */
+}
+
+/* =======================================
+   Responsividad Mejorada
+   ======================================= */
 @media (max-width: 768px) {
   .modal-content {
-    width: 80%; /* Reducir el tamaño para pantallas pequeñas */
+    width: 80%; /* Reducir el tamaño para pantallas medianas */
+    padding: 1.5rem;
   }
 
-  h2 {
-    font-size: 1.5rem;
+  .modal-content h2 {
+    font-size: 1.6rem;
   }
 
   .retro-input, .retro-button {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+
+  .confirmation {
+    padding: 0.75rem;
+  }
+
+  .spinner {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.2rem;
   }
 }
 
 @media (max-width: 480px) {
   .modal-content {
     width: 90%; /* Ancho adaptado para pantallas muy pequeñas */
+    padding: 1rem;
   }
 
-  h2 {
-    font-size: 1.3rem;
+  .modal-content h2 {
+    font-size: 1.4rem;
   }
 
   .retro-input, .retro-button {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+  }
+
+  .confirmation {
+    padding: 0.5rem;
+  }
+
+  .spinner {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-width: 0.2rem;
   }
 }

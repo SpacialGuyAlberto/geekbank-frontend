@@ -1,13 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Express Checkout Modal</title>
+
+  <!-- Google Fonts: Incluyendo Roboto, Open Sans y Press Start 2P -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Tu archivo CSS -->
+<!--  <link rel="stylesheet" href="styles.css">-->
+</head>
+<body>
+<!-- Botón para abrir el modal (para pruebas) -->
+<!--<button onclick="openModal()" class="retro-button">Open Express Checkout</button>-->
+
+<!-- Modal Component -->
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>Express Checkout</h2>
     <form (ngSubmit)="onSubmit()">
-      <div>
-        <label>Phone No.</label>
-        <input type="text" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required class="retro-input" />
+      <div class="form-group">
+        <label for="phone">Phone No.</label>
+        <input type="text" id="phone" name="phone" [(ngModel)]="paymentDetails.phoneNumber" required class="retro-input" />
       </div>
-      <div>
+      <div class="form-group">
         <label>Total:</label>
         <p class="total-amount">{{ (paymentDetails.total).toFixed(2) }} LPS</p> <!-- Aquí el total ya no es un input -->
       </div>
@@ -17,15 +38,14 @@
       <button type="submit" class="retro-button" *ngIf="!showSpinner && transactionStatus === 'CANCELLED'">Retry Payment</button>
 
       <!-- Mensaje según el estado de la transacción -->
-      <p *ngIf="transactionStatus === 'COMPLETED'" style="color: green; margin-top: 10px;">Su pago ha sido exitoso.</p>
-      <p *ngIf="transactionStatus === 'CANCELLED'" style="color: red; margin-top: 10px;">Su pago ha sido cancelado, gracias.</p>
+      <p *ngIf="transactionStatus === 'COMPLETED'" class="success-message">Su pago ha sido exitoso.</p>
+      <p *ngIf="transactionStatus === 'CANCELLED'" class="error-message">Su pago ha sido cancelado, gracias.</p>
     </form>
 
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
 
-      <!-- Spinner aparece cuando showSpinner es verdadero -->
       <div *ngIf="showSpinner" class="spinner-container">
         <div class="spinner"></div>
         <p>Esperando a su pago...</p>
@@ -33,3 +53,37 @@
     </div>
   </div>
 </div>
+
+<script>
+  function openModal() {
+    const modal = document.querySelector('.modal');
+    modal.style.display = 'flex';
+    // Simular mostrar spinner después de un tiempo
+    setTimeout(() => {
+      const spinner = document.querySelector('.spinner-container');
+      spinner.style.display = 'block';
+      // Simular ocultar spinner y mostrar mensaje
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        const successMessage = document.querySelector('.success-message');
+        if (successMessage) {
+          successMessage.style.display = 'block';
+        }
+      }, 3000);
+    }, 1000);
+  }
+
+  function closeModal() {
+    const modal = document.querySelector('.modal');
+    modal.style.display = 'none';
+    // Resetear estados
+    const spinner = document.querySelector('.spinner-container');
+    if (spinner) spinner.style.display = 'none';
+    const successMessage = document.querySelector('.success-message');
+    if (successMessage) successMessage.style.display = 'none';
+    const errorMessage = document.querySelector('.error-message');
+    if (errorMessage) errorMessage.style.display = 'none';
+  }
+</script>
+</body>
+</html>

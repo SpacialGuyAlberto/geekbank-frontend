@@ -9,6 +9,8 @@ import {BackgroundAnimationService} from "../background-animation.service";
 import {CurrencyService} from "../currency.service";
 import {FormsModule} from "@angular/forms";
 import {MatIcon} from "@angular/material/icon";
+import {MatDialog} from "@angular/material/dialog";
+import {PaymentModalComponent} from "../payment-modal/payment-modal.component";
 
 @Component({
   selector: 'app-cart',
@@ -32,8 +34,13 @@ export class CartComponent implements OnInit {
   cartItemCount: number = 0;
   totalPrice: number = 0;
   userId: number = 0;
+  showPaypalPaymentModal: boolean = false;
 
-  constructor(private cartService: CartService, private animation: BackgroundAnimationService, private currencyService: CurrencyService) {}
+  constructor(private cartService: CartService,
+              private animation: BackgroundAnimationService,
+              private currencyService: CurrencyService,
+              private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     this.animation.initializeGraphAnimation();
@@ -117,6 +124,21 @@ export class CartComponent implements OnInit {
     const totalCount = this.cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
     this.cartService.updateCartItemCount(totalCount);
     console.log(totalCount);
+  }
+
+  openPaypalPaymentModal(): void {
+    const dialogRef = this.dialog.open(PaymentModalComponent, {
+      width: '600px', // Ajusta el ancho según tus necesidades
+      data: {
+        cartItems: this.cartItems,
+        totalPrice: this.getTotalPrice()
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('El modal de pago se ha cerrado');
+      // Puedes realizar acciones adicionales después de cerrar el modal
+    });
   }
 
   protected readonly Number = Number;

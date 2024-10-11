@@ -1,19 +1,22 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { KinguinService } from "../kinguin.service";
+import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonModule} from '@angular/common'; // Importa CommonModule
+import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import {KinguinService} from "../kinguin.service";
 import {PaginationComponent} from "../pagination/pagination.component";
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {SearchBarComponent} from "../search-bar/search-bar.component";
 import {HighlightsComponent} from "../highlights/highlights.component";
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {FiltersComponent} from "../filters/filters.component";
-import {BackgroundAnimationService} from "../background-animation.service";
 import {CurrencyService} from "../currency.service";
 import {Subscription} from "rxjs";
 import {UIStateServiceService} from "../uistate-service.service";
-
+import {WishListService} from "../wish-list.service";
+import {AuthService} from "../auth.service";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {WishItemWithGiftcard} from "../models/WishItem";
+import {NotificationService} from "../services/notification.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -26,12 +29,15 @@ import {UIStateServiceService} from "../uistate-service.service";
     SearchBarComponent,
     HighlightsComponent,
     RecommendationsComponent,
-    FiltersComponent]
+    FiltersComponent,
+    MatSnackBarModule
+  ]
 })
-export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
+export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestroy {
   giftCards: KinguinGiftCard[] = [];
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
+  wished: boolean = false;
   exchangeRate: number = 0;
   totalPages: number = 3309;
   itemsPerPage: number = 8; // Número de tarjetas por carga
@@ -40,11 +46,16 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
   isSearching: boolean = false;
   private giftCardsSubscription!: Subscription;
 
-  constructor(private kinguinService: KinguinService,
+  constructor(
+              private authService: AuthService,
+              private kinguinService: KinguinService,
               private router: Router,
               private currencyService: CurrencyService,
               private cd: ChangeDetectorRef,
-              private uiStateService: UIStateServiceService
+              private uiStateService: UIStateServiceService,
+              private notificationService: NotificationService,
+              private snackBar: MatSnackBar,
+              private wishListService: WishListService,
               ) { }
 
   ngOnInit(): void {
@@ -53,6 +64,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
       this.giftCards = data;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
+
       this.cd.detectChanges();
     });
 
@@ -62,18 +74,33 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
       }
     });
     this.fetchCurrencyExchange();
+
+  }
+
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
   }
 
   loadGiftCards(page: number): void {
+    // Cargar las tarjetas primero
     this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data.map(card => {
-        // if (!card.coverImageOriginal || !card.coverImage) {
-          card.coverImageOriginal = card.images.cover?.thumbnail || '';
-          card.coverImage = card.images.cover?.thumbnail || '';
+        card.coverImageOriginal = card.images.cover?.thumbnail || '';
+        card.coverImage = card.images.cover?.thumbnail || '';
+        // this.checkIfWished(card, card.kinguinId);
+
+        // Verificar si el ítem está en la wishlist y asignar el valor a 'wished'
+        // this.wishListService.isItemInWishList(card.kinguinId).subscribe((wished: boolean) => {
+        //   card.wished = wished;
+        // });
+        // if (card.kinguinId == 20){
+        //   card.wished = true;
         // }
         return card;
       });
-      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage)
+
+      // Actualizar las tarjetas que se muestran
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
     });
   }
@@ -112,6 +139,49 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy {
     if (this.giftCardsSubscription) {
       this.giftCardsSubscription.unsubscribe();
     }
+  }
+
+
+  toggleWishList(giftCard: KinguinGiftCard, event: MouseEvent): void {
+    event.stopPropagation(); // Prevenir que el click propague al viewDetails
+
+    if (!this.isLoggedIn()) {
+      this.showSnackBar('You are not logged in. Please log in to add items to your wishlist.');
+      return;
+    }
+
+    if (giftCard.wished) {
+      this.wishListService.removeWishItem(giftCard.kinguinId).subscribe(() => {
+        giftCard.wished = false; // Actualiza el estado de la tarjeta específica
+        this.showSnackBar('Product removed from wishlist.');
+      });
+    } else {
+      this.wishListService.addWishItem(giftCard.kinguinId, giftCard.price).subscribe(() => {
+        giftCard.wished = true; // Actualiza el estado de la tarjeta específica
+        this.showSnackBar('Product added to wishlist: ' + giftCard.name);
+      });
+    }
+  }
+
+
+  // checkIfWished(card: KinguinGiftCard, kinguinId: number): void {
+  //   this.wishListService.isItemInWishList(kinguinId).subscribe(isWished => {
+  //    card.wished = isWished;
+  //   });
+  // }
+
+
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.displayedGiftCards.map( item => {
+      // this.checkIfWished(item.kinguinId);
+      item.wished = true;
+    })
   }
 
 }

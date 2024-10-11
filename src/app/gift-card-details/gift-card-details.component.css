@@ -1,26 +1,21 @@
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19; /* Fondo oscuro */
-}
 
 .graph-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-
-#graphCanvas {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100%; /* Ocupará todo el contenido */
+  z-index: -1;
+}
+
+#graphCanvas {
+  width: 100%;
+  height: 100%; /* Dejar que el canvas ocupe la altura del contenido */
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1;
+  background-color: #0B0D19;
 }
 
 .gift-card-details-container {
@@ -29,29 +24,236 @@ body, html {
   justify-content: center;
   align-items: stretch;
   gap: 1rem;
-  margin: 5rem auto;
+  margin: 10rem auto;
   max-width: 80%;
-  background-color: rgba(10, 20, 40, 0.7); /* Fondo translúcido más suave */
-  color: #A0E4FF; /* Texto en azul claro */
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
+  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
+  color: #88D66C;
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Soft neon border */
   border-radius: 1rem;
-  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4); /* Sombra más suave */
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
   z-index: 2;
   padding: 1rem;
-  flex-direction: column; /* Ajusta a columna por defecto */
+
+  /* Asegurar que la columna se ajuste cuando la pantalla sea pequeña */
+  flex-direction: column;
 }
 
+
+.gift-card-details-container:hover {
+  transform: scale(1.02); /* Efecto de agrandamiento */
+  background: rgba(10, 20, 40, 0.8); /* Cambio sutil de fondo al hacer hover */
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.5); /* Aumento de sombra */
+}
+
+/* =======================================
+   Contenedor de la Imagen de la Gift Card
+   ======================================= */
+.gift-card-image-container {
+  flex: 1;
+  max-width: 50%;
+  background-color: rgba(57, 255, 20, 0.1); /* Verde neón suave con transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.125rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.gift-card-image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0)); /* Añade un degradado suave */
+  pointer-events: none;
+}
+
+.gift-card-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 0.625rem;
+  margin-bottom: 0.625rem;
+  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3);
+  transition: transform var(--transition-speed) ease;
+}
+
+.gift-card-image-container:hover .gift-card-image {
+  transform: scale(1.05);
+}
+
+/* =======================================
+   Información Adicional sobre la Gift Card
+   ======================================= */
+.add-info-content {
+  padding: 1rem;
+  text-align: center;
+  background-color: rgba(10, 10, 35, 0.85); /* Fondo translúcido */
+}
+
+.add-info-title {
+  font-size: 1.25rem;
+  color: var(--accent-color);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-secondary);
+}
+
+.highlight-card-type,
+.highlight-card-platform {
+  font-size: 1rem;
+  color: var(--accent-purple);
+  margin-bottom: 0.25rem;
+  font-family: var(--font-secondary);
+}
+
+/* =======================================
+   Tarjeta de Información de la Gift Card
+   ======================================= */
+.gift-card-info-card {
+  flex: 1;
+  background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  transition: background var(--transition-speed) ease;
+}
+
+.gift-card-info-card:hover {
+  background-color: rgba(10, 20, 40, 0.85); /* Cambio sutil de fondo al hacer hover */
+}
+
+.gift-card-region {
+  display: flex;
+  align-items: center;
+  color: var(--accent-color);
+  font-weight: bold;
+  font-family: var(--font-secondary);
+}
+
+.check-icon {
+  color: var(--accent-green); /* Icono en verde claro */
+  margin-right: 0.5rem;
+}
+
+.gift-card-title {
+  font-size: 1.5rem;
+  color: #A0E4FF; /* Azul claro suave */
+  margin-bottom: 0.625rem;
+  text-align: center;
+  font-family: var(--font-secondary);
+}
+
+.gift-card-price {
+  font-size: 2.5rem;
+  color: #7EC8E3; /* Azul suave retro */
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: var(--font-secondary);
+}
+
+/* =======================================
+   Contenedor de Botones
+   ======================================= */
+.button-container {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+/* =======================================
+   Estilos de Botones con Linear Gradients
+   ======================================= */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  color: #ffffff;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  font-family: var(--font-secondary);
+}
+
+/* Botón Agregar al Carrito con Linear Gradient */
+.add-to-cart {
+  background: var(--button-add-bg);
+  background-size: 200% 200%;
+}
+
+.add-to-cart:hover {
+  background: var(--button-add-hover-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(57, 255, 20, 0.4);
+  background-position: right center; /* Cambio de posición del gradiente */
+}
+
+/* Botón Comprar Ahora con Linear Gradient */
+.buy-now {
+  background: var(--button-buy-bg);
+  background-size: 200% 200%;
+}
+
+.buy-now:hover {
+  background: var(--button-buy-hover-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4);
+  background-position: right center; /* Cambio de posición del gradiente */
+}
+
+/* Botón Iniciar Sesión con Linear Gradient */
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(45deg, #ff6ec7, #8e44ad); /* Rosa a púrpura */
+  background-size: 200% 200%;
+  color: #ffffff;
+  border: none;
+  border-radius: 0.625rem;
+  cursor: pointer;
+  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  box-shadow: 0 0.25rem 0.5rem rgba(255, 105, 180, 0.2);
+  font-family: var(--font-secondary);
+}
+
+.login-btn:hover {
+  background: linear-gradient(45deg, #e91e63, #7a3ea0); /* Rosa más oscuro a púrpura oscuro */
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(255, 105, 180, 0.4);
+  background-position: right center; /* Cambio de posición del gradiente */
+}
+
+/* =======================================
+   Mensaje de No Loggeado
+   ======================================= */
 .not-logged-in-message {
   text-align: center;
   padding: 1.5rem;
-  background-color: rgba(255, 77, 77, 0.1); /* Fondo translúcido con rojo claro */
-  color: #ff3333; /* Texto en rojo */
-  border: 0.125rem solid rgba(255, 77, 77, 0.7); /* Borde rojo translúcido */
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 0.9375rem;
-  box-shadow: 0 0.625rem 1.25rem rgba(255, 77, 77, 0.4); /* Sombra roja */
+  box-shadow: 0 0.625rem 1.25rem rgba(255, 105, 180, 0.4); /* Sombra roja */
   margin-top: 1.25rem;
-  transition: all 0.3s ease;
+  transition: all var(--transition-speed) ease;
   z-index: 3;
+  font-family: var(--font-secondary);
 }
 
 .not-logged-in-message h2 {
@@ -69,121 +271,39 @@ body, html {
 
 /* Botón de login */
 .login-btn {
-  background-color: rgba(255, 77, 77, 0.1); /* Fondo translúcido */
-  color: #ff4d4d; /* Texto rojo */
-  border: 0.125rem solid rgba(255, 77, 77, 0.7); /* Borde translúcido */
-  padding: 0.9375rem 1.25rem;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  background: var(--button-add-bg);
 }
 
 .login-btn:hover {
-  background-color: rgba(255, 77, 77, 0.2); /* Fondo rojo translúcido en hover */
-  color: #ffffff;
-  transform: scale(1.05); /* Aumento ligero */
-  box-shadow: 0 0.625rem 0.625rem rgba(255, 77, 77, 0.5);
+  background: var(--button-add-hover-bg);
 }
 
-/* Información de la gift card alineada en pantallas grandes */
+/* =======================================
+   Responsividad
+   ======================================= */
 @media (min-width: 769px) {
   .gift-card-details-container {
     flex-direction: row;
   }
 }
 
-.gift-card-image-container {
-  flex: 1;
-  max-width: 50%;
-  background-color: rgba(5, 15, 35, 0.9); /* Fondo translúcido */
-  border: 0.125rem solid rgba(136, 214, 108, 0.2); /* Borde translúcido verde claro */
-  border-radius: 0.125rem;
-  overflow: hidden;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
-}
-
-.gift-card-image {
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-  border-radius: 0.625rem;
-  margin-bottom: 0.625rem;
-  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3);
-}
-
-.gift-card-info-card {
-  flex: 1;
-  background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
-  border: 0.125rem solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 100%;
-}
-
-.gift-card-title {
-  font-size: 1.5rem;
-  color: #A0E4FF; /* Azul claro suave */
-  margin-bottom: 0.625rem;
-  text-align: center;
-}
-
-.gift-card-region {
-  display: flex;
-  align-items: center;
-  color: #A0E4FF;
-  font-weight: bold;
-}
-
-.check-icon {
-  color: #88D66C; /* Icono en verde claro */
-  margin-right: 0.5rem;
-}
-
-.gift-card-price {
-  font-size: 2.5rem;
-  color: #7EC8E3; /* Azul suave retro */
-  font-weight: bold;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.add-info-content {
-  padding: 1rem;
-  text-align: center;
-  background-color: rgba(5, 15, 35, 0.9); /* Fondo translúcido */
-}
-
-.add-info-title {
-  font-size: 1.5rem;
-  color: #A0E4FF;
-  margin: 0.625rem 0 0.3125rem;
-}
-
-.add-info-price {
-  font-size: 1.25rem;
-  color: #7EC8E3;
-  font-weight: bold;
-  margin-bottom: 0.625rem;
-}
-
-/* Ajustes responsivos */
 @media (max-width: 768px) {
-  .gift-card-image-container,
-  .gift-card-info-card {
+  .gift-card-details-container {
+    flex-direction: column;
+  }
+
+  .gift-card-image-container {
     max-width: 100%;
+    flex: 1.5; /* Aumenta la proporción para mantener la imagen más grande */
   }
 
   .gift-card-info-card {
-    margin-top: 1.5rem;
+    max-width: 100%;
+    flex: 1; /* Reduce la proporción para el contenido */
   }
 
   .gift-card-title {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .gift-card-price {
@@ -193,39 +313,120 @@ body, html {
   .check-icon {
     font-size: 1.5rem;
   }
+
+  .button-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .add-info-content {
+    padding: 0.75rem;
+  }
+
+  .add-info-title {
+    font-size: 1rem;
+  }
+
+  .highlight-card-type,
+  .highlight-card-platform {
+    font-size: 0.875rem;
+  }
 }
 
-.button-container {
+
+/* Feedback encima de la imagen */
+.feedback-section {
+  position: absolute;
+  top: 10px; /* Posición en la parte superior */
+  right: 10px; /* Alineado a la derecha */
   display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-  width: 100%;
-  margin-bottom: 2.9375rem;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
+  padding: 0.5rem;
+  border-radius: 10px;
+  z-index: 3; /* Asegurarse de que esté encima de la imagen */
 }
 
-button {
-  padding: 0.9375rem;
-  border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
-  border-radius: 0.625rem;
-  font-size: 1rem;
+.heart-icon {
+  color: #ff5e5e; /* Rojo suave */
+  font-size: 2rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.add-to-cart {
-  background-color: rgba(136, 214, 108, 0.2); /* Fondo verde translúcido */
-  color: #88D66C; /* Verde claro */
+.star-rating {
+  display: flex;
+  gap: 0.25rem;
 }
 
-.add-to-cart:hover {
-  background-color: rgba(118, 179, 90, 0.3); /* Verde más oscuro en hover */
+.star {
+  color: #88D66C; /* Verde neón para las estrellas */
+  font-size: 2rem;
+  cursor: pointer;
 }
 
-.buy-now {
-  background-color: rgba(18, 97, 160, 0.2); /* Fondo azul translúcido */
-  color: #A0E4FF; /* Azul claro */
+.star:hover {
+  transform: scale(1.1);
+  color: #1fd166; /* Un verde más brillante al hacer hover */
 }
 
-.buy-now:hover {
-  background-color: rgba(16, 79, 135, 0.3); /* Azul más oscuro en hover */
+/* Ajustes del modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 4; /* Modal encima de todo */
 }
+
+.modal-content {
+  background-color: #1a1a1a; /* Fondo oscuro acorde al tema */
+  color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h2 {
+  margin-bottom: 1rem;
+  color: #88D66C; /* Verde neón */
+}
+
+.modal-content textarea {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #2a2a2a;
+  color: #fff;
+  border: none;
+}
+
+.modal-content button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  background-color: #88D66C; /* Verde neón */
+  color: #fff;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+
+.modal-content button:hover {
+  background-color: #1fd166;
+}
+

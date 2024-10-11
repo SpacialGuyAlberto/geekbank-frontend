@@ -70,8 +70,8 @@ export class StatisticsComponent implements AfterViewInit {
         datasets: [{
           label: 'Ventas mensuales',
           data: [100, 120, 150, 100, 180, 220, 300, 350, 400],
-          backgroundColor: '#36A2EB',
-          borderColor: '#36A2EB',
+          backgroundColor: '#ffcc00', // Color de las barras
+          borderColor: '#ffcc00',
           borderWidth: 1
         }]
       },
@@ -79,12 +79,34 @@ export class StatisticsComponent implements AfterViewInit {
         responsive: true,
         scales: {
           y: {
-            beginAtZero: true
+            beginAtZero: true,
+            grid: {
+              color: '#555' // Color de las líneas de la cuadrícula
+            },
+            ticks: {
+              color: '#fff' // Color de las etiquetas del eje Y
+            }
+          },
+          x: {
+            ticks: {
+              color: '#fff' // Color de las etiquetas del eje X
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#fff' // Color del texto de la leyenda
+            }
+          },
+          title: {
+            display: false
           }
         }
       }
     });
   }
+
 
   createSalesByCategoryChart() {
     const ctx = document.getElementById('salesByCategoryChart') as HTMLCanvasElement;

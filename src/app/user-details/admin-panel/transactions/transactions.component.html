@@ -3,10 +3,60 @@
 
   <!-- Filtros -->
   <div class="filters">
-    <input type="date" placeholder="Desde" [(ngModel)]="startDate">
-    <input type="date" placeholder="Hasta" [(ngModel)]="endDate">
-    <button (click)="filterTransactions()">Filtrar</button>
-    <button (click)="exportTransactions()">Exportar CSV</button>
+    <!-- Selector de Clientes -->
+    <mat-form-field class="dropdown" appearance="fill">
+      <mat-label>Clientes</mat-label>
+      <mat-select
+        [formControl]="usersControl"
+        (selectionChange)="onUserSelected($event)"
+        [disabled]="blockDropDown"
+      >
+        <mat-option
+          *ngFor="let user of users"
+          [value]="user.id"
+          [disabled]="blockDropDown"
+          [ngStyle]="{
+            color: String(usersControl.value) === String(user.id) ? '#ff7a00' : '#fff'
+          }"
+        >
+          {{ user.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Fecha Desde -->
+    <mat-form-field appearance="fill">
+      <mat-label>Desde</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerStart"
+        [(ngModel)]="startDate"
+        placeholder="Selecciona una fecha"
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+      <mat-datepicker #pickerStart></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Fecha Hasta -->
+    <mat-form-field appearance="fill">
+      <mat-label>Hasta</mat-label>
+      <input
+        matInput
+        [matDatepicker]="pickerEnd"
+        [(ngModel)]="endDate"
+        placeholder="Selecciona una fecha"
+      />
+      <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+      <mat-datepicker #pickerEnd></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Botones de Acción -->
+    <button mat-button color="accent" (click)="filterTransactions()">
+      <mat-icon>filter_list</mat-icon> Filtrar
+    </button>
+    <button mat-button color="accent" (click)="exportTransactions()">
+      <mat-icon>download</mat-icon> Exportar CSV
+    </button>
   </div>
 
   <!-- Tabla de Transacciones -->
@@ -19,14 +69,45 @@
       <span>Monto</span>
     </div>
 
-    <div *ngFor="let transaction of transactions" class="transaction-row">
+    <div
+      *ngFor="let transaction of displayedTransactions"
+      class="transaction-row"
+    >
       <span>{{ transaction.id }}</span>
       <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
       <span>{{ transaction.description }}</span>
-      <td>
-        <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-      </td>
+      <span>
+        <span
+          [ngClass]="'transaction-status ' + transaction.status"
+        >{{ transaction.status }}</span
+        >
+      </span>
       <span>{{ transaction.amount | currency }}</span>
     </div>
+  </div>
+
+  <!-- Paginación -->
+  <div class="pagination">
+    <button (click)="goToPage(1)" [disabled]="currentPage === 1">
+      <mat-icon>first_page</mat-icon>
+    </button>
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <span *ngFor="let page of [currentPage - 2, currentPage - 1, currentPage, currentPage + 1, currentPage + 2]">
+      <button
+        *ngIf="page > 0 && page <= totalPages"
+        (click)="goToPage(page)"
+        [class.active]="page === currentPage"
+      >
+        {{ page }}
+      </button>
+    </span>
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+      <mat-icon>last_page</mat-icon>
+    </button>
   </div>
 </div>

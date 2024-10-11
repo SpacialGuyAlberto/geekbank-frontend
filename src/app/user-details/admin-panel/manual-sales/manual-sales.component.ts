@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import {NgForOf} from "@angular/common";
+import {CurrencyPipe, DatePipe, NgForOf} from "@angular/common";
 
 @Component({
   selector: 'app-manual-sales',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    CurrencyPipe,
+    DatePipe
   ],
   templateUrl: './manual-sales.component.html',
   styleUrl: './manual-sales.component.css'

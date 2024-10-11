@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { NgIf } from '@angular/common';
+import {NgClass, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -11,7 +11,11 @@ import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
 import {UIStateServiceService} from "../uistate-service.service";
-
+import {Subscription} from "rxjs";
+import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
+import {SharedService} from "../shared.service";
+import {User} from "../models/User";
+import {BalanceComponent} from "../balance/balance.component";
 
 @Component({
   selector: 'app-navbar',
@@ -24,6 +28,9 @@ import {UIStateServiceService} from "../uistate-service.service";
     RouterModule,
     TranslateModule,
     SearchBarComponent,
+    NgClass,
+    NotificationBellComponent,
+    BalanceComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -33,20 +40,27 @@ export class NavbarComponent implements OnInit {
   selectedLanguage: string = 'en';
   isLanguageMenuOpen: boolean = false;
   showNavbar: boolean = true;
+  isMenuOpen: boolean = false;
   showSearchBar: boolean = true;
   showSearchModal: boolean = false;
+  showUserDetailsModal: boolean = false;
   searchQuery: string = '';
   isSmallScreen: boolean = false;
   searchResultsMessage: string = '';
+  navbarClass: string = '';
+  showMenuModal: boolean = false;
+  routerSubscription!: Subscription;
+  user: User | any;
+  inUserDetailsRoute: boolean = false;
 
   constructor(
     private authService: AuthService,
     protected router: Router,
     private cartService: CartService,
-    protected activatedRoute: ActivatedRoute,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
-    private uiStateService: UIStateServiceService
+    private uiStateService: UIStateServiceService,
+    private sharedService: SharedService
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -58,22 +72,51 @@ export class NavbarComponent implements OnInit {
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
 
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      const hiddenRoutes = ['/login', '/register'];
-      this.showSearchBar = !hiddenRoutes.includes(event.url);
+    this.routerSubscription = this.router.events.subscribe( event => {
+      if (event instanceof NavigationEnd){
+        this.updateNavBarStyle(this.router.url)
+        if (this.router.url.includes('/user-details')){
+          this.showUserDetailsModal = true;
+          this.inUserDetailsRoute = true;
+        } else {
+          this.showUserDetailsModal = false;
+          this.inUserDetailsRoute = false;
+        }
+      }
     });
 
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        const hiddenRoutes = ['/login', '/register'];
+        this.showSearchBar = !hiddenRoutes.includes(event.url);
+      });
+
     this.router.events.subscribe(() => {
-      const hiddenRoutes = ['/user-details', '/admin-panel'];
+      const hiddenRoutes = ['/admin-panel'];
       this.showNavbar = !hiddenRoutes.includes(this.router.url);
     });
 
-    this.cartService.cartItemCount$.subscribe(count => {
+    this.cartService.cartItemCount$.subscribe((count) => {
       this.cartItemCount = count;
       this.cd.detectChanges();
     });
+
+    this.authService.getUserDetails().subscribe(data => {
+      this.user = data;
+      console.log(data.email)
+      sessionStorage.setItem("email", data.email)
+      console.log(this.user);
+    });
+
+  }
+
+  updateNavBarStyle(url: string) : void {
+    if (url.includes('/user-details')){
+      this.navbarClass = 'navbar-user-details'
+    } else {
+      this.navbarClass = 'navbar'
+    }
   }
 
   useLanguage(language: string): void {
@@ -104,18 +147,34 @@ export class NavbarComponent implements OnInit {
   handleSearchResults(results: KinguinGiftCard[]): void {
     if (results.length > 0) {
       this.closeSearchModal();
-      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } }); // Navegar al HomeComponent con el parámetro de búsqueda
+      this.router.navigate(['/home'], { queryParams: { search: this.searchQuery } });
     } else {
       this.searchResultsMessage = 'No hay resultados para esta búsqueda';
     }
   }
 
   goToHome() {
-    this.uiStateService.setShowHighlights(true); // Restablece el valor de showHighlights a true
-    this.router.navigate(['/home']); // Redirige al HomeComponent
+    this.uiStateService.setShowHighlights(true);
+    this.router.navigate(['/home']);
   }
 
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth <= 768;
+  }
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  openMenuModal(): void {
+    this.showMenuModal = true;
+  }
+
+  closeMenuModal(): void {
+    this.showMenuModal = false;
+  }
+
+  selectTab(tab: string){
+    this.sharedService.emitTableAction(tab)
   }
 }

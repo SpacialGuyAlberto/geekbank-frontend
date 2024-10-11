@@ -1,0 +1,26 @@
+
+<div class="notification-bell-container" (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
+  <i class="fas fa-bell bell-icon" [ngClass]="bellIcon">
+    <span *ngIf="unreadCount > 0" class="badge">{{ unreadCount }}</span>
+  </i>
+
+  <div class="dropdown" *ngIf="isDropdownVisible">
+    <div class="dropdown-header">
+      Notificaciones
+      <button (click)="markAllAsRead()" [ngClass]="markAllButton">Marcar todas como leídas</button>
+    </div>
+    <div class="dropdown-content">
+      <div *ngFor="let notif of notifications" class="notification-item" [class.unread]="!notif.read">
+        <a (click)="openNotification(notif)" class="notification-link">
+          <img *ngIf="notif.imageUrl" [src]="notif.imageUrl" alt="Notification Image">
+          <p>{{ notif.message }}</p>
+          <small>{{ notif.timestamp | date:'short' }}</small>
+        </a>
+        <button (click)="removeNotification(notif.id)" class="remove-button">✖️</button>
+      </div>
+      <div *ngIf="notifications.length === 0" class="no-notifications">
+        No hay notificaciones.
+      </div>
+    </div>
+  </div>
+</div>

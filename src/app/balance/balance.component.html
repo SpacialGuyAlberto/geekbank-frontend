@@ -1,0 +1,23 @@
+<div class="balance-container">
+  <div class="balance-display" (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
+    <span class="balance-symbol">≈</span>
+    <span class="balance-amount">{{ balance | currency: 'EUR' }}</span>
+    <i class="fa-solid fa-wallet add-balance-icon"></i>
+  </div>
+
+  <div class="balance-dropdown" *ngIf="isDropdownVisible">
+    <div class="balance-info">
+      <span class="balance-label">MY BALANCE</span>
+      <h2 class="balance-amount-large">{{ balance | currency: 'EUR' }}</h2>
+    </div>
+    <div class="add-balance-section">
+      <label for="add-amount" class="add-balance-label">ADD BALANCE</label>
+      <input type="number" id="add-amount" class="add-balance-input" value="5" />
+      <button class="buy-button" (click)="comprar()">COMPRAR</button>
+    </div>
+    <!-- Botón para regalar balance -->
+    <div class="gift-balance-section">
+      <button class="gift-button" (click)="regalarBalance()">REGALAR BALANCE</button>
+    </div>
+  </div>
+</div>

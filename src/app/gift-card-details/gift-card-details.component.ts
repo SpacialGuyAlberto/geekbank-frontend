@@ -13,6 +13,8 @@ import {CartComponent} from "../cart/cart.component";
 import {CurrencyService} from "../currency.service";
 import {FormsModule} from "@angular/forms";
 import {AuthService} from "../auth.service";
+import {NotificationService} from "../services/notification.service";
+import {ToastrModule} from "ngx-toastr";
 
 @Component({
   selector: 'app-gift-card-details',
@@ -21,19 +23,21 @@ import {AuthService} from "../auth.service";
     CurrencyPipe,
     CommonModule,
     MatSnackBarModule,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrl: './gift-card-details.component.css'
 })
 export class GiftCardDetailsComponent implements OnInit {
 
-
   giftCard: KinguinGiftCard | undefined;
   isInCart: boolean = false;
   cartItemCount: number = 0;
   exchangeRate: number = 0;
   quantityInCart: number = 0;
+  notifMessage: string = '';
+  isFeedbackModalOpen: boolean = false;
+  feedbackMessage: string = '';
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -43,6 +47,7 @@ export class GiftCardDetailsComponent implements OnInit {
     private kinguinService: KinguinService,
     private router: Router,
     private cartService: CartService,
+    private notificationService: NotificationService,
     private snackBar: MatSnackBar,
     private animation: BackgroundAnimationService,
     private currencyService: CurrencyService
@@ -60,6 +65,21 @@ export class GiftCardDetailsComponent implements OnInit {
         this.checkIfInCart(data.kinguinId);
       });
     }
+  }
+
+  openFeedbackModal(): void {
+    this.isFeedbackModalOpen = true;
+  }
+
+  closeFeedbackModal(): void {
+    this.isFeedbackModalOpen = false;
+    this.feedbackMessage = '';
+  }
+
+  submitFeedback(): void {
+    console.log('Feedback enviado:', this.feedbackMessage);
+    // Aquí podrías implementar la lógica para enviar el feedback a la API
+    this.closeFeedbackModal();
   }
 
   // loadCartItems(): void {
@@ -95,7 +115,6 @@ export class GiftCardDetailsComponent implements OnInit {
     });
   }
 
-
   loadCartItemCount(): void {
     this.cartService.getCartItems().subscribe(items => {
       this.cartItemCount = items.reduce((count, item) => count + 1, 0)
@@ -113,6 +132,8 @@ export class GiftCardDetailsComponent implements OnInit {
         this.isInCart = false;
         this.quantityInCart = 0;
         this.emitCartItemCount();
+        this.notifMessage = `You removed ${giftCard.name} from cart.`
+        this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
         this.showSnackBar('Product removed from cart');
       });
     } else {
@@ -120,7 +141,9 @@ export class GiftCardDetailsComponent implements OnInit {
         this.isInCart = true;
         this.quantityInCart = 1;
         this.emitCartItemCount();
+        this.notifMessage = `You added ${giftCard.name} to cart.`
         this.showSnackBar('Product added to cart: ' + giftCard.kinguinId);
+        this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
       });
     }
     this.loadCartItemCount();

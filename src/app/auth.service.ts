@@ -6,6 +6,8 @@ import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 import {environment} from "../environments/environment";
 
+
+
 declare const google: any;
 
 @Injectable({
@@ -29,8 +31,14 @@ export class AuthService {
     );
   }
 
+  registerClientAsAdmin(email: string,  name: string): Observable<any> {
+    const url = `${this.apiUrl}/auth/registerUserByAdmin`; // Asegúrate de que este endpoint exista en tu backend
+    const body = { email, name };
+    return this.http.post(url, body, { observe: 'response' , responseType: 'text' as 'json' });
+  }
+
   activateUser(token: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}/activate?token=${token}`);
+    return this.http.get(`${this.baseUrl}/activate?token=${token}`, { observe: 'response' , responseType: 'text' as 'json' });
   }
 
   login(email: string, password: string): Observable<any> {
@@ -207,7 +215,6 @@ export class AuthService {
     sessionStorage.setItem('userId', authResult.userId);
     localStorage.setItem('email', authResult.email);
   }
-
 
   getUserId(): string {
     return localStorage.getItem('userId') || '';

@@ -11,6 +11,7 @@ import { TranslateModule, TranslateLoader } from "@ngx-translate/core";
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import {HttpLoaderFactory} from "./app.module";
+import {provideAnimations} from "@angular/platform-browser/animations";
 
 // Esta es la función de fábrica para la carga de archivos JSON de traducción.
 // export function HttpLoaderFactory(http: HttpClient) {
@@ -25,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(), // Proveedor para la hidratación del lado del cliente
     provideHttpClient(withFetch()), // Proveedor para HTTP con Fetch
     provideAnimationsAsync(), // Proveedor para animaciones asincrónicas
-
+    provideAnimations(),
     // Configuración de autenticación social con Google
     {
       provide: 'SocialAuthServiceConfig',

@@ -1,6 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Express Checkout Modal</title>
+
+  <!-- Google Fonts: Roboto, Open Sans y Press Start 2P -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&
+  family=Open+Sans:wght@400;600&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Tu archivo CSS -->
+<!--  <link rel="stylesheet" href="styles.css">-->
+</head>
+<body>
+<!-- Carousel Component -->
 <div class="highlights-carousel">
   <div class="carousel-track" id="carouselTrack">
-    <div *ngFor="let product of highlights" class="highlight-card">
+    <div *ngFor="let product of highlights" class="highlight-card" (click)="viewDetails(product)">
       <img [src]="product.coverImageOriginal || product.coverImage || product.screenshots[product.screenshots.length - 1]" [alt]="product.name" class="highlight-card-image">
       <div class="highlight-card-content">
         <h3 class="highlight-card-title">{{ product.name }}</h3>
@@ -9,7 +28,13 @@
     </div>
   </div>
 
-<!--  &lt;!&ndash; Flechas de control &ndash;&gt;-->
-<!--  <div class="carousel-control-prev" (click)="prevSlide()">&#10094;</div>-->
-<!--  <div class="carousel-control-next" (click)="nextSlide()">&#10095;</div>-->
+  <!-- Flechas de control -->
+<!--  <div class="carousel-control-prev" (click)="prevSlide()">-->
+<!--    <span class="material-icons">chevron_left</span>-->
+<!--  </div>-->
+<!--  <div class="carousel-control-next" (click)="nextSlide()">-->
+<!--    <span class="material-icons">chevron_right</span>-->
+<!--  </div>-->
 </div>
+</body>
+</html>

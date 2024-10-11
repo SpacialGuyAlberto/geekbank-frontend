@@ -50,7 +50,6 @@ export class HighlightsComponent implements OnInit {
     track.style.transform = `translateX(${amountToMove}px)`;
   }
 
-
   viewDetails(card: KinguinGiftCard): void {
     console.log('CARD ID: ' + card.productId);
     this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {

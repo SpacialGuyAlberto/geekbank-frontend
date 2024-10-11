@@ -1,0 +1,34 @@
+<div class="wishlist-container">
+  <h2>My Wishlist</h2>
+  <div *ngIf="wishedItems.length > 0; else emptyWishlist">
+    <div class="wishlist-item" *ngFor="let item of wishedItems">
+      <!-- Verificación condicional para asegurarse de que giftCard y coverImageOriginal existen -->
+      <img *ngIf="item.giftCard && item.giftCard.coverImageOriginal; else placeholderImage"
+           [src]="item.giftCard.coverImageOriginal"
+           [alt]="item.giftCard.name"
+           class="wishlist-image" />
+
+      <!-- Imagen por defecto si no existe coverImageOriginal -->
+      <ng-template #placeholderImage>
+        <img src="https://via.placeholder.com/150" alt="No Image Available" class="wishlist-image" />
+      </ng-template>
+
+      <div class="wishlist-details">
+        <!-- Mostrar el nombre del producto si existe -->
+        <h3>{{ item.giftCard?.name }}</h3>
+        <!-- Mostrar el precio -->
+        <p class="price">{{ item.wishedItem.price | currency }}</p>
+      </div>
+
+      <div class="wishlist-actions">
+        <button class="btn-remove" (click)="removeFromWishlist(item.wishedItem.id)">
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyWishlist>
+    <p class="empty-text">Your wishlist is currently empty.</p>
+  </ng-template>
+</div>

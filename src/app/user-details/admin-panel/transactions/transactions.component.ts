@@ -1,6 +1,19 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from "@angular/forms";
-import {CurrencyPipe, DatePipe, NgClass, NgForOf} from "@angular/common";
+import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
+import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
+import {Transaction, TransactionsService} from "../../../transactions.service";
+import {UserService} from "../../../user.service";
+import {User} from "../../../models/User";
+import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import {MatOptgroup, MatOption, MatSelect, MatSelectChange, MatSelectModule} from "@angular/material/select";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
+import {MatIconModule} from "@angular/material/icon";
+import {MatButtonModule} from "@angular/material/button";
+import {MatTableModule} from "@angular/material/table";
+import {MatPaginatorModule} from "@angular/material/paginator";
+
 
 @Component({
   selector: 'app-transactions',
@@ -10,39 +23,131 @@ import {CurrencyPipe, DatePipe, NgClass, NgForOf} from "@angular/common";
     DatePipe,
     CurrencyPipe,
     NgForOf,
-    NgClass
+    NgClass,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    MatOptgroup,
+    ReactiveFormsModule,
+    MatLabel,
+    NgStyle,
+    NgIf,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
   ],
   templateUrl: './transactions.component.html',
-  styleUrls: ['./transactions.component.css']
+  styleUrls: ['./transactions.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
-export class TransactionsComponent implements OnInit {
+export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
+  @Input() selectedUserFromClients : User | undefined;
   startDate: any;
+  displayedColumns: string[] = ['id', 'fecha', 'descripcion', 'estado', 'monto'];
+
+  users: User[] = [];
+  user: User | undefined;
   endDate: any;
   transactions: any[] = [];
+  usersControl = new FormControl('');
+  currentPage: number = 1;
+  displayedTransactions: Transaction[] = [];
+  itemsPerPage: number = 10;
+  totalPages: number = 0;
+  blockDropDown: boolean = false;
+
+  constructor(private transactionService: TransactionsService, private userService: UserService) {}
 
   ngOnInit() {
-    this.loadTransactions();
+    this.loadTransactions(1);
+    this.loadAllTransactions();
+    this.fetchAllUsers();
   }
 
-  // Cargar las transacciones (simulación de datos)
-  loadTransactions() {
-    this.transactions = [
-      { id: 1, clientName: 'Juan Pérez', timestamp: new Date(), description: 'Compra de productos', status: 'COMPLETED', amount: 120.50 },
-      { id: 2, clientName: 'Ana Gómez', timestamp: new Date(), description: 'Pago de servicio', status: 'PENDING', amount: 75.00 },
-      { id: 3, clientName: 'Carlos Díaz', timestamp: new Date(), description: 'Reembolso por devolución', status: 'REFUNDED', amount: 50.00 },
-      { id: 4, clientName: 'María López', timestamp: new Date(), description: 'Compra de productos', status: 'CANCELLED', amount: 40.25 }
-    ];
+  fetchAllUsers() {
+    this.userService.getUsers()
+      .subscribe(data => {
+        this.users = data;
+        console.log(' THESE ARE THE USERS: ' + this.users);
+      })
   }
 
-  // Función para filtrar transacciones
   filterTransactions() {
-    // Aquí iría la lógica para filtrar transacciones
     console.log('Filtrar transacciones');
   }
 
-  // Función para exportar transacciones como CSV
   exportTransactions() {
-    // Aquí iría la lógica para exportar transacciones
     console.log('Exportar transacciones como CSV');
   }
+
+  ngAfterViewInit(): void {
+    this.updateTotalPages();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedUserFromClients'] && this.selectedUserFromClients) {
+      this.fetchTransactionsForUser(this.selectedUserFromClients.id); // Cargar las transacciones para el cliente seleccionado
+      this.user = this.selectedUserFromClients;
+    }
+    // @ts-ignore
+    this.usersControl.setValue(this.selectedUserFromClients.id)
+    if (this.selectedUserFromClients){
+      this.blockDropDown = true;
+    }
+  }
+
+  protected readonly String = String;
+
+  onUserSelected(event: any): void {
+    const selectedUserId = event.value;
+    this.fetchTransactionsForUser(selectedUserId);
+  }
+
+  fetchTransactionsForUser(userId: number | undefined): void {
+    this.transactionService.getTransactionsById(userId).subscribe(data => {
+      this.transactions = data;
+      this.currentPage = 1; // Reinicia a la primera página cuando se selecciona un nuevo usuario
+      this.updateTotalPages(); // Actualiza el total de páginas basado en las transacciones obtenidas
+      this.updateDisplayedTransactions();
+    });
+  }
+
+  loadAllTransactions(): void {
+    this.transactionService.getTransactions().subscribe(data => {
+      this.transactions = data;
+      this.updateTotalPages(); // Actualiza el total de páginas para todas las transacciones
+    });
+  }
+
+  loadTransactions(page: number): void {
+    this.currentPage = page;
+    this.updateDisplayedTransactions(); // Actualiza las transacciones mostradas basadas en la página actual
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updateDisplayedTransactions();
+    }
+  }
+
+  updateDisplayedTransactions(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedTransactions = this.transactions.slice(startIndex, endIndex);
+  }
+
+  updateTotalPages(): void {
+    this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
+    console.log('Total de páginas:', this.totalPages);
+  }
+
 }

@@ -1,39 +1,50 @@
+<!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shopping Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--  <link rel="stylesheet" href="styles.css">-->
+</head>
+<body>
 <div class="graph-container">
-  <canvas id="graphCanvas"></canvas>
-<div class="cart-container">
-  <h2>Shopping Cart</h2>
-  <ul>
-    <li *ngFor="let item of cartItems" class="cart-item">
-      <div class="item-details">
-        <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
-        <p>Quantity: {{ item.cartItem.quantity }}</p>
-        <p [ngModel]="exchangeRate">Price: {{ (item.giftcard.price *  exchangeRate).toFixed(2)}} LPS</p>
-        <p [ngModel]="exchangeRate">Subtotal: {{ (item.cartItem.quantity * item.giftcard.price  * exchangeRate).toFixed(2)}} LPS</p> <!-- Precio total por ítem -->
-      </div>
-      <div class="item-actions">
-<!--        <button (click)="removeCartItem(Number(item.cartItem.productId))">Remove</button>-->
-        <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
-        <button (click)="incrementProductQuantity(item)">+</button>
-        <p class="quantity-display" >{{ item.cartItem.quantity }}</p>
-        <button (click)="decreaseProductQuantity(item)">-</button>
-      </div>
-    </li>
-  </ul>
+  <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
+</div>
+  <div class="cart-container">
+    <h2>Shopping Cart</h2>
+    <ul>
+      <li *ngFor="let item of cartItems" class="cart-item">
+        <div class="item-details">
+          <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
+          <p>Quantity: {{ item.cartItem.quantity }}</p>
+          <p>Price: {{ (item.giftcard.price * exchangeRate).toFixed(2)}} LPS</p>
+          <p>Subtotal: {{ (item.cartItem.quantity * item.giftcard.price * exchangeRate).toFixed(2)}} LPS</p> <!-- Precio total por ítem -->
+        </div>
+        <div class="item-actions">
+          <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
+          <button (click)="incrementProductQuantity(item)">+</button>
+          <p class="quantity-display">{{ item.cartItem.quantity }}</p>
+          <button (click)="decreaseProductQuantity(item)">-</button>
+        </div>
+      </li>
+    </ul>
 
-  <div class="total-price-section">
-    <h3>Total Price: {{ getTotalPrice() }} €</h3>
-    <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
+    <div class="total-price-section">
+      <h3>Total Price: {{ getTotalPrice() }} €</h3>
+      <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
+      <button mat-raised-button color="primary" (click)="openPaypalPaymentModal()">PAY WITH TIGO MONEY</button>
+    </div>
   </div>
-</div>
 
-<div *ngIf="showDialog" class="dialog-overlay">
-  <div class="dialog">
-    <p>No more items in the cart.</p>
-    <button (click)="closeDialog()">OK</button>
+  <div *ngIf="showDialog" class="dialog-overlay">
+    <div class="dialog">
+      <p>No more items in the cart.</p>
+      <button (click)="closeDialog()">OK</button>
+    </div>
   </div>
-</div>
 
-<app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>
-</div>
+  <app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>
+</body>
 </html>

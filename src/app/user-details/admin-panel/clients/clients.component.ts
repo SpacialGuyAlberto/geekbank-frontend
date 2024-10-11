@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, NgIterable, OnInit} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe} from "@angular/common";
 import {User} from "../../../models/User";
 import {UserService} from "../../../user.service";
 import {Transaction, TransactionsService} from "../../../transactions.service";
+import {TransactionsComponent} from "../transactions/transactions.component";
+import {CreateCustomerComponent} from "../create-customer/create-customer.component";
+import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
+import {RegisterComponent} from "../../../register/register.component";
 
 @Component({
   selector: 'app-clients',
@@ -17,26 +21,38 @@ import {Transaction, TransactionsService} from "../../../transactions.service";
     NgForOf,
     NgIf,
     NgClass,
-    UpperCasePipe
+    UpperCasePipe,
+    TransactionsComponent,
+    CreateCustomerComponent,
+    RegisterComponent
   ],
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent {
+export class ClientsComponent implements OnInit, AfterViewInit{
+  editMode: { [key: string]: boolean } = {};
   searchQuery: string = '';
-  selectedClient: any = null;
+  createNewCustomer: boolean = false;
+  selectedClient: User | undefined;
+  displayedUsers: User[] = [];
   users: User[] = [];
   transactions: Transaction[] = [];
   photo: string = "C:\\Users\\LuisA\\Documents\\GeekCoin\\geekbank-frontend\\src\\assets\\blank-profile-picture-973460_1280.png";
-
   currentPage: number = 1;
-  itemsPerPage: number = 5;
+  itemsPerPage: number = 20;
   totalPages: number = 0;
   visibleTransactions: Transaction[] = [];
+  activeTab: string | undefined;
+  filteredClients: (NgIterable<User> & NgIterable<any>) | undefined | null;
 
   constructor(private userService: UserService, private transactionService: TransactionsService){}
 
   ngOnInit() {
     this.fetchAllUsers()
+    this.updateDisplayedUsers();
+  }
+
+  ngAfterViewInit(): void {
+    this.updateTotalPages();
   }
 
   fetchAllUsers(){
@@ -47,60 +63,90 @@ export class ClientsComponent {
     })
   }
 
-  fetchTransactionsForUser(userId: number | undefined){
-    this.transactionService.getTransactionsById(userId).subscribe(data => {
-      this.transactions = data;
-      console.log(data);
-    })
-    console.log('Fetching transactions')
-  }
-
-  fetchTransactionsPerPage(userId: number | undefined){
-    this.transactionService.getTransactionsById(userId).subscribe(data => {
-      this.transactions = data;
-      this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
-      this.updateVisibleTransactions();
-    })
-    console.log('Fetching transactions')
-  }
-
-  updateVisibleTransactions(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.visibleTransactions = this.transactions.slice(startIndex, endIndex);
-  }
-
-
   get filteredUsers() {
+    if (this.searchQuery === '') {
+      this.updateDisplayedUsers()
+      return this.displayedUsers;
+    }
     return this.users.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
   }
 
-  showTransactions(client: User) {
-    this.selectedClient = client;
-    //this.fetchTransactionsForUser(client.id)
-    this.fetchTransactionsPerPage(client.id)
+  updateDisplayedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.displayedUsers = this.users.slice(startIndex, endIndex);
+    this.updateTotalPages();
   }
 
   addClient() {
     console.log('Agregar nuevo cliente');
+    this.createNewCustomer = true;
+  }
+
+  toggleCustomerCreation(){
+    this.createNewCustomer = !this.createNewCustomer;
+  }
+
+  // toggleProductDetails(product: KinguinGiftCard) {
+  //   if (product == this.selectedProduct){
+  //     this.selectedProduct = undefined;
+  //   }
+  //   else {
+  //     this.selectedProduct = product;
+  //   }
+  // }
+  toggleEdit(field: string): void {
+    // Si el campo ya está en modo edición, al hacer clic en el lápiz, se guardan los cambios y se sale del modo edición.
+    if (this.editMode[field]) {
+      // Aquí puedes implementar la lógica para guardar los cambios en el servidor si es necesario.
+    }
+    this.editMode[field] = !this.editMode[field];
+  }
+
+  toggleUserDetails(client: User) {
+    if (client == this.selectedClient){
+      this.selectedClient = undefined;
+    } else {
+      this.selectedClient = client;
+    }
+    if (this.createNewCustomer){
+      this.toggleCustomerCreation();
+    }
   }
 
   goToPage(page: number): void {
     this.currentPage = page;
-    this.updateVisibleTransactions();
+    //this.updateVisibleTransactions();
   }
 
   previousPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updateVisibleTransactions();
+      //this.updateVisibleTransactions();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updateVisibleTransactions();
+      //this.updateVisibleTransactions();
     }
+  }
+
+  showClientDetails(client: User) {
+    this.selectedClient = client;
+    if (this.createNewCustomer){
+      this.toggleCustomerCreation();
+    }
+  }
+
+
+  closeClientDetails() {
+
+  }
+
+  updateTotalPages(): void {
+    this.totalPages = Math.ceil(this.users.length / this.itemsPerPage);
+    console.log('Total de páginas:', this.totalPages);
   }
 }

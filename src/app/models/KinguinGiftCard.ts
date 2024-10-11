@@ -1,6 +1,7 @@
 // src/app/services/models/KinguinGiftCard.ts
 
 export interface KinguinGiftCard {
+  imageUrl: string;
   name: string;
   description: string;
   coverImage: string;
@@ -34,6 +35,7 @@ export interface KinguinGiftCard {
   ageRating: string;
   images: Images;
   updatedAt: string;
+  wished: boolean;
 }
 
 export interface Screenshot {

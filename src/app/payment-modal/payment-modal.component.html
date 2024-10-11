@@ -1,0 +1,11 @@
+<!-- src/app/components/payment-modal/payment-modal.component.html -->
+
+<h2 mat-dialog-title>Realizar Pago con TIGO MONEY</h2>
+
+<mat-dialog-content>
+  <app-tigo-payment [cartItems]="data.cartItems" [totalPrice]="data.totalPrice"></app-tigo-payment>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClose()">Cerrar</button>
+</mat-dialog-actions>

@@ -2,17 +2,31 @@
   <!-- Ventas Pendientes -->
   <div class="pending-sales">
     <h2>Ventas Manuales Pendientes</h2>
-    <div class="sales-list">
-      <div class="sale-item" *ngFor="let sale of pendingSales">
-        <div class="sale-info">
-          <p><strong>ID:</strong> {{ sale.id }}</p>
-          <p><strong>Plataforma:</strong> {{ sale.platform }}</p>
-          <p><strong>Producto:</strong> {{ sale.product }}</p>
-          <p><strong>Monto:</strong> {{ sale.amount }}</p>
-          <p><strong>Fecha:</strong> {{ sale.date }}</p>
-        </div>
-        <button class="complete-sale-btn" (click)="completeSale(sale.id)">Completar</button>
-      </div>
-    </div>
+    <table class="sales-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Plataforma</th>
+        <th>Producto</th>
+        <th>Monto</th>
+        <th>Fecha</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let sale of pendingSales">
+        <td>{{ sale.id }}</td>
+        <td>{{ sale.platform }}</td>
+        <td>{{ sale.product }}</td>
+        <td>{{ sale.amount | currency }}</td>
+        <td>{{ sale.date | date: 'dd-MM-yyyy' }}</td>
+        <td>
+          <button class="complete-sale-btn" (click)="completeSale(sale.id)">
+            <i class="fas fa-check"></i> Completar
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>

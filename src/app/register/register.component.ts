@@ -1,6 +1,6 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input} from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HttpClientModule, HttpResponse} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { AuthService } from '../auth.service';
@@ -21,6 +21,7 @@ import {response} from "express";
   ],
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
+  @Input() isAdmin: boolean = false;
   @ViewChild('nameInput') nameInput!: ElementRef;
   @ViewChild('emailInput') emailInput!: ElementRef;
   @ViewChild('passwordInput') passwordInput!: ElementRef;
@@ -46,34 +47,53 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     // this.animation.initializeGraphAnimation()
+
   }
 
   onSubmit() {
     this.submitted = true; // Marcar que se ha intentado enviar el formulario
 
     // Si la contraseña no es válida, no continuar
-    // if (!this.isPasswordValid()) {
-    //   this.message = 'Password must be at least 6 characters';
-    //   this.messageClass = 'error-message';
-    //   return;
-    // }
+    if (!this.isPasswordValid()) {
+      this.message = 'Password must be at least 6 characters';
+      this.messageClass = 'error-message';
+      return;
+    }
 
     // Intentar registrar solo si todo es válido
-    this.authService.register(this.email, this.password, this.name).subscribe(
-      response => {
+    // this.authService.register(this.email, this.password, this.name).subscribe(
+    //   response => {
+    //     if (response.status === 200) {
+    //       this.message = 'Registration successful! \n Please check your email to activate your account.';
+    //       this.messageClass = 'success-message';
+    //     } else {
+    //       this.message = 'Registration failed. Please try again.';
+    //       this.messageClass = 'error-message';
+    //     }
+    //   },
+    //   error => {
+    //     this.message = 'Registration failed. Please try again.';
+    //     this.messageClass = 'error-message';
+    //   }
+    // );
+    this.authService.register(this.email, this.password, this.name).subscribe({
+      next: (response: HttpResponse<any>) => {
+        console.log('Respuesta completa:', response);
         if (response.status === 200) {
-          this.message = 'Registration successful! \n Please check your email to activate your account.';
+          this.message = 'Registration successful! \\n Please check your email to activate your account.';
           this.messageClass = 'success-message';
+          this.resetForm();
         } else {
           this.message = 'Registration failed. Please try again.';
           this.messageClass = 'error-message';
         }
       },
-      error => {
+      error: error => {
+        console.error('Error:', error);
         this.message = 'Registration failed. Please try again.';
         this.messageClass = 'error-message';
       }
-    );
+    });
   }
 
   ngAfterViewInit(): void {
@@ -278,4 +298,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
 
 
   protected readonly SubmitEvent = SubmitEvent;
+
+  private resetForm() {
+
+  }
 }

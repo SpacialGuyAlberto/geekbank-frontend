@@ -1,0 +1,81 @@
+<!-- Footer -->
+<footer [ngClass]="footerClass">
+  <div class="footer-top">
+    <div class="footer-container">
+
+      <!-- Información de Contacto -->
+      <div [ngClass]="footerSection">
+        <h2>Contact</h2>
+        <p>Adelgundenstraße 25, Nürnberg</p>
+        <p>+4917653747</p>
+        <p>Email: <a >lalberto&#64;gmail.com</a></p>
+      </div>
+
+      <!-- Enlaces Útiles -->
+      <div [ngClass]="footerSection">
+        <h2>Useful Links</h2>
+        <ul>
+          <li><a href="/acerca-de">About us</a></li>
+          <li><a href="/terminos">Terms and conditions</a></li>
+          <li><a href="/privacidad">Privacy Policy</a></li>
+          <li><a href="/faq">FAQ</a></li>
+        </ul>
+      </div>
+
+      <!-- Categorías de Productos -->
+      <div [ngClass]="footerSection">
+        <h2>Categoríes</h2>
+        <ul>
+          <li><a href="/categoria1">Videogames</a></li>
+          <li><a href="/categoria2">Software</a></li>
+          <li><a href="/categoria3">Fashion</a></li>
+          <li><a href="/categoria4">Utilities</a></li>
+        </ul>
+      </div>
+
+      <!-- Redes Sociales -->
+      <div [ngClass]="footerSection">
+        <h2>Follow us</h2>
+        <div [ngClass]="socialClass">
+          <a href="https://facebook.com" target="_blank" aria-label="Facebook">
+            <i class="fab fa-facebook-f facebook"></i>
+          </a>
+          <a href="https://twitter.com" target="_blank" aria-label="Twitter">
+            <i class="fab fa-twitter twitter"></i>
+          </a>
+          <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+            <i class="fab fa-instagram instagram"></i>
+          </a>
+          <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+            <i class="fab fa-linkedin-in linkedin"></i>
+          </a>
+        </div>
+      </div>
+
+      <div [ngClass]="footerSection">
+        <h2>Suscríbe</h2>
+        <form [ngClass]="newsletter">
+          <input type="email" placeholder="Tu correo electrónico" required>
+          <button type="submit">Suscribirse</button>
+        </form>
+      </div>
+
+      <div [ngClass]="footerSection">
+        <h2>Pay with</h2>
+        <div [ngClass]="paymentClass">
+          <i class="fa-solid fa-credit-card credit-icon"></i>
+          <i class="fa-brands fa-cc-paypal paypal-icon"></i>
+          <i class="fa-solid fa-piggy-bank piggybank-icon"></i>
+          <i class="fa-brands fa-bitcoin bitcoin-icon"></i>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div [ngClass]="footerDivider"></div>
+
+  <div class="footer-bottom">
+    <p>&copy; 2024 Astralis. Todos los derechos reservados.</p>
+  </div>
+</footer>

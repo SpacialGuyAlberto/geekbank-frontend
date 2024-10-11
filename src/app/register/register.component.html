@@ -54,8 +54,6 @@
 
       <button type="button" *ngIf="currentStep < 3" (click)="nextStep()">Continue</button>
       <button type="submit" *ngIf="currentStep === 3">Register</button>
-
-
     </form>
 
     <p *ngIf="currentStep === 3">Do you already have an account? <a routerLink="/login">Sign in →</a>.</p>

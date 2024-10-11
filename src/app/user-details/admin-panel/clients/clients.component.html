@@ -1,64 +1,156 @@
-<div class="clients-dashboard scrollable">
-  <!-- Sección de búsqueda y agregar nuevo cliente -->
-  <div class="search-add-container">
-    <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" class="search-bar" />
-    <button class="add-client-btn" (click)="addClient()">+ Nuevo Cliente</button>
-  </div>
-
-  <!-- Lista de clientes -->
-  <div class="clients-list-container">
-    <div class="client-cards-container">
-      <div *ngFor="let client of filteredUsers" class="client-card" (click)="showTransactions(client)">
-        <div class="client-photo-container">
-          <!-- Si el cliente no tiene foto, usa el avatar por defecto -->
-          <img [src]="'assets/blank-profile-picture-973460_1280.png'" alt="{{ client.name }}" class="client-photo" />
-        </div>
-        <div class="client-info">
-          <h3 class="client-name">{{ client.name }}</h3>
-          <p>Última actividad: {{ client.email }} min</p>
-        </div>
-      </div>
+<div class="clients-dashboard">
+  <div class="top-controls">
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar cliente..." [(ngModel)]="searchQuery" />
+      <i class="fas fa-search"></i>
     </div>
-  </div>
-
-  <div class="transactions-container">
-    <!-- Sección de transacciones (oculta por defecto, visible al hacer clic en un cliente) -->
-    <div *ngIf="selectedClient" class="transactions-list">
-      <h2>Transacciones de {{ selectedClient.name }}</h2>
-
-      <!-- Si no hay transacciones, muestra el mensaje -->
-      <div *ngIf="!visibleTransactions.length" class="no-transactions">
-        No transactions for this customer.
-      </div>
-
-      <!-- Tabla de transacciones -->
-      <div *ngIf="visibleTransactions.length" class="transaction-table">
-        <div class="transaction-header">
-          <span>ID de Transacción</span>
-          <span>Fecha</span>
-          <span>Descripción</span>
-          <span>Estado</span>
-          <span>Monto</span>
-        </div>
-
-        <div *ngFor="let transaction of visibleTransactions" class="transaction-row">
-          <span>{{ transaction.id }}</span>
-          <span>{{ transaction.timestamp | date: 'dd-MM-yyyy' }}</span>
-          <span>{{ transaction.description }}</span>
-          <td>
-            <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-          </td>
-          <span>{{ transaction.amount | currency }}</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="pagination" *ngIf="totalPages > 1">
-    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
-    <button *ngFor="let page of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)" [class.active]="currentPage === (i + 1)">
-      {{ i + 1 }}
+    <button class="add-client-btn" (click)="addClient()" *ngIf="!createNewCustomer">
+      <i class="fas fa-user-plus"></i> Nuevo Cliente
     </button>
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+  </div>
+
+  <div class="main-content">
+    <div class="clients-list" [ngClass]="{'full-grid': !selectedClient}">
+      <h2>Clientes</h2>
+      <div class="client-cards-list">
+        <div *ngFor="let client of filteredUsers"
+             class="client-card"
+             (click)="toggleUserDetails(client)"
+             [ngClass]="{'selected' : client === selectedClient}">
+          <div class="client-avatar">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="client-info">
+            <h3 class="client-name">{{ client.name }}</h3>
+            <p>Email: {{ client.email }}</p>
+            <p>Balance: {{ client.account.balance | currency }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="pagination">
+        <button (click)="goToPage(1)" [disabled]="currentPage === 1">
+          <i class="fas fa-angle-double-left"></i>
+        </button>
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">
+          <i class="fas fa-angle-left"></i>
+        </button>
+        <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
+          <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+        </span>
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-angle-right"></i>
+        </button>
+        <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+          <i class="fas fa-angle-double-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="client-details" *ngIf="selectedClient" [ngClass]="{'visible': selectedClient}">
+      <button class="close-btn" (click)="closeClientDetails()"><i class="fas fa-times"></i></button>
+      <h2>Detalles de {{ selectedClient?.name }}</h2>
+      <div class="client-info-details">
+        <dl>
+          <!-- Campo Email -->
+          <div class="detail-item">
+            <dt>Email:</dt>
+            <dd *ngIf="!editMode['email']">{{ selectedClient?.email }}</dd>
+            <dd *ngIf="editMode['email']">
+              <input [(ngModel)]="selectedClient.email" type="text" />
+            </dd>
+            <button class="edit-icon" (click)="toggleEdit('email')">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+          </div>
+          <!-- Campo Teléfono -->
+          <div class="detail-item" *ngIf="selectedClient?.phoneNumber">
+            <dt>Teléfono:</dt>
+            <dd *ngIf="!editMode['phoneNumber']">{{ selectedClient?.phoneNumber }}</dd>
+            <dd *ngIf="editMode['phoneNumber']">
+              <input [(ngModel)]="selectedClient.phoneNumber" type="text" />
+            </dd>
+            <button class="edit-icon" (click)="toggleEdit('phoneNumber')">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+          </div>
+          <!-- Campo Rol -->
+          <div class="detail-item">
+            <dt>Rol:</dt>
+            <dd *ngIf="!editMode['role']">{{ selectedClient?.role }}</dd>
+            <dd *ngIf="editMode['role']">
+              <input [(ngModel)]="selectedClient.role" type="text" />
+            </dd>
+            <button class="edit-icon" (click)="toggleEdit('role')">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+          </div>
+          <!-- Campo Estado -->
+          <div class="detail-item">
+            <dt>Estado:</dt>
+            <dd *ngIf="!editMode['enabled']">{{ selectedClient?.enabled ? 'Activo' : 'Inactivo' }}</dd>
+            <dd *ngIf="editMode['enabled']">
+              <select [(ngModel)]="selectedClient.enabled">
+                <option [ngValue]="true">Activo</option>
+                <option [ngValue]="false">Inactivo</option>
+              </select>
+            </dd>
+            <button class="edit-icon" (click)="toggleEdit('enabled')">
+              <span class="material-symbols-outlined">edit</span>
+            </button>
+          </div>
+        </dl>
+      </div>
+
+      <div class="account-details" *ngIf="selectedClient?.account">
+        <h3>Detalles de la Cuenta</h3>
+        <dl>
+          <div class="detail-item">
+            <dt>Número de Cuenta:</dt>
+            <dd>{{ selectedClient.account.accountNumber }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Saldo:</dt>
+            <dd>{{ selectedClient.account.balance | currency }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Estado de la Cuenta:</dt>
+            <dd>{{ selectedClient.account.status }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Tipo de Cuenta:</dt>
+            <dd>{{ selectedClient.account.accountType }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Límite Diario:</dt>
+            <dd>{{ selectedClient.account.dailyLimit | currency }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Verificación:</dt>
+            <dd>{{ selectedClient.account.verificationStatus }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Puntos de Lealtad:</dt>
+            <dd>{{ selectedClient.account.loyaltyPoints }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Fecha de Creación:</dt>
+            <dd>{{ selectedClient.account.createdDate | date:'short' }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Última Actualización:</dt>
+            <dd>{{ selectedClient.account.updatedDate | date:'short' }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Componente de transacciones -->
+      <app-transactions [selectedUserFromClients]="selectedClient"></app-transactions>
+    </div>
+
+    <!-- Componente para crear nuevo cliente -->
+    <div class="customer-creation" *ngIf="createNewCustomer">
+      <app-create-customer></app-create-customer>
+    </div>
   </div>
 </div>

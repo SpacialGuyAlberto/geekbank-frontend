@@ -3,5 +3,108 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 @tailwind base;
+/* Elimina o comenta esta línea */
+
+/* styles.css */
+
 @tailwind components;
 @tailwind utilities;
+/* styles.css */
+
+/* Cambiar el color del fondo del elemento seleccionado */
+.custom-select-panel .mat-option-text {
+  color: #ff7a00 !important;  /* Cambia el color del texto */
+}
+
+.custom-select-panel .mat-option:hover {
+  background-color: #ff7a00 !important;  /* Cambia el fondo al hacer hover */
+  color: white !important;  /* Cambia el color del texto cuando se selecciona */
+}
+
+.custom-select-panel .mat-option.mat-selected {
+  color: #ff7a00 !important;  /* Color del texto de la opción seleccionada */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variables de Color */
+:root {
+  /* Paleta de Colores Galácticos y Psicodélicos */
+  --primary-bg-color: rgba(0, 212, 255, 0.2); /* Azul profundo casi negro */
+  --secondary-bg-color: rgba(10, 10, 35, 0.85); /* Azul profundo con transparencia */
+  --accent-color: #ff6ec7; /* Rosa vibrante */
+  --accent-green: #39ff14; /* Verde neón */
+  --accent-purple: #8e44ad; /* Púrpura intenso */
+  --accent-blue: #1e90ff; /* Azul brillante */
+  --text-color: #e0e0e0; /* Gris claro para texto */
+  --border-color: rgba(255, 255, 255, 0.1); /* Borde muy sutil */
+
+  /* Botones con Linear Gradients */
+  --button-add-bg: linear-gradient(45deg, #39ff14, #8e44ad); /* Verde neón a púrpura */
+  --button-add-hover-bg: linear-gradient(45deg, #2ed71f, #7a3ea0); /* Verde más oscuro a púrpura oscuro */
+  --button-buy-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Azul brillante a rosa vibrante */
+  --button-buy-hover-bg: linear-gradient(45deg, #176ab8, #e75fa5); /* Azul oscuro a rosa más oscuro */
+
+  /* Mensaje de No Loggeado */
+  --error-bg: rgba(255, 105, 180, 0.1); /* Rosa claro con transparencia */
+  --error-border: rgba(255, 105, 180, 0.7); /* Rosa vibrante con transparencia */
+  --error-text: #ff69b4; /* Rosa brillante para texto */
+
+  --overlay-bg: rgba(0, 0, 0, 0.5); /* Fondo de superposición */
+
+  /* Tipografía */
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-secondary: 'Roboto', sans-serif;
+  --font-retro: 'Press Start 2P', cursive;
+
+  /* Transiciones */
+  --transition-speed: 0.3s;
+
+  --success-color: #39ff14;
+  --error-color: #ff69b4;
+  /* Sombras */
+  --box-shadow-light: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombras más profundas */
+  --box-shadow-hover: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.3);
+
+  /* Gradientes */
+  --gradient-bg: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(136, 214, 108, 0.2));
+
+  --primary-color: #0B0D19; /* Fondo principal oscuro */
+  --highlight-color: #1E90FF; /* Azul más brillante para botones y enlaces */
+
+  --bell-icon-unread-default: linear-gradient(45deg, #1e90ff, #ff6ec7);
+  --bell-icon-unread-admin: linear-gradient(45deg, #d74507, #e0e011);
+  --bell-icon-hover-default: linear-gradient(45deg, #ca0a91, #103758);
+  --bell-icon-hover-admin: linear-gradient(45deg, #d1931f, #c9541c);
+
+  --card-border: rgba(255, 255, 255, 0.6); /* Borde visible */
+  --card-hover-border: rgba(255, 255, 255, 0.9);
+  --price-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Fondo suave debajo del precio */
+  --shadow-color: rgba(0, 0, 0, 0.7); /* Sombra más oscura para mejor contraste */
+
+  /*--footer-bg-color: linear-gradient(135deg, rgba(0, 212, 255, 0.2), #0a0a23);; !* Fondo oscuro *!*/
+  --footer-bg-color: #010313;;
+  --footer-user-details: linear-gradient(135deg, #06373d, #1a0116);
+  --footer-admin-panel: linear-gradient(135deg, #000000, #1f1c1d);
+  --footer-text-color: #88D66C; /* Texto claro */
+  --footer-link-color: #c7eded; /* Enlaces en cian */
+  --footer-link-hover: #1E90FF; /* Color de enlace al hacer hover */
+  --divider-color: #1E90FF;
+  --transition-speed: 0.3s;
+  --font-primary: 'Roboto', sans-serif;
+
+
+  --mark-all-button-default: linear-gradient(45deg, #103758, #ca0a91);
+  --mark-all-button-default-hover: linear-gradient(45deg, #164f80, #e30ca3);
+  --mark-all-button-admin: linear-gradient(45deg, #c9541c, #d1931f);
+  --mark-all-button-admin-hover: linear-gradient(45deg, #ca6420, #c9541c);
+
+  --navbar-user-details-bg-color: linear-gradient(135deg, #06373d,  #1a0116);
+
+  --buy-balance-button: linear-gradient(135deg, #315415, #2eb810)
+
+}

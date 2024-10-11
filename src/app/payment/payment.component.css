@@ -1,0 +1,24 @@
+/* src/app/components/payment/payment.component.css */
+.payment-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.payment-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.payment-container form div {
+  margin-bottom: 15px;
+}
+
+.payment-container label {
+  margin-bottom: 5px;
+}
+
+.payment-container input,
+.payment-container select {
+  padding: 8px;
+  font-size: 16px;
+}

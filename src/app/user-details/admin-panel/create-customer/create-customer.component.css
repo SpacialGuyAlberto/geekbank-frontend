@@ -1,0 +1,113 @@
+.create-client-container {
+  width: 100%;
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #333; /* Fondo #333 */
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  color: #fff;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #ff7a00; /* Tono naranja */
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #ffcc00; /* Tono naranja claro */
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #2d2d2d;
+  border: 1px solid #555;
+  color: #fff;
+  border-radius: 0.3rem;
+}
+
+.form-group input:focus {
+  border-color: #ff7a00;
+  outline: none;
+}
+
+.input-container {
+  position: relative;
+}
+
+.valid-feedback,
+.invalid-feedback {
+  position: absolute;
+  right: 10px;
+  top: calc(50% - 10px);
+  font-size: 1.2rem;
+}
+
+.valid-feedback {
+  color: #28a745; /* Verde para válido */
+}
+
+.invalid-feedback {
+  color: #dc3545; /* Rojo para inválido */
+}
+
+.password-strength-container {
+  margin-top: 0.5rem;
+}
+
+.password-strength-bar {
+  height: 5px;
+  border-radius: 5px;
+}
+
+.low-strength {
+  width: 33%;
+  background-color: #dc3545; /* Rojo */
+}
+
+.medium-strength {
+  width: 66%;
+  background-color: #ffc107; /* Amarillo */
+}
+
+.high-strength {
+  width: 100%;
+  background-color: #28a745; /* Verde */
+}
+
+.password-strength-text {
+  margin-top: 0.5rem;
+  color: #fff;
+}
+
+button {
+  padding: 0.8rem 1.5rem;
+  background-color: #ff7a00; /* Tono naranja */
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e66a00;
+}
+
+.success-message {
+  color: #28a745;
+  margin-top: 1rem;
+}
+
+.error-message {
+  color: #dc3545;
+  margin-top: 1rem;
+}

@@ -1,126 +1,127 @@
-/* Contenedor del filtro con diseño azulado y ajustado al ancho */
+/* Contenedor Principal */
 .filter-container {
-  width: 100%;
-  max-width: 250px; /* Ancho ajustado al de las gift cards */
-  margin: 0 auto;
-  background-color: rgba(5, 15, 35, 0.8); /* Fondo oscuro azulado */
-  border: 2px solid #3A9DFF; /* Borde azul claro */
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra suave */
-  color: #3A9DFF; /* Color del texto azul claro */
-  font-family: 'Press Start 2P', cursive;
-  text-align: center;
-  border-radius: 10px; /* Bordes redondeados */
-  position: relative;
-  z-index: 1;
-  overflow: hidden;
-  transition: all 0.3s ease; /* Transiciones suaves */
-}
-
-/* Efecto de resplandor al hover más sutil */
-.filter-container:hover {
-  box-shadow: 0 0 15px #3A9DFF, 0 0 30px #3A9DFF; /* Resplandor azul más suave */
-  border-color: #7FBFFF; /* Cambia el borde a un azul más brillante */
-}
-
-/* Estilos de texto y encabezados */
-.filters-container h3 {
-  color: #6EC1FF;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  text-shadow: 0 0 5px #6EC1FF, 0 0 10px #6EC1FF; /* Efecto más suave */
-}
-
-/* Ajuste de las etiquetas y campos para alineación y consistencia */
-.filters-container label {
-  display: inline-block; /* Asegura que el label se ajuste al texto */
-  width: auto; /* Se adapta al tamaño del contenido */
-  margin-bottom: 8px;
-  font-size: 0.9rem; /* Tamaño de fuente ajustado para mejor lectura */
-  text-align: left; /* Alineación a la izquierda */
-  color: #6EC1FF; /* Color del texto */
-}
-
-.filters-container select,
-.filters-container input[type="range"],
-.filters-container input[type="checkbox"] {
-  display: block;
-  width: 100%;
-  margin-bottom: 15px;
-  background-color: rgba(5, 15, 35, 0.6); /* Fondo semi-transparente */
-  color: #6EC1FF;
-  border: 1px solid #3A9DFF;
-  padding: 8px;
-  font-family: 'VT323', monospace;
-  outline: none;
-  transition: all 0.3s ease;
-  border-radius: 5px;
-}
-
-/* Efecto de hover en inputs más sutil */
-.filters-container select:hover,
-.filters-container input[type="range"]:hover,
-.filters-container input[type="checkbox"]:hover {
-  background-color: rgba(5, 15, 35, 0.9);
-  border-color: #7FBFFF; /* Cambio de borde a azul más brillante */
-}
-
-/* Botón de aplicar filtros con un efecto más cristalino y espacial */
-.filters-container button {
-  width: 100%;
-  padding: 12px 20px;
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro translúcido */
-  border: 2px solid rgba(255, 255, 255, 0.3); /* Borde sutil */
-  color: rgba(255, 255, 255, 0.7); /* Color de texto blanco translúcido */
-  font-family: 'Press Start 2P', cursive;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  border-radius: 10px; /* Bordes redondeados */
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4); /* Efecto de neón */
+  padding: 20px;
+  background: none; /* Fondo translúcido */
+  backdrop-filter: blur(15px); /* Aumenta el desenfoque */
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25); /* Sombra más sutil */
+  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.filters-container button:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido más claro al hacer hover */
-  border-color: rgba(255, 255, 255, 0.5); /* Borde más brillante en hover */
-  color: rgba(255, 255, 255, 1); /* Texto blanco brillante en hover */
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Aumenta el resplandor al hacer hover */
+/* Contenedor de Filtros */
+.filters-wrapper {
+  width: 100%;
+  max-width: 400px;
+  padding: 30px;
+  background: none; /* Fondo translúcido */
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); /* Sombra más ligera */
 }
 
-.filters-container button:active {
-  background-color: #12223C; /* Color de fondo más oscuro cuando se presiona */
+/* Título */
+.filters-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: rgba(30, 198, 189, 0.71); /* Títulos en rosa psicodélico */
+  font-size: 1.6em;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.filters-container button:focus {
+/* Grupos de Filtros */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  color: #f0f0f0;
+}
+
+/* Etiquetas */
+.filter-group label {
+  margin-bottom: 5px;
+  font-size: 1em;
+  color: #e0e0e0;
+}
+
+/* Inputs y Selects */
+.filter-group input[type="checkbox"],
+.filter-group select,
+.filter-group input[type="range"] {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.15); /* Fondo más transparente */
+  color: #ffffff;
+  font-size: 1em;
   outline: none;
-  box-shadow: 0 0 5px rgba(255, 255, 255, 0.5); /* Resplandor en el foco */
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.filter-group input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+}
+
+/* Efectos al pasar el ratón */
+.filter-group select:hover,
+.filter-group input[type="range"]:hover,
+.filter-group input[type="checkbox"]:hover {
+  background: rgba(255, 255, 255, 0.25); /* Incrementa la transparencia al interactuar */
+  transform: scale(1.02);
+}
+
+/* Rango de Precios */
+.price-value {
+  margin-top: 5px;
+  font-size: 0.95em;
+  color: #c0c0c0;
+  text-align: right;
+}
+
+/* Botón de Aplicar Filtros */
+.apply-filters-button {
+  width: 100%;
+  padding: 14px;
+  background: rgba(107, 115, 255, 0.8); /* Fondo semi-transparente con degradado */
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.apply-filters-button:hover {
+  background: rgba(87, 91, 255, 0.9); /* Fondo ligeramente más opaco al pasar el ratón */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.apply-filters-button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Responsividad */
-@media (max-width: 768px) {
-  .filter-container {
-    max-width: 90%;
-  }
-
-  .filters-container button {
-    font-size: 0.9rem;
-    padding: 10px 15px;
-  }
-}
-
 @media (max-width: 480px) {
-  .filter-container {
-    max-width: 100%;
+  .filters-wrapper {
+    padding: 25px;
   }
 
-  .filters-container button {
-    font-size: 1rem;
-    padding: 12px 20px;
+  .filters-title {
+    font-size: 1.3em;
+  }
+
+  .filter-group {
+    margin-bottom: 18px;
+  }
+
+  .apply-filters-button {
+    padding: 12px;
+    font-size: 1em;
   }
 }

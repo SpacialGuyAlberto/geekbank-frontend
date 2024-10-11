@@ -1,0 +1,230 @@
+/* src/app/components/notification-bell/notification-bell.component.css */
+
+.notification-bell-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.bell-icon-default, .bell-icon-admin {
+  font-size: 1.5rem; /* 24px */
+  color: #ffffff;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.bell-icon-default.unread {
+  background: var(--bell-icon-unread-default); /* Azul suave para indicar nuevas notificaciones */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bell-icon-default.unread, .bell-icon-admin.unread {
+  /* Mantener la escala del ícono con la transición */
+  transform: scale(1.1);
+}
+
+.bell-icon-admin.unread {
+  background: var(--bell-icon-unread-admin);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bell-icon-default:hover {
+  background: var(--bell-icon-hover-default);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: scale(1.1);
+}
+
+.bell-icon-admin:hover {
+  color: #2980b9; /* Azul más oscuro al pasar el mouse */
+  transform: scale(1.2);
+}
+
+/* Badge de notificaciones con colores neutros y sin animaciones */
+.badge {
+  position: absolute;
+  top: -0.5rem; /* Ajusta la posición superior */
+  right: -0.75rem; /* Ajusta la posición derecha */
+  background: rgba(231, 76, 60, 1); /* Rojo sólido para visibilidad */
+  color: white;
+  border-radius: 50%;
+  padding: 0.125rem 0.375rem; /* 2px 6px */
+  font-size: 0.75rem; /* 12px */
+  font-weight: bold;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  z-index: 2000; /* Asegurar que el badge esté por encima del ícono */
+}
+
+
+.bell-icon-default .badge {
+  background-clip: border-box;
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: #ffffff;
+  text-fill-color: #ffffff;
+}
+/* Dropdown estilizado con efecto de vidrio sutil */
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 2.1875rem; /* 35px */
+  width: 21.875rem; /* 350px */
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.625rem; /* 10px */
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.1); /* 0 4px 12px */
+  backdrop-filter: blur(0.5rem); /* blur(8px) */
+  -webkit-backdrop-filter: blur(0.5rem);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.2); /* 1px solid */
+  z-index: 1000;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Encabezado del dropdown con fondo sutil */
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.25rem; /* 12px 20px */
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.3); /* 1px solid */
+  background: rgba(255, 255, 255, 0.05);
+  border-top-left-radius: 0.625rem; /* 10px */
+  border-top-right-radius: 0.625rem; /* 10px */
+  color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mark-all-button-default {
+  background: var(--mark-all-button-default); /* Azul semi-transparente */
+  border: none;
+  border-radius: 0.3125rem; /* 5px */
+  padding: 0.3125rem 0.625rem; /* 5px 10px */
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mark-all-button-admin {
+  background: rgba(52, 152, 219, 0.8); /* Azul semi-transparente */
+  border: none;
+  border-radius: 0.3125rem; /* 5px */
+  padding: 0.3125rem 0.625rem; /* 5px 10px */
+  color: #ffffff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.mark-all-button-default:hover {
+  background: var(--mark-all-button-default-hover); /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-0.125rem); /* translateY(-2px) */
+}
+
+.mark-all-button-admin:hover {
+  background: rgba(41, 128, 185, 0.9); /* Azul más oscuro al pasar el mouse */
+  transform: translateY(-0.125rem); /* translateY(-2px) */
+}
+
+.dropdown-content {
+  max-height: 25rem; /* 400px */
+  overflow-y: auto;
+  padding: 0.625rem 0; /* 10px 0 */
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Estilo de cada notificación */
+.notification-item {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  transition: background 0.3s ease;
+}
+
+.notification-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.notification-item.unread {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #ffffff;
+  width: 100%;
+}
+
+.notification-link:hover {
+  text-decoration: underline;
+}
+
+.notification-link img {
+  width: 2.5rem; /* 40px */
+  height: 2.5rem; /* 40px */
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.9375rem; /* 15px */
+  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px solid */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1); /* 0 2px 4px */
+}
+
+.notification-link p {
+  margin: 0;
+  font-size: 0.875rem; /* 14px */
+  flex-grow: 1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.notification-link small {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.75rem; /* 12px */
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: rgba(231, 76, 60, 0.9); /* Rojo suave para el botón de eliminar */
+  font-size: 1rem; /* 16px */
+  cursor: pointer;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.remove-button:hover {
+  color: rgba(231, 76, 60, 1); /* Rojo más intenso al pasar el mouse */
+  transform: scale(1.2);
+}
+
+.no-notifications {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 1.25rem; /* 20px */
+  font-size: 0.875rem; /* 14px */
+  font-family: 'Arial', sans-serif;
+}
+
+@media (max-width: 30rem) { /* 480px */
+  .dropdown {
+    width: 56.25rem; /* 90vw -> 90% of 16rem (assuming 1rem = 16px) */
+    right: 3.125rem; /* 5vw -> 5% of 16rem */
+  }
+
+  .notification-link img {
+    width: 1.875rem; /* 30px */
+    height: 1.875rem; /* 30px */
+    margin-right: 0.625rem; /* 10px */
+  }
+
+  .dropdown-header {
+    padding: 0.625rem 0.9375rem; /* 10px 15px */
+  }
+
+  .mark-all-button {
+    padding: 0.1875rem 0.5rem; /* 3px 8px */
+    font-size: 0.75rem; /* 12px */
+  }
+}

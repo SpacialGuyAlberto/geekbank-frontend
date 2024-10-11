@@ -1,0 +1,30 @@
+<!--&lt;!&ndash; verify-mfa.component.html &ndash;&gt;-->
+<!--<div>-->
+<!--  <h2>Verificar Código MFA</h2>-->
+<!--  <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()">-->
+<!--    <label>-->
+<!--      Email:-->
+<!--      <input formControlName="email" type="email" />-->
+<!--    </label>-->
+<!--    <div *ngIf="verifyForm.get('email')?.invalid && verifyForm.get('email')?.touched">-->
+<!--      Email válido es requerido.-->
+<!--    </div>-->
+
+<!--    <label>-->
+<!--      Código MFA:-->
+<!--      <input formControlName="mfaCode" type="text" />-->
+<!--    </label>-->
+<!--    <div *ngIf="verifyForm.get('mfaCode')?.invalid && verifyForm.get('mfaCode')?.touched">-->
+<!--      Código MFA de 6 dígitos es requerido.-->
+<!--    </div>-->
+
+<!--    <button type="submit" [disabled]="verifyForm.invalid">Verificar</button>-->
+<!--  </form>-->
+
+<!--  <div *ngIf="message" class="success">-->
+<!--    {{ message }}-->
+<!--  </div>-->
+<!--  <div *ngIf="error" class="error">-->
+<!--    {{ error }}-->
+<!--  </div>-->
+<!--</div>-->

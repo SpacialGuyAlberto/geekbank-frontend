@@ -2,9 +2,9 @@
 .recommendations {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Dos columnas por defecto */
-  grid-gap: 2rem;
-  row-gap: 3rem;
-  width: 70%;
+  grid-gap: 1rem;
+  row-gap: 1rem;
+  width: 90%;
   border-radius: 0.625rem; /* 10px en rem */
   justify-items: center;
 }
@@ -16,13 +16,48 @@
 .gift-card {
   width: 90%; /* Ocupa todo el espacio de la celda */
   max-width: 15.625rem; /* 250px en rem */
-  background-color: rgba(2, 21, 38, 0.8);
+  background: #000000; /* Fondo negro base */
   border-radius: 0.625rem; /* 10px en rem */
   border: 0.0625rem solid rgba(255, 255, 255, 0.3); /* 1px en rem */
   padding: 0.9375rem; /* 15px en rem */
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px en rem */
+  position: relative;
+  overflow: hidden;
+}
+
+.gift-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 1px;
+  background: linear-gradient(135deg,
+  rgba(139, 0, 139, 0.8) 20%,  /* Dark Magenta */
+  rgba(75, 0, 130, 0.8) 20%,   /* Indigo */
+  rgba(0, 128, 128, 0.8) 40%,  /* Dark Cyan */
+  rgba(184, 134, 11, 0.8) 60%, /* Dark Goldenrod */
+  rgba(25, 25, 112, 0.8) 80%); /* Midnight Blue */
+  background-size: 300% 300%; /* Tamaño mayor para animación fluida */
+  z-index: -1; /* Para que quede detrás del contenido */
+  animation: animatedBorder 7s ease infinite;
+  filter: blur(0px); /* Blur más suave para un brillo metálico */
+}
+
+
+@keyframes animatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .gift-card:hover {
