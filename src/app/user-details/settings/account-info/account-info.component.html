@@ -3,6 +3,59 @@
 <div class="account-info-dashboard">
   <!-- Menú de Pestañas -->
   <!-- ... tu código existente para las pestañas -->
+  <div class="tabs-menu" *ngIf="!isSmallScreen">
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'details'}"
+      (click)="selectTab('details')"
+    >
+      <i class="fas fa-user"></i> Detalles de la Cuenta
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'addresses'}"
+      (click)="selectTab('addresses')"
+    >
+      <i class="fas fa-map-marker-alt"></i> Direcciones
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'payment'}"
+      (click)="selectTab('payment')"
+    >
+      <i class="fas fa-credit-card"></i> Métodos de Pago
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'preferences'}"
+      (click)="selectTab('preferences')"
+    >
+      <i class="fas fa-cog"></i> Preferencias
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'transactions'}"
+      (click)="selectTab('transactions')"
+    >
+      <i class="fas fa-money-check-alt"></i> Transacciones
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedTab === 'wishList'}"
+      (click)="selectTab('wishList')"
+    >
+      <i class="fa-solid fa-heart"></i> Wish List
+    </button>
+    <button
+      class="tab-button"
+      *ngIf="user && user.role === 'ADMIN'"
+      [ngClass]="{'active': selectedTab === 'admin-tools'}"
+      (click)="selectTab('admin-tools')"
+    >
+      <i class="fas fa-tools"></i> Herramientas de Admin
+    </button>
+  </div>
+
 
   <!-- Contenido de las Pestañas -->
   <div class="content-grid">
@@ -95,6 +148,66 @@
 
     <!-- Resto de las secciones (Direcciones, Métodos de Pago, etc.) -->
     <!-- ... tu código existente para otras secciones -->
+
+
+    <div class="content-section" *ngIf="selectedTab === 'addresses'">
+      <h2>Direcciones</h2>
+      <ul>
+        <li *ngFor="let address of user.addresses">
+          {{ address.street }}, {{ address.city }}
+          <div>
+            <i class="fas fa-edit" (click)="editAddress(address)"></i>
+            <i class="fas fa-trash" (click)="deleteAddress(address)"></i>
+          </div>
+        </li>
+      </ul>
+      <button (click)="addNewAddress()">Agregar Nueva Dirección</button>
+    </div>
+
+    <!-- Métodos de Pago -->
+    <div class="content-section" *ngIf="selectedTab === 'payment'">
+      <app-payment-methods></app-payment-methods>
+    </div>
+
+    <!-- Preferencias de Comunicación -->
+    <div class="content-section" *ngIf="selectedTab === 'preferences'">
+      <h2>Preferencias de Comunicación</h2>
+      <form (ngSubmit)="updateCommunicationPreferences()">
+        <label>
+          <input type="checkbox" [(ngModel)]="user.preferences.promotions" name="promotions" />
+          Recibir Promociones
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="user.preferences.orderUpdates" name="orderUpdates" />
+          Recibir Actualizaciones de Pedidos
+        </label>
+        <button type="submit">Actualizar Preferencias</button>
+      </form>
+      <div *ngIf="showSuccessMessage" class="success-message">
+        Preferencias actualizadas exitosamente.
+      </div>
+    </div>
+
+    <div class="content-section" *ngIf="selectedTab === 'transactions'">
+      <app-orders></app-orders>
+    </div>
+
+    <div class="content-section" *ngIf="selectedTab === 'wishList'">
+      <app-wishlist></app-wishlist>
+    </div>
+  </div>
+
+  <div class="content-section admin-tools" *ngIf="selectedTab === 'admin-tools' && user.role === 'ADMIN'">
+    <h2>Herramientas de Administrador</h2>
+    <ul>
+      <li>
+        <a (click)="navigateToAdminPanel()">
+          <i class="fas fa-tools"></i> Panel de Administración
+        </a>
+      </li>
+      <!-- Puedes agregar más herramientas aquí -->
+    </ul>
+  </div>
   </div>
 
   <!-- Mensaje de Error General -->
@@ -112,4 +225,3 @@
 
   <!-- Resto de tu plantilla -->
   <!-- ... -->
-</div>
