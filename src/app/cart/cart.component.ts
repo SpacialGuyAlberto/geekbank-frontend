@@ -10,7 +10,7 @@ import {CurrencyService} from "../currency.service";
 import {FormsModule} from "@angular/forms";
 import {MatIcon} from "@angular/material/icon";
 import {MatDialog} from "@angular/material/dialog";
-import {PaymentModalComponent} from "../payment-modal/payment-modal.component";
+
 
 @Component({
   selector: 'app-cart',
@@ -126,20 +126,20 @@ export class CartComponent implements OnInit {
     console.log(totalCount);
   }
 
-  openPaypalPaymentModal(): void {
-    const dialogRef = this.dialog.open(PaymentModalComponent, {
-      width: '600px', // Ajusta el ancho según tus necesidades
-      data: {
-        cartItems: this.cartItems,
-        totalPrice: this.getTotalPrice()
-      }
-    });
+  // openPaypalPaymentModal(): void {
+  //   const dialogRef = this.dialog.open(PaymentModalComponent, {
+  //     width: '600px', // Ajusta el ancho según tus necesidades
+  //     data: {
+  //       cartItems: this.cartItems,
+  //       totalPrice: this.getTotalPrice()
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('El modal de pago se ha cerrado');
-      // Puedes realizar acciones adicionales después de cerrar el modal
-    });
-  }
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     console.log('El modal de pago se ha cerrado');
+  //     // Puedes realizar acciones adicionales después de cerrar el modal
+  //   });
+  // }
 
   protected readonly Number = Number;
 }
