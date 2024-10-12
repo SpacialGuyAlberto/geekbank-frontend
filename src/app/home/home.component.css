@@ -209,7 +209,7 @@
     grid-template-columns: 1fr;
     grid-gap: 1rem;
     padding: -7rem;
-    margin-left: -2rem;
+    margin-left: -3rem;
   }
   .highlights-section, .recommendations-section {
     width: 90%; /* Reducir el ancho proporcionalmente en pantallas pequeñas */
@@ -220,6 +220,7 @@
   .main-gift-cards {
     grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr)); /* 150px in rem */
     grid-gap: 0.625rem; /* 10px in rem */
+    max-width: 85%;
   }
 
   .gift-card-image {

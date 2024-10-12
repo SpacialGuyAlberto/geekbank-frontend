@@ -221,6 +221,9 @@ body, html {
 
 /* Tipografía y Responsividad */
 @media (max-width: 768px) {
+  .gift-cards-container {
+    grid-template-columns: repeat(2, 2fr);
+  }
   .gift-card-title {
     font-size: 1rem;
   }

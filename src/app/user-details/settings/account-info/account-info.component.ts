@@ -185,7 +185,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.showSuccessMessage = false;
       }, 3000);
-      // Opcional: Actualizar los datos del usuario nuevamente si es necesario
+
     } else {
       this.showPasswordModal = false;
     }
@@ -230,7 +230,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       if (this.editingEmail) {
         this.detailsBody.email = this.user.email;
       } else {
-        delete this.detailsBody.email;
+        this.user.email = this.detailsBody.email;
+        this.detailsBody.email = this.user.email = this.detailsBody.email;
       }
       if (this.validationErrors.email) {
         delete this.validationErrors.email;
@@ -240,7 +241,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       if (this.editingPhone) {
         this.detailsBody.phoneNumber = this.user.phone;
       } else {
-        delete this.detailsBody.phoneNumber;
+        this.user.phone = this.detailsBody.phoneNumber;
+        this.detailsBody.phoneNumber = this.user.phone = this.detailsBody.phoneNumber;
       }
       if (this.validationErrors.phoneNumber) {
         delete this.validationErrors.phoneNumber;
