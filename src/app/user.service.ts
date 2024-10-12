@@ -24,6 +24,12 @@ export class UserService {
    * @returns Observable con la respuesta del servidor.
    */
   updateDetails(details: DetailsBody): Observable<HttpResponse<any>> {
+    if (!details.email) {
+      const storedEmail = sessionStorage.getItem('currentUserEmail');
+      if (storedEmail) {
+        details.email = storedEmail; // Recupera y asigna el email
+      }
+    }
     return this.http.post<HttpResponse<any>>(`${this.baseUrl}/update-user-details`, details, { observe: 'response' }).pipe(
       tap(response => {
         const token = response.headers.get('Authorization');

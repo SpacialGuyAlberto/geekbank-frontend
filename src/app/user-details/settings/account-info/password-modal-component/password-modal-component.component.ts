@@ -53,18 +53,16 @@ export class PasswordModalComponent {
     this.isLoading = true;
     const isValid = await this.validatePassword();
     if (isValid) {
-      // Agregar la contraseña al detailsBody si es necesario
       this.detailsBody.password = this.password;
 
       this.userService.updateDetails(this.detailsBody).subscribe(
         response => {
           console.log('Detalles actualizados exitosamente', response);
           this.isLoading = false;
-          this.onConfirm.emit(true); // Emitir evento de confirmación exitosa
+          this.onConfirm.emit(true);
         },
         error => {
           console.error('Error al actualizar los detalles', error);
-          // Verificar si el backend envió un mensaje de error específico
           if (error.error && error.error.error) {
             this.errorMessage = error.error.error;
           } else {
