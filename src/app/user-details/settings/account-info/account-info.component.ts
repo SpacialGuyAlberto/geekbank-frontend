@@ -10,7 +10,6 @@ import { StatisticsComponent } from "../../admin-panel/statistics/statistics.com
 import { ProductsComponent } from "../../admin-panel/products/products.component";
 import { OrdersComponent } from "../orders/orders.component";
 import { AuthService } from "../../../auth.service";
-import { BackgroundAnimationService } from "../../../background-animation.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { WishlistComponent } from "../wishlist/wishlist.component";
 import { Subscription } from "rxjs";

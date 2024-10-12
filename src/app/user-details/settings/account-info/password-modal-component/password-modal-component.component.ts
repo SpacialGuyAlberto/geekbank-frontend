@@ -7,6 +7,8 @@ import { UserService } from "../../../../user.service";
 import { AuthService } from "../../../../auth.service";
 import { User } from "../../../../models/User";
 import { DetailsBody } from "../account-info.component";
+import {NotificationService} from "../../../../services/notification.service";
+import {MatSnackBarModule, MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-password-modal',
@@ -22,12 +24,13 @@ export class PasswordModalComponent {
   errorMessage: string = '';
   showModal: boolean = true;
   isLoading: boolean = false;
+  imageurl: string = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
   @Output() onConfirm = new EventEmitter<boolean>();
   @Input() user: User | any;
   @Input() detailsBody: DetailsBody | any;
 
-  constructor(private userService: UserService, private authService: AuthService) { }
+  constructor(private userService: UserService, private authService: AuthService, private notificationService: NotificationService,  private snackBar: MatSnackBar,) { }
 
   validatePassword(): Promise<boolean> {
     return new Promise((resolve) => {
@@ -60,6 +63,8 @@ export class PasswordModalComponent {
           console.log('Detalles actualizados exitosamente', response);
           this.isLoading = false;
           this.onConfirm.emit(true);
+          this.notificationService.addNotification('Your information was succesfully updated', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')
+          this.showSnackBar('Information updated succesfully.');
         },
         error => {
           console.error('Error al actualizar los detalles', error);
@@ -78,5 +83,11 @@ export class PasswordModalComponent {
 
   closeModal() {
     this.onConfirm.emit(false); // Emitir evento de cancelación
+  }
+
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
   }
 }

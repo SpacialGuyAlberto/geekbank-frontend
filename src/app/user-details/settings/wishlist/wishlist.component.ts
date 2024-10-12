@@ -3,6 +3,11 @@ import { CurrencyPipe, NgForOf, NgIf } from "@angular/common";
 import { KinguinGiftCard } from "../../../models/KinguinGiftCard";
 import { WishListService } from "../../../wish-list.service";
 import { WishItemWithGiftcard } from "../../../models/WishItem";
+import {MatIcon} from "@angular/material/icon";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import {NotificationService} from "../../../services/notification.service";
+import {async} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-wishlist',
@@ -10,7 +15,9 @@ import { WishItemWithGiftcard } from "../../../models/WishItem";
   imports: [
     NgIf,
     NgForOf,
-    CurrencyPipe
+    CurrencyPipe,
+    MatIcon,
+    MatSnackBarModule
   ],
   templateUrl: './wishlist.component.html',
   styleUrls: ['./wishlist.component.css'] // Corregido a 'styleUrls'
@@ -18,9 +25,13 @@ import { WishItemWithGiftcard } from "../../../models/WishItem";
 export class WishlistComponent implements OnInit {
 
   wishedItems: WishItemWithGiftcard[] = [];
+  notifyMessage: String = '';
   userId: number = 0;
 
-  constructor(private wishListService: WishListService) {}
+  constructor(private wishListService: WishListService,
+              private notificationService: NotificationService,
+              private snackBar: MatSnackBar,
+              private router: Router,) {}
 
   ngOnInit(): void {
     this.loadItems();
@@ -46,15 +57,42 @@ export class WishlistComponent implements OnInit {
   }
 
   removeFromWishlist(itemId: number): void {
-    this.wishListService.removeWishItem(itemId).subscribe(
-      () => {
-        console.log(`Ítem con ID ${itemId} eliminado de la lista de deseos.`);
-        this.loadItems(); // Recargar la lista después de eliminar un ítem
+    let element = this.wishedItems.find( item => item.wishedItem.id === itemId);
+
+    this.wishListService.removeWishItem(itemId).subscribe(() => {
+        this.notifyMessage = `The product ${itemId} was deleted from the wish list`;
+        this.notificationService.addNotification(this.notifyMessage.toString(), element?.giftCard.coverImageOriginal);
+        this.showSnackBar(`The product ${itemId} was deleted from the wish list`)
+        this.loadItems();
       },
       error => {
         console.error(`Error al eliminar el ítem con ID ${itemId}:`, error);
       }
     );
   }
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
 
+  viewDetails(card: KinguinGiftCard): void {
+    console.log('CARD ID: ' + card.productId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+      if (success) {
+        console.log('Navigation successful');
+      } else {
+        console.log('Navigation failed');
+      }
+    });
+  }
+
+
+  getGiftCard(itemId: string ) : void {
+    this.wishListService.getWishItem(itemId).subscribe();
+  }
+  protected readonly Number = Number;
 }
+
+
+

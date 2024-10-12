@@ -49,12 +49,10 @@ export class GiftCardDetailsComponent implements OnInit {
     private cartService: CartService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
-    private animation: BackgroundAnimationService,
     private currencyService: CurrencyService
   ) { }
 
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
     this.fetchCurrencyExchange();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {

@@ -35,7 +35,7 @@ export class NotificationService {
   }
 
   // Agregar una nueva notificación
-  addNotification(message: string, image: string) {
+  addNotification(message: string, image: string | undefined) {
     const newNotification: Notification = {
       id: ++this.idCounter,
       message,
