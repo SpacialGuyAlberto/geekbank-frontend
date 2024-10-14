@@ -38,6 +38,7 @@
     "@ngx-translate/core": "^15.0.0",
     "@ngx-translate/http-loader": "^8.0.0",
     "@paypal/paypal-js": "^8.1.2",
+    "@rinminase/ng-charts": "^4.3.0",
     "@stomp/stompjs": "^7.0.0",
     "@swimlane/ngx-charts": "^20.5.0",
     "@types/gapi": "^0.0.47",

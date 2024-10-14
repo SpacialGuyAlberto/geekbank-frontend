@@ -1,9 +1,9 @@
 <div class="wishlist-container">
   <h2>My Wishlist</h2>
   <div *ngIf="wishedItems.length > 0; else emptyWishlist">
-    <div class="wishlist-item" *ngFor="let item of wishedItems" (click)="viewDetails(item.giftCard)">
+    <div class="wishlist-item" *ngFor="let item of wishedItems" >
       <!-- Verificación condicional para asegurarse de que giftCard y coverImageOriginal existen -->
-      <img *ngIf="item.giftCard && item.giftCard.coverImageOriginal; else placeholderImage"
+      <img (click)="viewDetails(item.giftCard)" *ngIf="item.giftCard && item.giftCard.coverImageOriginal; else placeholderImage"
            [src]="item.giftCard.coverImageOriginal"
            [alt]="item.giftCard.name"
            class="wishlist-image" />

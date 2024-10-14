@@ -1,0 +1,63 @@
+<div class="feedback-dashboard">
+  <!-- Controles superiores -->
+  <div class="top-controls">
+    <div class="search-bar">
+<!--      <input type="text" placeholder="Buscar feedback..." [(ngModel)]="filterCriteria" (input)="filterFeedbacks()" />-->
+      <i class="fas fa-search"></i>
+    </div>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content">
+    <!-- Lista de feedbacks -->
+    <div class="feedback-list" [ngClass]="{'full-grid': !selectedFeedback}">
+      <h2>Feedbacks</h2>
+      <div class="feedback-cards-list">
+        <div *ngFor="let feedback of feedbacks"
+             class="feedback-card"
+             (click)="selectFeedback(feedback)"
+             [ngClass]="{'selected' : feedback === selectedFeedback}">
+          <div class="feedback-avatar">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="feedback-info">
+            <h3 class="feedback-product">{{ feedback.productId }}</h3>
+            <p>{{ feedback.message }}</p>
+            <p>Puntuación: {{ feedback.score }}</p>
+            <p>Usuario: {{ feedback.user?.name }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detalles del feedback seleccionado -->
+    <div class="feedback-details" *ngIf="selectedFeedback" [ngClass]="{'visible': selectedFeedback}">
+      <button class="close-btn" (click)="closeFeedbackDetails()"><i class="fas fa-times"></i></button>
+      <h2>Detalles del Feedback</h2>
+      <div class="feedback-info-details">
+        <dl>
+          <div class="detail-item">
+            <dt>Producto:</dt>
+            <dd>{{ selectedFeedback?.productId }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Puntuación:</dt>
+            <dd>{{ selectedFeedback?.score }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Mensaje:</dt>
+            <dd>{{ selectedFeedback?.message }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Usuario:</dt>
+            <dd>{{ selectedFeedback?.user?.name }}</dd>
+          </div>
+          <div class="detail-item">
+            <dt>Fecha:</dt>
+<!--            <dd>{{ selectedFeedback?.createdAt | date:'short' }}</dd>-->
+          </div>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>

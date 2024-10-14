@@ -47,18 +47,17 @@
 
     <ng-template #notLoggedInMessage>
       <div class="not-logged-in-message">
-        <h2>No has iniciado sesión.</h2>
-        <p>Por favor, inicia sesión para agregar productos al carrito.</p>
+        <h2>You are not logged in.</h2>
+        <p>Please log in to add products to the cart.</p>
         <button (click)="redirectToLogin()" class="btn login-btn">
           <i class="material-icons">login</i>
-          Iniciar Sesión
+          Log in
         </button>
       </div>
     </ng-template>
   </div>
 </div>
 
-<!-- Modal de Feedback -->
 <div class="modal" *ngIf="isFeedbackModalOpen">
   <div class="modal-content">
     <h2>Deja tu feedback</h2>

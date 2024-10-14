@@ -13,6 +13,10 @@ import { Chart } from 'chart.js';
 import { BackgroundAnimationService } from "../../background-animation.service";
 import { ManualSalesComponent } from "./manual-sales/manual-sales.component";
 import { interval } from 'rxjs';
+import {FeedbackListComponent} from "./feedback-list/feedback-list.component";
+import {EmployeeDashboardComponent} from "./employee-dashboard/employee-dashboard.component";
+import {FinancialDashboardComponent} from "./financial-dashboard/financial-dashboard.component";
+import {PromotionSenderComponent} from "./promotion-sender/promotion-sender.component";
 
 @Component({
   selector: 'app-admin-panel',
@@ -30,6 +34,10 @@ import { interval } from 'rxjs';
     TransactionMonitorComponent,
     StatisticsComponent,
     NgIf,
+    FeedbackListComponent,
+    EmployeeDashboardComponent,
+    FinancialDashboardComponent,
+    PromotionSenderComponent,
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
@@ -75,32 +83,35 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   createDynamicChart() {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-    this.chart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: Array.from({ length: 20 }, (_, i) => `T-${i + 1}`), // Genera etiquetas "T-1", "T-2", etc.
-        datasets: [{
-          label: 'Transacciones en vivo',
-          data: Array.from({ length: 20 }, () => this.getRandomTransactionValue()), // Valores iniciales aleatorios
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          fill: true,
-          tension: 0.4
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
+    if(ctx){
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({ length: 20 }, (_, i) => `T-${i + 1}`), // Genera etiquetas "T-1", "T-2", etc.
+          datasets: [{
+            label: 'Transacciones en vivo',
+            data: Array.from({ length: 20 }, () => this.getRandomTransactionValue()), // Valores iniciales aleatorios
+            borderColor: 'rgba(75, 192, 192, 1)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: true,
+            lineTension: 0.4
+          }]
         },
-        animation: {
-          duration: 1000,
-          easing: 'easeInOutQuad'
+        options: {
+          scales: {
+            yAxes: [{ // Reemplaza 'y' por 'yAxes'
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          },
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutQuad'
+          }
         }
-      }
-    });
-
+      });
+    }
     interval(2000).subscribe(() => {
       this.updateChart();
     });
@@ -113,13 +124,11 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   // Actualiza el gráfico con nuevos datos de transacciones
   updateChart() {
-    if (this.chart) {
-      // Elimina el primer dato y añade un nuevo valor aleatorio
-      this.chart.data.datasets[0].data.shift();
-      this.chart.data.datasets[0].data.push(this.getRandomTransactionValue());
-      this.chart.update();
-    }
+    this.chart?.data?.datasets?.[0]?.data?.shift();
+    this.chart?.data?.datasets?.[0]?.data?.push(this.getRandomTransactionValue());
+    this.chart?.update();
   }
+
 
   ngAfterViewInit() {
     this.createDynamicChart();

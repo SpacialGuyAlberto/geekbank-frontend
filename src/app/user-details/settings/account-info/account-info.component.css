@@ -79,6 +79,7 @@
 .tab-button:hover {
   background: rgba(255, 255, 255, 0.2); /* Hover translúcido */
   color: #FFD700; /* Texto dorado en hover */
+  border-radius: 1rem;
 }
 
 .hamburger-button {
@@ -111,7 +112,7 @@
   background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
   padding: 2rem;
   border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  backdrop-filter: blur(20px); /* Efecto vidrioso */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
   width: 90%;
   max-width: 400px;
