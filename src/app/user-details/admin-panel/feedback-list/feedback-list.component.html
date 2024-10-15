@@ -21,10 +21,10 @@
             <i class="fas fa-comments"></i>
           </div>
           <div class="feedback-info">
-            <h3 class="feedback-product">{{ feedback.productId }}</h3>
+            <h3 class="feedback-product">{{ feedback.giftCardId }}</h3>
             <p>{{ feedback.message }}</p>
             <p>Puntuación: {{ feedback.score }}</p>
-            <p>Usuario: {{ feedback.user?.name }}</p>
+            <p>Usuario: {{ feedback.userId }}</p>
           </div>
         </div>
       </div>
@@ -38,7 +38,7 @@
         <dl>
           <div class="detail-item">
             <dt>Producto:</dt>
-            <dd>{{ selectedFeedback?.productId }}</dd>
+            <dd>{{ selectedFeedback?.giftCardId }}</dd>
           </div>
           <div class="detail-item">
             <dt>Puntuación:</dt>
@@ -50,7 +50,7 @@
           </div>
           <div class="detail-item">
             <dt>Usuario:</dt>
-            <dd>{{ selectedFeedback?.user?.name }}</dd>
+            <dd>{{ selectedFeedback?.userId }}</dd>
           </div>
           <div class="detail-item">
             <dt>Fecha:</dt>

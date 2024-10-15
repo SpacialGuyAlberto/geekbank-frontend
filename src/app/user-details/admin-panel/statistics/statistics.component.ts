@@ -63,48 +63,51 @@ export class StatisticsComponent implements AfterViewInit {
 
   createSalesChart() {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'],
-        datasets: [{
-          label: 'Ventas mensuales',
-          data: [100, 120, 150, 100, 180, 220, 300, 350, 400],
-          backgroundColor: '#ffcc00', // Color de las barras
-          borderColor: '#ffcc00',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#555' // Color de las líneas de la cuadrícula
-            },
-            ticks: {
-              color: '#fff' // Color de las etiquetas del eje Y
-            }
-          },
-          x: {
-            ticks: {
-              color: '#fff' // Color de las etiquetas del eje X
-            }
-          }
+    if (ctx){
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep'],
+          datasets: [{
+            label: 'Ventas mensuales',
+            data: [100, 120, 150, 100, 180, 220, 300, 350, 400],
+            backgroundColor: '#ffcc00', // Color de las barras
+            borderColor: '#ffcc00',
+            borderWidth: 1
+          }]
         },
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff' // Color del texto de la leyenda
-            }
+        options: {
+          responsive: true,
+          scales: {
+            yAxes: [{
+              gridLines: {
+                color: '#555' // Color de las líneas de la cuadrícula
+              },
+              ticks: {
+                fontColor: '#fff', // Color de las etiquetas del eje Y
+                beginAtZero: true,
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff' // Color de las etiquetas del eje X
+              }
+            }]
           },
-          title: {
-            display: false
+          plugins: {
+            legend: {
+              labels: {
+                color: '#fff' // Color del texto de la leyenda
+              }
+            },
+            title: {
+              display: false
+            }
           }
         }
-      }
-    });
+      });
+    }
+
   }
 
 
@@ -144,25 +147,29 @@ export class StatisticsComponent implements AfterViewInit {
 
   createTrafficSourcesChart() {
     const ctx = document.getElementById('trafficSourcesChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Redes Sociales', 'Email', 'Búsqueda Orgánica', 'Anuncios'],
-        datasets: [{
-          label: 'Visitas por Canal',
-          data: [150, 200, 300, 100],
-          backgroundColor: ['#FFCE56', '#36A2EB', '#FF6384', '#4BC0C0']
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
+    if (ctx){
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Redes Sociales', 'Email', 'Búsqueda Orgánica', 'Anuncios'],
+          datasets: [{
+            label: 'Visitas por Canal',
+            data: [150, 200, 300, 100],
+            backgroundColor: ['#FFCE56', '#36A2EB', '#FF6384', '#4BC0C0']
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
           }
         }
-      }
-    });
+      });
+    }
   }
 
   createInventoryChart() {
@@ -200,9 +207,9 @@ export class StatisticsComponent implements AfterViewInit {
       options: {
         responsive: true,
         scales: {
-          y: {
-            beginAtZero: true
-          }
+          yAxes: [{
+            ticks: {beginAtZero: true}
+          }]
         }
       }
     });

@@ -58,11 +58,46 @@
   </div>
 </div>
 
+<!-- Modal de Feedback -->
 <div class="modal" *ngIf="isFeedbackModalOpen">
   <div class="modal-content">
-    <h2>Deja tu feedback</h2>
-    <textarea [(ngModel)]="feedbackMessage" placeholder="Escribe tu comentario..."></textarea>
-    <button (click)="submitFeedback()">Enviar Feedback</button>
-    <button (click)="closeFeedbackModal()">Cerrar</button>
+    <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+    <h2>Deja tu Feedback</h2>
+    <form (ngSubmit)="submitFeedback(feedbackForm)" #feedbackForm="ngForm">
+      <!-- Puntuación (Score) -->
+      <div class="form-group">
+        <label for="feedbackScore">Calificación:</label>
+        <div class="star-rating-input">
+          <i
+            class="material-icons star-input"
+            *ngFor="let star of [1,2,3,4,5]"
+            [class.filled]="star <= feedbackScore"
+            (click)="feedbackScore = star"
+          >
+            {{ star <= feedbackScore ? 'star' : 'star_border' }}
+          </i>
+        </div>
+        <input type="hidden" name="score" [(ngModel)]="feedbackScore" required />
+      </div>
+      <!-- Mensaje -->
+      <div class="form-group">
+        <label for="feedbackMessage">Mensaje:</label>
+        <textarea
+          id="feedbackMessage"
+          name="feedbackMessage"
+          [(ngModel)]="feedbackMessage"
+          rows="5"
+          placeholder="Escribe tu comentario..."
+          required
+          maxlength="500"
+        ></textarea>
+      </div>
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button type="submit" [disabled]="!feedbackForm.form.valid">Enviar</button>
+        <button type="button" (click)="closeFeedbackModal()">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
+

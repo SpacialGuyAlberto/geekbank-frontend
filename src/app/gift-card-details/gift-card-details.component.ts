@@ -11,10 +11,12 @@ import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import {BackgroundAnimationService} from "../background-animation.service";
 import {CartComponent} from "../cart/cart.component";
 import {CurrencyService} from "../currency.service";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, NgForm} from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {NotificationService} from "../services/notification.service";
 import {ToastrModule} from "ngx-toastr";
+import {FeedbackService} from "../services/feedback.service";
+import {Feedback} from "../models/Feedback";
 
 @Component({
   selector: 'app-gift-card-details',
@@ -38,6 +40,8 @@ export class GiftCardDetailsComponent implements OnInit {
   notifMessage: string = '';
   isFeedbackModalOpen: boolean = false;
   feedbackMessage: string = '';
+  userId: number = 0;
+  protected feedbackScore: number = 0;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -49,7 +53,8 @@ export class GiftCardDetailsComponent implements OnInit {
     private cartService: CartService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
-    private currencyService: CurrencyService
+    private currencyService: CurrencyService,
+    private feedbackService: FeedbackService
   ) { }
 
   ngOnInit(): void {
@@ -74,19 +79,52 @@ export class GiftCardDetailsComponent implements OnInit {
     this.feedbackMessage = '';
   }
 
-  submitFeedback(): void {
-    console.log('Feedback enviado:', this.feedbackMessage);
-    // Aquí podrías implementar la lógica para enviar el feedback a la API
-    this.closeFeedbackModal();
-  }
+  submitFeedback(form: NgForm): void {
+    if (!form.valid) {
+      this.snackBar.open('Por favor, completa todos los campos requeridos.', 'Cerrar', {
+        duration: 3000,
+      });
+      return;
+    }
 
-  // loadCartItems(): void {
-  //   this.cartService.getCartItems().subscribe(data => {
-  //     this.cartItems = data;
-  //     this.updateCartItemCount();
-  //     console.log("Loaded cart items: ", data);
-  //   });
-  // }
+    if (!this.giftCard) {
+      this.snackBar.open('No se ha seleccionado ninguna tarjeta de regalo.', 'Cerrar', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const userId = sessionStorage.getItem('userId'); // Asumiendo que tienes un método para obtener el ID del usuario
+    if (!userId) {
+      this.snackBar.open('Debes estar autenticado para enviar feedback.', 'Cerrar', {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const feedback: Partial<Feedback> = {
+      score: this.feedbackScore,
+      message: this.feedbackMessage.trim(),
+      userId: sessionStorage.getItem('userId'), // Ahora es string
+      giftCardId: this.giftCard.kinguinId.toString(),
+      createdAt: new Date()
+    };
+
+    this.feedbackService.createFeedback(feedback).subscribe({
+      next: (response) => {
+        this.snackBar.open('¡Gracias por tu feedback!', 'Cerrar', {
+          duration: 3000,
+        });
+        this.closeFeedbackModal();
+      },
+      error: (error) => {
+        console.error('Error al enviar feedback:', error);
+        this.snackBar.open('Hubo un error al enviar tu feedback. Por favor, intenta de nuevo.', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    });
+  }
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

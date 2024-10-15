@@ -28,54 +28,55 @@ export class GeneralViewComponent {
 
   createMonthlySalesChart() {
     const ctx = document.getElementById('monthlySalesChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
-        datasets: [{
-          label: 'Ventas Mensuales',
-          data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
-          backgroundColor: '#ffcc00', // Color de las barras
-          borderColor: '#ffcc00',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#555'
-            },
-            ticks: {
-              color: '#fff'
-            }
-          },
-          x: {
-            ticks: {
-              color: '#fff'
-            }
-          }
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
+          datasets: [{
+            label: 'Ventas Mensuales',
+            data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
+            backgroundColor: '#ffcc00', // Color de las barras
+            borderColor: '#ffcc00',
+            borderWidth: 1
+          }]
         },
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff'
-            }
+        options: {
+          responsive: true,
+          scales: {
+            yAxes: [{
+              gridLines: {
+                color: '#555'
+              },
+              ticks: {
+                fontColor: '#fff',
+                beginAtZero: true,
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              }
+            }]
           },
-          title: {
-            display: true,
-            text: 'Ventas Mensuales',
-            color: '#fff',
-            font: {
-              size: 18
+          plugins: {
+            legend: {
+              labels: {
+                color: '#fff'
+              }
+            },
+            title: {
+              display: true,
+              text: 'Ventas Mensuales',
+              color: '#fff',
+              font: {
+                size: 18
+              }
             }
           }
         }
-      }
-
-    });
+      });
+    }
   }
 
   createTopCategoriesChart() {

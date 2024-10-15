@@ -82,7 +82,7 @@ export class PromotionSenderComponent implements OnInit {
 
   ngOnInit() {
     // Simular carga de productos
-    for (let i = 1; i <= 10000; i++) {
+    for (let i = 1; i <= 10; i++) {
       this.products.push(`Producto ${i}`);
     }
 
