@@ -31,8 +31,7 @@ export class OrdersComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5; // Cambia el número de elementos por página
   totalPages: number = 0;
-  start: string;
-  end: string;
+
 
 
   @Input() user: any = {
@@ -81,15 +80,15 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  filterTransactions(): void {
-    if (this.user.id && this.start && this.end) {
-      this.transactionService.getTransactionsByUserIdAndTimestamp(this.user.id, this.start, this.end)
-        .subscribe(
-          data => this.transactions = data,
-          error => console.error('Error al obtener las transacciones', error)
-        );
-    }
-  }
+  // filterTransactions(): void {
+  //   if (this.user.id && this.start && this.end) {
+  //     this.transactionService.getTransactionsByUserIdAndTimestamp(this.user.id, this.start, this.end)
+  //       .subscribe(
+  //         data => this.transactions = data,
+  //         error => console.error('Error al obtener las transacciones', error)
+  //       );
+  //   }
+  // }
 
 
 
