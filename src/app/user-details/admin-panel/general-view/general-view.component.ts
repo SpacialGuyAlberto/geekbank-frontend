@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 // @ts-ignore
 import { Chart } from 'chart.js';
 import {CurrencyPipe} from "@angular/common";
+import { TransactionsService} from "../../../transactions.service";
+import {UserService} from "../../../user.service";
+import {User} from "../../../models/User";
+import {Transaction} from "../../../models/transaction.model";
 
 @Component({
   selector: 'app-general-view',
@@ -12,18 +16,46 @@ import {CurrencyPipe} from "@angular/common";
   templateUrl: './general-view.component.html',
   styleUrl: './general-view.component.css'
 })
-export class GeneralViewComponent {
+export class GeneralViewComponent implements OnInit, AfterViewInit {
+  @Input() totalCustomers: number = 0;
   // Datos ficticios que deberían venir de tu API o backend.
   totalSales = 50000; // Monto de ventas totales
   totalProfit = 15000; // Ganancias después de los costos
   totalClients = 200; // Número de clientes
+  totalTransactions: number = 0;
   completedTransactions = 1200; // Transacciones completadas
   pendingOrders = 50; // Pedidos pendientes
   totalProducts = 3000; // Inventario total de productos
 
+  constructor(private transactionService: TransactionsService, private userService: UserService){}
+
+  ngOnInit(): void {
+    this.fetchCompletedTTransactions();
+    this.fetchCustomers();
+  }
+
   ngAfterViewInit() {
     this.createMonthlySalesChart();
     this.createTopCategoriesChart();
+
+  }
+
+  ngOnChanges() {
+    console.log('Total customers actualizado:', this.totalCustomers);
+  }
+
+  fetchCompletedTTransactions(){
+    this.transactionService.getTransactions().subscribe( (data => {
+        this.completedTransactions = data.filter( transaction => transaction.status === 'COMPLETED').length;
+      })
+    )
+  }
+
+  fetchCustomers(){
+    this.userService.getUsers()
+      .subscribe(data => {
+        this.totalCustomers = data.filter( customer => customer.role === 'CUSTOMER').length;
+      })
   }
 
   createMonthlySalesChart() {
@@ -110,5 +142,7 @@ export class GeneralViewComponent {
       }
     });
   }
+
+
 
 }

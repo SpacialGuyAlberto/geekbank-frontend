@@ -17,6 +17,7 @@ import {FeedbackListComponent} from "./feedback-list/feedback-list.component";
 import {EmployeeDashboardComponent} from "./employee-dashboard/employee-dashboard.component";
 import {FinancialDashboardComponent} from "./financial-dashboard/financial-dashboard.component";
 import {PromotionSenderComponent} from "./promotion-sender/promotion-sender.component";
+import {SyncComponent} from "./sync/sync.component";
 
 @Component({
   selector: 'app-admin-panel',
@@ -38,6 +39,7 @@ import {PromotionSenderComponent} from "./promotion-sender/promotion-sender.comp
     EmployeeDashboardComponent,
     FinancialDashboardComponent,
     PromotionSenderComponent,
+    SyncComponent,
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
@@ -45,6 +47,7 @@ import {PromotionSenderComponent} from "./promotion-sender/promotion-sender.comp
 export class AdminPanelComponent implements OnInit, AfterViewInit {
   selectedSection: string = 'general';
   isCollapsed = false;
+  customers: number = 0;
   isSmallScreen: boolean = false;
   isModalOpen: boolean = false;
   chart: Chart | undefined;
@@ -129,6 +132,10 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     this.chart?.update();
   }
 
+  handleCustomersChange(newCustomers: number) {
+    this.customers = newCustomers;
+    console.log('Número de customers recibidos del componente hijo:', this.customers);
+  }
 
   ngAfterViewInit() {
     this.createDynamicChart();

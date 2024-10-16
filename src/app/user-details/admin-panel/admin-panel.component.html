@@ -95,6 +95,7 @@
       <li><a (click)="selectSection('wallet')" [class.active]="selectedSection === 'wallet'"><i class="fa-solid fa-wallet"></i> My Wallet</a>
       <li><a><i class="fa-brands fa-telegram"></i> Message List</a></li>
       <li><a (click)="selectSection('billing')" [class.active]="selectedSection === 'billing'"><i class="fa-solid fa-file-excel"></i> Billing</a></li>
+      <li><a (click)="selectSection('sync')" [class.active]="selectedSection === 'sync'"><i class="fa-solid fa-rotate"></i>Sync</a></li>
     </ul>
   </nav>
 
@@ -102,10 +103,10 @@
     <main class="main-content">
       <!-- Contenido dinámico basado en la pestaña seleccionada -->
       <div *ngIf="selectedSection === 'general'">
-        <app-general-view></app-general-view>
+        <app-general-view [totalCustomers]="customers"></app-general-view>
       </div>
       <div *ngIf="selectedSection === 'clients'">
-        <app-clients></app-clients>
+        <app-clients (customersChange)="handleCustomersChange($event)"></app-clients>
       </div>
       <div *ngIf="selectedSection === 'products'">
         <app-products></app-products>
@@ -137,6 +138,9 @@
       <div *ngIf="selectedSection === 'promotions'">
         <app-promotion-sender></app-promotion-sender>
       </div>
+     <div *ngIf="selectedSection === 'sync'">
+       <app-sync></app-sync>
+     </div>
     </main>
 
   </div>

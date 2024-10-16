@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Transaction } from './transactions.service';
+import {Transaction} from "./models/transaction.model";
 import { User } from './models/User';
 import {environment} from "../environments/environment";
 import { KinguinGiftCard } from './models/KinguinGiftCard';

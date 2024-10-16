@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {Transaction, TransactionsService} from "../../../transactions.service";
+import { TransactionsService} from "../../../transactions.service";
 import {FormsModule} from "@angular/forms";
+import {Transaction} from "../../../models/transaction.model";
 interface Order {
   id: number;
   date: string;
@@ -30,6 +31,9 @@ export class OrdersComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5; // Cambia el número de elementos por página
   totalPages: number = 0;
+  start: string;
+  end: string;
+
 
   @Input() user: any = {
     email: '',
@@ -74,6 +78,16 @@ export class OrdersComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
       this.updatePaginatedTransactions();
+    }
+  }
+
+  filterTransactions(): void {
+    if (this.user.id && this.start && this.end) {
+      this.transactionService.getTransactionsByUserIdAndTimestamp(this.user.id, this.start, this.end)
+        .subscribe(
+          data => this.transactions = data,
+          error => console.error('Error al obtener las transacciones', error)
+        );
     }
   }
 
