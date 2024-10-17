@@ -18,7 +18,7 @@ export class RecommendationsService {
 
   constructor(private http: HttpClient) { }
 
-  getRecommendationsByUser(userId: number, k: number = 5): Observable<KinguinGiftCard[]> {
+  getRecommendationsByUser(userId: number, k: number = 4): Observable<KinguinGiftCard[]> {
     const url = `${this.baseUrl}/user/${userId}?k=${k}`;
     console.log(`Fetching recommendations from: ${url}`);
     return this.http.get<KinguinGiftCard[]>(url, {
