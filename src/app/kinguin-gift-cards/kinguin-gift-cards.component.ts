@@ -12,7 +12,7 @@ import {FiltersComponent} from "../filters/filters.component";
 import {CurrencyService} from "../currency.service";
 import {Subscription} from "rxjs";
 import {UIStateServiceService} from "../uistate-service.service";
-import {WishListService} from "../wish-list.service";
+
 import {AuthService} from "../auth.service";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 import {WishItemWithGiftcard} from "../models/WishItem";
@@ -37,7 +37,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   giftCards: KinguinGiftCard[] = [];
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
-  wished: boolean = false;
+
   exchangeRate: number = 0;
   totalPages: number = 3309;
   itemsPerPage: number = 8; // Número de tarjetas por carga
@@ -55,7 +55,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
               private uiStateService: UIStateServiceService,
               private notificationService: NotificationService,
               private snackBar: MatSnackBar,
-              private wishListService: WishListService,
+
               ) { }
 
   ngOnInit(): void {
@@ -64,7 +64,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.giftCards = data;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
-
       this.cd.detectChanges();
     });
 
@@ -140,35 +139,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.giftCardsSubscription.unsubscribe();
     }
   }
-
-
-  toggleWishList(giftCard: KinguinGiftCard, event: MouseEvent): void {
-    event.stopPropagation(); // Prevenir que el click propague al viewDetails
-
-    if (!this.isLoggedIn()) {
-      this.showSnackBar('You are not logged in. Please log in to add items to your wishlist.');
-      return;
-    }
-
-    if (giftCard.wished) {
-      this.wishListService.removeWishItem(giftCard.kinguinId).subscribe(() => {
-        giftCard.wished = false; // Actualiza el estado de la tarjeta específica
-        this.showSnackBar('Product removed from wishlist.');
-      });
-    } else {
-      this.wishListService.addWishItem(giftCard.kinguinId, giftCard.price).subscribe(() => {
-        giftCard.wished = true; // Actualiza el estado de la tarjeta específica
-        this.showSnackBar('Product added to wishlist: ' + giftCard.name);
-      });
-    }
-  }
-
-
-  // checkIfWished(card: KinguinGiftCard, kinguinId: number): void {
-  //   this.wishListService.isItemInWishList(kinguinId).subscribe(isWished => {
-  //    card.wished = isWished;
-  //   });
-  // }
 
 
   showSnackBar(message: string): void {

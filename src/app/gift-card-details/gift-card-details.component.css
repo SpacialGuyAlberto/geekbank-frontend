@@ -278,6 +278,35 @@
   background: var(--button-add-hover-bg);
 }
 
+.wishlist-button {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  background: none; /* Eliminamos el fondo */
+  border: none; /* Eliminamos el borde */
+  padding: 0; /* Eliminamos el padding para que el ícono sea el único visible */
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease; /* Transición en color y escala */
+}
+
+.wishlist-button:hover {
+  transform: scale(1.1); /* El ícono se agranda ligeramente en hover */
+}
+
+.wishlist-button .material-icons {
+  color: rgba(255, 255, 255, 0.8); /* Color del ícono */
+  font-size: 1.5rem; /* Ajustamos el tamaño del ícono */
+  transition: color var(--transition-speed) ease; /* Suavizamos la transición del color */
+}
+.wishlist-button.wished .material-icons {
+  color: red; /* Color rojo cuando el ítem está en la wishlist */
+}
+
+
+.wishlist-button:hover .material-icons {
+  color: var(--highlight-color); /* Cambiamos el color del ícono en hover */
+}
+
 /* =======================================
    Responsividad
    ======================================= */

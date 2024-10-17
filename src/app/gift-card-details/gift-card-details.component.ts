@@ -17,6 +17,8 @@ import {NotificationService} from "../services/notification.service";
 import {ToastrModule} from "ngx-toastr";
 import {FeedbackService} from "../services/feedback.service";
 import {Feedback} from "../models/Feedback";
+import {WishListService} from "../wish-list.service";
+
 
 @Component({
   selector: 'app-gift-card-details',
@@ -41,6 +43,7 @@ export class GiftCardDetailsComponent implements OnInit {
   isFeedbackModalOpen: boolean = false;
   feedbackMessage: string = '';
   userId: number = 0;
+  wished: boolean = false;
   protected feedbackScore: number = 0;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
@@ -54,7 +57,8 @@ export class GiftCardDetailsComponent implements OnInit {
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
     private currencyService: CurrencyService,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    private wishListService: WishListService,
   ) { }
 
   ngOnInit(): void {
@@ -149,6 +153,27 @@ export class GiftCardDetailsComponent implements OnInit {
         this.emitCartItemCount();
       }
     });
+  }
+
+  toggleWishList(giftCard: KinguinGiftCard, event: MouseEvent): void {
+    event.stopPropagation(); // Prevenir que el click propague al viewDetails
+
+    if (!this.isLoggedIn()) {
+      this.showSnackBar('You are not logged in. Please log in to add items to your wishlist.');
+      return;
+    }
+
+    if (giftCard.wished) {
+      this.wishListService.removeWishItem(giftCard.kinguinId).subscribe(() => {
+        giftCard.wished = false; // Actualiza el estado de la tarjeta específica
+        this.showSnackBar('Product removed from wishlist.');
+      });
+    } else {
+      this.wishListService.addWishItem(giftCard.kinguinId, giftCard.price).subscribe(() => {
+        giftCard.wished = true; // Actualiza el estado de la tarjeta específica
+        this.showSnackBar('Product added to wishlist: ' + giftCard.name);
+      });
+    }
   }
 
   loadCartItemCount(): void {

@@ -36,6 +36,7 @@ export interface KinguinGiftCard {
   images: Images;
   updatedAt: string;
   wished: boolean;
+  selectedImage: string;
 }
 
 export interface Screenshot {

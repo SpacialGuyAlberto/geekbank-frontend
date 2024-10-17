@@ -6,7 +6,16 @@
   <div class="gift-card-image-container">
     <!-- Corazón y estrellas de feedback -->
     <div class="feedback-section">
-      <i class="material-icons heart-icon">favorite_border</i>
+
+      <button class="wishlist-button"
+              [ngClass]="{'wished': giftCard.wished}"
+              (click)="toggleWishList(giftCard, $event)"
+              aria-label="Agregar a Wishlist">
+      <span class="material-icons">
+        favorite
+      </span>
+      </button>
+
       <div class="star-rating">
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>

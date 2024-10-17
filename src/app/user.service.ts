@@ -2,7 +2,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
 import {Transaction} from "./models/transaction.model";
 import { User } from './models/User';
 import {environment} from "../environments/environment";
@@ -39,6 +39,12 @@ export class UserService {
       })
     );
   }
+
+  checkUserExists(email: string): Observable<{ exists: boolean }> {
+    const params = new HttpParams().set('email', email);
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkUser`, { params });
+  }
+
 
   /**
    * Establece una nueva contraseña para el usuario.

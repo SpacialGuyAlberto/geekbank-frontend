@@ -28,7 +28,19 @@ export class RecommendationsService {
     }).pipe(
       catchError(error => {
         console.error('Error fetching recommendations', error);
-        return of([]); // Retorna una lista vacía en caso de error
+        return of([]);
+      })
+    );
+  }
+
+  getMostPopular(k: number = 4): Observable<KinguinGiftCard[]> {
+    const url = `${this.baseUrl}/popular?k=${k}`;
+    console.log(`Fetching recommendations from: ${url}`);
+    return this.http.get<KinguinGiftCard[]>(url, {
+    }).pipe(
+      catchError(error => {
+        console.error('Error fetching recommendations', error);
+        return of([]);
       })
     );
   }
