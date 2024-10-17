@@ -31,6 +31,7 @@ export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];
   orderHistory: Order[] = [];
   transactions: Transaction[] = [];
+  displayedTransactions: Transaction[] = [];
   transactionProducts: TransactionProduct[] = [];
   productPictures: string[] = [];
   paginatedTransactions: Transaction[] = []; // Para las transacciones mostradas en la página actual
@@ -70,6 +71,22 @@ export class OrdersComponent implements OnInit {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     this.paginatedTransactions = this.transactions.slice(startIndex, endIndex);
+  }
+
+  get filteredTransactions(): Transaction[] {
+    if (!this.searchQuery.trim()) {
+      return this.transactions;
+    }
+
+    const query = this.searchQuery.toLowerCase();
+
+    return this.transactions.filter(transaction =>
+      transaction.transactionNumber.toLowerCase().includes(query) ||
+      transaction.products.some(product =>
+        product.name?.toLowerCase().includes(query) ||
+        product.price?.toString().includes(query) // Comparación de precio
+      )
+    );
   }
 
   nextPage(): void {
@@ -137,6 +154,7 @@ export class OrdersComponent implements OnInit {
           // }
           product.image = await this.fetchProductPicture(product.productId);
           product.name = this.productDetailsCache.get(product.productId)?.name;
+          product.price = this.productDetailsCache.get(product.productId)?.price;
           this.transactionProducts.push(product);
         }
       }

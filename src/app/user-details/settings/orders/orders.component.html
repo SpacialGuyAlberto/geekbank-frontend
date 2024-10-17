@@ -31,7 +31,7 @@
     </div>
 
     <!-- Fila por cada producto dentro de cada transacción -->
-    <div *ngFor="let transaction of paginatedTransactions">
+    <div *ngFor="let transaction of filteredTransactions">
       <div *ngFor="let product of transaction.products" class="transaction-row">
         <!-- Columna de Imagen -->
         <span class="image-column">

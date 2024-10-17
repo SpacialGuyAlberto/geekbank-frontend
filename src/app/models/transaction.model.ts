@@ -6,20 +6,19 @@ export interface TransactionProduct {
   quantity: number;
   image?: string;
   name?: string;
+  price?: number;
 }
 
 export interface User {
   id: number;
   name: string;
   email: string;
-  // Otros campos según sea necesario
 }
 
 export interface Account {
   id: number;
   accountNumber: string;
   balance: number;
-  // Otros campos según sea necesario
 }
 
 export interface Transaction {
