@@ -1,3 +1,5 @@
+/* orders.component.css */
+
 /* Importación de fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -19,13 +21,13 @@
 
 /* Estilos Generales del Dashboard de Transacciones */
 .transactions-container {
-  padding: 2rem;
+  padding: 1rem;
   background: linear-gradient(135deg, var(--primary-bg-color), var(--secondary-bg-color), var(--tertiary-bg-color)); /* Degradado oscuro espacial */
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: var(--text-color); /* Texto claro para buen contraste */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Roboto', sans-serif;
   min-height: 100vh;
   overflow-y: auto; /* Permitir desplazamiento */
 }
@@ -51,6 +53,14 @@
   border-radius: 1rem;
   backdrop-filter: blur(10px); /* Efecto vidrioso */
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
 }
 
 .filters input,
@@ -129,7 +139,46 @@
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumento de sombra */
 }
 
-/* Estilos para Estado de Transacciones */
+.transaction-row span {
+  flex: 1;
+  padding: 0.5rem;
+  word-break: break-word;
+}
+
+/* Contenedor de Productos */
+.products-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px; /* Mantener medida actual */
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 0.25rem;
+}
+
+.product-name {
+  font-size: 0.8rem;
+  text-align: center;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
+}
+
+/* Estado de la Transacción */
 .transaction-status {
   padding: 0.5rem 1.5rem;
   border-radius: 2.5rem;
@@ -213,7 +262,7 @@
 
   .transaction-header,
   .transaction-row {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
   }
 
   .transaction-header span,

@@ -4,6 +4,8 @@ export interface TransactionProduct {
   id: number;
   productId: number;
   quantity: number;
+  image?: string;
+  name?: string;
 }
 
 export interface User {

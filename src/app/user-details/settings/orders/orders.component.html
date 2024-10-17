@@ -1,3 +1,4 @@
+<!-- orders.component.html -->
 <div class="transactions-container">
   <h2 class="section-title">Transacciones</h2>
 
@@ -21,19 +22,44 @@
   <!-- Tabla de Transacciones -->
   <div class="transaction-table">
     <div class="transaction-header">
+      <span>Imagen</span>
+      <span>Nombre</span>
       <span>ID de Transacción</span>
       <span>Fecha</span>
-      <span>Descripción</span>
       <span>Estado</span>
       <span>Monto</span>
     </div>
 
-    <div *ngFor="let transaction of paginatedTransactions" class="transaction-row">
-      <span>{{ transaction.id }}</span>
-      <span>{{ transaction.timestamp | date:'dd-MM-yyyy' }}</span>
-      <span>{{ transaction.description }}</span>
-      <span [ngClass]="'transaction-status ' + transaction.status">{{ transaction.status }}</span>
-      <span>{{ transaction.amount | currency }}</span>
+    <!-- Fila por cada producto dentro de cada transacción -->
+    <div *ngFor="let transaction of paginatedTransactions">
+      <div *ngFor="let product of transaction.products" class="transaction-row">
+        <!-- Columna de Imagen -->
+        <span class="image-column">
+          <img
+            *ngIf="product.image"
+            [src]="product.image"
+            [alt]="product.name || 'Producto'"
+            class="product-image"
+            loading="lazy"
+
+          >
+        </span>
+
+        <!-- Nombre del Producto -->
+        <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
+
+        <!-- ID de Transacción -->
+        <span class="id-column">{{ transaction.transactionNumber }}</span>
+
+        <!-- Fecha -->
+        <span class="date-column">{{ transaction.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>
+
+        <!-- Estado -->
+        <span [ngClass]="'transaction-status ' + transaction.status" class="status-column">{{ transaction.status }}</span>
+
+        <!-- Monto -->
+        <span class="amount-column">{{ transaction.amount | currency: "Lps. " }}</span>
+      </div>
     </div>
   </div>
 
@@ -42,6 +68,7 @@
     <button (click)="previousPage()" [disabled]="currentPage === 1">
       <i class="fas fa-arrow-left"></i> Anterior
     </button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
     <button (click)="nextPage()" [disabled]="currentPage === totalPages">
       Siguiente <i class="fas fa-arrow-right"></i>
     </button>

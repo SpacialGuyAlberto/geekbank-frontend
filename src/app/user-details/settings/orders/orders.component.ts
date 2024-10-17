@@ -2,7 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { TransactionsService} from "../../../transactions.service";
 import {FormsModule} from "@angular/forms";
-import {Transaction} from "../../../models/transaction.model";
+import {Transaction, TransactionProduct} from "../../../models/transaction.model";
+import {KinguinService} from "../../../kinguin.service";
+import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
+import {firstValueFrom} from "rxjs";
+
 interface Order {
   id: number;
   date: string;
@@ -27,12 +31,12 @@ export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];
   orderHistory: Order[] = [];
   transactions: Transaction[] = [];
-  paginatedTransactions: any[] = []; // Para las transacciones mostradas en la página actual
+  transactionProducts: TransactionProduct[] = [];
+  productPictures: string[] = [];
+  paginatedTransactions: Transaction[] = []; // Para las transacciones mostradas en la página actual
   currentPage: number = 1;
   itemsPerPage: number = 5; // Cambia el número de elementos por página
   totalPages: number = 0;
-
-
 
   @Input() user: any = {
     email: '',
@@ -46,19 +50,21 @@ export class OrdersComponent implements OnInit {
   selectedStatus: string = '';
   dateFrom: string = '';
   dateTo: string = '';
+  private productDetailsCache: Map<number, KinguinGiftCard> = new Map();
+
 
   //      userId: parseInt(<string>sessionStorage.getItem("userId")),
 
-  constructor(private transactionService: TransactionsService) { }
+  constructor(
+    private transactionService: TransactionsService,
+    private kinguinService: KinguinService
+    ) { }
 
   ngOnInit(): void {
-    // this.loadRecentOrders();
-    // this.loadOrderHistory();
     this.loadTransactions();
     this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
     this.updatePaginatedTransactions();
   }
-
 
   updatePaginatedTransactions(): void {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
@@ -79,18 +85,6 @@ export class OrdersComponent implements OnInit {
       this.updatePaginatedTransactions();
     }
   }
-
-  // filterTransactions(): void {
-  //   if (this.user.id && this.start && this.end) {
-  //     this.transactionService.getTransactionsByUserIdAndTimestamp(this.user.id, this.start, this.end)
-  //       .subscribe(
-  //         data => this.transactions = data,
-  //         error => console.error('Error al obtener las transacciones', error)
-  //       );
-  //   }
-  // }
-
-
 
   loadRecentOrders(): void {
     this.recentOrders = [
@@ -116,7 +110,6 @@ export class OrdersComponent implements OnInit {
 
 
   loadOrderHistory(): void {
-    // Simulación de historial de pedidos
     this.orderHistory = [
       { id: 3, date: '2024-08-20', total: 29.99 },
       { id: 4, date: '2024-08-15', total: 59.99 },
@@ -124,20 +117,50 @@ export class OrdersComponent implements OnInit {
     ];
   }
 
-  loadTransactions(): void {
-    this.transactionService.getTransactionsById(this.user.id).subscribe(
-      (data: Transaction[]) => {
-        this.transactions = data;
+  async loadTransactions(): Promise<void> {
+    try {
+      const data = await firstValueFrom(this.transactionService.getTransactionsById(this.user.id));
 
-        // Una vez que las transacciones están cargadas, calcula las páginas
-        this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
-
-        // Actualiza las transacciones paginadas
-        this.updatePaginatedTransactions();
+      if (!data || !Array.isArray(data)) {
+        console.error('No se recibieron datos válidos para las transacciones.');
+        return;
       }
-    );
+
+      for (const transaction of data) {
+        for (const product of transaction.products) {
+
+          // if (this.productDetailsCache.has(product.productId)) {
+          //   product.image = this.productDetailsCache.get(product.productId)?.coverImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU";
+          // } else {
+          //   product.image = await this.fetchProductPicture(product.productId);
+          //
+          // }
+          product.image = await this.fetchProductPicture(product.productId);
+          product.name = this.productDetailsCache.get(product.productId)?.name;
+          this.transactionProducts.push(product);
+        }
+      }
+
+      this.transactions = data;
+      this.totalPages = Math.ceil(this.transactions.length / this.itemsPerPage);
+      this.updatePaginatedTransactions();
+    } catch (error) {
+      console.error('Error al cargar las transacciones:', error);
+    }
   }
 
+  async fetchProductPicture(productId: number): Promise<string> {
+    try {
+      const card = await firstValueFrom(this.kinguinService.getGiftCardDetails(productId.toString()));
+      const imageUrl = card.images.cover?.thumbnail || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU";
+      // Cachear los detalles del producto
+      this.productDetailsCache.set(productId, card);
+      return imageUrl;
+    } catch (error) {
+      console.error(`Error al obtener detalles del producto ID ${productId}:`, error);
+      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU"; // URL de imagen por defecto
+    }
+  }
 
   filterOrders() {
     this.recentOrders = this.recentOrders.filter(order => {
