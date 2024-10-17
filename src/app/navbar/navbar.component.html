@@ -41,8 +41,8 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
-    <app-balance></app-balance>
-    <app-notification-bell></app-notification-bell>
+    <app-balance *ngIf="isLoggedIn()"></app-balance>
+    <app-notification-bell *ngIf="isLoggedIn()"></app-notification-bell>
     <div class="navbar-hamburger" *ngIf="isSmallScreen">
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
     </div>
@@ -69,14 +69,14 @@
         <li *ngIf="!isLoggedIn()">
           <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
         </li>
-        <li>
+        <li *ngIf="isLoggedIn()">
           <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">
             <i class="fa-solid fa-cart-shopping"></i>
             <span *ngIf="cartItemCount > 0">({{ cartItemCount }})</span>
             Carrito
           </a>
         </li>
-        <li *ngIf="!showUserDetailsModal" routerLink="/user-details"  (click)="closeMenuModal()">
+        <li  *ngIf="!showUserDetailsModal && isLoggedIn()" routerLink="/user-details"  (click)="closeMenuModal()">
           <a  class="menu-link">
             <i class="fas fa-user"></i> Detalles de la Cuenta
           </a>

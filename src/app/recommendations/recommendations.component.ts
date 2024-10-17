@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CurrencyPipe, NgForOf, NgOptimizedImage} from "@angular/common";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {RecommendationsService} from "../services/recommendations.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recommendations',
@@ -19,7 +20,7 @@ export class RecommendationsComponent implements OnInit {
   currentIndex = 0;
   giftCards: KinguinGiftCard[] = [];
 
-  constructor(private recommendationsService: RecommendationsService) { }
+  constructor(private recommendationsService: RecommendationsService,  private router: Router,) { }
 
   ngOnInit(): void {
     const userId = this.getCurrentUserId(); // Implementa este método
@@ -69,8 +70,14 @@ export class RecommendationsComponent implements OnInit {
   }
 
   viewDetails(card: KinguinGiftCard): void {
-    console.log(`Viewing details for ${card.name}`);
-    // Navega a la página de detalles si es necesario
+    console.log('CARD ID: ' + card.productId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+      if (success) {
+        console.log('Navigation successful');
+      } else {
+        console.log('Navigation failed');
+      }
+    });
   }
 }
 
