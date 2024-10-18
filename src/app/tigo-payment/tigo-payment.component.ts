@@ -4,10 +4,14 @@ import { NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { TigoService } from "../tigo.service";
 import {WebSocketService} from "../web-socket.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {response} from "express";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {NotificationService} from "../services/notification.service";
+import {TransactionsService} from "../transactions.service";
+import {Transaction} from "../models/transaction.model";
+import {HttpHeaders} from "@angular/common/http";
+
 
 @Component({
   selector: 'app-tigo-payment',
@@ -28,8 +32,15 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   showModal: boolean = true;
   showConfirmation: boolean = false;
   showSpinner: boolean = false;
+  transaction: Transaction | null = null;
+  successMessage: string = '';
+  errorMessage: string = '';
   transactionStatus: string = '';  // Nueva variable para el estado de la transacción
   transactionSubscription: Subscription | null = null;
+  private transactionNumberSubscription: Subscription | null = null;
+  transactionNumber: string = '';
+  orderRequestNumber: string = '';
+  isCancelling: boolean = false;
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
 
   paymentDetails = {
@@ -40,7 +51,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   };
   userId: string | null = '';
 
-  constructor(private tigoService: TigoService, private webSocketService: WebSocketService, private notificationService: NotificationService) { }
+  constructor(
+    private tigoService: TigoService,
+    private webSocketService: WebSocketService,
+    private notificationService: NotificationService,
+    private transactionService: TransactionsService,
+  ) { }
 
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
@@ -72,6 +88,18 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         console.log('Order placed successfully', response);
         this.showConfirmation = true;
 
+        const regex = /Order placed successfully: ([A-Z]+-\d+)\s+Transaction number: ([A-Z]+-\d+)/;
+        const matches = response.match(regex);
+
+        if (matches && matches.length === 3) {
+          this.orderRequestNumber = matches[1];  // Captura ORQ-xxxxxxxxxxxx
+          this.transactionNumber = matches[2];   // Captura TX-xxxxxxxxxxxx
+          console.log('Order Request Number:', this.orderRequestNumber);
+          console.log('Transaction Number:', this.transactionNumber);
+        } else {
+          console.error('Error parsing response:', response);
+        }
+
         this.transactionSubscription = this.webSocketService
           .subscribeToTransactionStatus(this.paymentDetails.phoneNumber)
           .subscribe(status => {
@@ -98,9 +126,32 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     );
   }
 
+
+  cancelTransaction(transactionNumber: string, orderRequestId: string): void {
+    this.isCancelling = true; // Iniciar indicador de carga
+
+    this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
+      .subscribe(
+        (updatedTransaction: Transaction) => {
+          this.transaction = updatedTransaction;
+          this.successMessage = `Transacción ${updatedTransaction.transactionNumber} cancelada exitosamente.`;
+          console.log('Transacción cancelada:', updatedTransaction);
+          this.isCancelling = false; // Finalizar indicador de carga
+        },
+        (error: any) => {
+          this.errorMessage = error;
+          console.error('Error al cancelar la transacción:', error);
+          this.isCancelling = false; // Finalizar indicador de carga
+        }
+      );
+  }
+
   ngOnDestroy(): void {
     if (this.transactionSubscription) {
       this.transactionSubscription.unsubscribe();
+    }
+    if (this.transactionNumberSubscription) {
+      this.transactionNumberSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
   }

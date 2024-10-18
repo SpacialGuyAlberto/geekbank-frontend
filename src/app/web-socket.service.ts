@@ -13,6 +13,7 @@ export class WebSocketService {
 
   private stompClient: any;
   private transactionStatusSubject: Subject<string> = new Subject<string>();
+  private transactionNumberSubject: Subject<string> = new Subject<string>();
   private apiUrl = environment.apiUrl;
 
   connect(): void {
@@ -39,7 +40,6 @@ export class WebSocketService {
   }
 
 
-
   subscribeToTransactionStatus(phoneNumber: string): Observable<string> {
     const url = `/topic/transaction-status/${phoneNumber}`;
 
@@ -48,6 +48,16 @@ export class WebSocketService {
     });
 
     return this.transactionStatusSubject.asObservable();
+  }
+
+  subscribeToTransactionNumber() : Observable<string> {
+    const url = `/topic/transaction-number`;
+
+    this.stompClient.subscribe(url, (message: any) => {
+      this.transactionNumberSubject.next(message.body);
+    });
+
+    return this.transactionNumberSubject.asObservable();
   }
 
   disconnect(): void {
