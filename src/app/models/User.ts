@@ -20,5 +20,4 @@ export interface Account {
   loyaltyPoints: number;
   createdDate: string;
   updatedDate: string;
-  // Otros campos necesarios...
 }

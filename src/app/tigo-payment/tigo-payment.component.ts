@@ -43,6 +43,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   isCancelling: boolean = false;
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
 
+
   paymentDetails = {
     name: '',
     address: '',
@@ -72,16 +73,46 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     this.showSpinner = true; // Mostrar spinner al hacer clic en Pay
-    const orderDetails = {
-      userId: parseInt(<string>sessionStorage.getItem("userId")),
-      phoneNumber: this.paymentDetails.phoneNumber,
-      products: this.cartItems.map(item => ({
-        kinguinId: item.giftcard.kinguinId,
-        qty: item.cartItem.quantity,
-        price: item.giftcard.price
-      })),
-      amount: this.totalPrice
-    };
+    let orderDetails: any;
+    // const orderDetails = {
+    //   userId: parseInt(<string>sessionStorage.getItem("userId")),
+    //   phoneNumber: this.paymentDetails.phoneNumber,
+    //   products: this.cartItems.map(item => ({
+    //     kinguinId: item.giftcard.kinguinId,
+    //     qty: item.cartItem.quantity,
+    //     price: item.giftcard.price
+    //   })),
+    //   amount: this.totalPrice
+    // };
+
+    if (this.cartItems && this.cartItems.length > 0) {
+      // Caso de compra de productos
+      orderDetails = {
+        userId: parseInt(<string>sessionStorage.getItem("userId")),
+        phoneNumber: this.paymentDetails.phoneNumber,
+        products: this.cartItems.map(item => ({
+          kinguinId: item.giftcard.kinguinId,
+          qty: item.cartItem.quantity,
+          price: item.giftcard.price
+        })),
+        amount: this.totalPrice
+      };
+    } else {
+      // Caso de compra de balance
+      orderDetails = {
+        userId: parseInt(<string>sessionStorage.getItem("userId")),
+        phoneNumber: this.paymentDetails.phoneNumber,
+        products: [
+          {
+            kinguinId: -1, // ID especial para balance
+            qty: 1,
+            price: this.totalPrice,
+            name: 'balance' // Identificador del producto como balance
+          }
+        ],
+        amount: this.totalPrice
+      };
+    }
 
     this.tigoService.placeOrder(orderDetails).subscribe(
       response => {
@@ -125,7 +156,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 
   cancelTransaction(transactionNumber: string, orderRequestId: string): void {
     this.isCancelling = true; // Iniciar indicador de carga

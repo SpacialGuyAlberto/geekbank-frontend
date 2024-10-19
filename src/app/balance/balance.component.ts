@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {AuthService} from "../auth.service";
+import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 
 @Component({
   selector: 'app-balance',
@@ -13,7 +14,8 @@ import {AuthService} from "../auth.service";
     NgIf,
     NgClass,
     FormsModule,
-    CurrencyPipe
+    CurrencyPipe,
+    TigoPaymentComponent
   ],
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.css']
@@ -21,7 +23,10 @@ import {AuthService} from "../auth.service";
 export class BalanceComponent implements OnInit {
   isDropdownVisible = false;
   balanceIcon: string = 'balance-icon';
-  balance: number = 25; // Ejemplo de balance inicial
+  balance: number = 0;
+  balanceToBuy: number = 5;
+  protected showPaymentModal: boolean = false;
+
 
   constructor(private authService: AuthService) {}
 
@@ -40,13 +45,29 @@ export class BalanceComponent implements OnInit {
       this.isDropdownVisible = false;
     }, 2000);
   }
+  incrementBalance() {
+    this.balanceToBuy += 1;
+  }
+
+  decrementBalance() {
+    if (this.balanceToBuy > 0) {
+      this.balanceToBuy -= 1;
+    }
+  }
+
+
 
   comprar() {
-    console.log('Botón Comprar clicado');
+    console.log('Método comprar() llamado');
+    this.showPaymentModal = true;
   }
 
   regalarBalance() {
     console.log('Botón Regalar Balance clicado');
-    // Aquí puedes implementar la lógica para regalar balance
+
+  }
+
+  onModalClose() {
+    this.showPaymentModal = false;
   }
 }
