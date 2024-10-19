@@ -1,0 +1,84 @@
+<div class="promotion-sender">
+  <h2><i class="fas fa-bullhorn"></i> Enviar Promoción y Ofertas</h2>
+
+  <form (ngSubmit)="submitPromotion()" #promotionForm="ngForm">
+    <!-- Título de la Promoción -->
+    <div class="form-group">
+      <label for="title">Título de la Promoción</label>
+      <input type="text" id="title" name="title" [(ngModel)]="promotion.title" required />
+    </div>
+
+    <!-- Producto -->
+    <div class="form-group">
+      <label for="product">Producto</label>
+      <select id="product" name="product" [(ngModel)]="promotion.product" required>
+        <option value="" disabled selected>Seleccione un producto</option>
+        <option *ngFor="let product of products" [value]="product">{{ product }}</option>
+      </select>
+    </div>
+
+    <!-- Tipo de Oferta -->
+    <div class="form-group">
+      <label for="offerType">Tipo de Oferta</label>
+      <select id="offerType" name="offerType" [(ngModel)]="promotion.offerType" required>
+        <option value="" disabled selected>Seleccione el tipo de oferta</option>
+        <option *ngFor="let type of offerTypes" [value]="type">{{ type }}</option>
+      </select>
+    </div>
+
+    <!-- Cuerpo de la Oferta -->
+    <div class="form-group">
+      <label for="content">Cuerpo de la Oferta</label>
+      <textarea id="content" name="content" [(ngModel)]="promotion.content" rows="5" required></textarea>
+    </div>
+
+    <!-- Regiones -->
+    <div class="form-group">
+      <label>Regiones</label>
+      <div class="checkbox-group">
+        <label *ngFor="let region of regions">
+          <input type="checkbox" [(ngModel)]="promotion.regions" [value]="region" name="regions" />
+          {{ region }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Plataformas de Redes Sociales -->
+    <div class="form-group">
+      <label>Publicar en:</label>
+      <div class="checkbox-group">
+        <label *ngFor="let platform of platforms">
+          <input type="checkbox" [(ngModel)]="platform.selected" (change)="updatePlatforms()" name="platforms" />
+          {{ platform.name }}
+        </label>
+      </div>
+    </div>
+
+    <!-- Inversión Publicitaria -->
+    <div class="form-group">
+      <label for="investment">Inversión en Publicidad ($)</label>
+      <input type="number" id="investment" name="investment" [(ngModel)]="promotion.investment" min="0" required />
+    </div>
+
+    <!-- Empleado Responsable -->
+    <div class="form-group">
+      <label for="employee">Empleado Responsable</label>
+      <select id="employee" name="employee" [(ngModel)]="promotion.employee" required>
+        <option value="" disabled selected>Seleccione un empleado</option>
+        <option *ngFor="let employee of employees" [value]="employee">{{ employee }}</option>
+      </select>
+    </div>
+
+    <!-- Fecha de Publicación -->
+    <div class="form-group">
+      <label for="publishDate">Fecha de Publicación</label>
+      <input type="date" id="publishDate" name="publishDate" [(ngModel)]="promotion.publishDate" required />
+    </div>
+
+    <!-- Botones de Acción -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="!promotionForm.form.valid"><i class="fas fa-paper-plane"></i> Enviar Promoción</button>
+      <button type="button" (click)="resetForm()"><i class="fas fa-undo"></i> Reiniciar Formulario</button>
+    </div>
+  </form>
+</div>

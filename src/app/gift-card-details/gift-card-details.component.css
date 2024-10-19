@@ -278,6 +278,35 @@
   background: var(--button-add-hover-bg);
 }
 
+.wishlist-button {
+  position: relative;
+  top: 0px;
+  right: 0px;
+  background: none; /* Eliminamos el fondo */
+  border: none; /* Eliminamos el borde */
+  padding: 0; /* Eliminamos el padding para que el ícono sea el único visible */
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease; /* Transición en color y escala */
+}
+
+.wishlist-button:hover {
+  transform: scale(1.1); /* El ícono se agranda ligeramente en hover */
+}
+
+.wishlist-button .material-icons {
+  color: rgba(255, 255, 255, 0.8); /* Color del ícono */
+  font-size: 1.5rem; /* Ajustamos el tamaño del ícono */
+  transition: color var(--transition-speed) ease; /* Suavizamos la transición del color */
+}
+.wishlist-button.wished .material-icons {
+  color: red; /* Color rojo cuando el ítem está en la wishlist */
+}
+
+
+.wishlist-button:hover .material-icons {
+  color: var(--highlight-color); /* Cambiamos el color del ícono en hover */
+}
+
 /* =======================================
    Responsividad
    ======================================= */
@@ -353,80 +382,128 @@
   z-index: 3; /* Asegurarse de que esté encima de la imagen */
 }
 
-.heart-icon {
-  color: #ff5e5e; /* Rojo suave */
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-.star-rating {
-  display: flex;
-  gap: 0.25rem;
-}
-
-.star {
-  color: #88D66C; /* Verde neón para las estrellas */
-  font-size: 2rem;
-  cursor: pointer;
-}
-
-.star:hover {
-  transform: scale(1.1);
-  color: #1fd166; /* Un verde más brillante al hacer hover */
-}
-
-/* Ajustes del modal */
+/* Modal de Feedback */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(28, 28, 28, 0.8);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 4; /* Modal encima de todo */
+  justify-content: center;
+  z-index: 1000;
 }
 
 .modal-content {
-  background-color: #1a1a1a; /* Fondo oscuro acorde al tema */
-  color: #fff;
+  background-color: #333;
   padding: 2rem;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5);
+  position: relative;
+  color: #fff;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ffcc00;
 }
 
 .modal-content h2 {
   margin-bottom: 1rem;
-  color: #88D66C; /* Verde neón */
+  color: #ffcc00;
+}
+
+.modal-content .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.modal-content label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
 .modal-content textarea {
   width: 100%;
-  height: 100px;
-  margin-bottom: 1rem;
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: 1rem;
-  background-color: #2a2a2a;
-  color: #fff;
+  padding: 0.8rem;
   border: none;
+  border-radius: 0.3rem;
+  background-color: #262626;
+  color: #fff;
+  resize: vertical;
 }
 
-.modal-content button {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 5px;
-  background-color: #88D66C; /* Verde neón */
-  color: #fff;
+.modal-content textarea::placeholder {
+  color: #aaa;
+}
+
+.star-rating-input {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.star-input {
+  font-size: 2rem;
+  color: #ffcc00;
   cursor: pointer;
-  margin-right: 1rem;
 }
 
-.modal-content button:hover {
-  background-color: #1fd166;
+.star-input.filled {
+  color: #ffc107;
 }
 
+.modal-content .form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.modal-content .form-actions button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.modal-content .form-actions button[type="submit"] {
+  background-color: #00c853;
+  color: #fff;
+}
+
+.modal-content .form-actions button[type="submit"]:hover {
+  background-color: #009624;
+}
+
+.modal-content .form-actions button[type="button"] {
+  background-color: #ff5722;
+  color: #fff;
+}
+
+.modal-content .form-actions button[type="button"]:hover {
+  background-color: #e64a19;
+}
+
+/* Estilos para las estrellas de calificación en el modal */
+.star-rating-input {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.star-input {
+  font-size: 2rem;
+  color: #ffcc00;
+  cursor: pointer;
+}
+
+.star-input.filled {
+  color: #ffc107;
+}

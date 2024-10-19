@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {KinguinGiftCard} from "./models/KinguinGiftCard";
 import {CartItemWithGiftcard} from "./models/CartItem";
 import {HighlightItemWithGiftcard} from "./models/HighlightItem";
 import {environment} from "../environments/environment";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,12 @@ export class HighlightService {
   constructor(private http: HttpClient) { }
 
   getHighlights(): Observable<HighlightItemWithGiftcard[]> {
-    return this.http.get<HighlightItemWithGiftcard[]>(`${this.baseUrl}`);
+    return this.http.get<HighlightItemWithGiftcard[]>(`${this.baseUrl}`).pipe(
+      catchError(error => {
+        console.error('Error al obtener los highlights:', error);
+        return of([]); // Retorna un array vacío en caso de error
+      })
+    );
   }
 
   // getCartItems(): Observable<CartItemWithGiftcard[]> {

@@ -22,7 +22,7 @@ interface PaymentMethod {
   selector: 'app-payment-methods',
   templateUrl: './payment-methods.component.html',
   standalone: true,
-  imports: [FormsModule, FontAwesomeModule],
+  imports: [FormsModule, FontAwesomeModule, NgIf, NgForOf],
   styleUrls: ['./payment-methods.component.css']
 })
 export class PaymentMethodsComponent implements OnInit {

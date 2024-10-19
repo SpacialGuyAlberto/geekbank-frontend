@@ -19,20 +19,13 @@ export class KinguinService {
   }
 
   private updateGiftCardsModel(giftCard: KinguinGiftCard[]): void {
-    this.giftCardsSubject.next(giftCard); // Asigna el nuevo valor al BehaviorSubject
+    this.giftCardsSubject.next(giftCard);
   }
-
-
-  // getKinguinGiftCards(page: number): Observable<KinguinGiftCard[]> {
-  //   const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
-  //   return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}?page=${page}`, { headers });
-  // }
-
   getKinguinGiftCards(page: number): Observable<KinguinGiftCard[]> {
     const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}?page=${page}`, { headers })
       .pipe(
-        tap((giftCards: KinguinGiftCard[]) => this.updateGiftCardsModel(giftCards)) // Actualiza el BehaviorSubject
+        tap((giftCards: KinguinGiftCard[]) => this.updateGiftCardsModel(giftCards))
       );
   }
 

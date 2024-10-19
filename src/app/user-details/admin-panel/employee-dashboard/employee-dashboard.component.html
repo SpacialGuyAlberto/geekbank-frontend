@@ -1,0 +1,77 @@
+<div class="employee-dashboard">
+  <!-- Información Personal Básica -->
+  <div class="personal-info card">
+    <h2><i class="fas fa-user section-icon"></i> Información Personal</h2>
+    <div class="info-content">
+      <div class="info-item">
+        <span class="label">Nombre:</span>
+        <span class="value">{{ employee.name }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Puesto:</span>
+        <span class="value">{{ employee.position }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Fecha de inicio:</span>
+        <span class="value">{{ employee.startDate | date: 'longDate' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Estado:</span>
+        <span class="value">{{ employee.status }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ganancias -->
+  <div class="earnings-info card">
+    <h2><i class="fas fa-dollar-sign section-icon"></i> Mis Ganancias</h2>
+    <div class="info-content">
+      <div class="info-item">
+        <span class="label">Salario Base Anual:</span>
+        <span class="value">${{ earnings.baseSalary | number }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Bonos:</span>
+        <span class="value">${{ earnings.bonuses | number }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Comisiones:</span>
+        <span class="value">${{ earnings.commissions | number }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Total Ganado:</span>
+        <span class="value">${{ earnings.totalEarned | number }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Total Retirado:</span>
+        <span class="value">${{ earnings.totalWithdrawn | number }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Disponible para Retirar:</span>
+        <span class="value">${{ earnings.availableToWithdraw | number }}</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Gráfico de ganancias mensuales -->
+  <div class="chart-section">
+    <h2><i class="fas fa-chart-bar section-icon"></i>Ganancias Mensuales</h2>
+    <canvas id="monthlyEarningsChart"></canvas>
+  </div>
+
+  <!-- Retiro de Ganancias -->
+  <div class="withdraw-section">
+    <h2><i class="fas fa-wallet section-icon"></i>Hacer un Retiro</h2>
+    <input type="number" [(ngModel)]="withdrawalAmount" placeholder="Monto a retirar" />
+    <button (click)="withdraw()">
+      <i class="fab fa-paypal paypal-icon"></i>Retirar a PayPal
+    </button>
+  </div>
+
+  <!-- Gráfico del historial de retiros -->
+  <div class="chart-section">
+    <h2><i class="fas fa-chart-line section-icon"></i>Historial de Retiros</h2>
+    <canvas id="withdrawalHistoryChart"></canvas>
+  </div>
+</div>

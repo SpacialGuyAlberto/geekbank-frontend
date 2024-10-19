@@ -7,6 +7,8 @@ import { AuthService } from '../auth.service';
 import {BackgroundAnimationService} from "../background-animation.service";
 import {After} from "node:v8";
 import {response} from "express";
+import {UserService} from "../user.service";
+import {user} from "@angular/fire/auth";
 
 @Component({
   selector: 'app-register',
@@ -25,146 +27,150 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   @ViewChild('nameInput') nameInput!: ElementRef;
   @ViewChild('emailInput') emailInput!: ElementRef;
   @ViewChild('passwordInput') passwordInput!: ElementRef;
+  @ViewChild('confirmPasswordInput') confirmPasswordInput!: ElementRef; // Nuevo
 
   name: string = '';
   email: string = '';
   password: string = '';
+  confirmPassword: string = ''; // Nuevo
   message: string = '';
   messageClass: string = '';
   currentStep: number = 1;
   direction: string = 'next';
   emailValid: boolean = false;
   passwordValid: boolean = false;
+  confirmPasswordValid: boolean = false; // Nuevo
   emailTouched: boolean = false;
   passwordTouched: boolean = false;
+  confirmPasswordTouched: boolean = false; // Nuevo
   passwordStrengthLevel: string = '';
   passwordStrengthText: string = '';
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
   submitted: boolean = false;
+  userExists: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
-    // this.animation.initializeGraphAnimation()
-
-  }
-
-  onSubmit() {
-    this.submitted = true; // Marcar que se ha intentado enviar el formulario
-
-    // Si la contraseña no es válida, no continuar
-    if (!this.isPasswordValid()) {
-      this.message = 'Password must be at least 6 characters';
-      this.messageClass = 'error-message';
-      return;
-    }
-
-    // Intentar registrar solo si todo es válido
-    // this.authService.register(this.email, this.password, this.name).subscribe(
-    //   response => {
-    //     if (response.status === 200) {
-    //       this.message = 'Registration successful! \n Please check your email to activate your account.';
-    //       this.messageClass = 'success-message';
-    //     } else {
-    //       this.message = 'Registration failed. Please try again.';
-    //       this.messageClass = 'error-message';
-    //     }
-    //   },
-    //   error => {
-    //     this.message = 'Registration failed. Please try again.';
-    //     this.messageClass = 'error-message';
-    //   }
-    // );
-    this.authService.register(this.email, this.password, this.name).subscribe({
-      next: (response: HttpResponse<any>) => {
-        console.log('Respuesta completa:', response);
-        if (response.status === 200) {
-          this.message = 'Registration successful! \\n Please check your email to activate your account.';
-          this.messageClass = 'success-message';
-          this.resetForm();
-        } else {
-          this.message = 'Registration failed. Please try again.';
-          this.messageClass = 'error-message';
-        }
-      },
-      error: error => {
-        console.error('Error:', error);
-        this.message = 'Registration failed. Please try again.';
-        this.messageClass = 'error-message';
-      }
-    });
+    // Inicialización si es necesario
   }
 
   ngAfterViewInit(): void {
-    this.animateText("Welcome to Astralis!", 100);
+    this.animateText("¡Bienvenido a Astralis!", 100);
     this.nameInput.nativeElement.focus();
   }
 
+  // Animación de texto
   animateText(text: string, speed: number) {
     const animatedTextElement = document.getElementById('animated-text');
     if (!animatedTextElement) return;
 
-    animatedTextElement.innerHTML = ''; // Asegurarse de que está vacío antes de comenzar
+    animatedTextElement.innerHTML = '';
     let index = 0;
 
-    animatedTextElement.style.visibility = 'visible'; // Mostrar el elemento cuando la animación comience
+    animatedTextElement.style.visibility = 'visible';
 
     const interval = setInterval(() => {
       if (index < text.length) {
         animatedTextElement.innerHTML += text.charAt(index);
         index++;
       } else {
-        clearInterval(interval); // Detener el intervalo cuando termine la animación
+        clearInterval(interval);
       }
-    }, speed); // Controla la velocidad de la animación
+    }, speed);
   }
 
+  // Envío del formulario
+  onSubmit() {
+    this.submitted = true;
+
+    // Validar la contraseña
+    if (!this.isPasswordValid()) {
+      this.message = 'La contraseña debe tener al menos 6 caracteres';
+      this.messageClass = 'error-message';
+      return;
+    }
+
+    // Validar que las contraseñas coincidan
+    if (this.password !== this.confirmPassword) {
+      this.message = 'Las contraseñas no coinciden';
+      this.messageClass = 'error-message';
+      return;
+    }
+
+    // Intentar registrar
+    this.authService.register(this.email, this.password, this.name).subscribe({
+      next: (response: HttpResponse<any>) => {
+        console.log('Respuesta completa:', response);
+        if (response.status === 200) {
+          this.message = '¡Registro exitoso! Por favor, revisa tu correo electrónico para activar tu cuenta.';
+          this.messageClass = 'success-message';
+          this.resetForm();
+        } else {
+          this.message = 'Registro fallido. Por favor, intenta de nuevo.';
+          this.messageClass = 'error-message';
+        }
+      },
+      error: error => {
+        console.error('Error:', error);
+        this.message = 'Registro fallido. Por favor, intenta de nuevo.';
+        this.messageClass = 'error-message';
+      }
+    });
+  }
+
+  // Manejo de pasos del formulario
   nextStep() {
-    // Validar el campo de nombre en el primer paso
     if (this.currentStep === 1) {
       if (!this.name || this.name.trim().length === 0) {
-        this.message = "Please enter your name";
+        this.message = "Por favor, ingresa tu nombre";
         this.messageClass = "error-message";
         return;
       }
-      this.currentStep++; // Avanzar al siguiente paso
-      setTimeout(() => this.emailInput.nativeElement.focus(), 100); // Foco en el email después del nombre
+      this.currentStep++;
+      setTimeout(() => this.emailInput.nativeElement.focus(), 100);
     }
-
-    // Validar el campo de email en el segundo paso
     else if (this.currentStep === 2) {
       this.emailTouched = true;
       if (this.email.length === 0 || !this.isEmailValid()) {
-        this.message = "Please enter a valid email";
+        this.message = "Por favor, ingresa un correo electrónico válido";
         this.messageClass = "error-message";
         return;
       }
-      this.currentStep++; // Avanzar al siguiente paso
-      setTimeout(() => this.passwordInput.nativeElement.focus(), 100); // Foco en el password después del email
+      this.currentStep++;
+      setTimeout(() => this.passwordInput.nativeElement.focus(), 100);
     }
-
-    // Validar el campo de contraseña en el tercer paso
     else if (this.currentStep === 3) {
-      if (!this.passwordTouched) {
-        // Si el campo de contraseña no ha sido tocado aún, simplemente avanzar sin mensaje
-        this.message = '';
-      } else if (!this.isPasswordValid() || this.password.length > 0) {
-        this.message = "Password must be at least 6 characters";
+      this.passwordTouched = true;
+      if (!this.isPasswordValid()) {
+        this.message = "La contraseña debe tener al menos 6 caracteres";
         this.messageClass = "error-message";
         return;
       }
-      this.message = "Form complete and valid!";
+      this.currentStep++;
+      setTimeout(() => this.confirmPasswordInput.nativeElement.focus(), 100);
+    }
+    else if (this.currentStep === 4) {
+      this.confirmPasswordTouched = true;
+      if (this.password !== this.confirmPassword) {
+        this.message = "Las contraseñas no coinciden";
+        this.messageClass = "error-message";
+        return;
+      }
+      this.message = "Formulario completo y válido!";
       this.messageClass = "success-message";
     }
-
   }
 
-  onPasswordBlur() {
-    this.passwordTouched = true; // Marcar el campo como "tocado" si el usuario deja el campo
+  // Paso anterior
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      this.message = '';
+      this.messageClass = '';
+    }
   }
-
-
 
   onEmailKeyUp() {
     clearTimeout(this.emailTypingTimeout);
@@ -172,9 +178,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       if (this.email.length > 0) {
         this.emailTouched = true;
         this.emailValid = this.isEmailValid();
+        if (this.emailValid) {
+          this.checkUserExists(); // Verificar si el usuario existe
+        }
       } else {
         this.emailTouched = false;
         this.emailValid = false;
+        this.message = '';
+        this.messageClass = '';
+        this.userExists = false; // Resetear si el email está vacío
       }
     }, 700);
   }
@@ -188,7 +200,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this.passwordValid = this.isPasswordValid();
         this.calculatePasswordStrength();
       } else {
-        // Si el usuario borra todo, no mostrar ningún mensaje ni iconos
         this.passwordTouched = false;
         this.passwordValid = false;
         this.passwordStrengthLevel = '';
@@ -197,65 +208,62 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, 2000);
   }
 
-  onEmailKeyPress(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
-      this.emailTouched = true;
-      this.isEmailValid();
-    }
-  }
-
-  previousStep() {
-    if (this.currentStep > 1) {
-      // Obtener el elemento actual y aplicar la clase "next-hidden"
-      const currentElement = document.querySelector('.form-group.visible');
-      if (currentElement) {
-        currentElement.classList.add('next-hidden');
-      }
-
-      setTimeout(() => {
-        this.direction = 'prev';
-        this.currentStep--;
-
-        // Hacer visible el input anterior
-        const prevElement = document.querySelector('.form-group.visible');
-        if (prevElement) {
-          prevElement.classList.remove('next-hidden');
+  // Validaciones de confirmación de contraseña
+  onConfirmPasswordKeyUp() {
+    clearTimeout(this.passwordTypingTimeout);
+    this.passwordTypingTimeout = setTimeout(() => {
+      if (this.confirmPassword.length > 0) {
+        this.confirmPasswordTouched = true;
+        this.confirmPasswordValid = this.password === this.confirmPassword;
+        if (!this.confirmPasswordValid) {
+          this.message = 'Las contraseñas no coinciden';
+          this.messageClass = 'error-message';
+        } else {
+          this.message = '';
+          this.messageClass = '';
         }
-      }, 500); // Tiempo de la animación
-    }
+      } else {
+        this.confirmPasswordTouched = false;
+        this.confirmPasswordValid = false;
+        this.message = '';
+        this.messageClass = '';
+      }
+    }, 700);
   }
 
+  // Eventos de blur
+  onPasswordBlur() {
+    this.passwordTouched = true;
+  }
+
+  onConfirmPasswordBlur() {
+    this.confirmPasswordTouched = true;
+    this.checkPasswordsMatch();
+  }
+
+  // Cálculo de la fortaleza de la contraseña
   calculatePasswordStrength() {
     const password = this.password;
     let strength = 0;
 
-    // Calcular el nivel de seguridad basado en las siguientes reglas
-    if (password.length >= 6) {
-      strength++;
-    }
-    if (/[A-Z]/.test(password)) {
-      strength++;
-    }
-    if (/[0-9]/.test(password)) {
-      strength++;
-    }
-    if (/[^A-Za-z0-9]/.test(password)) {
-      strength++;
-    }
+    if (password.length >= 6) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
 
-    // Actualizar el nivel de seguridad y el texto según la fuerza
     if (strength <= 1) {
       this.passwordStrengthLevel = 'low-strength';
-      this.passwordStrengthText = 'Weak';
-    } else if (strength === 2) {
+      this.passwordStrengthText = 'Débil';
+    } else if (strength === 2 || strength === 3) {
       this.passwordStrengthLevel = 'medium-strength';
-      this.passwordStrengthText = 'Medium';
+      this.passwordStrengthText = 'Media';
     } else {
       this.passwordStrengthLevel = 'high-strength';
-      this.passwordStrengthText = 'Strong';
+      this.passwordStrengthText = 'Fuerte';
     }
   }
 
+  // Validaciones auxiliares
   isEmailValid(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     this.emailValid = emailRegex.test(this.email);
@@ -267,39 +275,63 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     return this.passwordValid;
   }
 
-  checkNameAndNextStep() {
-    if (this.name.length > 0) {
-      this.nextStep();
+  checkPasswordsMatch() {
+    this.confirmPasswordValid = this.password === this.confirmPassword;
+    if (!this.confirmPasswordValid && this.confirmPasswordTouched) {
+      this.message = 'Las contraseñas no coinciden';
+      this.messageClass = 'error-message';
     } else {
-      this.message = "Please enter your name";
-      this.messageClass = "error-message";
+      this.message = '';
+      this.messageClass = '';
     }
   }
 
-  // Método para verificar el email al presionar "Enter"
-  checkEmailAndNextStep() {
-    if (this.isEmailValid()) {
-      this.nextStep();
-    } else {
-      this.message = "Please enter a valid email";
-      this.messageClass = "error-message";
-    }
+  checkUserExists() {
+    this.userService.checkUserExists(this.email).subscribe({
+      next: (response) => {
+        if (response.exists) {
+          this.message = 'El correo electrónico ya está registrado.';
+          this.messageClass = 'error-message';
+          this.emailValid = false;
+          this.userExists = true;
+        } else {
+          this.message = '';
+          this.messageClass = '';
+          this.userExists = false;
+        }
+      },
+      error: (error) => {
+        console.error('Error al verificar el usuario:', error);
+        // Manejar el error según sea necesario
+      }
+    });
   }
 
-  // Método para verificar la contraseña al presionar "Enter"
-  // checkPasswordAndNextStep() {
-  //   if (this.isPasswordValid()) {
-  //     this.nextStep();
-  //   } else {
-  //     this.message = "Password must be at least 6 characters";
-  //     this.messageClass = "error-message";
-  //   }
-  // }
 
-
-  protected readonly SubmitEvent = SubmitEvent;
-
+  // Reseteo del formulario
   private resetForm() {
-
+    this.name = '';
+    this.email = '';
+    this.password = '';
+    this.confirmPassword = '';
+    this.message = '';
+    this.messageClass = '';
+    this.currentStep = 1;
+    this.emailValid = false;
+    this.passwordValid = false;
+    this.confirmPasswordValid = false;
+    this.emailTouched = false;
+    this.passwordTouched = false;
+    this.confirmPasswordTouched = false;
+    this.passwordStrengthLevel = '';
+    this.passwordStrengthText = '';
+    this.submitted = false;
+    this.userExists = false; //
   }
+
+  onEmailBlur() {
+    this.emailTouched = true;
+  }
+
+  protected readonly user = user;
 }

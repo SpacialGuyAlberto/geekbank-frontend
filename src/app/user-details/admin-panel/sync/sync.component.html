@@ -1,0 +1,28 @@
+<!-- src/app/sync/sync.component.html -->
+
+<div class="sync-container">
+  <div class="button-group">
+    <button mat-raised-button color="primary" (click)="startSync()" [disabled]="isSyncing">
+      <mat-icon *ngIf="!isSyncing">sync</mat-icon>
+      <mat-icon *ngIf="isSyncing" class="spin">sync</mat-icon>
+      Iniciar Sincronización
+    </button>
+
+    <button mat-raised-button color="warn" (click)="cancelSync()" [disabled]="!isSyncing">
+      <mat-icon>cancel</mat-icon>
+      Cancelar Sincronización
+    </button>
+  </div>
+
+  <div *ngIf="isSyncing || progress > 0" class="progress-section">
+    <mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+    <p>{{synchronizedGiftCards}} de {{totalGiftCards}} GiftCards sincronizadas ({{progress}}%)</p>
+  </div>
+
+  <div *ngIf="syncMessage" class="message-section">
+    <mat-icon *ngIf="syncMessage === 'Sincronización completada.'" color="accent">check_circle</mat-icon>
+    <mat-icon *ngIf="syncMessage === 'Error al iniciar la sincronización.'" color="warn">error</mat-icon>
+    <mat-icon *ngIf="syncMessage === 'Sincronización de GiftCards cancelada.'" color="warn">cancel</mat-icon>
+    <span>{{syncMessage}}</span>
+  </div>
+</div>

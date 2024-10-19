@@ -1,13 +1,14 @@
-import {AfterViewInit, Component, NgIterable, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, NgIterable, OnInit, Output} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, UpperCasePipe} from "@angular/common";
 import {User} from "../../../models/User";
 import {UserService} from "../../../user.service";
-import {Transaction, TransactionsService} from "../../../transactions.service";
+import { TransactionsService} from "../../../transactions.service";
 import {TransactionsComponent} from "../transactions/transactions.component";
 import {CreateCustomerComponent} from "../create-customer/create-customer.component";
 import {KinguinGiftCard} from "../../../models/KinguinGiftCard";
 import {RegisterComponent} from "../../../register/register.component";
+import {Transaction} from "../../../models/transaction.model";
 
 @Component({
   selector: 'app-clients',
@@ -40,6 +41,9 @@ export class ClientsComponent implements OnInit, AfterViewInit{
   currentPage: number = 1;
   itemsPerPage: number = 20;
   totalPages: number = 0;
+  @Output() customersChange: EventEmitter<number> = new EventEmitter<number>();
+  customers: number = 0;
+
   visibleTransactions: Transaction[] = [];
   activeTab: string | undefined;
   filteredClients: (NgIterable<User> & NgIterable<any>) | undefined | null;
@@ -59,7 +63,10 @@ export class ClientsComponent implements OnInit, AfterViewInit{
     this.userService.getUsers()
     .subscribe(data => {
       this.users = data;
-      console.log(data);
+      this.customers = this.countCustomers();
+      console.log('CUSTOMERS: ' + this.customers);
+
+      this.customersChange.emit(this.customers);
     })
   }
 
@@ -69,6 +76,10 @@ export class ClientsComponent implements OnInit, AfterViewInit{
       return this.displayedUsers;
     }
     return this.users.filter(user => user.name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+  }
+
+  countCustomers() : number {
+    return this.users.filter(user => user.role === 'CUSTOMER').length;
   }
 
   updateDisplayedUsers(): void {

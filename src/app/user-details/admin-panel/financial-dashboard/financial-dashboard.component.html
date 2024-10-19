@@ -1,0 +1,86 @@
+<div class="financial-dashboard">
+  <!-- Menú de pestañas para seleccionar gráficos con iconos -->
+  <div class="tabs-menu">
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'netProfit'}" (click)="selectTab('netProfit')">
+      <i class="fas fa-chart-line"></i> Ganancia Neta
+    </button>
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'expenses'}" (click)="selectTab('expenses')">
+      <i class="fas fa-money-bill-wave"></i> Gastos
+    </button>
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'assetsLiabilities'}" (click)="selectTab('assetsLiabilities')">
+      <i class="fas fa-balance-scale"></i> Activos vs Pasivos
+    </button>
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'cashFlow'}" (click)="selectTab('cashFlow')">
+      <i class="fas fa-wallet"></i> Flujo de Caja
+    </button>
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'externalServices'}" (click)="selectTab('externalServices')">
+      <i class="fas fa-cloud"></i> Servicios Externos
+    </button>
+    <button class="tab-button" [ngClass]="{'active': selectedTab === 'dataTable'}" (click)="selectTab('dataTable')">
+      <i class="fas fa-table"></i> Datos Financieros
+    </button>
+  </div>
+
+  <div *ngIf="selectedTab === 'dataTable'" class="data-table">
+    <h3>Datos Financieros</h3>
+    <!-- Opciones de filtrado y exportación -->
+    <div class="actions">
+      <label for="filterType">Filtrar por tipo:</label>
+      <!--      <select id="filterType" (change)="filterData($event.target.value)">-->
+      <option value="Todos">Todos</option>
+      <option value="Gasto">Gasto</option>
+      <option value="Inversión">Inversión</option>
+      <option value="Ganancia">Ganancia</option>
+      <!--      </select>-->
+      <button (click)="exportToCSV()"><i class="fas fa-file-csv"></i> Exportar a CSV</button>
+    </div>
+    <!-- Tabla -->
+    <table>
+      <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Categoría</th>
+        <th>Monto</th>
+        <th>Fecha</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let item of filteredData">
+        <td>{{ item.type }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.amount | currency:'USD' }}</td>
+        <td>{{ item.date | date:'shortDate' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Contenido de gráficos según la pestaña seleccionada -->
+  <div class="charts-grid">
+    <div class="chart-container" *ngIf="selectedTab === 'netProfit'">
+      <h3>Ganancia Neta Mensual</h3>
+      <canvas id="netProfitChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'expenses'">
+      <h3>Distribución de Gastos</h3>
+      <canvas id="expensesChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'assetsLiabilities'">
+      <h3>Activos vs Pasivos</h3>
+      <canvas id="assetsLiabilitiesChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'cashFlow'">
+      <h3>Flujo de Caja</h3>
+      <canvas id="cashFlowChart"></canvas>
+    </div>
+
+    <div class="chart-container" *ngIf="selectedTab === 'externalServices'">
+      <h3>Uso de Servicios Externos</h3>
+      <canvas id="externalServicesChart"></canvas>
+    </div>
+  </div>
+</div>
+

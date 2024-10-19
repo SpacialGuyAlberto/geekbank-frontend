@@ -63,7 +63,6 @@
     <div class="content-section" *ngIf="selectedTab === 'details'">
       <h2>Detalles de la Cuenta</h2>
       <form (ngSubmit)="updatePersonalInfo()">
-        <!-- Nombre -->
         <div class="field">
           <label for="name">Nombre:</label>
           <span *ngIf="!editingName">{{ user.name }}</span>
@@ -84,6 +83,7 @@
             {{ validationErrors.name }}
           </div>
         </div>
+
 
         <!-- Email -->
         <div class="field">

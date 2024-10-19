@@ -1,0 +1,230 @@
+/* Estilos generales */
+.employee-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  background-color: #1c1c1c;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+}
+
+.card {
+  background-color: #262626;
+  padding: 2rem;
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Encabezados de Sección */
+.card h2 {
+  color: #ff7a00;
+  font-size: 2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Contenido de Información */
+.info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2e2e2e;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.info-item:hover {
+  background-color: #ff7a00;
+  color: #1c1c1c;
+}
+
+.label {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.value {
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+/* Animación Sutil */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 122, 0, 0.15), transparent 70%);
+  animation: rotate 10s linear infinite;
+}
+
+
+
+h2 {
+  color: #ff7a00;
+  border-bottom: 2px solid #ff7a00;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.section-icon {
+  color: #ff7a00;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
+
+/* Secciones */
+.personal-info,
+.earnings-info,
+.withdraw-section,
+.chart-section,
+.withdrawal-history {
+  background-color: #262626;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Texto */
+.personal-info p,
+.earnings-info p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* Sección de retiro */
+.withdraw-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.withdraw-section input {
+  padding: 0.8rem;
+  border-radius: 0.3rem;
+  border: 1px solid #444;
+  background-color: #3a3a3a;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.withdraw-section input:focus {
+  border-color: #ff7a00;
+  outline: none;
+}
+
+.withdraw-section button {
+  padding: 0.8rem;
+  background-color: #ff7a00;
+  border: none;
+  border-radius: 0.3rem;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.withdraw-section button:hover {
+  background-color: #e66a00;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.withdraw-section button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Icono de PayPal */
+.paypal-icon {
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
+
+/* Sección de Gráfico */
+.chart-section {
+  text-align: center;
+}
+
+.chart-section canvas {
+  max-width: 100%;
+  background-color: #1c1c1c;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+/* Responsividad */
+@media (min-width: 768px) {
+  .employee-dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .card {
+    padding: 2.5rem;
+  }
+
+  .card h2 {
+    font-size: 2.2rem;
+  }
+
+  .info-item {
+    padding: 1.2rem;
+  }
+
+  .label,
+  .value {
+    font-size: 1.2rem;
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg) translate(-50%, -50%);
+  }
+  to {
+    transform: rotate(360deg) translate(-50%, -50%);
+  }
+}
+
+/* Mejora de Tipografía */
+.label,
+.value {
+  transition: color 0.3s ease;
+}
+
+.info-item:hover .label,
+.info-item:hover .value {
+  color: #1c1c1c;
+}

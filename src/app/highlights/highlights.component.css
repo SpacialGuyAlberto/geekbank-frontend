@@ -208,7 +208,8 @@
     border-radius: 0.9375rem; /* 15px en rem */
     overflow: hidden;
     box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px en rem */
-    margin-left: auto;
+    margin-left: 8rem;
+    margin-top: -5rem;
     border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px en rem */
     transition: transform 0.5s ease, border-color 0.5s ease;
   }

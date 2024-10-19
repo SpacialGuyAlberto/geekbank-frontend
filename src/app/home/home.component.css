@@ -106,17 +106,14 @@
 .main-gift-cards .gift-card {
   background-color: rgba(2, 21, 38, 0.8);
   border-radius: 1rem;
-  border: 0.063rem solid rgba(255, 255, 255, 0.3);
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.5); /* 20px in rem */
 }
 
 .main-gift-cards .gift-card:hover {
   transform: translateY(-0.625rem); /* 10px in rem */
   border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 1.875rem rgba(255, 255, 255, 0.5); /* 30px in rem */
 }
 
 .main-gift-cards .gift-card-image {
@@ -209,17 +206,17 @@
     grid-template-columns: 1fr;
     grid-gap: 1rem;
     padding: -7rem;
-    margin-left: -2rem;
+    margin-left: -3rem;
   }
   .highlights-section, .recommendations-section {
-    width: 90%; /* Reducir el ancho proporcionalmente en pantallas pequeñas */
-    max-width: 90%; /* Asegurar que no se extienda más allá del 90% del contenedor */
+    width: 90%;
+    max-width: 90%;
   }
 
-
   .main-gift-cards {
-    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr)); /* 150px in rem */
-    grid-gap: 0.625rem; /* 10px in rem */
+    grid-template-columns: repeat(auto-fit, minmax(9.375rem, 1fr));
+    grid-gap: 0.625rem;
+    max-width: 85%;
   }
 
   .gift-card-image {
@@ -232,6 +229,7 @@
 
   .filter-giftcard-container {
     grid-template-columns: 1fr;
+    margin-top: -20rem;
   }
 
   .filter-button {

@@ -26,7 +26,52 @@ export class TransactionMonitorComponent implements OnInit, OnDestroy {
   statusOptions: Array<'pending' | 'completed' | 'canceled' | 'refunded'> = ['pending', 'completed', 'canceled', 'refunded'];
 
   // Datos iniciales para cada gráfico
-  chartData: { [key: string]: ChartData } = {
+  chartData: {
+    canceled: {
+      datasets: {
+        borderColor: string;
+        backgroundColor: string;
+        tension: number;
+        data: any[];
+        label: string;
+        fill: boolean
+      }[];
+      labels: any[]
+    };
+    pending: {
+      datasets: {
+        borderColor: string;
+        backgroundColor: string;
+        tension: number;
+        data: any[];
+        label: string;
+        fill: boolean
+      }[];
+      labels: any[]
+    };
+    refunded: {
+      datasets: {
+        borderColor: string;
+        backgroundColor: string;
+        data: any[];
+        tensionLines: number;
+        label: string;
+        fill: boolean
+      }[];
+      labels: any[]
+    };
+    completed: {
+      datasets: {
+        borderColor: string;
+        backgroundColor: string;
+        tension: number;
+        data: any[];
+        label: string;
+        fill: boolean
+      }[];
+      labels: any[]
+    }
+  } = {
     'completed': {
       labels: [],
       datasets: [{
@@ -68,7 +113,7 @@ export class TransactionMonitorComponent implements OnInit, OnDestroy {
         borderColor: 'rgba(0, 123, 255, 1)', // Azul
         backgroundColor: 'rgba(0, 123, 255, 0.2)',
         fill: true,
-        tension: 0.4
+        tensionLines: 0.4
       }]
     }
   };
@@ -76,9 +121,9 @@ export class TransactionMonitorComponent implements OnInit, OnDestroy {
   chartOptions: ChartOptions = {
     responsive: true,
     scales: {
-      y: {
-        beginAtZero: true
-      }
+      yAxes: [{
+        ticks: {beginAtZero: true}
+      }]
     },
     animation: {
       duration: 1000,

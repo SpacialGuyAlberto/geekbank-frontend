@@ -13,6 +13,7 @@ export class WebSocketService {
 
   private stompClient: any;
   private transactionStatusSubject: Subject<string> = new Subject<string>();
+  private transactionNumberSubject: Subject<string> = new Subject<string>();
   private apiUrl = environment.apiUrl;
 
   connect(): void {
@@ -39,15 +40,26 @@ export class WebSocketService {
   }
 
 
-
-  subscribeToTransactionStatus(phoneNumber: string): Observable<string> {
+  subscribeToTransactionStatus(phoneNumber: string): Observable<any> {
     const url = `/topic/transaction-status/${phoneNumber}`;
 
     this.stompClient.subscribe(url, (message: any) => {
-      this.transactionStatusSubject.next(message.body);
+      // Parsear el mensaje recibido a un objeto JSON
+      const parsedMessage = JSON.parse(message.body);
+      this.transactionStatusSubject.next(parsedMessage);
     });
 
     return this.transactionStatusSubject.asObservable();
+  }
+
+  subscribeToTransactionNumber() : Observable<string> {
+    const url = `/topic/transaction-number`;
+
+    this.stompClient.subscribe(url, (message: any) => {
+      this.transactionNumberSubject.next(message.body);
+    });
+
+    return this.transactionNumberSubject.asObservable();
   }
 
   disconnect(): void {

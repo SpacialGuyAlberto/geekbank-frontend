@@ -109,3 +109,28 @@ h2 {
     align-self: flex-end;
   }
 }
+
+.material-symbols-outlined, mat-icon {
+  cursor: pointer;
+  font-size: 1.5rem; /* Tamaño del ícono */
+  color: #FF6666; /* Color rojo suave */
+  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease; /* Transición para color y transformación */
+}
+
+
+.material-symbols-outlined:hover {
+  color: #FF3333; /* Cambio a un rojo más fuerte en hover */
+  transform: scale(1.1); /* Ligera ampliación al hacer hover */
+}
+
+mat-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: #FF6666;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+mat-icon:hover {
+  color: #FF3333;
+  transform: scale(1.1);
+}

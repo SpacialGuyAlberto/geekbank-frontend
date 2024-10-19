@@ -6,7 +6,16 @@
   <div class="gift-card-image-container">
     <!-- Corazón y estrellas de feedback -->
     <div class="feedback-section">
-      <i class="material-icons heart-icon">favorite_border</i>
+
+      <button class="wishlist-button"
+              [ngClass]="{'wished': giftCard.wished}"
+              (click)="toggleWishList(giftCard, $event)"
+              aria-label="Agregar a Wishlist">
+      <span class="material-icons">
+        favorite
+      </span>
+      </button>
+
       <div class="star-rating">
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
@@ -47,11 +56,11 @@
 
     <ng-template #notLoggedInMessage>
       <div class="not-logged-in-message">
-        <h2>No has iniciado sesión.</h2>
-        <p>Por favor, inicia sesión para agregar productos al carrito.</p>
+        <h2>You are not logged in.</h2>
+        <p>Please log in to add products to the cart.</p>
         <button (click)="redirectToLogin()" class="btn login-btn">
           <i class="material-icons">login</i>
-          Iniciar Sesión
+          Log in
         </button>
       </div>
     </ng-template>
@@ -61,9 +70,43 @@
 <!-- Modal de Feedback -->
 <div class="modal" *ngIf="isFeedbackModalOpen">
   <div class="modal-content">
-    <h2>Deja tu feedback</h2>
-    <textarea [(ngModel)]="feedbackMessage" placeholder="Escribe tu comentario..."></textarea>
-    <button (click)="submitFeedback()">Enviar Feedback</button>
-    <button (click)="closeFeedbackModal()">Cerrar</button>
+    <span class="close-button" (click)="closeFeedbackModal()">&times;</span>
+    <h2>Deja tu Feedback</h2>
+    <form (ngSubmit)="submitFeedback(feedbackForm)" #feedbackForm="ngForm">
+      <!-- Puntuación (Score) -->
+      <div class="form-group">
+        <label for="feedbackScore">Calificación:</label>
+        <div class="star-rating-input">
+          <i
+            class="material-icons star-input"
+            *ngFor="let star of [1,2,3,4,5]"
+            [class.filled]="star <= feedbackScore"
+            (click)="feedbackScore = star"
+          >
+            {{ star <= feedbackScore ? 'star' : 'star_border' }}
+          </i>
+        </div>
+        <input type="hidden" name="score" [(ngModel)]="feedbackScore" required />
+      </div>
+      <!-- Mensaje -->
+      <div class="form-group">
+        <label for="feedbackMessage">Mensaje:</label>
+        <textarea
+          id="feedbackMessage"
+          name="feedbackMessage"
+          [(ngModel)]="feedbackMessage"
+          rows="5"
+          placeholder="Escribe tu comentario..."
+          required
+          maxlength="500"
+        ></textarea>
+      </div>
+      <!-- Botones de Acción -->
+      <div class="form-actions">
+        <button type="submit" [disabled]="!feedbackForm.form.valid">Enviar</button>
+        <button type="button" (click)="closeFeedbackModal()">Cancelar</button>
+      </div>
+    </form>
   </div>
 </div>
+

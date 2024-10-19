@@ -10,7 +10,6 @@ import { StatisticsComponent } from "../../admin-panel/statistics/statistics.com
 import { ProductsComponent } from "../../admin-panel/products/products.component";
 import { OrdersComponent } from "../orders/orders.component";
 import { AuthService } from "../../../auth.service";
-import { BackgroundAnimationService } from "../../../background-animation.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { WishlistComponent } from "../wishlist/wishlist.component";
 import { Subscription } from "rxjs";
@@ -18,9 +17,9 @@ import { SharedService } from "../../../shared.service";
 import { filter } from "rxjs/operators";
 
 export interface DetailsBody {
-  name: string;
-  email: string;
-  phoneNumber: string; // Asegúrate de usar 'phoneNumber'
+  name?: string;
+  email?: string;
+  phoneNumber?: string; // Asegúrate de usar 'phoneNumber'
   password?: string;
 }
 
@@ -79,10 +78,9 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   detailsBody: DetailsBody = {
     name: '',
     email: '',
-    phoneNumber: '', // Cambiado de 'phone' a 'phoneNumber'
+    phoneNumber: '',
   };
 
-  // Propiedades para mensajes de error de validación
   validationErrors: {
     name?: string;
     email?: string;
@@ -108,7 +106,9 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
       this.balance = data.account.balance;
-      console.log(this.user);
+      this.user.phone = data.phoneNumber;
+      sessionStorage.setItem('currentUserEmail', this.user.email);
+
       this.controlSubscription = this.sharedService.selectedTable$.subscribe(tab => {
         this.selectedTab = tab;
       });
@@ -126,33 +126,54 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 // account-info.component.ts
 
   async updatePersonalInfo() {
-    // Reiniciar mensajes de error antes de la validación
     this.validationErrors = {};
     this.generalErrorMessage = '';
 
-    const isNameValid = this.validateName(this.detailsBody.name);
-    const isEmailValid = this.validateEmail(this.detailsBody.email);
-    const isPhoneValid = this.validatePhone(this.detailsBody.phoneNumber);
+    let isValid = true;
+    let updatedFields: DetailsBody = {email: "", name: "", phoneNumber: ""};
 
-    if (!isNameValid) {
-      this.validationErrors.name = 'El nombre solo debe contener letras y espacios.';
+    if (this.editingName) {
+      const isNameValid = this.validateName(this.detailsBody.name);
+      if (!isNameValid) {
+        this.validationErrors.name = 'El nombre solo debe contener letras y espacios.';
+        isValid = false;
+      } else {
+        updatedFields.name = this.detailsBody.name;
+      }
     }
 
-    if (!isEmailValid) {
-      this.validationErrors.email = 'Por favor, ingresa una dirección de correo electrónico válida.';
+    if (this.editingEmail) {
+      const isEmailValid = this.validateEmail(this.detailsBody.email);
+      if (!isEmailValid) {
+        this.validationErrors.email = 'Por favor, ingresa una dirección de correo electrónico válida.';
+        isValid = false;
+      } else {
+        updatedFields.email = this.detailsBody.email;
+      }
     }
 
-    if (!isPhoneValid) {
-      this.validationErrors.phoneNumber = 'El teléfono debe tener entre 10 y 15 dígitos numéricos.';
+    if (this.editingPhone) {
+      const isPhoneValid = this.validatePhone(this.detailsBody.phoneNumber);
+      if (!isPhoneValid) {
+        this.validationErrors.phoneNumber = 'El teléfono debe tener entre 10 y 15 dígitos numéricos.';
+        isValid = false;
+      } else {
+        updatedFields.phoneNumber = this.detailsBody.phoneNumber;
+      }
     }
 
-    if (isNameValid && isEmailValid && isPhoneValid) {
+    if (isValid && Object.keys(updatedFields).length > 0) {
       this.showPasswordModal = true;
       console.log('Información personal válida y lista para actualizar.');
+    } else if (isValid && Object.keys(updatedFields).length === 0) {
+      this.generalErrorMessage = 'No hay cambios para actualizar.';
+      console.log('No hay cambios para actualizar.');
     } else {
       this.generalErrorMessage = 'Por favor, corrige los errores en el formulario.';
       console.log('Validación fallida.');
     }
+
+    console.log('Details Body: ' + JSON.stringify(this.detailsBody));
   }
 
 
@@ -163,7 +184,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       setTimeout(() => {
         this.showSuccessMessage = false;
       }, 3000);
-      // Opcional: Actualizar los datos del usuario nuevamente si es necesario
+
     } else {
       this.showPasswordModal = false;
     }
@@ -193,16 +214,35 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   toggleEdit(field: string) {
     if (field === 'name') {
       this.editingName = !this.editingName;
+      if (this.editingName) {
+        this.detailsBody.name = this.user.name;
+      } else {
+        this.user.name = this.detailsBody.name
+        this.detailsBody.name = this.user.name = this.detailsBody.name;
+      }
       if (this.validationErrors.name) {
         delete this.validationErrors.name;
       }
+      console.log('Name after editing: ' + this.detailsBody.name)
     } else if (field === 'email') {
       this.editingEmail = !this.editingEmail;
+      if (this.editingEmail) {
+        this.detailsBody.email = this.user.email;
+      } else {
+        this.user.email = this.detailsBody.email;
+        this.detailsBody.email = this.user.email = this.detailsBody.email;
+      }
       if (this.validationErrors.email) {
         delete this.validationErrors.email;
       }
     } else if (field === 'phone') {
       this.editingPhone = !this.editingPhone;
+      if (this.editingPhone) {
+        this.detailsBody.phoneNumber = this.user.phone;
+      } else {
+        this.user.phone = this.detailsBody.phoneNumber;
+        this.detailsBody.phoneNumber = this.user.phone = this.detailsBody.phoneNumber;
+      }
       if (this.validationErrors.phoneNumber) {
         delete this.validationErrors.phoneNumber;
       }
@@ -248,19 +288,19 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   }
 
   // Validaciones
-  validateName(name: string): boolean {
+  validateName(name: string | undefined): boolean {
     const nameRegex = /^[a-zA-Z\s]+$/;
-    return nameRegex.test(name);
+    return nameRegex.test(<string>name);
   }
 
-  validateEmail(email: string): boolean {
+  validateEmail(email: string | undefined): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    return emailRegex.test(<string>email);
   }
 
-  validatePhone(phone: string): boolean {
+  validatePhone(phone: string | undefined): boolean {
     const phoneRegex = /^[0-9]{10,15}$/;
-    return phoneRegex.test(phone);
+    return phoneRegex.test(<string>phone);
   }
 
   navigateToAdminPanel(): void {

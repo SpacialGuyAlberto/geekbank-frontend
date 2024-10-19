@@ -1,21 +1,22 @@
+/* Estilos generales */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  min-height: 100%; /* Asegura que el body tenga al menos el tamaño completo de la pantalla */
+  min-height: 100%;
   display: flex;
-  justify-content: center; /* Centrar horizontalmente */
-  align-items: flex-start; /* Alinea los elementos en la parte superior para que permita scroll */
+  justify-content: center;
+  align-items: flex-start;
   font-family: 'Courier New', Courier, monospace;
   background-color: #0B0D19;
-  overflow-x: hidden; /* Evita el scroll horizontal */
+  overflow-x: hidden;
 }
 
 .graph-container {
   position: relative;
   width: 100%;
-  min-height: 100vh; /* Asegura que ocupe toda la pantalla */
-  background-color: #0B0D19; /* Fondo consistente */
+  min-height: 100vh;
+  background-color: #0B0D19;
   overflow: hidden;
 }
 
@@ -24,7 +25,7 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* Se mantiene estirado al tamaño completo del contenedor */
+  height: 100%;
   z-index: 1;
 }
 
@@ -36,21 +37,21 @@ html, body {
   align-items: center;
   justify-content: center;
   width: auto;
-  max-width: 25rem; /* 400px to rem */
-  padding: 1.25rem; /* 20px to rem */
+  max-width: 25rem;
+  padding: 1.25rem;
   background-color: rgba(2, 21, 38, 0.8);
-  border: 0.125rem solid #1261A0; /* 2px to rem */
-  border-radius: 0.9375rem; /* 15px to rem */
+  border: 0.125rem solid #1261A0;
+  border-radius: 0.9375rem;
   color: #88D66C;
   text-align: center;
-  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5); /* 4px to 20px converted to rem */
+  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5);
   z-index: 2;
 }
 
 .register-title {
-  color: #00d4ff; /* Azul neón turquesa */
+  color: #00d4ff;
   font-size: 1.5rem;
-  margin-bottom: 0.625rem; /* 10px to rem */
+  margin-bottom: 0.625rem;
 }
 
 .form-group {
@@ -58,46 +59,75 @@ html, body {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 0.9375rem; /* 15px to rem */
-}
-
-.form-group.visible {
-  opacity: 1;
+  margin-bottom: 0.9375rem;
 }
 
 .form-group label {
   color: #88D66C;
   font-size: 1rem;
-  margin-bottom: 0.3125rem; /* 5px to rem */
+  margin-bottom: 0.3125rem;
   text-align: center;
 }
 
-.form-group input {
+.input-container {
   width: 100%;
-  max-width: 18.75rem; /* 300px to rem */
-  padding: 0.75rem; /* 12px to rem */
-  border: 0.125rem solid #88D66C; /* 2px to rem */
+  max-width: 18.75rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.input-container input {
+  flex: 1;
+  padding: 0.75rem;
+  border: 0.125rem solid #88D66C;
   background-color: #0B0D19 !important;
   color: #88D66C !important;
   font-size: 1rem;
   outline: none;
-  margin-bottom: 1.25rem; /* 20px to rem */
-  border-radius: 0.625rem; /* 10px to rem */
+  border-radius: 0.625rem;
   box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.input-container input:focus {
+  border-color: #00d4ff;
+  box-shadow: 0 0 0.3125rem rgba(0, 212, 255, 0.5);
+}
+
+.valid-feedback,
+.invalid-feedback {
+  margin-left: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.valid-feedback {
+  color: #88D66C; /* Verde */
+}
+
+.invalid-feedback {
+  color: #EB3678; /* Rojo */
+}
+
+/* Botones */
+.button-group {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 18.75rem;
+}
+
 button {
-  padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
+  padding: 0.75rem 1.25rem;
   background-color: transparent;
-  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px to rem */
+  border: 0.125rem solid rgba(255, 255, 255, 0.3);
   color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  border-radius: 0.625rem; /* 10px to rem */
-  display: block;
-  margin: 0 auto;
+  border-radius: 0.625rem;
+  display: inline-block;
+  margin: 0.5rem;
 }
 
 button:hover {
@@ -112,24 +142,62 @@ button:active {
 
 button:focus {
   outline: none;
-  box-shadow: 0 0 0.3125rem rgba(255, 255, 255, 0.5); /* 5px to rem */
+  box-shadow: 0 0 0.3125rem rgba(255, 255, 255, 0.5);
 }
 
+/* Mensajes de estado */
 .success-message {
   color: #88D66C;
-  margin-top: 0.9375rem; /* 15px to rem */
+  margin-top: 0.9375rem;
 }
 
 .error-message {
   color: #EB3678;
-  margin-top: 0.9375rem; /* 15px to rem */
+  margin-top: 0.9375rem;
 }
 
-/* Estilos para dispositivos móviles y pantallas pequeñas */
+/* Barra de fortaleza de la contraseña */
+.password-strength-container {
+  width: 100%;
+  max-width: 18.75rem;
+  margin-top: 0.5rem;
+}
+
+.password-strength-bar {
+  width: 100%;
+  height: 0.5rem;
+  background-color: #ccc;
+  border-radius: 0.3125rem;
+  overflow: hidden;
+  margin-bottom: 0.3125rem;
+}
+
+.password-strength-bar.low-strength {
+  background-color: #EB3678; /* Rojo */
+  width: 33%;
+}
+
+.password-strength-bar.medium-strength {
+  background-color: #FFD700; /* Amarillo */
+  width: 66%;
+}
+
+.password-strength-bar.high-strength {
+  background-color: #88D66C; /* Verde */
+  width: 100%;
+}
+
+.password-strength-text {
+  text-align: left;
+  color: #fff;
+  font-size: 0.875rem;
+}
+
+/* Estilos responsivos */
 @media (max-width: 480px) {
   .register-container {
     width: 90%;
-    padding: 0.9375rem; /* 15px to rem */
+    padding: 0.9375rem;
   }
 
   .register-title {
@@ -138,16 +206,19 @@ button:focus {
 
   .form-group input {
     font-size: 0.9rem;
-    padding: 0.625rem; /* 10px to rem */
+    padding: 0.625rem;
   }
 
   button {
     font-size: 0.9rem;
-    padding: 0.625rem 0.9375rem; /* 10px to 15px to rem */
+    padding: 0.625rem 0.9375rem;
+  }
+
+  .password-strength-text {
+    font-size: 0.75rem;
   }
 }
 
-/* Estilos para tablets */
 @media (min-width: 481px) and (max-width: 768px) {
   .register-container {
     width: 80%;
@@ -159,11 +230,11 @@ button:focus {
 
   .form-group input {
     font-size: 1rem;
-    padding: 0.75rem; /* 12px to rem */
+    padding: 0.75rem;
   }
 
   button {
     font-size: 1rem;
-    padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
+    padding: 0.75rem 1.25rem;
   }
 }

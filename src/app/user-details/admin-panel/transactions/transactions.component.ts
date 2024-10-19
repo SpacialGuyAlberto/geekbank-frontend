@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewEncapsulation} from '@angular/core';
 import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf, NgStyle} from "@angular/common";
-import {Transaction, TransactionsService} from "../../../transactions.service";
+import { TransactionsService} from "../../../transactions.service";
 import {UserService} from "../../../user.service";
 import {User} from "../../../models/User";
 import {MatFormField, MatFormFieldModule, MatLabel} from "@angular/material/form-field";
@@ -13,7 +13,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
-
+import {Transaction} from "../../../models/transaction.model";
 
 @Component({
   selector: 'app-transactions',

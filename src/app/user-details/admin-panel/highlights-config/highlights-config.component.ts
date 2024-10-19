@@ -7,6 +7,7 @@ import {HighlightService} from "../../../highlights.service";
 import {OnInit} from "@angular/core";
 import {HighlightItemWithGiftcard} from "../../../models/HighlightItem";
 import {KinguinService} from "../../../kinguin.service";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-highlights-config',
@@ -14,7 +15,8 @@ import {KinguinService} from "../../../kinguin.service";
   imports: [
     SearchBarComponent,
     CurrencyPipe,
-    NgForOf
+    NgForOf,
+    MatSnackBarModule
   ],
   templateUrl: './highlights-config.component.html',
   styleUrls: ['./highlights-config.component.css']
@@ -28,7 +30,8 @@ export class HighlightsConfigComponent implements OnInit {
 
   constructor(
     private highlightService: HighlightService,
-    private kinguinService: KinguinService
+    private kinguinService: KinguinService,
+    private snackBar: MatSnackBar,
   ) {}
 
   ngOnInit() {
@@ -62,18 +65,29 @@ export class HighlightsConfigComponent implements OnInit {
     this.highlightService.removeHighlights([]).subscribe(
       () => {
         console.log('Previous highlights removed successfully!');
+        this.showSnackBar("Changes saved successfully.")
         this.highlightService.addHighlights(productIds).subscribe(
           () => {
             console.log('Highlights saved successfully!');
+            this.showSnackBar("Changes saved successfully.")
           },
           (error) => {
             console.error('Failed to save highlights', error);
+            this.showSnackBar("Failed saving changes.")
           }
         );
       },
       (error) => {
         console.error('Failed to remove previous highlights', error);
+        this.showSnackBar("Failed saving changes.")
       }
     );
   }
+
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+    });
+  }
+
 }

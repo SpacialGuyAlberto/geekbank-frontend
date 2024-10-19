@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
 // @ts-ignore
 import { Chart } from 'chart.js';
 import {CurrencyPipe} from "@angular/common";
+import { TransactionsService} from "../../../transactions.service";
+import {UserService} from "../../../user.service";
+import {User} from "../../../models/User";
+import {Transaction} from "../../../models/transaction.model";
 
 @Component({
   selector: 'app-general-view',
@@ -12,70 +16,99 @@ import {CurrencyPipe} from "@angular/common";
   templateUrl: './general-view.component.html',
   styleUrl: './general-view.component.css'
 })
-export class GeneralViewComponent {
+export class GeneralViewComponent implements OnInit, AfterViewInit {
+  @Input() totalCustomers: number = 0;
   // Datos ficticios que deberían venir de tu API o backend.
   totalSales = 50000; // Monto de ventas totales
   totalProfit = 15000; // Ganancias después de los costos
   totalClients = 200; // Número de clientes
+  totalTransactions: number = 0;
   completedTransactions = 1200; // Transacciones completadas
   pendingOrders = 50; // Pedidos pendientes
   totalProducts = 3000; // Inventario total de productos
 
+  constructor(private transactionService: TransactionsService, private userService: UserService){}
+
+  ngOnInit(): void {
+    this.fetchCompletedTTransactions();
+    this.fetchCustomers();
+  }
+
   ngAfterViewInit() {
     this.createMonthlySalesChart();
     this.createTopCategoriesChart();
+
+  }
+
+  ngOnChanges() {
+    console.log('Total customers actualizado:', this.totalCustomers);
+  }
+
+  fetchCompletedTTransactions(){
+    this.transactionService.getTransactions().subscribe( (data => {
+        this.completedTransactions = data.filter( transaction => transaction.status === 'COMPLETED').length;
+      })
+    )
+  }
+
+  fetchCustomers(){
+    this.userService.getUsers()
+      .subscribe(data => {
+        this.totalCustomers = data.filter( customer => customer.role === 'CUSTOMER').length;
+      })
   }
 
   createMonthlySalesChart() {
     const ctx = document.getElementById('monthlySalesChart') as HTMLCanvasElement;
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
-        datasets: [{
-          label: 'Ventas Mensuales',
-          data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
-          backgroundColor: '#ffcc00', // Color de las barras
-          borderColor: '#ffcc00',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: '#555'
-            },
-            ticks: {
-              color: '#fff'
-            }
-          },
-          x: {
-            ticks: {
-              color: '#fff'
-            }
-          }
+    if (ctx) {
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre'],
+          datasets: [{
+            label: 'Ventas Mensuales',
+            data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
+            backgroundColor: '#ffcc00', // Color de las barras
+            borderColor: '#ffcc00',
+            borderWidth: 1
+          }]
         },
-        plugins: {
-          legend: {
-            labels: {
-              color: '#fff'
-            }
+        options: {
+          responsive: true,
+          scales: {
+            yAxes: [{
+              gridLines: {
+                color: '#555'
+              },
+              ticks: {
+                fontColor: '#fff',
+                beginAtZero: true,
+              }
+            }],
+            xAxes: [{
+              ticks: {
+                fontColor: '#fff'
+              }
+            }]
           },
-          title: {
-            display: true,
-            text: 'Ventas Mensuales',
-            color: '#fff',
-            font: {
-              size: 18
+          plugins: {
+            legend: {
+              labels: {
+                color: '#fff'
+              }
+            },
+            title: {
+              display: true,
+              text: 'Ventas Mensuales',
+              color: '#fff',
+              font: {
+                size: 18
+              }
             }
           }
         }
-      }
-
-    });
+      });
+    }
   }
 
   createTopCategoriesChart() {
@@ -109,5 +142,7 @@ export class GeneralViewComponent {
       }
     });
   }
+
+
 
 }

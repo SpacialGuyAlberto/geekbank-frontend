@@ -42,7 +42,10 @@ export class FooterComponent implements OnInit, OnDestroy{
       this.footerClass = 'footer-user-details';
     } else if (url.includes('/admin-panel')) {
       this.footerClass = 'footer-admin-panel';
-    } else {
+    } else if (url.includes('/login') || url.includes('/register')){
+      this.footerClass = 'footer-user-details';
+    }
+    else {
       this.footerClass = 'footer-default';
     }
   }

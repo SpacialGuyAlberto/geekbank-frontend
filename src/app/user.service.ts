@@ -2,8 +2,8 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Transaction } from './transactions.service';
+import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import {Transaction} from "./models/transaction.model";
 import { User } from './models/User';
 import {environment} from "../environments/environment";
 import { KinguinGiftCard } from './models/KinguinGiftCard';
@@ -24,6 +24,12 @@ export class UserService {
    * @returns Observable con la respuesta del servidor.
    */
   updateDetails(details: DetailsBody): Observable<HttpResponse<any>> {
+    if (!details.email) {
+      const storedEmail = sessionStorage.getItem('currentUserEmail');
+      if (storedEmail) {
+        details.email = storedEmail; // Recupera y asigna el email
+      }
+    }
     return this.http.post<HttpResponse<any>>(`${this.baseUrl}/update-user-details`, details, { observe: 'response' }).pipe(
       tap(response => {
         const token = response.headers.get('Authorization');
@@ -33,6 +39,12 @@ export class UserService {
       })
     );
   }
+
+  checkUserExists(email: string): Observable<{ exists: boolean }> {
+    const params = new HttpParams().set('email', email);
+    return this.http.get<{ exists: boolean }>(`${this.baseUrl}/checkUser`, { params });
+  }
+
 
   /**
    * Establece una nueva contraseña para el usuario.

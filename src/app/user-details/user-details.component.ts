@@ -38,7 +38,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.animation.initializeGraphAnimation();
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
       console.log(data.email)

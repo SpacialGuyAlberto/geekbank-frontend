@@ -16,6 +16,14 @@ export class WishListService {
 
   constructor(private http: HttpClient) {}
 
+  getWishItem(id: string): Observable<WishItemWithGiftcard>{
+    return this.http.get<WishItemWithGiftcard>(`${this.baseUrl}/${id}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    })
+  }
+
   getWishItems(): Observable<WishItemWithGiftcard[]> {
     return this.http.get<WishItemWithGiftcard[]>(this.baseUrl, {
       headers: new HttpHeaders({
