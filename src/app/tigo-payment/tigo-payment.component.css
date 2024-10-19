@@ -224,6 +224,41 @@ body::before {
   margin: 0 auto 1rem auto;
 }
 
+/* tigo-payment.component.css */
+
+/* tigo-payment.component.css */
+
+/* Estilos para la notificación */
+.notification {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  font-family: var(--font-secondary);
+  text-align: center;
+}
+
+/* Notificación de éxito */
+.notification.success {
+  background-color: #28a745; /* Verde */
+  color: #ffffff; /* Texto blanco */
+  border: 1px solid #218838;
+}
+
+/* Notificación de error */
+.notification.error {
+  background-color: #000000; /* Negro */
+  color: #ff0000; /* Rojo */
+  border: 1px solid #ff0000;
+}
+
+/* Estilos para el párrafo dentro de la notificación */
+.notification p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

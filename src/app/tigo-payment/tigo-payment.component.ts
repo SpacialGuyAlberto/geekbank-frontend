@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from "@angular/forms";
-import { NgIf } from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { TigoService } from "../tigo.service";
 import {WebSocketService} from "../web-socket.service";
@@ -18,7 +18,8 @@ import {HttpHeaders} from "@angular/common/http";
   standalone: true,
   imports: [
     FormsModule,
-    NgIf
+    NgIf,
+    NgClass
   ],
   templateUrl: './tigo-payment.component.html',
   styleUrls: ['./tigo-payment.component.css']
@@ -131,24 +132,31 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           console.error('Error parsing response:', response);
         }
 
+// En el componente donde suscribes al WebSocket
         this.transactionSubscription = this.webSocketService
           .subscribeToTransactionStatus(this.paymentDetails.phoneNumber)
-          .subscribe(status => {
-            console.log('Transaction status received:', status);
-            this.transactionStatus = status;  // Actualizar el estado de la transacción
+          .subscribe((message: any) => {
+            console.log('Transaction status received:', message);
+            this.transactionStatus = message.status;  // Actualizar el estado de la transacción
 
-            if (status === 'COMPLETED') {
-              this.notifMessage = 'Your payment was successfull';
+            if (this.transactionStatus === 'COMPLETED') {
+              this.notifMessage = 'Your payment was successful';
               this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
               console.log('Transaction completed');
               this.showSpinner = false;  // Ocultar el spinner
-            } else if (status === 'CANCELLED') {
-              this.notifMessage = 'Your payment was not successfull';
+            } else if (this.transactionStatus === 'FAILED') {
+              this.notifMessage = 'Your payment failed: ' + message.reason;
+              this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
+              console.error('Transaction failed:', message.reason);
+              this.showSpinner = false;  // Ocultar el spinner
+            } else if (this.transactionStatus === 'CANCELLED') {
+              this.notifMessage = 'Your payment was not successful';
               this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
               console.error('Transaction cancelled');
               this.showSpinner = false;  // Ocultar el spinner
             }
           });
+
       },
       error => {
         console.error('Error placing order', error);
@@ -158,23 +166,27 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   cancelTransaction(transactionNumber: string, orderRequestId: string): void {
-    this.isCancelling = true; // Iniciar indicador de carga
+    this.isCancelling = true;
 
     this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
       .subscribe(
         (updatedTransaction: Transaction) => {
           this.transaction = updatedTransaction;
-          this.successMessage = `Transacción ${updatedTransaction.transactionNumber} cancelada exitosamente.`;
-          console.log('Transacción cancelada:', updatedTransaction);
-          this.isCancelling = false; // Finalizar indicador de carga
+          this.transactionStatus = 'CANCELLED';
+          this.notifMessage = 'Your payment was cancelled.';
+          console.log('Transaction cancelled:', updatedTransaction);
+          this.isCancelling = false;
+          this.showSpinner = false;
         },
         (error: any) => {
-          this.errorMessage = error;
-          console.error('Error al cancelar la transacción:', error);
-          this.isCancelling = false; // Finalizar indicador de carga
+          this.errorMessage = 'Error cancelling the transaction.';
+          console.error('Error cancelling the transaction:', error);
+          this.isCancelling = false;
+          this.showSpinner = false;
         }
       );
   }
+
 
   ngOnDestroy(): void {
     if (this.transactionSubscription) {
@@ -184,5 +196,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.transactionNumberSubscription.unsubscribe();
     }
     this.webSocketService.disconnect();
+  }
+
+  retryPayment() {
+
   }
 }

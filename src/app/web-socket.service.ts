@@ -40,11 +40,13 @@ export class WebSocketService {
   }
 
 
-  subscribeToTransactionStatus(phoneNumber: string): Observable<string> {
+  subscribeToTransactionStatus(phoneNumber: string): Observable<any> {
     const url = `/topic/transaction-status/${phoneNumber}`;
 
     this.stompClient.subscribe(url, (message: any) => {
-      this.transactionStatusSubject.next(message.body);
+      // Parsear el mensaje recibido a un objeto JSON
+      const parsedMessage = JSON.parse(message.body);
+      this.transactionStatusSubject.next(parsedMessage);
     });
 
     return this.transactionStatusSubject.asObservable();

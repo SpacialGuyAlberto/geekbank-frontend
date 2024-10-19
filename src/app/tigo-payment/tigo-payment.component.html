@@ -1,4 +1,4 @@
-<!-- src/app/tigo-payment/tigo-payment.component.html -->
+<!-- tigo-payment.component.html -->
 
 <!-- Modal Component -->
 <div class="modal" *ngIf="showModal">
@@ -6,6 +6,7 @@
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>Express Checkout</h2>
     <form (ngSubmit)="onSubmit()">
+      <!-- Campos del formulario -->
       <div class="form-group">
         <label for="phone">Phone No.</label>
         <input
@@ -23,19 +24,13 @@
       </div>
 
       <!-- Botones dependiendo del estado de la transacción -->
+      <!-- Botón "Pay" -->
       <button
         type="submit"
         class="retro-button"
         *ngIf="!showSpinner && transactionStatus === ''"
       >
         Pay
-      </button>
-      <button
-        type="submit"
-        class="retro-button"
-        *ngIf="!showSpinner && transactionStatus === 'CANCELLED'"
-      >
-        Retry Payment
       </button>
 
       <!-- Botón de Cancelación -->
@@ -50,18 +45,35 @@
       </button>
 
       <!-- Mensajes según el estado de la transacción -->
-      <p *ngIf="transactionStatus === 'COMPLETED'" class="success-message">
-        Su pago ha sido exitoso.
-      </p>
-      <p *ngIf="transactionStatus === 'CANCELLED'" class="error-message">
-        Su pago ha sido cancelado, gracias.
-      </p>
+      <div *ngIf="notifMessage" [ngClass]="{'notification success': transactionStatus === 'COMPLETED', 'notification error': transactionStatus === 'FAILED' || transactionStatus === 'CANCELLED'}">
+        <p>{{ notifMessage }}</p>
+      </div>
+
+      <!-- Botones para reintentar o cerrar después de un fallo -->
+      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== ''">
+        <button
+          type="button"
+          class="retro-button"
+          (click)="retryPayment()"
+        >
+          Retry Payment
+        </button>
+        <button
+          type="button"
+          class="retro-button cancel-button"
+          (click)="closeModal()"
+        >
+          Close
+        </button>
+      </div>
     </form>
 
+    <!-- Sección de confirmación y spinner -->
     <div *ngIf="showConfirmation" class="confirmation">
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
 
+      <!-- Mostrar spinner y mensaje de espera -->
       <div *ngIf="showSpinner" class="spinner-container">
         <div class="spinner"></div>
         <p>Esperando a su pago...</p>
