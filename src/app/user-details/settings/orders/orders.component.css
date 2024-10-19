@@ -55,14 +55,6 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
 }
 
-.product-image {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 0.25rem;
-}
-
 .filters input,
 .filters select,
 .filters button {
@@ -112,15 +104,15 @@
 
 .transaction-header,
 .transaction-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   padding: 1rem;
   border-radius: 0.5rem;
   background: var(--glass-bg-color); /* Fondo translúcido */
   backdrop-filter: blur(10px); /* Efecto vidrioso */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Sombra */
   color: #fff;
-  align-items: center;
   transition: background-color 0.3s ease;
 }
 
@@ -140,7 +132,7 @@
 }
 
 .transaction-row span {
-  flex: 1;
+  flex: 1 1 100px; /* Flexibilidad para adaptarse a diferentes tamaños */
   padding: 0.5rem;
   word-break: break-word;
 }
@@ -180,14 +172,15 @@
 
 /* Estado de la Transacción */
 .transaction-status {
-  padding: 0.5rem 1.5rem;
-  border-radius: 2.5rem;
-  border: 0.2rem solid;
+  padding: 0.4rem 1rem; /* Reducir padding para tamaños móviles */
+  border-radius: 0.5rem; /* Reducir border-radius para un aspecto menos redondo */
+  border: 0.1rem solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
-  min-width: 10rem;
+  min-width: 6rem; /* Reducir min-width */
   color: #fff;
+  font-size: 0.9rem; /* Reducir tamaño de fuente */
 }
 
 .transaction-status.PENDING {
@@ -227,7 +220,7 @@
   border: none;
   color: #fff;
   padding: 0.75rem 1.5rem;
-  border-radius: 2rem;
+  border-radius: 0.5rem; /* Reducir border-radius */
   backdrop-filter: blur(5px); /* Efecto vidrioso */
   box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
   font-size: 1rem;
@@ -253,29 +246,52 @@
   font-size: 1rem;
 }
 
-/* Ajustes Responsivos */
+@media (max-width: 1024px) {
+  .transaction-card {
+    flex-direction: row;
+  }
+
+  .transaction-image {
+    flex: 1 1 150px;
+    max-width: 150px;
+  }
+
+  .transaction-info {
+    flex: 2 1 250px;
+  }
+
+  .transaction-name {
+    font-size: 1.1rem;
+  }
+
+  .transaction-status {
+    min-width: 5rem;
+    font-size: 0.85rem;
+  }
+}
+
 @media (max-width: 768px) {
   .filters {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
   }
 
-  .transaction-header,
-  .transaction-row {
-    grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
+  .transaction-card {
+    flex-direction: column;
   }
 
-  .transaction-header span,
-  .transaction-row span {
-    display: block;
-    width: 100%;
-    margin-bottom: 0.5rem;
+  .transaction-image {
+    max-width: 100%;
+    height: 150px;
+  }
+
+  .transaction-info {
+    padding: 0.75rem;
   }
 
   .transaction-status {
     margin-top: 0.5rem;
-    min-width: unset;
-    width: 100%;
+    width: auto;
   }
 
   .pagination button {
@@ -289,8 +305,13 @@
 }
 
 @media (max-width: 600px) {
-  .transactions-container {
-    padding: 1rem;
+  .transaction-info {
+    padding: 0.5rem;
+  }
+
+  .transaction-status {
+    width: 100%;
+    text-align: center;
   }
 
   .filters input,
@@ -299,8 +320,27 @@
     width: 100%;
   }
 
+  .pagination button {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .transaction-image img {
+    height: 200px;
+  }
+
+  .transaction-name {
+    font-size: 1rem;
+  }
+
+  .transaction-id,
+  .transaction-date,
+  .transaction-amount {
+    font-size: 0.9rem;
+  }
+
   .transaction-status {
-    width: 100%;
+    font-size: 0.8rem;
   }
 }
 
@@ -319,5 +359,15 @@
   .pagination button {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
+  }
+
+  .product-name {
+    font-size: 0.7rem;
+    max-width: 70px;
+  }
+
+  .product-image {
+    width: 50px;
+    height: 50px;
   }
 }
