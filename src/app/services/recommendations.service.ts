@@ -14,7 +14,7 @@ export class RecommendationsService {
 
 
   private apiUrl = environment.apiUrl
-  private baseUrl = 'http://localhost:7070/api/recommendations'
+  private baseUrl =  `${this.apiUrl}/recommendations`
 
   constructor(private http: HttpClient) { }
 
