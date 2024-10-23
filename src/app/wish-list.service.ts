@@ -19,7 +19,7 @@ export class WishListService {
   getWishItem(id: string): Observable<WishItemWithGiftcard>{
     return this.http.get<WishItemWithGiftcard>(`${this.baseUrl}/${id}`, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     })
   }
@@ -27,7 +27,7 @@ export class WishListService {
   getWishItems(): Observable<WishItemWithGiftcard[]> {
     return this.http.get<WishItemWithGiftcard[]>(this.baseUrl, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     });
   }
@@ -35,7 +35,7 @@ export class WishListService {
   addWishItem(productId: number, price: number): Observable<KinguinGiftCard> {
     return this.http.post<KinguinGiftCard>(this.baseUrl, { productId, price }, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     });
   }
@@ -43,7 +43,7 @@ export class WishListService {
   removeWishItem(wishItemId: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${wishItemId}`, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     });
   }
@@ -60,7 +60,7 @@ export class WishListService {
   removeAllWishItems(): Observable<any> {
     return this.http.delete(this.baseUrl, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     });
   }

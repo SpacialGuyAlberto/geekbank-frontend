@@ -11,7 +11,9 @@ import {NgModel} from "@angular/forms";
 import {TelegramListenerService} from "./telegram-listener.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {FooterComponent} from "./footer/footer.component";
-
+import { AuthService } from './auth.service';
+import { CartService } from './cart.service';
+import {CartItemWithGiftcard} from "./models/CartItem";
 
 @Component({
   standalone: true,
@@ -30,19 +32,33 @@ export class AppComponent implements OnInit {
   //   });
   // }
 
-  constructor(private translate: TranslateService) {
+  constructor(private translate: TranslateService, private authService: AuthService, private cartService: CartService) {
     // Establece el idioma predeterminado
     this.translate.setDefaultLang('en');
   }
 
   ngOnInit(): void {
-    // The service will start listening as soon as the app initializes
-    console.log('AppComponent initialized. Telegram listener service is now active.');
+    this.authService.loggedIn$.subscribe(isLoggedIn => {
+      if (isLoggedIn) {
+        this.syncCart();
+      }
+    });
   }
 
   // // Método para cambiar el idioma
   // changeLanguage(lang: string) {
   //   this.translate.use(lang);
   // }
+  private syncCart(): void {
+    const localCart = localStorage.getItem('cart');
+    if (localCart) {
+      const items: CartItemWithGiftcard[] = JSON.parse(localCart);
+      items.forEach(item => {
+        this.cartService.addCartItem(item.cartItem.productId, item.cartItem.quantity, item.giftcard.price).subscribe();
+      });
+      localStorage.removeItem('cart');
+      this.cartService.updateCartItemCount();
+    }
+  }
 
 }

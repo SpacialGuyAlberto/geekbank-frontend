@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import {BehaviorSubject, Observable, throwError} from 'rxjs';
 import {HighlightItemWithGiftcard} from "./models/HighlightItem";
 import {environment} from "../environments/environment";
 import {Transaction} from "./models/transaction.model";
@@ -23,7 +23,15 @@ import {catchError} from "rxjs/operators";
 export class TransactionsService {
   private apiUrl = `${environment.apiUrl}/transactions`;
 
+  private transactionNumberSubject = new BehaviorSubject<string | null>(null);
+  // Observable para que otros componentes puedan suscribirse
+  transactionNumber$ = this.transactionNumberSubject.asObservable();
+
   constructor(private http: HttpClient) {}
+
+  setTransactionNumber(transactionNumber: string): void {
+    this.transactionNumberSubject.next(transactionNumber);
+  }
 
   getTransactions(): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.apiUrl}`);
@@ -31,6 +39,13 @@ export class TransactionsService {
 
   getTransactionsById(userId: number | undefined): Observable<Transaction[]> {
     return this.http.get<Transaction[]>(`${this.apiUrl}/${userId}`);
+  }
+
+  getTransactionByNumber(transactionNumber: string): Observable<Transaction> {
+    return this.http.get<Transaction>(`${this.apiUrl}/by-number/${transactionNumber}`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getTransactionsByUserIdAndTimestamp(userId: number, start: string, end: string): Observable<Transaction[]> {

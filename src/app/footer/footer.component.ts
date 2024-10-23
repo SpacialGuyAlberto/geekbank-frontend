@@ -46,7 +46,7 @@ export class FooterComponent implements OnInit, OnDestroy{
       this.footerClass = 'footer-user-details';
     }
     else {
-      this.footerClass = 'footer-default';
+      this.footerClass = 'footer-user-details';
     }
   }
 

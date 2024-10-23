@@ -1,5 +1,5 @@
 <nav [ngClass]="navbarClass" *ngIf="showNavbar">
-  <!-- Logo y Nombre de la App -->
+
   <div class="navbar-brand">
     <span class="app-name" (click)="goToHome()">Astralis</span>
   </div>
@@ -9,9 +9,14 @@
   </div>
 
   <div class="navbar-links">
+    <li class="cart-icon-container">
+      <a routerLink="/cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+      </a>
+    </li>
     <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
     <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
-
     <i
       *ngIf="isSmallScreen"
       (click)="openSearchModal()"
@@ -24,14 +29,6 @@
       (click)="router.navigate(['/user-details'])"
       class="fa-solid fa-user clickable-icon"
     ></i>
-
-    <li *ngIf="isLoggedIn()" class="cart-icon-container">
-      <a routerLink="/cart">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
-      </a>
-    </li>
-
     <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
   </div>
 
@@ -68,7 +65,7 @@
         <li *ngIf="!isLoggedIn()">
           <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
         </li>
-        <li *ngIf="isLoggedIn()">
+        <li>
           <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">
             <i class="fa-solid fa-cart-shopping"></i>
             <span *ngIf="cartItemCount > 0">({{ cartItemCount }})</span>

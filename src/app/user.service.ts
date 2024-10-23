@@ -72,9 +72,9 @@ export class UserService {
   setToken(token: string): void {
     if (this.isBrowser()) {
       if (token) {
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
       } else {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
       }
     }
   }
@@ -84,7 +84,7 @@ export class UserService {
    * @returns El token de autenticación o null si no existe.
    */
   getToken(): string | null {
-    return localStorage.getItem('token');
+    return sessionStorage.getItem('token');
   }
 
   /**

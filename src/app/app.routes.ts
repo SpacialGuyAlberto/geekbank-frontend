@@ -13,6 +13,7 @@ import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
 import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.component";
 import {SetPasswordComponent} from "./set-password/set-password.component";
 import {AccountInfoComponent} from "./user-details/settings/account-info/account-info.component";
+import {PurchaseConfirmationComponent} from "./purchase-confirmation/purchase-confirmation.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -27,9 +28,10 @@ export const routes: Routes = [
   { path:'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'set-password', component: SetPasswordComponent },
-  { path: '**', redirectTo: '/home' },
+  // { path: '**', redirectTo: '/home' },
   { path: '', redirectTo: '/payment', pathMatch: 'full' },
   // { path: 'payment-success', component: PaymentSuccessComponent },
   // { path: 'payment-cancel', component: PaymentCancelComponent },
+  { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
   { path: '**', redirectTo: '/payment' }
 ];

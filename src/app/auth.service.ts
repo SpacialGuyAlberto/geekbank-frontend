@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { firstValueFrom, Observable, tap } from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable, tap} from 'rxjs';
 import { Router } from "@angular/router";
 import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
@@ -20,8 +20,14 @@ export class AuthService {
   private baseUrl2 = `${this.apiUrl}/users`;
   private token: string | undefined;
   private emailUser: string | undefined;
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {
+    const token = sessionStorage.getItem('token');
+    this.loggedIn.next(!!token);
+  }
+
 
   register(email: string, password: string, name: string): Observable<HttpResponse<any>> {
     return this.http.post(
@@ -85,29 +91,29 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.isBrowser() && !!localStorage.getItem('token');
+    return this.isBrowser() && !!sessionStorage.getItem('token');
   }
 
   setToken(token: string): void {
     if (this.isBrowser()) {
       if (token) {
-        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
       } else {
-        localStorage.removeItem('token');
+        sessionStorage.removeItem('token');
       }
     }
   }
 
   getToken(): string {
-    return this.isBrowser() ? localStorage.getItem('token') || '' : '';
+    return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';
   }
 
   logout(): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.getToken()}`
     });
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('userId');
     return this.http.post(`${this.baseUrl}/logout`, {}, { headers, responseType: 'text' });
   }
 
@@ -116,8 +122,8 @@ export class AuthService {
       await firstValueFrom(this.logout());
       console.log('Logout successful');
       if (this.isBrowser()) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('username');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('username');
       }
       this.setToken('');
       await router.navigate(['/login']);
@@ -182,7 +188,7 @@ export class AuthService {
     const token = response.credential;
     this.googleLogin(token).subscribe(
       (data: any) => {
-        localStorage.setItem('token', data.token);
+        sessionStorage.setItem('token', data.token);
         this.router.navigate(['/home']).then(() => {
           window.location.reload();  // Recargar la página después de la navegación
         });
@@ -211,12 +217,12 @@ export class AuthService {
   }
 
   setSession(authResult: any) {
-    localStorage.setItem('token', authResult.token);
+    sessionStorage.setItem('token', authResult.token)
     sessionStorage.setItem('userId', authResult.userId);
-    localStorage.setItem('email', authResult.email);
+    sessionStorage.setItem('email', authResult.email)
   }
 
   getUserId(): string {
-    return localStorage.getItem('userId') || '';
+    return sessionStorage.getItem('userId') || '';
   }
 }

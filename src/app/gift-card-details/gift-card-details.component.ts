@@ -1,5 +1,5 @@
 // src/app/gift-card-details/gift-card-details.component.ts
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KinguinService } from "../kinguin.service";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
@@ -8,17 +8,14 @@ import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import {BackgroundAnimationService} from "../background-animation.service";
-import {CartComponent} from "../cart/cart.component";
-import {CurrencyService} from "../currency.service";
-import {FormsModule, NgForm} from "@angular/forms";
-import {AuthService} from "../auth.service";
-import {NotificationService} from "../services/notification.service";
-import {ToastrModule} from "ngx-toastr";
-import {FeedbackService} from "../services/feedback.service";
-import {Feedback} from "../models/Feedback";
-import {WishListService} from "../wish-list.service";
-
+import { BackgroundAnimationService } from "../background-animation.service";
+import { CurrencyService } from "../currency.service";
+import { FormsModule, NgForm } from "@angular/forms";
+import { AuthService } from "../auth.service";
+import { NotificationService } from "../services/notification.service";
+import { FeedbackService } from "../services/feedback.service";
+import { Feedback } from "../models/Feedback";
+import { WishListService } from "../wish-list.service";
 
 @Component({
   selector: 'app-gift-card-details',
@@ -30,14 +27,15 @@ import {WishListService} from "../wish-list.service";
     FormsModule,
   ],
   templateUrl: './gift-card-details.component.html',
-  styleUrl: './gift-card-details.component.css'
+  styleUrls: ['./gift-card-details.component.css']
 })
 export class GiftCardDetailsComponent implements OnInit {
 
   giftCard: KinguinGiftCard | undefined;
   isInCart: boolean = false;
   cartItemCount: number = 0;
-  exchangeRate: number = 0;
+  exchangeRate: number = 0; // Tasa de cambio actualizada
+  convertedPrice: number = 0; // Precio convertido a HNL
   quantityInCart: number = 0;
   notifMessage: string = '';
   isFeedbackModalOpen: boolean = false;
@@ -45,6 +43,8 @@ export class GiftCardDetailsComponent implements OnInit {
   userId: number = 0;
   wished: boolean = false;
   protected feedbackScore: number = 0;
+  isLoading: boolean = false;
+  conversionError: string = '';
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 
@@ -72,17 +72,60 @@ export class GiftCardDetailsComponent implements OnInit {
         this.checkIfInCart(data.kinguinId);
       });
     }
+
+    // Suscribirse al conteo de ítems en el carrito
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartItemCount = count;
+      this.cartItemCountChange.emit(this.cartItemCount);
+    });
   }
 
-  openFeedbackModal(): void {
-    this.isFeedbackModalOpen = true;
+  /**
+   * Obtiene la tasa de cambio de EUR a HNL.
+   */
+  fetchCurrencyExchange(): void {
+    this.isLoading = true;
+    this.conversionError = '';
+
+    // Obtener la tasa de cambio para 1 EUR a HNL
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        console.log('Exchange Rate (1 EUR):', convertedAmount);
+        this.exchangeRate = convertedAmount;
+        this.isLoading = false;
+        // Mostrar notificación de éxito
+        this.snackBar.open('Tasa de cambio actualizada.', 'Cerrar', {
+          duration: 3000,
+        });
+        // Actualizar el precio convertido si el giftCard ya está cargado
+        if (this.giftCard) {
+          this.calculateConvertedPrice();
+        }
+      },
+      (error) => {
+        console.error('Error al obtener la tasa de cambio:', error);
+        this.conversionError = 'Error al obtener la tasa de cambio.';
+        this.isLoading = false;
+        // Mostrar notificación de error
+        this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    );
   }
 
-  closeFeedbackModal(): void {
-    this.isFeedbackModalOpen = false;
-    this.feedbackMessage = '';
+  /**
+   * Calcula el precio convertido a HNL.
+   */
+  calculateConvertedPrice(): void {
+    if (this.giftCard && this.exchangeRate) {
+      this.convertedPrice = parseFloat((this.giftCard.price * this.exchangeRate).toFixed(2));
+    }
   }
 
+  /**
+   * Maneja el envío de feedback.
+   */
   submitFeedback(form: NgForm): void {
     if (!form.valid) {
       this.snackBar.open('Por favor, completa todos los campos requeridos.', 'Cerrar', {
@@ -134,6 +177,9 @@ export class GiftCardDetailsComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
+  /**
+   * Verifica si el ítem está en el carrito.
+   */
   checkIfInCart(kinguinId: number): void {
     this.cartService.isItemInCart(kinguinId).subscribe(isInCart => {
       this.isInCart = isInCart;
@@ -155,6 +201,9 @@ export class GiftCardDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Alterna la inclusión en la wishlist.
+   */
   toggleWishList(giftCard: KinguinGiftCard, event: MouseEvent): void {
     event.stopPropagation(); // Prevenir que el click propague al viewDetails
 
@@ -176,24 +225,16 @@ export class GiftCardDetailsComponent implements OnInit {
     }
   }
 
-  loadCartItemCount(): void {
-    this.cartService.getCartItems().subscribe(items => {
-      this.cartItemCount = items.reduce((count, item) => count + 1, 0)
-    });
-  }
-
+  /**
+   * Alterna la inclusión en el carrito.
+   */
   toggleCart(giftCard: KinguinGiftCard): void {
-    if (!this.isLoggedIn()) {
-      this.showSnackBar('You are not login. Please log in to add your products to the cart');
-      return;
-    }
-
     if (this.isInCart) {
       this.cartService.removeCartItem(giftCard.kinguinId).subscribe(() => {
         this.isInCart = false;
         this.quantityInCart = 0;
         this.emitCartItemCount();
-        this.notifMessage = `You removed ${giftCard.name} from cart.`
+        this.notifMessage = `You removed ${giftCard.name} from cart.`;
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
         this.showSnackBar('Product removed from cart');
       });
@@ -202,42 +243,72 @@ export class GiftCardDetailsComponent implements OnInit {
         this.isInCart = true;
         this.quantityInCart = 1;
         this.emitCartItemCount();
-        this.notifMessage = `You added ${giftCard.name} to cart.`
+        this.notifMessage = `You added ${giftCard.name} to cart.`;
         this.showSnackBar('Product added to cart: ' + giftCard.kinguinId);
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
       });
     }
-    this.loadCartItemCount();
   }
 
-  redirectToLogin(): void {
-    this.router.navigate(['/login']);
-  }
-
+  /**
+   * Emite el conteo actualizado de ítems en el carrito.
+   */
   emitCartItemCount(): void {
     this.cartService.getCartItems().subscribe(cartItems => {
       const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
-      this.cartService.updateCartItemCount(totalCount);
+      this.cartService.updateCartItemCountManual(totalCount);
     });
   }
 
+  /**
+   * Muestra una notificación tipo snackBar.
+   */
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
   }
 
-  buyNow(giftCard: KinguinGiftCard): void {
-    // Implement buy now functionality
+  /**
+   * Redirecciona al usuario a la página de login.
+   */
+  redirectToLogin(): void {
+    this.router.navigate(['/login']);
   }
 
+  /**
+   * Maneja la apertura del modal de feedback.
+   */
+  openFeedbackModal(): void {
+    this.isFeedbackModalOpen = true;
+  }
+
+  /**
+   * Cierra el modal de feedback.
+   */
+  closeFeedbackModal(): void {
+    this.isFeedbackModalOpen = false;
+    this.feedbackMessage = '';
+  }
+
+  /**
+   * Obtiene el precio total en EUR.
+   */
+  getTotalPrice(): number {
+    return this.giftCard ? parseFloat((this.giftCard.price).toFixed(2)) : 0;
+  }
+
+  /**
+   * Compra ahora (Funcionalidad a implementar).
+   */
+  buyNow(giftCard: KinguinGiftCard): void {
+    // Implementa la funcionalidad de compra ahora
+  }
+
+  /**
+   * Regresa a la página anterior.
+   */
   goBack(): void {
     this.router.navigate(['/home']);
-  }
-
-  fetchCurrencyExchange(): void {
-    this.currencyService.getCurrency().subscribe(data => {
-      this.exchangeRate = data['conversion_rate']
-    });
   }
 }

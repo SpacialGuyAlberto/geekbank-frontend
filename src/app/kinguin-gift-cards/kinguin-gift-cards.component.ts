@@ -1,3 +1,4 @@
+// src/app/kinguin-gift-cards/kinguin-gift-cards.component.ts
 import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common'; // Importa CommonModule
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
@@ -38,7 +39,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
 
-  exchangeRate: number = 0;
+  exchangeRate: number = 0; // Tasa de cambio actualizada
   totalPages: number = 3309;
   itemsPerPage: number = 8; // Número de tarjetas por carga
   currentIndex: number = 0; // Índice para el 'Load More'
@@ -47,19 +48,18 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   private giftCardsSubscription!: Subscription;
 
   constructor(
-              private authService: AuthService,
-              private kinguinService: KinguinService,
-              private router: Router,
-              private currencyService: CurrencyService,
-              private cd: ChangeDetectorRef,
-              private uiStateService: UIStateServiceService,
-              private notificationService: NotificationService,
-              private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private kinguinService: KinguinService,
+    private router: Router,
+    private currencyService: CurrencyService,
+    private cd: ChangeDetectorRef,
+    private uiStateService: UIStateServiceService,
+    private notificationService: NotificationService,
+    private snackBar: MatSnackBar,
 
-              ) { }
+  ) { }
 
   ngOnInit(): void {
-    // this.animation.initializeGraphAnimation();
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
@@ -73,7 +73,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       }
     });
     this.fetchCurrencyExchange();
-
   }
 
   isLoggedIn(): boolean {
@@ -86,15 +85,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.giftCards = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
         card.coverImage = card.images.cover?.thumbnail || '';
-        // this.checkIfWished(card, card.kinguinId);
-
-        // Verificar si el ítem está en la wishlist y asignar el valor a 'wished'
-        // this.wishListService.isItemInWishList(card.kinguinId).subscribe((wished: boolean) => {
-        //   card.wished = wished;
-        // });
-        // if (card.kinguinId == 20){
-        //   card.wished = true;
-        // }
+        // Puedes añadir lógica adicional aquí si es necesario
         return card;
       });
 
@@ -128,18 +119,30 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
+  /**
+   * Obtiene la tasa de cambio de EUR a HNL.
+   */
   fetchCurrencyExchange(): void {
-    this.currencyService.getCurrency().subscribe(data => {
-      this.exchangeRate = data['conversion_rate']
-    });
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        console.log('Exchange Rate (1 EUR):', convertedAmount);
+        this.exchangeRate = convertedAmount;
+      },
+      (error) => {
+        console.error('Error al obtener la tasa de cambio:', error);
+        this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    );
   }
+
   ngOnDestroy(): void {
     // Cancela la suscripción cuando el componente se destruye para evitar fugas de memoria
     if (this.giftCardsSubscription) {
       this.giftCardsSubscription.unsubscribe();
     }
   }
-
 
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'Close', {
@@ -149,9 +152,8 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     this.displayedGiftCards.map( item => {
-      // this.checkIfWished(item.kinguinId);
+      // Implementa la lógica para verificar si el ítem está en la wishlist si es necesario
       item.wished = true;
     })
   }
-
 }

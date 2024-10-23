@@ -23,7 +23,7 @@ export class RecommendationsService {
     console.log(`Fetching recommendations from: ${url}`);
     return this.http.get<KinguinGiftCard[]>(url, {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
       })
     }).pipe(
       catchError(error => {
