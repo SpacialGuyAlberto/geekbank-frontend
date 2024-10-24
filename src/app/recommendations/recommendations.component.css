@@ -15,7 +15,7 @@
 
 .gift-card {
   width: 90%; /* Ocupa todo el espacio de la celda */
-  max-width: 15.625rem; /* 250px en rem */
+  max-width: 15.625rem;
   background: #000000; /* Fondo negro base */
   border-radius: 0.625rem; /* 10px en rem */
   border: 0.0625rem solid rgba(255, 255, 255, 0.3); /* 1px en rem */

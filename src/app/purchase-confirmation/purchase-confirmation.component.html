@@ -1,102 +1,103 @@
 <!-- src/app/purchase-confirmation/purchase-confirmation.component.html -->
-<div class="transactions-container">
-  <!-- Mensaje de Agradecimiento -->
-  <h1 class="thank-you-message">¡Gracias por tu compra!</h1>
+<div class="main-container">
+  <div class="transactions-container">
+    <!-- Mensaje de Agradecimiento -->
+    <h1 class="thank-you-message">¡Gracias por tu compra!</h1>
 
-  <!-- <h2 class="section-title">Muchas gracias por tu compra!</h2>-->
+    <!-- <h2 class="section-title">Muchas gracias por tu compra!</h2>-->
 
-  <!-- Indicador de Carga -->
-  <div *ngIf="isLoading" class="loading-indicator">
-    <p>Cargando transacciones...</p>
-  </div>
-
-  <!-- Mensaje de Error -->
-  <div *ngIf="errorMessage" class="error-message">
-    <p>{{ errorMessage }}</p>
-  </div>
-
-  <!-- Filtros -->
-  <div class="filters" *ngIf="!isLoading && !errorMessage">
-    <input type="text" placeholder="Buscar" [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()">
-    <select [(ngModel)]="selectedStatus" (ngModelChange)="onFilterChange()">
-      <option value="">Estado</option>
-      <option value="COMPLETED">Completado</option>
-      <option value="REFUNDED">Reembolsado</option>
-      <option value="PENDING">Pendiente</option>
-      <option value="CANCELLED">Cancelado</option>
-    </select>
-    <input type="date" [(ngModel)]="dateFrom" (ngModelChange)="onFilterChange()" placeholder="Desde">
-    <input type="date" [(ngModel)]="dateTo" (ngModelChange)="onFilterChange()" placeholder="Hasta">
-    <button (click)="filterTransactions()">
-      <i class="fas fa-filter"></i> Filtrar
-    </button>
-    <button (click)="resetFilters()">
-      <i class="fas fa-times-circle"></i> Resetear
-    </button>
-  </div>
-
-  <!-- Tabla de Transacciones -->
-  <div class="transaction-table" *ngIf="!isLoading && !errorMessage">
-    <div class="transaction-header">
-      <span>Imagen</span>
-      <span>Nombre</span>
-      <span>ID de Transacción</span>
-      <span>Fecha</span>
-      <span>Estado</span>
-      <span>Monto</span>
+    <!-- Indicador de Carga -->
+    <div *ngIf="isLoading" class="loading-indicator">
+      <p>Cargando transacciones...</p>
     </div>
 
-    <!-- Fila por cada transacción paginada -->
-    <div *ngFor="let transaction of paginatedTransactions">
-      <div *ngFor="let product of transaction.products" class="transaction-row">
-        <!-- Columna de Imagen -->
-        <span class="image-column">
-          <img
-            *ngIf="product.image"
-            [src]="product.image"
-            [alt]="product.name || 'Producto'"
-            class="product-image"
-            loading="lazy"
-          >
-        </span>
+    <!-- Mensaje de Error -->
+    <div *ngIf="errorMessage" class="error-message">
+      <p>{{ errorMessage }}</p>
+    </div>
 
-        <!-- Nombre del Producto -->
-        <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
 
-        <!-- ID de Transacción -->
-        <span class="id-column">{{ transaction.transactionNumber }}</span>
+    <!-- Tabla de Transacciones -->
+    <div class="transaction-table" *ngIf="!isLoading && !errorMessage">
+      <div class="transaction-header">
+        <span class="header-image">Imagen</span>
+        <span class="header-name">Nombre</span>
+        <span class="header-id">ID de Transacción</span>
+        <span class="header-date">Fecha</span>
+        <span class="header-status">Estado</span>
+        <span class="header-amount">Monto</span>
+      </div>
 
-        <!-- Fecha -->
-        <span class="date-column">{{ transaction.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>
+      <!-- Fila por cada transacción paginada -->
+      <div *ngIf="recentTransaction">
+        <div *ngFor="let product of recentTransaction?.products" class="transaction-row">
+          <!-- Columna de Imagen -->
+          <span class="image-column">
+            <img
+              *ngIf="product.image"
+              [src]="product.image"
+              [alt]="product.name || 'Producto'"
+              class="product-image"
+              loading="lazy"
+            >
+          </span>
 
-        <!-- Estado -->
-        <span [ngClass]="'transaction-status ' + transaction.status" class="status-column">{{ transaction.status }}</span>
+          <!-- Nombre del Producto -->
+          <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
 
-        <!-- Monto -->
-        <span class="amount-column">{{ transaction.amount | currency: "Lps. " }}</span>
+          <!-- ID de Transacción -->
+          <span class="id-column">{{ recentTransaction.transactionNumber }}</span>
+
+          <!-- Fecha -->
+          <span class="date-column">{{ recentTransaction.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>
+
+          <!-- Estado -->
+          <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">{{ recentTransaction.status }}</span>
+
+          <!-- Monto -->
+          <span class="amount-column">{{ recentTransaction.amount | currency: "Lps. " }}</span>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Paginación -->
-  <div class="pagination" *ngIf="!isLoading && !errorMessage && totalPages > 1">
-    <button (click)="goToPage(1)" [disabled]="currentPage === 1">
-      <i class="fas fa-angle-double-left"></i>
-    </button>
-    <button (click)="previousPage()" [disabled]="currentPage === 1">
-      <i class="fas fa-angle-left"></i>
-    </button>
+    <!-- Paginación -->
+    <div class="pagination" *ngIf="!isLoading && !errorMessage && totalPages > 1">
+      <button (click)="goToPage(1)" [disabled]="currentPage === 1">
+        <i class="fas fa-angle-double-left"></i>
+      </button>
+      <button (click)="previousPage()" [disabled]="currentPage === 1">
+        <i class="fas fa-angle-left"></i>
+      </button>
 
-    <!-- Mostrar botones de páginas alrededor de la página actual -->
-    <span *ngFor="let page of getPageNumbers()">
-      <button (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
-    </span>
+      <!-- Mostrar botones de páginas alrededor de la página actual -->
+      <span *ngFor="let page of getPageNumbers()">
+        <button (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+      </span>
 
-    <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-      <i class="fas fa-angle-right"></i>
-    </button>
-    <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
-      <i class="fas fa-angle-double-right"></i>
-    </button>
+      <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+        <i class="fas fa-angle-right"></i>
+      </button>
+      <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
+        <i class="fas fa-angle-double-right"></i>
+      </button>
+    </div>
+
+    <!-- Sección de Recomendaciones en una Sola Fila -->
+    <div class="recommendations-section" *ngIf="!isLoading && !errorMessage && recommendedGiftCards.length > 0">
+      <h2 class="recommendations-title">También te podría interesar</h2>
+      <div class="recommendations">
+        <div class="recommendations-gift-cards-container">
+          <div *ngFor="let card of recommendedGiftCards" class="gift-card" (click)="viewDetails(card)">
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+            <div class="gift-card-content">
+              <h3 class="gift-card-title">{{ card.name }}</h3>
+              <div class="gift-card-price">
+                <span>{{ card.price | currency }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

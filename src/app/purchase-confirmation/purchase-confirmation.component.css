@@ -19,45 +19,54 @@
   --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
 }
 
-/* Estilos Generales del Contenedor */
+/* Contenedor Principal que abarca toda la pantalla */
+.main-container {
+  width: 100vw; /* 100% del ancho del viewport */
+  height: 100vh; /* 100% de la altura del viewport */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Contenedor de Transacciones y Contenido */
 .transactions-container {
   padding: 2rem;
   width: 100%;
-  max-width: 800px; /* Limitar el ancho máximo para hacer el componente más pequeño */
+  max-width: 75rem; /* 1200px / 16 = 75rem */
   margin: 0 auto; /* Centrar horizontalmente */
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Degradado oscuro espacial */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
+  background: var(--glass-bg-color); /* Fondo vidrioso */
+  border-radius: 1rem;
+  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.37); /* 8px 32px convertidos a rem */
   color: var(--text-color); /* Texto claro para buen contraste */
   font-family: 'Roboto', sans-serif;
-  min-height: 100vh;
-  overflow-y: auto; /* Permitir desplazamiento */
-
-  /* Centrando verticalmente */
+  overflow-y: auto; /* Permitir desplazamiento si el contenido excede la altura */
+  max-height: 90vh; /* Limitar la altura para evitar que se desborde */
   display: flex;
   flex-direction: column;
   align-items: center; /* Centrar horizontalmente */
-  justify-content: center; /* Centrar verticalmente */
+  justify-content: flex-start; /* Alinear al inicio verticalmente */
 }
 
 /* Mensaje de Agradecimiento */
 .thank-you-message {
-  font-size: 3rem;
+  font-size: 1.875rem; /* 30px / 16 = 1.875rem */
   text-align: center;
   color: var(--accent-green); /* Verde neón para destacar */
-  margin-bottom: 1.5rem;
-  text-shadow: 0 0 15px rgba(167, 244, 50, 0.7); /* Sombra para resaltar */
+  margin-bottom: 0.9375rem; /* 15px / 16 = 0.9375rem */
+  text-shadow: 0 0 0.9375rem rgba(167, 244, 50, 0.7); /* 15px → 0.9375rem */
   animation: fadeIn 2s ease-in-out;
 }
 
 /* Títulos */
 .section-title {
-  font-size: 2.4rem;
+  font-size: 1.5rem; /* 24px / 16 = 1.5rem */
   margin-bottom: 2rem;
   text-align: center;
   color: var(--accent-yellow); /* Amarillo vibrante */
-  text-shadow: 0 0 10px rgba(255, 211, 94, 0.7); /* Sombra de texto brillante */
+  text-shadow: 0 0 0.625rem rgba(255, 211, 94, 0.7); /* 10px → 0.625rem */
 }
 
 /* Indicador de Carga y Mensaje de Error */
@@ -65,7 +74,7 @@
 .error-message {
   text-align: center;
   margin: 2rem 0;
-  font-size: 1.2rem;
+  font-size: 0.75rem; /* 12px / 16 = 0.75rem */
 }
 
 .error-message {
@@ -83,14 +92,14 @@
   padding: 1rem 2rem;
   border-radius: 1rem;
   backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.37); /* 8px 32px convertidos a rem */
 }
 
 .filters input,
 .filters select,
 .filters button {
   padding: 0.75rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 0.0625rem solid rgba(255, 255, 255, 0.5); /* 1px / 16 = 0.0625rem */
   border-radius: 0.5rem;
   background: rgba(36, 59, 83, 0.5); /* Fondo de inputs translúcido */
   color: #fff;
@@ -119,7 +128,7 @@
 .filters button:hover {
   background: var(--button-gradient-hover); /* Degradado invertido en hover */
   transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  box-shadow: 0 0.375rem 1.25rem rgba(120, 115, 245, 0.6); /* 6px 20px convertidos a rem */
 }
 
 .filters button i {
@@ -133,7 +142,6 @@
   gap: 1rem;
 
   /* Nuevos estilos para centrar horizontalmente */
-  max-width: 800px; /* Limitar el ancho */
   width: 100%; /* Asegurar que se adapte al contenedor */
   margin: 2rem 0; /* Espacio adicional arriba y abajo */
 }
@@ -142,13 +150,12 @@
 .transaction-header,
 .transaction-row {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   padding: 1rem;
   border-radius: 0.5rem;
   background: var(--glass-bg-color); /* Fondo translúcido */
   backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Sombra */
+  box-shadow: 0 0.25rem 1.875rem rgba(0, 0, 0, 0.1); /* 4px 30px convertidos a rem */
   color: #fff;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -156,7 +163,7 @@
 .transaction-header {
   font-weight: bold;
   color: var(--accent-yellow); /* Amarillo vibrante */
-  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  border-bottom: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px → 0.125rem */
 }
 
 .transaction-row {
@@ -165,51 +172,57 @@
 
 .transaction-row:hover {
   background: rgba(255, 255, 255, 0.05); /* Cambio sutil de fondo al hacer hover */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumento de sombra */
+  box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.3); /* 6px 20px → 0.375rem 1.25rem */
 }
 
 .transaction-row span {
-  flex: 1 1 100px; /* Flexibilidad para adaptarse a diferentes tamaños */
+  flex: 1; /* Flex-grow:1; Flex-shrink:1; Flex-basis: auto */
   padding: 0.5rem;
   word-break: break-word;
 }
 
 /* Columnas Específicas */
-.image-column {
-  flex: 0 0 100px;
+.image-column,
+.header-image {
+  flex: 0 0 6.25rem; /* 100px / 16 = 6.25rem */
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .product-image {
-  width: 60px;
-  height: 60px;
+  width: 6.25rem; /* 100px / 16 = 6.25rem */
+  height: 6.25rem; /* 100px / 16 = 6.25rem */
   object-fit: cover;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem; /* 4px / 16 = 0.25rem */
+  margin-bottom: 0.0156rem; /* 0.25rem = 4px */
 }
 
-.name-column {
-  flex: 1 1 200px;
+.name-column,
+.header-name {
+  flex: 1 1 12.5rem; /* 200px / 16 = 12.5rem */
   font-size: 1rem;
   text-align: center;
 }
 
 .id-column,
+.header-id,
 .date-column,
+.header-date,
 .status-column,
-.amount-column {
-  flex: 1 1 150px;
+.header-status,
+.amount-column,
+.header-amount {
+  flex: 1 1 9.375rem; /* 150px / 16 = 9.375rem */
   text-align: center;
   font-size: 1rem;
 }
 
 /* Estado de la Transacción */
 .transaction-status {
-  padding: 0.4rem 1rem;
+  padding: 0.025rem 0.0625rem; /* 0.4rem → no cambio, ya está en rem */
   border-radius: 0.5rem;
-  border: 0.1rem solid;
+  border: 0.00625rem solid; /* 0.1rem → 1.6px */
   text-align: center;
   font-weight: bold;
   display: inline-block;
@@ -242,6 +255,105 @@
   border-color: #f44336;
 }
 
+/* Sección de Recomendaciones */
+.recommendations-section {
+  width: 100%;
+  max-width: 50rem; /* 800px / 16 = 50rem */
+  margin-top: 3rem;
+  padding: 1rem;
+  background: var(--glass-bg-color);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.37);
+}
+
+.recommendations-title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--accent-yellow);
+  margin-bottom: 2rem;
+  text-shadow: 0 0 0.625rem rgba(255, 211, 94, 0.7); /* 10px → 0.625rem */
+}
+
+/* Ajustes para el Componente de Recomendaciones */
+.recommendations .recommendations-gift-cards-container {
+  display: flex;
+  flex-wrap: nowrap; /* Evitar múltiples filas */
+  gap: 1.5rem;
+  justify-content: center;
+  overflow-x: auto; /* Permitir desplazamiento horizontal si hay más tarjetas */
+}
+
+.recommendations .gift-card {
+  background: var(--glass-bg-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 12.5rem; /* 200px / 16 = 12.5rem */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 0 0 auto; /* Evitar que las tarjetas se reduzcan */
+}
+
+.recommendations .gift-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.375rem 1.25rem rgba(120, 115, 245, 0.6); /* 6px 20px → 0.375rem 1.25rem */
+}
+
+.recommendations .gift-card-image {
+  width: 100%;
+  height: 9.375rem; /* 150px / 16 = 9.375rem */
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.recommendations .gift-card-content {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.recommendations .gift-card-title {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.recommendations .gift-card-price {
+  font-size: 1rem;
+  color: var(--accent-blue);
+  font-weight: bold;
+}
+
+/* Responsividad para la Sección de Recomendaciones */
+@media (max-width: 64rem) { /* 1024px / 16 = 64rem */
+  .recommendations-section {
+    max-width: 37.5rem; /* 600px / 16 = 37.5rem */
+  }
+
+  .recommendations .gift-card {
+    width: 11.25rem; /* 180px / 16 = 11.25rem */
+  }
+}
+
+@media (max-width: 48rem) { /* 768px / 16 = 48rem */
+  .recommendations-section {
+    max-width: 100%;
+  }
+
+  .recommendations .gift-card {
+    width: 9.375rem; /* 150px / 16 = 9.375rem */
+  }
+}
+
+@media (max-width: 30rem) { /* 480px / 16 = 30rem */
+  .recommendations-title {
+    font-size: 1.6rem;
+  }
+
+  .recommendations .gift-card {
+    width: 7.5rem; /* 120px / 16 = 7.5rem */
+  }
+}
+
 /* Paginación */
 .pagination {
   display: flex;
@@ -256,8 +368,8 @@
   color: #fff;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
-  backdrop-filter: blur(5px); /* Efecto vidrioso */
-  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
+  backdrop-filter: blur(0.3125rem); /* 5px / 16 = 0.3125rem */
+  box-shadow: 0 0.25rem 0.9375rem rgba(255, 110, 196, 0.4); /* 4px 15px → 0.25rem 0.9375rem */
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
@@ -269,7 +381,7 @@
 .pagination button:hover:not(:disabled) {
   background: var(--button-gradient-hover); /* Degradado invertido en hover */
   transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  box-shadow: 0 0.375rem 1.25rem rgba(120, 115, 245, 0.6); /* 6px 20px → 0.375rem 1.25rem */
 }
 
 .pagination button:disabled {
@@ -285,7 +397,7 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(-1.25rem); /* 20px / 16 = -1.25rem */
   }
   to {
     opacity: 1;
@@ -293,26 +405,32 @@
   }
 }
 
-/* Responsividad */
-@media (max-width: 1024px) {
+/* Responsividad General */
+@media (max-width: 64rem) { /* 1024px */
   .transaction-header,
   .transaction-row {
-    grid-template-columns: repeat(3, 1fr);
+    flex-direction: column;
   }
 
   .image-column,
+  .header-image,
   .name-column,
+  .header-name,
   .id-column,
+  .header-id,
   .date-column,
+  .header-date,
   .status-column,
-  .amount-column {
+  .header-status,
+  .amount-column,
+  .header-amount {
     flex: 1 1 100%;
     text-align: left;
   }
 
   .product-image {
-    width: 50px;
-    height: 50px;
+    width: 3.125rem; /* 50px / 16 = 3.125rem */
+    height: 3.125rem; /* 50px / 16 = 3.125rem */
   }
 
   .section-title {
@@ -320,11 +438,11 @@
   }
 
   .thank-you-message {
-    font-size: 2.5rem; /* Reducir tamaño en pantallas medianas */
+    font-size: 2.5rem; /* 40px / 16 = 2.5rem */
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) { /* 768px */
   .filters {
     flex-direction: column;
     align-items: stretch;
@@ -338,7 +456,7 @@
 
   .transaction-header,
   .transaction-row {
-    grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .transaction-row {
@@ -357,18 +475,18 @@
   }
 
   .thank-you-message {
-    font-size: 2rem; /* Reducir tamaño en pantallas pequeñas */
+    font-size: 2rem; /* 32px / 16 = 2rem */
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 37.5rem) { /* 600px */
   .section-title {
     font-size: 1.8rem;
   }
 
   .product-image {
-    width: 40px;
-    height: 40px;
+    width: 2.5rem; /* 40px / 16 = 2.5rem */
+    height: 2.5rem; /* 40px / 16 = 2.5rem */
   }
 
   .transaction-status {
@@ -381,11 +499,11 @@
   }
 
   .thank-you-message {
-    font-size: 1.8rem; /* Reducir aún más en pantallas muy pequeñas */
+    font-size: 1.8rem; /* 28.8px / 16 ≈ 1.8rem */
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 25rem) { /* 400px */
   .section-title {
     font-size: 1.6rem;
   }
@@ -407,11 +525,110 @@
   }
 
   .product-image {
-    width: 30px;
-    height: 30px;
+    width: 1.875rem; /* 30px / 16 = 1.875rem */
+    height: 1.875rem; /* 30px / 16 = 1.875rem */
   }
 
   .thank-you-message {
-    font-size: 1.6rem; /* Tamaño adecuado en pantallas extremadamente pequeñas */
+    font-size: 1.6rem; /* 25.6px / 16 = 1.6rem */
+  }
+}
+
+/* Sección de Recomendaciones */
+.recommendations-section {
+  width: 100%;
+  max-width: 50rem; /* 800px / 16 = 50rem */
+  margin-top: 3rem;
+  padding: 1rem;
+  background: var(--glass-bg-color);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.37); /* 8px 32px → 0.5rem 2rem */
+}
+
+.recommendations-title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--accent-yellow);
+  margin-bottom: 2rem;
+  text-shadow: 0 0 0.625rem rgba(255, 211, 94, 0.7); /* 10px → 0.625rem */
+}
+
+/* Ajustes para el Componente de Recomendaciones */
+.recommendations .recommendations-gift-cards-container {
+  display: flex;
+  flex-wrap: nowrap; /* Evitar múltiples filas */
+  gap: 1.5rem;
+  justify-content: center;
+  overflow-x: auto; /* Permitir desplazamiento horizontal si hay más tarjetas */
+}
+
+.recommendations .gift-card {
+  background: var(--glass-bg-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  width: 12.5rem; /* 200px / 16 = 12.5rem */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex: 0 0 auto; /* Evitar que las tarjetas se reduzcan */
+}
+
+.recommendations .gift-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.375rem 1.25rem rgba(120, 115, 245, 0.6); /* 6px 20px → 0.375rem 1.25rem */
+}
+
+.recommendations .gift-card-image {
+  width: 100%;
+  height: 9.375rem; /* 150px / 16 = 9.375rem */
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.recommendations .gift-card-content {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.recommendations .gift-card-title {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.recommendations .gift-card-price {
+  font-size: 1rem;
+  color: var(--accent-blue);
+  font-weight: bold;
+}
+
+/* Responsividad para la Sección de Recomendaciones */
+@media (max-width: 64rem) { /* 1024px */
+  .recommendations-section {
+    max-width: 37.5rem; /* 600px / 16 = 37.5rem */
+  }
+
+  .recommendations .gift-card {
+    width: 11.25rem; /* 180px / 16 = 11.25rem */
+  }
+}
+
+@media (max-width: 48rem) { /* 768px */
+  .recommendations-section {
+    max-width: 100%;
+  }
+
+  .recommendations .gift-card {
+    width: 9.375rem; /* 150px / 16 = 9.375rem */
+  }
+}
+
+@media (max-width: 30rem) { /* 480px */
+  .recommendations-title {
+    font-size: 1.6rem;
+  }
+
+  .recommendations .gift-card {
+    width: 7.5rem; /* 120px / 16 = 7.5rem */
   }
 }
