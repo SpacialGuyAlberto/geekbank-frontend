@@ -13,7 +13,7 @@ import {UIStateServiceService} from "../uistate-service.service";
 import {Subscription} from "rxjs";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import { KinguinService } from '../kinguin.service';
-
+import {GiftCard} from "../models/GiftCard";
 
 @Component({
   selector: 'app-home',
@@ -34,10 +34,14 @@ import { KinguinService } from '../kinguin.service';
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   username: string = '';
   showHighlightsAndRecommendations: boolean = true;
+  showFreeFireComponent: boolean = true;
+  existingAccountsData: GiftCard[] = [];
+  giftCard: GiftCard | null = null;
+  newAccountsData: KinguinGiftCard[] = [];
   isSmallScreen: boolean = false;
   isSearching: boolean = false;
   isFilterVisible: boolean = false;
-  private uiStateSubscription!: Subscription;
+  uiStateSubscription!: Subscription;
   searchQuery: string = '';
   searchResults: KinguinGiftCard[] = [];
 
@@ -100,13 +104,40 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
 
+  // executeSearch() {
+  //   if (this.searchQuery.trim() !== '') {
+  //     console.log('true')
+  //     this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
+  //       this.searchResults = data;
+  //     });
+  //   }
+  // }
+
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
-      this.kinguinService.searchGiftCards(this.searchQuery).subscribe((data: KinguinGiftCard[]) => {
-        this.searchResults = data;
-      });
+      const queryLower = this.searchQuery.toLowerCase();
+      if (
+        queryLower.includes('free fire') ||
+        queryLower.includes('free fair') ||
+        queryLower.includes('freefire') // Added 'freefire' as another variation
+      ) {
+        // Show Free Fire component
+        this.showFreeFireComponent = true;
+        console.log('Rendering free fire component')
+        this.showHighlightsAndRecommendations = false;
+      } else {
+        // Normal search
+        this.showFreeFireComponent = false;
+        this.kinguinService
+          .searchGiftCards(this.searchQuery)
+          .subscribe((data: KinguinGiftCard[]) => {
+            this.searchResults = data;
+            this.showHighlightsAndRecommendations = false;
+          });
+      }
     }
   }
+
 
 
 

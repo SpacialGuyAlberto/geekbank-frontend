@@ -1,11 +1,17 @@
-<div class="gift-card-container" *ngIf="giftCard">
-  <div class="gift-card">
-    <img class="gift-card-image" src="https://images.g2a.com/300x400/1x1x1/garena-free-fire-100-10-diamond-key-global-i10000218624005/5f6090f97e696c046b0ffe22" alt="Free Fire Gift Card">
-    <div class="gift-card-details">
-      <h1 class="gift-card-title">{{ giftCard.product }}</h1>
+
+  <div class="gift-card" *ngIf="giftCard && !showDetails" (click)="navigateToDetails()">
+    <img
+      class="gift-card-image"
+      src="https://images.g2a.com/300x400/1x1x1/garena-free-fire-100-10-diamond-key-global-i10000218624005/5f6090f97e696c046b0ffe22"
+      alt="Free Fire Gift Card"
+    />
+    <div class="gift-card-content">
+      <h3 class="gift-card-title">{{ giftCard.product }}</h3>
+      <hr class="separator">
       <p class="gift-card-info">Card Number: {{ giftCard.cardNumber }}</p>
       <p class="gift-card-info">Price: {{ giftCard.price | currency }}</p>
       <p class="gift-card-info">Expiration Date: {{ giftCard.expirationDate }}</p>
     </div>
   </div>
-</div>
+
+

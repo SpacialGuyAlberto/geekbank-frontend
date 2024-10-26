@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PaymentComponent } from './payment.component';
+import { RazergoldComponent } from './razergold.component';
 
-describe('PaymentComponent', () => {
-  let component: PaymentComponent;
-  let fixture: ComponentFixture<PaymentComponent>;
+describe('RazergoldComponent', () => {
+  let component: RazergoldComponent;
+  let fixture: ComponentFixture<RazergoldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PaymentComponent]
+      imports: [RazergoldComponent]
     })
     .compileComponents();
-    
-    fixture = TestBed.createComponent(PaymentComponent);
+
+    fixture = TestBed.createComponent(RazergoldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

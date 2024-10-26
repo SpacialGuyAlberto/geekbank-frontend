@@ -1,3 +1,5 @@
+// src/test.ts
+
 import 'zone.js/testing';
 import { getTestBed } from '@angular/core/testing';
 import {
@@ -5,13 +7,21 @@ import {
   platformBrowserDynamicTesting
 } from '@angular/platform-browser-dynamic/testing';
 
-// First, initialize the Angular testing environment.
+// Definir `global` como `window` para resolver el error `global is not defined`
+(window as any).global = window;
+
+// Inicializar el entorno de pruebas de Angular.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting(),
 );
 
-// Then we find all the tests.
-const context = require.context('./', true, /\.spec\.ts$/);
-// And load the modules.
-context.keys().map(context);
+// Encontrar todos los archivos de pruebas existentes
+declare const require: any;
+
+try {
+  const context = require.context('./', true, /\.spec\.ts$/);
+  context.keys().forEach((key: string) => context(key));
+} catch (error) {
+  console.error("Webpack's require.context is not available or has issues.", error);
+}

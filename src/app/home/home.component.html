@@ -1,11 +1,13 @@
+<!-- home.component.html -->
 <div class="graph-container">
-  <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
+  <canvas id="graphCanvas"></canvas>
 </div>
 
 <div class="home-container">
-  <!-- Wrapper para todo el contenido -->
+  <!-- Contenedor principal -->
   <div class="gift-cards-wrapper">
 
+    <!-- Sección de Destacados y Recomendaciones -->
     <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
       <div class="highlights-section">
         <app-highlights></app-highlights>
@@ -15,23 +17,22 @@
       </div>
     </div>
 
-    <!-- Muestra las tarjetas principales -->
+    <!-- Tarjetas principales -->
     <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
       <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
 
-    <!-- Filtros y resultados filtrados -->
+    <!-- Filtros y Resultados -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-      <!-- Filtros visibles en pantallas grandes -->
-      <div *ngIf="!isSmallScreen" class="filter-section" [ngClass]="{'mobile-filter-visible': isFilterVisible}">
+      <!-- Filtros para pantallas grandes -->
+      <div *ngIf="!isSmallScreen" class="filter-section">
         <app-filters></app-filters>
       </div>
 
-      <!-- Filtros como modal en pantallas pequeñas -->
+      <!-- Botón y Modal de Filtros para pantallas pequeñas -->
       <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
         <span class="material-symbols-outlined">tune</span>
       </button>
-
 
       <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
         <div class="modal-content">
@@ -40,10 +41,20 @@
         </div>
       </div>
 
+      <!-- Sección de Tarjetas Filtradas -->
       <!-- Resultados de la búsqueda -->
       <div class="giftcard-section">
-        <app-kinguin-gift-cards></app-kinguin-gift-cards>
+        <!-- Contenedor para el Free Fire Gift Card -->
+        <div *ngIf="showFreeFireComponent" class="single-gift-card">
+          <app-free-fire-gift-card></app-free-fire-gift-card>
+        </div>
+
+        <!-- Contenedor para las Kinguin Gift Cards -->
+        <div class="gift-cards-grid">
+          <app-kinguin-gift-cards></app-kinguin-gift-cards>
+        </div>
       </div>
+
     </div>
   </div>
 </div>

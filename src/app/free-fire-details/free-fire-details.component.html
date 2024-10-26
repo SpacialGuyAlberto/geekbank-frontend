@@ -1,0 +1,87 @@
+<!-- free-fire-details.component.html -->
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
+</div>
+
+<div class="gift-card-details-container">
+  <!-- Sección de imagen y feedback -->
+  <div class="gift-card-image-container">
+    <img
+      [src]="coverImage"
+      alt="{{ giftCard.product }}"
+      class="gift-card-image"
+    />
+    <div class="feedback-section">
+      <button class="wishlist-button" [ngClass]="{'wished': giftCard.wished}" aria-label="Agregar a Wishlist">
+        <span class="material-icons">favorite</span>
+      </button>
+      <div class="star-rating">
+        <i class="material-icons star">star_border</i>
+        <i class="material-icons star">star_border</i>
+        <i class="material-icons star">star_border</i>
+        <i class="material-icons star">star_border</i>
+        <i class="material-icons star">star_border</i>
+      </div>
+    </div>
+    <div class="platform-info">
+      <h3>Plataformas</h3>
+      <div class="platform-icons">
+        <i class="fab fa-android"></i>
+        <i class="fab fa-apple"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de información y opciones -->
+  <div class="gift-card-info-card">
+    <h1 class="gift-card-title">{{ giftCard.product }}</h1>
+    <p class="gift-card-price">{{ giftCard.price | currency }}</p>
+    <p><strong>Fecha de Expiración:</strong> {{ giftCard.expirationDate | date: 'longDate' }}</p>
+
+    <div class="options-section">
+      <h3>Seleccione la opción de Diamantes:</h3>
+      <div class="options-grid">
+        <button
+          class="option-button"
+          *ngFor="let option of options"
+          [class.selected]="selectedOption === option.value"
+          (click)="selectedOption = option.value"
+        >
+          {{ option.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Inputs de usuario -->
+    <div class="user-inputs">
+      <div class="input-group">
+        <label for="userId">ID de Usuario:</label>
+        <input
+          id="userId"
+          type="text"
+          [(ngModel)]="userId"
+          placeholder="Ingrese su ID de Usuario"
+        />
+      </div>
+      <div class="input-group">
+        <label for="userEmail">Email:</label>
+        <input
+          id="userEmail"
+          type="email"
+          [(ngModel)]="userEmail"
+          placeholder="Ingrese su Email"
+        />
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="button-container">
+      <button class="btn add-to-cart">
+        <i class="material-icons">add_shopping_cart</i> Añadir al Carrito
+      </button>
+      <button class="btn buy-now">
+        <i class="material-icons">shopping_bag</i> Comprar Ahora
+      </button>
+    </div>
+  </div>
+</div>
