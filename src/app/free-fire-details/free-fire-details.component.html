@@ -46,10 +46,11 @@
         <label for="userId">ID de Usuario:</label>
         <input
           id="userId"
-          type="text"
-          [(ngModel)]="gamerUserId"
-          placeholder="Ingrese su ID de Usuario"
+          type="number"
+        [(ngModel)]="gamerUserId"
+        placeholder="Ingrese su ID de Usuario"
         />
+        <div *ngIf="gamerUserIdError" style="color: red;">El ID de Usuario debe consistir de 7 números.</div>
       </div>
       <div class="input-group">
         <label for="userEmail">Email:</label>
@@ -66,7 +67,7 @@
       <button class="btn add-to-cart">
         <i class="material-icons">add_shopping_cart</i> Añadir al Carrito
       </button>
-      <button class="btn buy-now" (click)="openPaymentModal()">
+      <button class="btn buy-now" (click)="openPaymentModal()" [disabled]="gamerUserIdError">
         <i class="material-icons">shopping_bag</i> Comprar Ahora
       </button>
     </div>
@@ -80,13 +81,10 @@
   (paymentSelected)="onPaymentSelected($event)"
 ></app-payment-options>
 
-
-
 <app-tigo-payment
   [totalPrice]="selectedOption?.price || 0"
   *ngIf="isTigoPaymentModalOpen"
   [gameUserId]="gamerUserId"
   [productId]="selectedOption?.productId ?? null"
-(close)="closeTigoPaymentModal()">
-
+  (close)="closeTigoPaymentModal()">
 </app-tigo-payment>

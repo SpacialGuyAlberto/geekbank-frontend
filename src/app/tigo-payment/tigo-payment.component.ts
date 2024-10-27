@@ -46,6 +46,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   orderRequestNumber: string = '';
   isCancelling: boolean = false;
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
+  isManualTransaction: boolean = false;
 
   paymentDetails = {
     name: '',
@@ -112,7 +113,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           qty: 1, // Fixed to 1 for direct purchase
           price: this.totalPrice // Use the passed price
         }],
-        amount: this.totalPrice // Total amount for the order
+        amount: this.totalPrice, // Total amount for the order
+        isManual: true
       };
 
       if (this.gameUserId !== null) {
@@ -129,7 +131,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             qty: item.cartItem.quantity,
             price: item.giftcard.price
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0) // Total amount from cart
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0), // Total amount from cart
+          isManual: false
         };
       } else {
         // Handle case for balance purchase
@@ -142,7 +145,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'balance'
           }],
-          amount: this.totalPrice
+          amount: this.totalPrice,
+          isManual: false
         };
       }
     } else if (this.guestId) {
@@ -156,7 +160,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             qty: item.cartItem.quantity,
             price: item.giftcard.price
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0) // Total amount from cart
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          isManual: false
         };
       } else {
         // Handle case for balance purchase
@@ -169,7 +174,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'balance'
           }],
-          amount: this.totalPrice
+          amount: this.totalPrice,
+          isManual: false
         };
       }
     } else {

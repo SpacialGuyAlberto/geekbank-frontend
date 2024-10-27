@@ -20,7 +20,8 @@ export class FreeFireDetailsComponent {
   userEmail: string = '';
   isPaymentModalOpen: boolean = false;
   isTigoPaymentModalOpen: boolean = false;
-  gamerUserId: number = 0;
+  gamerUserId: number | null = null; // Type changed to number
+  gamerUserIdError: boolean = false; // Track if gamerUserId is invalid
 
   constructor(private freeFireProductService: FreeFireProductService) {}
 
@@ -51,17 +52,22 @@ export class FreeFireDetailsComponent {
 
   openPaymentModal() {
     if (!this.selectedOption) {
-      alert('Por favor, selecciona una opción de diamantes antes de comprar.');
-      return;
+      return; // Stop execution if no product is selected
     }
+
+    // Validate gamerUserId: check if it's a valid number and has 7 digits
+    this.gamerUserIdError = !(this.gamerUserId !== null && /^\d{7}$/.test(this.gamerUserId.toString()));
+
+    if (this.gamerUserIdError) {
+      return; // Stop execution if gamerUserId is invalid
+    }
+
     this.isPaymentModalOpen = true;
   }
-
 
   closePaymentModal() {
     this.isPaymentModalOpen = false;
   }
-
 
   onPaymentSelected(method: string) {
     this.closePaymentModal();
