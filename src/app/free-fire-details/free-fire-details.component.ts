@@ -1,43 +1,77 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { FreeFireProductService } from "../free-fire-product.service";
+import { FreeFireDiamondProduct } from "../models/free-fire-diamond-product.interface";
+import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
+import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 
 @Component({
   selector: 'app-free-fire-details',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, PaymentOptionsComponent, TigoPaymentComponent],
   templateUrl: './free-fire-details.component.html',
   styleUrls: ['./free-fire-details.component.css']
 })
 export class FreeFireDetailsComponent {
-  @Input() giftCard: any = {
-    product: 'Free Fire Diamantes',
-    price: 19.99,
-    expirationDate: new Date(),
-    wished: false
-  };
+  products: FreeFireDiamondProduct[] = [];
+  selectedOption: FreeFireDiamondProduct | null = null; // Producto seleccionado
   userId: string = '';
   userEmail: string = '';
-  selectedOption: string = '';
-  coverImage: string = 'https://edge.rivalrycdn.com/cdn-cgi/image/q=100/https://images.prismic.io/rivalryglhf/Zo0YzB5LeNNTw7xf_FreeFireDiamonds.jpg?auto=format%2Ccompress&width=900';
+  isPaymentModalOpen: boolean = false;
+  isTigoPaymentModalOpen: boolean = false;
+  gamerUserId: number = 0;
 
-  options = [
-    { label: "100 Diamantes + Bono 10", value: "100+10" },
-    { label: "310 Diamantes + Bono 31", value: "310+31" },
-    { label: "520 Diamantes + Bono 52", value: "520+52" },
-    { label: "1060 Diamantes + Bono 106", value: "1060+106" },
-    { label: "2180 Diamantes + Bono 218", value: "2180+218" },
-    { label: "5600 Diamantes + Bono 560", value: "5600+560" }
-  ];
+  constructor(private freeFireProductService: FreeFireProductService) {}
 
-  ngAfterViewInit() {
-    this.initializeGraphCanvas();
+  ngOnInit(): void {
+    this.loadProducts();
   }
 
-  initializeGraphCanvas() {
-    // Aquí puedes agregar el código para inicializar el canvas con el gráfico que desees
-    const canvas = <HTMLCanvasElement>document.getElementById('graphCanvas');
-    const ctx = canvas.getContext('2d');
-    // Código para dibujar en el canvas...
+  loadProducts() {
+    this.freeFireProductService.getFreeFireProducts().subscribe(
+      (data) => {
+        this.products = data;
+      },
+      (error) => {
+        console.error('Error al cargar productos:', error);
+      }
+    );
+  }
+
+  selectOption(product: FreeFireDiamondProduct) {
+    this.selectedOption = product;
+    console.log(this.selectedOption);
+  }
+
+  extractDiamonds(name: string): string {
+    const match = name.match(/\d+/); // Encuentra el primer número en el nombre
+    return match ? `${match[0]} Diamantes` : name; // Formatea como "XXX Diamantes"
+  }
+
+  openPaymentModal() {
+    if (!this.selectedOption) {
+      alert('Por favor, selecciona una opción de diamantes antes de comprar.');
+      return;
+    }
+    this.isPaymentModalOpen = true;
+  }
+
+
+  closePaymentModal() {
+    this.isPaymentModalOpen = false;
+  }
+
+
+  onPaymentSelected(method: string) {
+    this.closePaymentModal();
+    if (method === 'Tigo Money') {
+      this.isTigoPaymentModalOpen = true;
+    }
+    console.log(`Método de pago seleccionado: ${method}`);
+  }
+
+  closeTigoPaymentModal() {
+    this.isTigoPaymentModalOpen = false;
   }
 }

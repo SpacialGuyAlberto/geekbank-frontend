@@ -29,6 +29,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   @Input() cartItems: CartItemWithGiftcard[] = [];
   @Input() totalPrice: number = 0;
   @Output() close = new EventEmitter<void>();
+  @Input() productId: number | null = null;
+  @Input() gameUserId: number | null = null;
 
   notifMessage: string = '';
   showModal: boolean = true;
@@ -67,6 +69,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.paymentDetails.total = this.totalPrice;
     console.log('Received cartItems:', this.cartItems);
+    console.log('Received product ID:', this.productId);
 
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
@@ -95,45 +98,56 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.showSpinner = true; // Mostrar spinner al hacer clic en Pay
+    this.showSpinner = true; // Show spinner when clicking Pay
     let orderDetails: any;
 
-    if (this.authService.isLoggedIn() && this.userId !== null) {
-      // Usuario autenticado: enviar userId
+    // Check if productId is available for direct purchase
+    if (this.productId !== null) {
+      orderDetails = {
+        userId: this.userId, // Use userId if authenticated
+        guestId: this.guestId, // Use guestId if applicable
+        phoneNumber: this.paymentDetails.phoneNumber,
+        products: [{
+          kinguinId: this.productId, // Use the passed product ID for direct purchase
+          qty: 1, // Fixed to 1 for direct purchase
+          price: this.totalPrice // Use the passed price
+        }],
+        amount: this.totalPrice // Total amount for the order
+      };
+
+      if (this.gameUserId !== null) {
+        orderDetails.gameUserId = this.gameUserId; // Add gameUserId to order details
+      }
+    } else if (this.authService.isLoggedIn() && this.userId !== null) {
+      // User is authenticated and trying to purchase from cart
       if (this.cartItems && this.cartItems.length > 0) {
-        // Si hay productos en el carrito
         orderDetails = {
           userId: this.userId,
           phoneNumber: this.paymentDetails.phoneNumber,
-
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
             price: item.giftcard.price
           })),
-          amount: this.totalPrice
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0) // Total amount from cart
         };
-
       } else {
-        // Si no hay productos, se asume que es una compra de balance
+        // Handle case for balance purchase
         orderDetails = {
           userId: this.userId,
           phoneNumber: this.paymentDetails.phoneNumber,
-          products: [
-            {
-              kinguinId: -1, // ID especial para balance
-              qty: 1,
-              price: this.totalPrice,
-              name: 'balance' // Identificador del producto como balance
-            }
-          ],
+          products: [{
+            kinguinId: -1, // ID for balance purchase
+            qty: 1,
+            price: this.totalPrice,
+            name: 'balance'
+          }],
           amount: this.totalPrice
         };
       }
     } else if (this.guestId) {
-      // Usuario invitado: enviar guestId
+      // Guest user
       if (this.cartItems && this.cartItems.length > 0) {
-        // Si hay productos en el carrito
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: this.paymentDetails.phoneNumber,
@@ -142,40 +156,31 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             qty: item.cartItem.quantity,
             price: item.giftcard.price
           })),
-          amount: this.totalPrice
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0) // Total amount from cart
         };
-
-        this.cartItems.forEach(item => {
-          console.log(`Preparing order for product ${item.cartItem.productId} with Kinguin ID: ${item.giftcard.kinguinId}`);
-        });
-
       } else {
-        // Si no hay productos, se asume que es una compra de balance
+        // Handle case for balance purchase
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: this.paymentDetails.phoneNumber,
-          products: [
-            {
-              kinguinId: -1, // ID especial para balance
-              qty: 1,
-              price: this.totalPrice,
-              name: 'balance' // Identificador del producto como balance
-            }
-          ],
+          products: [{
+            kinguinId: -1, // ID for balance purchase
+            qty: 1,
+            price: this.totalPrice,
+            name: 'balance'
+          }],
           amount: this.totalPrice
         };
       }
     } else {
-      // Caso extremo: ni userId ni guestId están disponibles
+      // Edge case: Neither userId nor guestId available
       this.showSpinner = false;
-      // this.snackBar.open('Error: No se encontró el usuario ni invitado.', 'Cerrar', {
-      //   duration: 3000,
-      // });
-      return;
+      return; // Stop execution
     }
 
-    console.log('Order Details:', orderDetails); // Para depuración
+    console.log('Order Details:', orderDetails); // For debugging
 
+    // Proceed to place the order with the constructed orderDetails
     this.tigoService.placeOrder(orderDetails).subscribe(
       response => {
         console.log('Order placed successfully', response);
@@ -185,8 +190,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         const matches = response.match(regex);
 
         if (matches && matches.length === 3) {
-          this.orderRequestNumber = matches[1];  // Captura ORQ-xxxxxxxxxxxx
-          this.transactionNumber = matches[2];   // Captura TX-xxxxxxxxxxxx
+          this.orderRequestNumber = matches[1];  // Capture order request number
+          this.transactionNumber = matches[2];   // Capture transaction number
           console.log('Order Request Number:', this.orderRequestNumber);
           console.log('Transaction Number:', this.transactionNumber);
         } else {
@@ -207,7 +212,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
               this.transactionService.setTransactionNumber(this.transactionNumber);
 
-              // Redirigir al usuario a la página de confirmación de compra
+              // Redirect to purchase confirmation page
               this.router.navigate(['/purchase-confirmation'], { queryParams: { transactionNumber: this.transactionNumber } });
 
             } else if (this.transactionStatus === 'FAILED') {
@@ -230,6 +235,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       }
     );
   }
+
 
 
   cancelTransaction(transactionNumber: string, orderRequestId: string): void {

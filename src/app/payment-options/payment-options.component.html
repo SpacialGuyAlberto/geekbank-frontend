@@ -1,0 +1,36 @@
+<!-- Modal de Opciones de Pago -->
+<div class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="close()">&times;</span>
+    <h2>Seleccione su Método de Pago</h2>
+
+    <div class="payment-options">
+      <!-- PayPal -->
+      <button class="payment-option-button" (click)="selectPaymentMethod('PayPal')">
+        <i class="fab fa-paypal fa-2x"></i>
+        <span>PayPal</span>
+      </button>
+
+      <!-- Tarjeta de Crédito -->
+      <button class="payment-option-button" (click)="selectPaymentMethod('Credit Card')">
+        <i class="fas fa-credit-card fa-2x"></i>
+        <span>Tarjeta de Crédito</span>
+      </button>
+
+      <!-- Bitcoin -->
+      <button class="payment-option-button" (click)="selectPaymentMethod('Bitcoin')">
+        <i class="fab fa-bitcoin fa-2x"></i>
+        <span>Bitcoin</span>
+      </button>
+
+      <!-- Tigo Money -->
+      <button class="payment-option-button" (click)="selectPaymentMethod('Tigo Money')">
+        <div class="icon">
+          <div class="tigo">tigo</div>
+          <div class="money">money</div>
+        </div>
+        <span>Tigo Money</span>
+      </button>
+    </div>
+  </div>
+</div>
