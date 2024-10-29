@@ -8,7 +8,26 @@
 }
 
 /* =======================================
-   Estilos Globales
+   Variables CSS
+   ======================================= */
+:root {
+  --font-primary: 'Arial, sans-serif';
+  --font-secondary: 'Verdana, sans-serif';
+  --font-retro: 'Press Start 2P, cursive';
+  --primary-bg-color: #0a1428; /* Fondo oscuro espacial */
+  --overlay-bg: rgba(0, 0, 0, 0.7); /* Fondo semitransparente oscuro */
+  --text-color: #ffffff; /* Texto claro */
+  --border-color: #4CAF50; /* Verde para bordes */
+  --accent-blue: #1E90FF; /* Azul brillante */
+  --button-buy-bg: linear-gradient(45deg, #1E90FF, #00BFFF);
+  --button-buy-hover-bg: linear-gradient(45deg, #00BFFF, #1E90FF);
+  --success-color: #28a745;
+  --error-color: #ff0000;
+  --transition-speed: 0.3s;
+}
+
+/* =======================================
+   Global Styles
    ======================================= */
 body, html {
   font-family: var(--font-primary);
@@ -90,7 +109,7 @@ body::before {
 /* Título */
 .modal-content h2 {
   margin-bottom: 1.5rem;
-  color: var(--accent-color);
+  color: var(--accent-blue);
   font-size: 1.8rem;
   font-family: var(--font-retro); /* Fuente retro para el título */
 }
@@ -208,6 +227,29 @@ body::before {
   font-size: 1rem;
 }
 
+/* PIN Display */
+.pin-display {
+  background: rgba(76, 175, 80, 0.2); /* Fondo verde translúcido */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border: 0.125rem solid var(--success-color);
+}
+
+.pin-display p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--success-color);
+  font-family: var(--font-secondary);
+}
+
+.pin-display h3 {
+  font-size: 2rem;
+  color: #4CAF50; /* Verde para resaltar el PIN */
+  font-family: var(--font-retro);
+}
+
 /* Spinner */
 .spinner-container {
   text-align: center;
@@ -223,10 +265,6 @@ body::before {
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem auto;
 }
-
-/* tigo-payment.component.css */
-
-/* tigo-payment.component.css */
 
 /* Estilos para la notificación */
 .notification {
@@ -257,7 +295,6 @@ body::before {
   margin: 0;
   font-size: 1rem;
 }
-
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -306,6 +343,14 @@ body::before {
     height: 2rem;
     border-width: 0.2rem;
   }
+
+  .pin-display h3 {
+    font-size: 1.5rem;
+  }
+
+  .pin-display p {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -331,5 +376,13 @@ body::before {
     width: 1.8rem;
     height: 1.8rem;
     border-width: 0.2rem;
+  }
+
+  .pin-display h3 {
+    font-size: 1.2rem;
+  }
+
+  .pin-display p {
+    font-size: 0.9rem;
   }
 }

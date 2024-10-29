@@ -1,21 +1,11 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {BehaviorSubject, Observable, throwError} from 'rxjs';
-import {HighlightItemWithGiftcard} from "./models/HighlightItem";
-import {environment} from "../environments/environment";
-import {Transaction} from "./models/transaction.model";
-import {catchError} from "rxjs/operators";
+// transactions.service.ts
 
-// export interface Transaction {
-//   id: number;
-//   amount: number;
-//   transactionNumber: string;
-//   description: string;
-//   status: string;
-//   timestamp: string;
-//   type: string;
-//   phoneNumber: string;
-// }
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { environment } from "../environments/environment";
+import { Transaction } from "./models/transaction.model";
+import { catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -34,11 +24,17 @@ export class TransactionsService {
   }
 
   getTransactions(): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.apiUrl}`);
+    return this.http.get<Transaction[]>(`${this.apiUrl}`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getTransactionsById(userId: number | undefined): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.apiUrl}/${userId}`);
+    return this.http.get<Transaction[]>(`${this.apiUrl}/${userId}`)
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   getTransactionByNumber(transactionNumber: string): Observable<Transaction> {
@@ -53,7 +49,10 @@ export class TransactionsService {
       .set('userId', userId.toString())
       .set('start', start)
       .set('end', end);
-    return this.http.get<Transaction[]>(`${this.apiUrl}/filter`, { params });
+    return this.http.get<Transaction[]>(`${this.apiUrl}/filter`, { params })
+      .pipe(
+        catchError(this.handleError)
+      );
   }
 
   cancelTransaction(transactionId: string, orderRequestId: string): Observable<Transaction> {
@@ -66,6 +65,19 @@ export class TransactionsService {
     });
 
     return this.http.put<Transaction>(url, null, { headers })
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  // Nuevo método para verificar la transacción
+  verifyTransaction(phoneNumber: string, pin: string, refNumber: string): Observable<any> {
+    const payload = {
+      phoneNumber: phoneNumber,
+      pin: pin,
+      refNumber: refNumber
+    };
+    return this.http.post(`${this.apiUrl}/verify`, payload)
       .pipe(
         catchError(this.handleError)
       );
@@ -84,5 +96,4 @@ export class TransactionsService {
     // Retorna un observable con un mensaje de error amigable
     return throwError('Algo malo sucedió; por favor, intenta de nuevo más tarde.');
   }
-
 }

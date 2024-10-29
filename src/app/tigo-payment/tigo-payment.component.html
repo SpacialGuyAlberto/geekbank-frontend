@@ -1,16 +1,14 @@
-<!-- tigo-payment.component.html -->
-
 <!-- Modal Component -->
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>Express Checkout</h2>
-    <form (ngSubmit)="onSubmit()">
-      <!-- Campos del formulario -->
+
+    <!-- Formulario Principal -->
+    <form *ngIf="!showVerificationForm && !showConfirmation" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="phone">Phone No.</label>
         <input
-          type="text"
           type="text"
           id="phone"
           name="phone"
@@ -24,7 +22,6 @@
         <p class="total-amount">{{ paymentDetails.total.toFixed(2) }} LPS</p>
       </div>
 
-      <!-- Botones dependiendo del estado de la transacción -->
       <!-- Botón "Pay" -->
       <button
         type="submit"
@@ -51,7 +48,7 @@
       </div>
 
       <!-- Botones para reintentar o cerrar después de un fallo -->
-      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== ''">
+      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== ''">
         <button
           type="button"
           class="retro-button"
@@ -69,8 +66,46 @@
       </div>
     </form>
 
-    <!-- Sección de confirmación y spinner -->
-    <div *ngIf="showConfirmation" class="confirmation">
+    <!-- Formulario de Verificación -->
+    <form *ngIf="showVerificationForm" (ngSubmit)="submitVerification()">
+      <h3>Verificación de Transacción</h3>
+      <div class="form-group">
+        <label for="pin">PIN</label>
+        <input
+          type="text"
+          id="pin"
+          name="pin"
+          [(ngModel)]="verificationData.pin"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="refNumber">Número de Referencia</label>
+        <input
+          type="text"
+          id="refNumber"
+          name="refNumber"
+          [(ngModel)]="verificationData.refNumber"
+          required
+          class="retro-input"
+        />
+      </div>
+      <button type="submit" class="retro-button">Verificar</button>
+      <button type="button" class="retro-button cancel-button" (click)="closeModal()">Cancelar</button>
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    </form>
+
+    <!-- Sección de Confirmación y Spinner -->
+    <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
+      <!-- Mostrar el PIN antes del spinner -->
+      <div *ngIf="tempPin" class="pin-display">
+        <p>PIN Number:</p>
+        <h3>{{ tempPin }}</h3>
+      </div>
+
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
 
@@ -79,17 +114,30 @@
         <div class="spinner"></div>
         <p>Esperando a su pago...</p>
       </div>
+
+      <!-- Botón de Cancelación en la sección de confirmación -->
+      <button
+        type="button"
+        class="retro-button cancel-button"
+        *ngIf="showSpinner"
+        (click)="cancelTransaction(transactionNumber, orderRequestNumber)"
+        [disabled]="isCancelling"
+      >
+        {{ isCancelling ? 'Cancelling...' : 'Cancel' }}
+      </button>
+
+      <!-- Mensaje de Cancelación Exitosa -->
+      <div *ngIf="transactionStatus === 'CANCELLED' && notifMessage" class="alert alert-success">
+        {{ notifMessage }}
+      </div>
     </div>
 
     <!-- Mensajes de éxito o error para la cancelación -->
     <div *ngIf="successMessage" class="alert alert-success">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage" class="alert alert-danger">
+    <div *ngIf="errorMessage && !showVerificationForm" class="alert alert-danger">
       {{ errorMessage }}
     </div>
   </div>
 </div>
-
-<!-- Botón para abrir el modal (opcional, para pruebas) -->
-<!-- <button (click)="openModal()" class="retro-button">Open Express Checkout</button> -->
