@@ -13,6 +13,7 @@ import { Transaction } from "../models/transaction.model";
 import { AuthService } from "../auth.service";
 import { GuestService } from "../guest.service";
 import { Router } from "@angular/router";
+import {CurrencyService} from "../currency.service";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -66,9 +67,14 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   };
   userId: number | null = null;
   guestId: string | null = null;
+  private exchangeRateSubscription: Subscription | null = null;
+  exchangeRate: number = 24.5; // Valor inicial fijo
+  isLoading: boolean = false;
+  conversionError: string = '';
 
   constructor(
     private tigoService: TigoService,
+    private currencyService: CurrencyService,
     private webSocketService: WebSocketService,
     private notificationService: NotificationService,
     private transactionService: TransactionsService,
@@ -78,6 +84,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.loadExchangeRate();
     this.paymentDetails.total = this.totalPrice;
     console.log('Received cartItems:', this.cartItems);
     console.log('Received product ID:', this.productId);
@@ -111,6 +118,22 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.showVerificationForm = true;
         this.showSpinner = false; // Ocultar spinner si estaba activo
       });
+  }
+
+  loadExchangeRate(): void {
+    this.isLoading = true;
+
+    this.exchangeRateSubscription = this.currencyService.getExchangeRateEURtoHNL(1).subscribe({
+      next: (rate) => {
+        this.exchangeRate = rate;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener la tasa de cambio:', err);
+        this.conversionError = 'No se pudo cargar la tasa de cambio. Inténtelo más tarde.';
+        this.isLoading = false;
+      }
+    });
   }
 
   closeModal(): void {
@@ -328,6 +351,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.exchangeRateSubscription) {
+      this.exchangeRateSubscription.unsubscribe();
+    }
     if (this.transactionSubscription) {
       this.transactionSubscription.unsubscribe();
     }
