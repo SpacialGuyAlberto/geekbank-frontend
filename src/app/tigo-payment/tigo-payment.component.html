@@ -48,7 +48,7 @@
       </div>
 
       <!-- Botones para reintentar o cerrar después de un fallo -->
-      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== ''">
+      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== ''">
         <button
           type="button"
           class="retro-button"
@@ -98,9 +98,15 @@
       </div>
     </form>
 
+    <!-- Mensaje de Agradecimiento tras Verificación Exitosa -->
+    <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
+      <h3>¡Gracias por verificar su transacción!</h3>
+      <p>Su transaccion esta siendo procesada en estos momentos. En Breve recibira su acreditacion directamente en su cuenta.</p>
+      <button type="button" class="retro-button" (click)="closeModal()">Cerrar</button>
+    </div>
+
     <!-- Sección de Confirmación y Spinner -->
     <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
-      <!-- Mostrar el PIN antes del spinner -->
       <div *ngIf="tempPin" class="pin-display">
         <p>PIN Number:</p>
         <h3>{{ tempPin }}</h3>
@@ -109,13 +115,11 @@
       <p>Efectúe su pago con Tigo Money al número <strong>5555</strong>.</p>
       <p>Una vez realizado su pago, recibirá su código.</p>
 
-      <!-- Mostrar spinner y mensaje de espera -->
       <div *ngIf="showSpinner" class="spinner-container">
         <div class="spinner"></div>
         <p>Esperando a su pago...</p>
       </div>
 
-      <!-- Botón de Cancelación en la sección de confirmación -->
       <button
         type="button"
         class="retro-button cancel-button"

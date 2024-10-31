@@ -145,7 +145,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.showSpinner = true;
     let orderDetails: any;
 
-    // Preparar orderDetails basado en el estado del usuario (autenticado, invitado, etc.)
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId,
@@ -242,7 +241,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           console.log('Transaction Number:', this.transactionNumber);
           console.log('Temporary PIN:', this.tempPin);
 
-          // Suscribirse al tópico de verificación de transacción aquí
           this.verifyTransactionSubscription = this.webSocketService
             .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
             .subscribe((message: any) => {
@@ -260,7 +258,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           return;
         }
 
-        // Suscripción al estado de la transacción
         this.transactionSubscription = this.webSocketService
           .subscribeToTransactionStatus(this.paymentDetails.phoneNumber)
           .subscribe((message: any) => {
@@ -291,7 +288,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             } else if (this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
               this.notifMessage = 'Tu pago está en espera de procesamiento manual.';
               this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
-              console.log('Transaction awaiting manual processing');
               this.showSpinner = false;
             }
           });
@@ -304,7 +300,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     );
   }
 
-  // Método para enviar los datos de verificación al backend
   submitVerification(): void {
     // Validar que los campos no estén vacíos
     if (!this.verificationData.pin || !this.verificationData.refNumber) {
@@ -312,14 +307,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Llamar al servicio para verificar la transacción
     this.transactionService.verifyTransaction(this.paymentDetails.phoneNumber, this.verificationData.pin, this.verificationData.refNumber)
       .subscribe(
         response => {
           console.log('Verification successful:', response);
-          // Aquí podrías manejar la respuesta si es necesario
           this.showVerificationForm = false;
-          this.showSpinner = true; // Mostrar spinner mientras se procesa la verificación
+          this.showConfirmation = false;
+          this.showSpinner = false
         },
         error => {
           console.error('Verification error:', error);
@@ -367,6 +361,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   retryPayment() {
-    // Implementar la lógica de reintento si es necesario
+
   }
 }

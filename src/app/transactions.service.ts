@@ -80,11 +80,14 @@ export class TransactionsService {
       pin: pin,
       refNumber: refNumber
     };
-    return this.http.post(`${this.apiUrl}/verify`, payload)
-      .pipe(
-        catchError(this.handleError)
-      );
+    return this.http.post<any>(`${this.apiUrl}/verify`, payload, {
+      observe: 'response',
+      responseType: 'text' as 'json'
+    }).pipe(
+      catchError(this.handleError)
+    );
   }
+
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

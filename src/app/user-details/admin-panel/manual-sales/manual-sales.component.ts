@@ -68,7 +68,7 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
   completeSale(transactionNumber: string): void {
     this.pendingSales = this.pendingSales.filter(sale => sale.transactionNumber !== transactionNumber);
     console.log(`Venta con transacción ${transactionNumber} completada`);
-    // Aquí puedes agregar la lógica para marcar la venta como completada en el backend si es necesario
+
   }
 
   ngOnDestroy(): void {
