@@ -1,3 +1,5 @@
+/* src/app/components/manual-sales/manual-sales.component.css */
+
 /* Estilos Generales */
 .manual-sales-container {
   padding: 2rem;
@@ -6,34 +8,44 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Contenedor de Ventas Pendientes */
-.pending-sales {
-  background-color: #2e2e2e;
-  padding: 2rem;
-  border-radius: 0.5rem;
-}
-
-.pending-sales h2 {
+/* Encabezado */
+.manual-sales-container h2 {
   text-align: center;
   margin-bottom: 2rem;
   color: #ffcc00;
   font-size: 1.8rem;
 }
 
+/* Estado de Conexión */
+.connection-status, .no-transactions {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #ffcc00;
+}
+
+/* Contenedor de la Tabla */
+.table-container {
+  overflow-x: auto;
+}
+
 /* Tabla de Ventas */
 .sales-table {
   width: 100%;
   border-collapse: collapse;
+  background-color: #2e2e2e;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.sales-table thead {
+  background-color: #3a3a3a;
 }
 
 .sales-table th,
 .sales-table td {
   padding: 1rem;
   text-align: left;
-}
-
-.sales-table thead {
-  background-color: #3a3a3a;
 }
 
 .sales-table th {
@@ -56,6 +68,17 @@
   font-size: 0.95rem;
 }
 
+/* Lista de Productos */
+.products-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.products-list li {
+  margin-bottom: 0.5rem;
+}
+
 /* Botón Completar Venta */
 .complete-sale-btn {
   background-color: #28a745;
@@ -71,48 +94,58 @@
   gap: 0.5rem;
 }
 
-.complete-sale-btn:hover {
-  background-color: #218838;
-}
-
 .complete-sale-btn i {
   font-size: 1.2rem;
 }
 
+/* Hover del Botón */
+.complete-sale-btn:hover {
+  background-color: #218838;
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
-  .sales-table, .sales-table thead, .sales-table tbody, .sales-table th, .sales-table td, .sales-table tr {
-    display: block;
+  .sales-table thead {
+    display: none;
   }
 
-  .sales-table th {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+  .sales-table, .sales-table tbody, .sales-table tr, .sales-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .sales-table tr {
+    margin-bottom: 1rem;
+    background-color: #2e2e2e;
+    border-radius: 0.5rem;
+    padding: 1rem;
   }
 
   .sales-table td {
-    position: relative;
+    text-align: right;
     padding-left: 50%;
-    text-align: left;
+    position: relative;
   }
 
   .sales-table td::before {
+    content: attr(data-label);
     position: absolute;
-    top: 50%;
     left: 1rem;
-    transform: translateY(-50%);
     width: 45%;
     padding-right: 1rem;
     white-space: nowrap;
+    text-align: left;
     font-weight: bold;
     color: #ffcc00;
   }
 
-  .sales-table td:nth-of-type(1)::before { content: 'ID'; }
-  .sales-table td:nth-of-type(2)::before { content: 'Plataforma'; }
-  .sales-table td:nth-of-type(3)::before { content: 'Producto'; }
-  .sales-table td:nth-of-type(4)::before { content: 'Monto'; }
-  .sales-table td:nth-of-type(5)::before { content: 'Fecha'; }
-  .sales-table td:nth-of-type(6)::before { content: 'Acciones'; }
+  /* Ajustar los data-labels según los encabezados de la tabla */
+  .sales-table td:nth-of-type(1)::before { content: "ID de Transacción"; }
+  .sales-table td:nth-of-type(2)::before { content: "Monto USD"; }
+  .sales-table td:nth-of-type(3)::before { content: "Monto HNL"; }
+  .sales-table td:nth-of-type(4)::before { content: "Fecha y Hora"; }
+  .sales-table td:nth-of-type(5)::before { content: "Usuario/Invitado"; }
+  .sales-table td:nth-of-type(6)::before { content: "Número de Teléfono"; }
+  .sales-table td:nth-of-type(7)::before { content: "Productos"; }
+  .sales-table td:nth-of-type(8)::before { content: "Acciones"; }
 }

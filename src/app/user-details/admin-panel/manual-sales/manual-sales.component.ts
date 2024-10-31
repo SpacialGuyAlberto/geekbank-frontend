@@ -5,6 +5,8 @@ import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
 import { Subscription } from 'rxjs';
 import {WebSocketService} from "../../../web-socket.service";
 import { ManualVerificationTransactionDto } from "../../../models/TransactionProductDto.model";
+import {TransactionsService} from "../../../transactions.service";
+import {Transaction} from "../../../models/transaction.model";
 
 @Component({
   selector: 'app-manual-sales',
@@ -21,17 +23,24 @@ import { ManualVerificationTransactionDto } from "../../../models/TransactionPro
 export class ManualSalesComponent implements OnInit, OnDestroy {
   pendingSales: ManualVerificationTransactionDto[] = [];
   isConnected: boolean = false;
+  transactions: Transaction[] = []
   private manualVerificationSubscription: Subscription | null = null;
   private manualVerificationQueueSubscription: Subscription | null = null;
   private connectionSubscription: Subscription | null = null;
 
-  constructor(private webSocketService: WebSocketService) {}
+  constructor(
+    private webSocketService: WebSocketService,
+    private transactionService: TransactionsService
+  ) {}
 
   ngOnInit(): void {
-    // Iniciar la conexión WebSocket
+
+    this.transactionService.getWaitingForApprovalTransactions().subscribe((data) => {
+      this.pendingSales = data;
+    })
+
     this.webSocketService.connect();
 
-    // Suscribirse al estado de conexión
     this.connectionSubscription = this.webSocketService.connected$.subscribe(connected => {
       this.isConnected = connected;
       if (connected) {
@@ -41,13 +50,11 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Suscribirse a las transacciones individuales
     this.manualVerificationSubscription = this.webSocketService.getManualVerificationTransaction().subscribe(transaction => {
       this.pendingSales.push(transaction);
       console.log('Transaction added to pending sales:', transaction);
     });
 
-    // Suscribirse a la cola completa de transacciones
     this.manualVerificationQueueSubscription = this.webSocketService.getManualVerificationQueue().subscribe(queue => {
       this.pendingSales = queue;
       console.log('Full transaction queue received:', queue);

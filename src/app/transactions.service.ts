@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { environment } from "../environments/environment";
 import { Transaction } from "./models/transaction.model";
 import { catchError } from "rxjs/operators";
+import {ManualVerificationTransactionDto} from "./models/TransactionProductDto.model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,8 @@ export class TransactionsService {
   private transactionNumberSubject = new BehaviorSubject<string | null>(null);
   // Observable para que otros componentes puedan suscribirse
   transactionNumber$ = this.transactionNumberSubject.asObservable();
+  private pendingTransactionsSubject = new BehaviorSubject<Transaction[]>([]);
+  private pendingForApprovalTransactionSubject = new BehaviorSubject<ManualVerificationTransactionDto[]>([])
 
   constructor(private http: HttpClient) {}
 
@@ -95,5 +98,21 @@ export class TransactionsService {
     }
     // Retorna un observable con un mensaje de error amigable
     return throwError('Algo malo sucedió; por favor, intenta de nuevo más tarde.');
+  }
+
+  getPendingTransactions(): Observable<Transaction[]> {
+    this.http.get<Transaction[]>(`${this.apiUrl}/manual-pending`).subscribe(
+      (transactions) => this.pendingTransactionsSubject.next(transactions),
+      (error) => console.error('Error al obtener transacciones pendientes:', error)
+    );
+    return this.pendingTransactionsSubject.asObservable();
+  }
+
+  getWaitingForApprovalTransactions(): Observable<ManualVerificationTransactionDto[]> {
+    this.http.get<ManualVerificationTransactionDto[]>(`${this.apiUrl}/awaiting-approval`).subscribe(
+      (transactions) => this.pendingForApprovalTransactionSubject.next(transactions),
+      (error) => console.error("Error al obtener las transacciones pendientes", error)
+    );
+    return this.pendingForApprovalTransactionSubject.asObservable();
   }
 }

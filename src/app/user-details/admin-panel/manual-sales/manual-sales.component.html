@@ -3,34 +3,51 @@
 <div class="manual-sales-container">
   <h2>Transacciones Pendientes de Verificación Manual</h2>
 
-  <div *ngIf="!isConnected">
+  <div *ngIf="!isConnected" class="connection-status">
     <p>Conectando al servidor WebSocket...</p>
   </div>
 
   <div *ngIf="isConnected">
-    <div *ngIf="pendingSales.length === 0">
+    <div *ngIf="pendingSales.length === 0" class="no-transactions">
       <p>No hay transacciones pendientes.</p>
     </div>
-    <ul>
-      <li *ngFor="let sale of pendingSales">
-        <div class="transaction-details">
-          <p><strong>Número de Transacción:</strong> {{ sale.transactionNumber }}</p>
-          <p><strong>Monto USD:</strong> {{ sale.amountUsd | currency:'USD' }}</p>
-          <p><strong>Monto HNL:</strong> {{ sale.amountHnl | currency:'HNL' }}</p>
-          <p><strong>Fecha y Hora:</strong> {{ sale.timestamp | date:'short' }}</p>
-          <p><strong>Usuario/Invitado:</strong> {{ sale.userOrGuest }}</p>
-          <p><strong>Número de Teléfono:</strong> {{ sale.phoneNumber }}</p>
-          <p><strong>Productos:</strong></p>
-          <ul>
-            <li *ngFor="let product of sale.products">
-              ID Producto: {{ product.productId }}, Cantidad: {{ product.quantity }}, Precio: {{ product.price | currency:'USD' }}
-            </li>
-          </ul>
-        </div>
-        <div class="transaction-actions">
-          
-        </div>
-      </li>
-    </ul>
+    <div *ngIf="pendingSales.length > 0" class="table-container">
+      <table class="sales-table">
+        <thead>
+        <tr>
+          <th>ID de Transacción</th>
+          <th>Monto USD</th>
+          <th>Monto HNL</th>
+          <th>Fecha y Hora</th>
+          <th>Usuario/Invitado</th>
+          <th>Número de Teléfono</th>
+          <th>Productos</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let sale of pendingSales">
+          <td>{{ sale.transactionNumber }}</td>
+          <td>{{ sale.amountUsd | currency:'USD' }}</td>
+          <td>{{ sale.amountHnl | currency:'HNL' }}</td>
+          <td>{{ sale.timestamp | date:'short' }}</td>
+          <td>{{ sale.userOrGuest }}</td>
+          <td>{{ sale.phoneNumber }}</td>
+          <td>
+            <ul class="products-list">
+              <li *ngFor="let product of sale.products">
+                ID Producto: {{ product.productId }}, Cantidad: {{ product.quantity }}, Precio: {{ product.price | currency:'USD' }}
+              </li>
+            </ul>
+          </td>
+          <td>
+<!--            <button class="complete-sale-btn" (click)="completeTransaction(sale)">-->
+<!--              <i class="fas fa-play"></i> Completar transacción-->
+<!--            </button>-->
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
