@@ -1,32 +1,36 @@
+<!-- src/app/components/manual-sales/manual-sales.component.html -->
+
 <div class="manual-sales-container">
-  <!-- Ventas Pendientes -->
-  <div class="pending-sales">
-    <h2>Ventas Manuales Pendientes</h2>
-    <table class="sales-table">
-      <thead>
-      <tr>
-        <th>ID</th>
-        <th>Plataforma</th>
-        <th>Producto</th>
-        <th>Monto</th>
-        <th>Fecha</th>
-        <th>Acciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let sale of pendingSales">
-        <td>{{ sale.id }}</td>
-        <td>{{ sale.platform }}</td>
-        <td>{{ sale.product }}</td>
-        <td>{{ sale.amount | currency }}</td>
-        <td>{{ sale.date | date: 'dd-MM-yyyy' }}</td>
-        <td>
-          <button class="complete-sale-btn" (click)="completeSale(sale.id)">
-            <i class="fas fa-check"></i> Completar
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+  <h2>Transacciones Pendientes de Verificación Manual</h2>
+
+  <div *ngIf="!isConnected">
+    <p>Conectando al servidor WebSocket...</p>
+  </div>
+
+  <div *ngIf="isConnected">
+    <div *ngIf="pendingSales.length === 0">
+      <p>No hay transacciones pendientes.</p>
+    </div>
+    <ul>
+      <li *ngFor="let sale of pendingSales">
+        <div class="transaction-details">
+          <p><strong>Número de Transacción:</strong> {{ sale.transactionNumber }}</p>
+          <p><strong>Monto USD:</strong> {{ sale.amountUsd | currency:'USD' }}</p>
+          <p><strong>Monto HNL:</strong> {{ sale.amountHnl | currency:'HNL' }}</p>
+          <p><strong>Fecha y Hora:</strong> {{ sale.timestamp | date:'short' }}</p>
+          <p><strong>Usuario/Invitado:</strong> {{ sale.userOrGuest }}</p>
+          <p><strong>Número de Teléfono:</strong> {{ sale.phoneNumber }}</p>
+          <p><strong>Productos:</strong></p>
+          <ul>
+            <li *ngFor="let product of sale.products">
+              ID Producto: {{ product.productId }}, Cantidad: {{ product.quantity }}, Precio: {{ product.price | currency:'USD' }}
+            </li>
+          </ul>
+        </div>
+        <div class="transaction-actions">
+          
+        </div>
+      </li>
+    </ul>
   </div>
 </div>

@@ -157,7 +157,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           price: this.totalPrice
         }],
         amount: this.totalPrice,
-        isManual: true
+        manual: true
       };
 
       if (this.gameUserId !== null) {
@@ -174,7 +174,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.price
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          isManual: false
+          manual: false
         };
       } else {
         orderDetails = {
@@ -187,7 +187,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             name: 'balance'
           }],
           amount: this.totalPrice,
-          isManual: false
+          manual: false
         };
       }
     } else if (this.guestId) {
@@ -201,7 +201,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.price
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          isManual: false
+          manual: false
         };
       } else {
         orderDetails = {
@@ -214,7 +214,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             name: 'balance'
           }],
           amount: this.totalPrice,
-          isManual: false
+          manual: false
         };
       }
     } else {
