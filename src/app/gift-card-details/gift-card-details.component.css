@@ -1,4 +1,45 @@
 
+:root {
+  --primary-color: #0B0D19;
+  --secondary-color: #021526;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #ffffff;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --transition-speed: 0.3s;
+  --scale-factor: 0.75; /* 75% del tamaño original */
+
+  /* Colores adicionales para botones */
+  --button-add-bg: linear-gradient(45deg, #87add7, #d3a1e6);
+  --button-add-hover-bg: linear-gradient(45deg, #e91e63, #7a3ea0);
+  --button-buy-bg: linear-gradient(45deg, #00c853, #009624);
+  --button-buy-hover-bg: linear-gradient(45deg, #00b248, #007d1e);
+  --error-bg: rgba(255, 0, 0, 0.1);
+  --error-text: rgba(255, 0, 0, 0.8);
+  --error-border: rgba(255, 0, 0, 0.5);
+  --accent-purple: #84b2dc;
+  --accent-green: #00FF00;
+}
+
+/* Estilos Globales */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-primary);
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: var(--text-color);
+}
+
+.graph-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
 .graph-container {
   position: absolute;
   top: 0;
@@ -15,7 +56,7 @@
   top: 0;
   left: 0;
   z-index: 1;
-  background-color: #0B0D19;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
 .gift-card-details-container {
@@ -25,32 +66,116 @@
   align-items: stretch;
   gap: 1rem;
   margin: 10rem auto;
+  margin-top: -25rem;
   max-width: 80%;
-  background-color: rgba(2, 21, 38, 0.8); /* Transparent background */
-  color: #88D66C;
-  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Soft neon border */
-  border-radius: 1rem;
-  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.7); /* Glowing shadow effect */
+  /*background-color: rgba(2, 21, 38, 0.8); !* Transparent background *!*/
+  color: #b5beb4;
+  /*border: 0.125rem solid rgba(255, 255, 255, 0.3); !* Soft neon border *!*/
+  border-radius: 0.125rem;
+  /*box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.7); !* Glowing shadow effect *!*/
   z-index: 2;
   padding: 1rem;
 
   /* Asegurar que la columna se ajuste cuando la pantalla sea pequeña */
-  flex-direction: column;
+  flex-direction: row;
+  transition: transform 0.5s ease, border-color 0.5s ease;
 }
 
 
 .gift-card-details-container:hover {
   transform: scale(1.02); /* Efecto de agrandamiento */
-  background: rgba(10, 20, 40, 0.8); /* Cambio sutil de fondo al hacer hover */
-  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.5); /* Aumento de sombra */
+  /*background: rgba(10, 20, 40, 0.8); !* Cambio sutil de fondo al hacer hover *!*/
+  /*box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.5); !* Aumento de sombra *!*/
+}
+
+.banner {
+  width: 100%;
+  height: 500px; /* Ajusta la altura según tus necesidades */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  margin-bottom: -150px; /* Superpone el banner con el contenido */
+  z-index: 1;
+  filter: blur(3px); /* Aplica el blur */
+  border-radius: 0.125rem; /* Bordes redondeados */
+  overflow: hidden; /* Oculta cualquier desbordamiento */
+}
+
+
+
+.banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2; /* Asegura que el contenido esté por encima de la superposición */
+  text-align: center;
+  color: var(--text-color);
+}
+
+.banner h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  font-family: var(--font-secondary);
+}
+
+.banner p {
+  font-size: 1.25rem;
+  margin-top: 0.5rem;
+  font-family: var(--font-primary);
 }
 
 /* =======================================
    Contenedor de la Imagen de la Gift Card
    ======================================= */
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  z-index: 4; /* Asegura que las flechas estén por encima de otros elementos */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.arrow.left {
+  left: 10px; /* Posición a la izquierda */
+}
+
+.arrow.right {
+  right: 10px; /* Posición a la derecha */
+}
+
+.arrow:hover {
+  background: rgba(0, 0, 0, 0.8); /* Fondo más oscuro al hacer hover */
+  transform: translateY(-50%) scale(1.1); /* Ligero aumento de tamaño al hacer hover */
+}
+
+
+.arrow .material-icons {
+  font-size: 1.5rem;
+}
 .gift-card-image-container {
   flex: 1;
-  max-width: 50%;
+  max-width: 66%;
   background-color: rgba(57, 255, 20, 0.1); /* Verde neón suave con transparencia */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.125rem;
@@ -74,9 +199,9 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 0.625rem;
-  margin-bottom: 0.625rem;
-  box-shadow: 0 0 0.9375rem rgba(0, 0, 0, 0.3);
+  border-top-left-radius: calc(0.5rem * var(--scale-factor));
+  border-top-right-radius: calc(0.5rem * var(--scale-factor));
+  display: block;
   transition: transform var(--transition-speed) ease;
 }
 
@@ -115,14 +240,14 @@
   flex: 1;
   background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
   border: 0.125rem solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
+  border-radius: 0.125rem;
   padding: 1rem;
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  max-width: 100%;
+  max-width: 50%;
   transition: background var(--transition-speed) ease;
 }
 
@@ -152,7 +277,7 @@
 }
 
 .gift-card-price {
-  font-size: 2.5rem;
+  font-size: 2rem;
   color: #7EC8E3; /* Azul suave retro */
   font-weight: bold;
   margin-bottom: 1rem;
@@ -180,7 +305,7 @@
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 0.625rem;
+  border-radius: 0.125rem;
   font-size: 1rem;
   cursor: pointer;
   transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
@@ -213,69 +338,6 @@
   transform: translateY(-3px);
   box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4);
   background-position: right center; /* Cambio de posición del gradiente */
-}
-
-/* Botón Iniciar Sesión con Linear Gradient */
-.login-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(45deg, #ff6ec7, #8e44ad); /* Rosa a púrpura */
-  background-size: 200% 200%;
-  color: #ffffff;
-  border: none;
-  border-radius: 0.625rem;
-  cursor: pointer;
-  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-  box-shadow: 0 0.25rem 0.5rem rgba(255, 105, 180, 0.2);
-  font-family: var(--font-secondary);
-}
-
-.login-btn:hover {
-  background: linear-gradient(45deg, #e91e63, #7a3ea0); /* Rosa más oscuro a púrpura oscuro */
-  transform: translateY(-3px);
-  box-shadow: 0 0.375rem 0.75rem rgba(255, 105, 180, 0.4);
-  background-position: right center; /* Cambio de posición del gradiente */
-}
-
-/* =======================================
-   Mensaje de No Loggeado
-   ======================================= */
-.not-logged-in-message {
-  text-align: center;
-  padding: 1.5rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 0.9375rem;
-  box-shadow: 0 0.625rem 1.25rem rgba(255, 105, 180, 0.4); /* Sombra roja */
-  margin-top: 1.25rem;
-  transition: all var(--transition-speed) ease;
-  z-index: 3;
-  font-family: var(--font-secondary);
-}
-
-.not-logged-in-message h2 {
-  font-size: 1.5rem;
-  color: #ff4d4d; /* Rojo más claro */
-  text-shadow: 0 0 0.625rem rgba(255, 77, 77, 0.5); /* Resplandor ligero */
-  margin-bottom: 0.625rem;
-}
-
-.not-logged-in-message p {
-  font-size: 1rem;
-  color: rgba(255, 77, 77, 0.8);
-  margin-bottom: 0.9375rem;
-}
-
-/* Botón de login */
-.login-btn {
-  background: var(--button-add-bg);
-}
-
-.login-btn:hover {
-  background: var(--button-add-hover-bg);
 }
 
 .wishlist-button {
@@ -342,6 +404,19 @@
   .check-icon {
     font-size: 1.5rem;
   }
+  .feedback-section {
+    position: absolute;
+    max-width: calc(90% * var(--scale-factor));
+    top: 10px; /* Posición en la parte superior */
+    right: 10px; /* Alineado a la derecha */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(56, 56, 59, 0.9); /* Fondo oscuro translúcido */
+    padding: 0.5rem;
+    border-radius: 0.125rem;
+    z-index: 3; /* Asegurarse de que esté encima de la imagen */
+  }
 
   .button-container {
     flex-direction: column;
@@ -369,6 +444,35 @@
 
 
 /* Feedback encima de la imagen */
+/* Contenedor para alinear los géneros en la parte superior de la imagen */
+/* Contenedor para alinear los géneros en una fila en la parte superior de la imagen */
+.genre-container {
+  position: absolute;
+  top: 10px; /* Posición en la parte superior */
+  left: 10px;
+  display: flex;
+  gap: 5px; /* Espacio entre los géneros */
+  z-index: 3; /* Asegura que esté sobre la imagen */
+}
+
+/* Estilo para cada género individual */
+.genre {
+  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro translúcido */
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.125rem;
+  color: var(--text-color); /* Color del texto */
+  font-family: var(--font-secondary); /* Fuente secundaria */
+  font-size: 0.875rem;
+  transition: background 0.3s ease;
+}
+
+.genre p {
+  margin: 0; /* Elimina el margen del párrafo */
+}
+
+
+
+
 .feedback-section {
   position: absolute;
   top: 10px; /* Posición en la parte superior */
@@ -376,9 +480,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
+  background-color: rgba(56, 56, 59, 0.9); /* Fondo oscuro translúcido */
   padding: 0.5rem;
-  border-radius: 10px;
+  border-radius: 0.125rem;
   z-index: 3; /* Asegurarse de que esté encima de la imagen */
 }
 
@@ -399,7 +503,7 @@
 .modal-content {
   background-color: #333;
   padding: 2rem;
-  border-radius: 0.5rem;
+  border-radius: 0.125rem;
   width: 90%;
   max-width: 500px;
   position: relative;
@@ -434,7 +538,7 @@
   width: 100%;
   padding: 0.8rem;
   border: none;
-  border-radius: 0.3rem;
+  border-radius: 0.125rem;
   background-color: #262626;
   color: #fff;
   resize: vertical;
@@ -468,7 +572,7 @@
 .modal-content .form-actions button {
   padding: 0.8rem 1.5rem;
   border: none;
-  border-radius: 0.3rem;
+  border-radius: 0.125rem;
   cursor: pointer;
   font-size: 1rem;
   font-weight: bold;
@@ -507,3 +611,58 @@
 .star-input.filled {
   color: #ffc107;
 }
+
+
+/* Contenedor de las pestañas */
+.tabs-container {
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--primary-color);
+  border-bottom: 1px solid var(--highlight-color);
+  margin-top: 1rem;
+}
+
+/* Estilos para cada pestaña */
+.tab {
+  padding: 1rem;
+  cursor: pointer;
+  color: var(--accent-color);
+  font-family: var(--font-secondary);
+  transition: color var(--transition-speed), background var(--transition-speed);
+}
+
+.tab:hover {
+  background-color: rgba(0, 212, 255, 0.2);
+}
+
+.tab.active {
+  color: var(--highlight-color);
+  border-bottom: 2px solid var(--highlight-color);
+}
+
+/* Contenido de la pestaña activa */
+.tab-content {
+  padding: 1.5rem;
+  background-color: rgba(2, 21, 38, 0.8);
+  color: var(--text-color);
+  font-family: var(--font-primary);
+}
+
+/* gift-card-details.component.css */
+
+.language-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  font-family: var(--font-primary);
+  color: var(--text-color);
+}
+
+.language-flag {
+  width: 24px;
+  height: 16px;
+  object-fit: cover;
+  border-radius: 2px;
+}
+

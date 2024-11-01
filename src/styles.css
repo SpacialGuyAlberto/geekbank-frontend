@@ -34,11 +34,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 /* Variables de Color */
 :root {
   /* Paleta de Colores Galácticos y Psicodélicos */
+  --scale-factor: 0.80; /* 75% del tamaño original */
   --primary-bg-color: rgba(0, 212, 255, 0.2); /* Azul profundo casi negro */
   --secondary-bg-color: rgba(10, 10, 35, 0.85); /* Azul profundo con transparencia */
-  --accent-color: #ff6ec7; /* Rosa vibrante */
+  --accent-color: #4c9ce5; /* Rosa vibrante */
   --accent-green: #39ff14; /* Verde neón */
-  --accent-purple: #8e44ad; /* Púrpura intenso */
+  --accent-purple: #23abab; /* Púrpura intenso */
   --accent-blue: #1e90ff; /* Azul brillante */
   --text-color: #e0e0e0; /* Gris claro para texto */
   --border-color: rgba(255, 255, 255, 0.1); /* Borde muy sutil */

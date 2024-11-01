@@ -115,7 +115,7 @@ export class NavbarComponent implements OnInit {
     if (url.includes('/user-details')){
       this.navbarClass = 'navbar-user-details'
     } else {
-      this.navbarClass = 'navbar'
+      this.navbarClass = 'navbar-user-details'
     }
   }
 

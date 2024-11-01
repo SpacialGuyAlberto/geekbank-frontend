@@ -16,13 +16,13 @@
   top: 0;
   left: 0;
   z-index: 1;
-  background-color: #0B0D19;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
 .cart-container {
   width: 80%;
   margin: 10rem auto;
-  background: rgba(10, 20, 40, 0.7); /* Fondo translúcido más suave */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
   border-radius: 1rem; /* Bordes redondeados */
   box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.4); /* Sombra suave */
@@ -50,7 +50,7 @@ ul {
   justify-content: space-between;
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: rgba(10, 20, 40, 0.9); /* Fondo oscuro translúcido */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   border: 0.125rem solid rgba(255, 255, 255, 0.2); /* Borde translúcido */
   border-radius: 1rem; /* Bordes redondeados */
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5); /* Sombra más suave */

@@ -3,9 +3,23 @@
   <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
 </div>
 
+<!-- Contenedor del Banner Dinámico -->
+<div *ngIf="giftCard" class="banner" [ngStyle]="{'background-image': 'url(' + giftCard.coverImageOriginal + ')'}">
+  <div class="banner-content">
+  </div>
+</div>
+
+
 <div *ngIf="giftCard" class="gift-card-details-container">
   <div class="gift-card-image-container">
     <!-- Corazón y estrellas de feedback -->
+
+    <div class="genre-container">
+      <div *ngFor="let genre of giftCard.genres" class="genre">
+        <p>{{genre}}</p>
+      </div>
+    </div>
+
     <div class="feedback-section">
       <button class="wishlist-button"
               [ngClass]="{'wished': giftCard.wished}"
@@ -24,7 +38,18 @@
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
       </div>
     </div>
-    <img [src]="giftCard.coverImageOriginal" alt="{{ giftCard.name }}" class="gift-card-image">
+    <button class="arrow left"  aria-label="Imagen Anterior">
+      <span class="material-icons"  (click)="previousImage()" >arrow_back</span>
+    </button>
+
+    <button class="arrow right"  aria-label="Imagen Siguiente">
+      <span class="material-icons" (click)="nextImage()">arrow_forward</span>
+    </button>
+
+    <img *ngIf="currentImage" [src]="currentImage" alt="{{ giftCard.name }}" class="gift-card-image">
+
+
+
     <div class="add-info-content">
       <h3 class="add-info-title">Platforms</h3>
       <p class="highlight-card-type">Android</p>
@@ -40,17 +65,17 @@
 
     <h2 class="gift-card-title">{{ giftCard.name }}</h2>
     <div class="gift-card-price">
-      {{ (giftCard.price * exchangeRate).toFixed(2) | currency }}
+      {{ (giftCard.price * exchangeRate).toFixed(2) | currency: 'HNL. ' }}
     </div>
 
     <div class="button-container">
-      <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
-        <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
-        {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
-      </button>
       <button (click)="buyNow(giftCard)" class="btn buy-now">
         <i class="material-icons">shopping_bag</i>
         Comprar Ahora
+      </button>
+      <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
+        <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
+        {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
       </button>
     </div>
   </div>
@@ -96,5 +121,44 @@
         <button type="button" (click)="closeFeedbackModal()">Cancelar</button>
       </div>
     </form>
+  </div>
+</div>
+
+
+<div class="tabs-container">
+  <div class="tab" [class.active]="activeTab === 'description'" (click)="setActiveTab('description')">
+    Description
+  </div>
+  <div class="tab" [class.active]="activeTab === 'activation'" (click)="setActiveTab('activation')">
+    Detalles de activacion
+  </div>
+  <div class="tab" [class.active]="activeTab === 'requirements'" (click)="setActiveTab('requirements')">
+    Requisitos del sistema
+  </div>
+  <div class="tab" [class.active]="activeTab === 'languages'" (click)="setActiveTab('languages')">
+    Idiomas
+  </div>
+</div>
+
+<div class="tab-content">
+  <div *ngIf="activeTab === 'description'">
+    <p>{{giftCard?.description}}.</p>
+  </div>
+  <div *ngIf="activeTab === 'activation'">
+    <p>{{giftCard?.activationDetails}}</p>
+  </div>
+  <div *ngIf="activeTab === 'requirements'">
+    <div *ngFor="let requirement of giftCard?.systemRequirements">
+      <h3>{{requirement.system}}</h3>
+      <ul>
+        <li *ngFor="let req of requirement.requirement">{{req}}</li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="activeTab === 'languages'">
+    <div *ngFor="let country of giftCardLanguages" class="language-item">
+      <img [src]="country.image" alt="{{ country.name }} flag" class="language-flag">
+      <span>{{ country.code }}</span>
+    </div>
   </div>
 </div>

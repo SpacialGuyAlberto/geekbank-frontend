@@ -2,7 +2,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KinguinService } from "../kinguin.service";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import {KinguinGiftCard, Screenshot, SystemRequirement} from "../models/KinguinGiftCard";
 import { CurrencyPipe } from "@angular/common";
 import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
@@ -16,6 +16,16 @@ import { NotificationService } from "../services/notification.service";
 import { FeedbackService } from "../services/feedback.service";
 import { Feedback } from "../models/Feedback";
 import { WishListService } from "../wish-list.service";
+import { HttpClient } from '@angular/common/http';
+
+interface Language {
+  name: string;
+  code: string;
+  emoji: string;
+  unicode: string;
+  image: string;
+}
+
 
 @Component({
   selector: 'app-gift-card-details',
@@ -32,6 +42,7 @@ import { WishListService } from "../wish-list.service";
 export class GiftCardDetailsComponent implements OnInit {
 
   giftCard: KinguinGiftCard | undefined;
+  activeTab: string = 'description';
   isInCart: boolean = false;
   cartItemCount: number = 0;
   exchangeRate: number = 0; // Tasa de cambio actualizada
@@ -41,12 +52,36 @@ export class GiftCardDetailsComponent implements OnInit {
   isFeedbackModalOpen: boolean = false;
   feedbackMessage: string = '';
   userId: number = 0;
+  languagesData: Language[] = [];
+  giftCardLanguages: Language[] = [];
   wished: boolean = false;
   protected feedbackScore: number = 0;
   isLoading: boolean = false;
   conversionError: string = '';
+  systemRequirements: SystemRequirement[] | null= null;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
+
+  currentImageIndex: number = 0;
+  images: string[] = [];
+  currentImage: Screenshot | string | null = null;
+
+  languageToCountryMap: { [language: string]: string } = {
+    "English": "US",
+    "French": "FR",
+    "Italian": "IT",
+    "German": "DE",
+    "Spanish": "ES",
+    "Arabic": "AE",
+    "Portuguese - Brazil": "BR",
+    "Polish": "PL",
+    "Russian": "RU",
+    "Chinese": "CN",
+    "Japanese": "JP",
+    "Korean": "KR",
+    "Thai": "TH"
+    // Añade más mapeos según sea necesario
+  };
 
   constructor(
     private route: ActivatedRoute,
@@ -59,6 +94,7 @@ export class GiftCardDetailsComponent implements OnInit {
     private currencyService: CurrencyService,
     private feedbackService: FeedbackService,
     private wishListService: WishListService,
+    private http: HttpClient
   ) { }
 
   ngOnInit(): void {
@@ -69,7 +105,23 @@ export class GiftCardDetailsComponent implements OnInit {
         data.coverImageOriginal = data.images.cover?.thumbnail || '';
         data.coverImage = data.images.cover?.thumbnail || '';
         this.giftCard = data;
+
+        if (this.giftCard.images.screenshots.length > 0){
+          this.giftCard.images.screenshots.map( screenshot => this.images.push(screenshot.url));
+          this.currentImage = this.images[this.currentImageIndex];
+         console.log(this.images)
+        } else {
+          this.images = [this.giftCard.coverImageOriginal]
+          this.currentImage = this.images[0];
+        }
         this.checkIfInCart(data.kinguinId);
+
+        this.http.get<Language[]>('https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/index.json')
+          .subscribe((data) => {
+            this.languagesData = data;
+            this.filterGiftCardLanguages();
+          });
+
       });
     }
 
@@ -78,6 +130,15 @@ export class GiftCardDetailsComponent implements OnInit {
       this.cartItemCount = count;
       this.cartItemCountChange.emit(this.cartItemCount);
     });
+  }
+
+  private filterGiftCardLanguages() {
+    // Filtrar los países específicos de la gift card usando el mapeo de idiomas
+    this.giftCardLanguages = this.giftCard?.languages
+      .map(language => this.languageToCountryMap[language])
+      .filter(code => code) // Filtrar códigos no definidos
+      .map(code => this.languagesData.find(language => language.code === code))
+      .filter(country => country !== undefined) as Language[];
   }
 
   /**
@@ -311,4 +372,32 @@ export class GiftCardDetailsComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/home']);
   }
+
+  nextImage(): void {
+    if (this.images.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+      this.currentImage = this.images[this.currentImageIndex];
+    }
+  }
+  //
+  // /**
+  //  * Cambia a la imagen anterior en el carrusel.
+  //  */
+  previousImage(): void {
+    if (this.images.length > 0) {
+      this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+      this.currentImage = this.images[this.currentImageIndex];
+    }
+  }
+  //
+  // selectImage(index: number): void {
+  //   if (index >= 0 && index < this.images.length) {
+  //     this.currentImageIndex = index;
+  //     this.currentImage = this.images[index];
+  //   }
+  // }
+  setActiveTab(tab: string) {
+    this.activeTab = tab;
+  }
+
 }
