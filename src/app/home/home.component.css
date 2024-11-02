@@ -194,6 +194,11 @@ body, html {
     width: 120vw; /* 1200px */
     /*max-height: 40rem;*/
   }
+
+  app-offers-banner {
+    margin-top: 2rem; /* Ajusta según sea necesario */
+    margin-bottom: 2rem; /* Ajusta según sea necesario */
+  }
   .highlight-recommendations {
     flex-direction: column;
     align-items: center;

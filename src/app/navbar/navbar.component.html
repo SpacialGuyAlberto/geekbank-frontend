@@ -1,5 +1,6 @@
-<nav [ngClass]="navbarClass" *ngIf="showNavbar">
+<!-- src/app/components/navbar/navbar.component.html -->
 
+<nav [ngClass]="navbarClass" *ngIf="showNavbar">
   <div class="navbar-brand">
     <span class="app-name" (click)="goToHome()">Astralis</span>
   </div>
@@ -45,7 +46,41 @@
   </div>
 </nav>
 
+<!-- Sección de Pestañas de Categorías Mejorada -->
+<div class="navbar-categories">
+  <div class="tabs-menu">
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedCategory === 'categorias'}"
+      (click)="selectCategory('categorias')"
+    >
+      <i class="fas fa-th-list"></i> Categorías
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedCategory === 'claves-aleatorias'}"
+      (click)="selectCategory('claves-aleatorias')"
+    >
+      <i class="fas fa-random"></i> Claves Aleatorias
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedCategory === 'software'}"
+      (click)="selectCategory('software')"
+    >
+      <i class="fas fa-laptop-code"></i> Software
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'active': selectedCategory === 'sensacion'}"
+      (click)="selectCategory('sensacion')"
+    >
+      <i class="fas fa-music"></i> Sensación
+    </button>
+  </div>
+</div>
 
+<!-- Modales -->
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
@@ -59,11 +94,12 @@
     <span class="close-modal" (click)="closeMenuModal()">&times;</span>
     <div class="menu-links">
       <ul>
+        <!-- Enlaces del menú -->
         <li *ngIf="!isLoggedIn()">
-          <a *ngIf="!isLoggedIn()" routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
+          <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
         </li>
         <li *ngIf="!isLoggedIn()">
-          <a *ngIf="!isLoggedIn()" routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
+          <a routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
         </li>
         <li>
           <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">
@@ -72,52 +108,14 @@
             Carrito
           </a>
         </li>
-        <li  *ngIf="!showUserDetailsModal && isLoggedIn()" routerLink="/user-details"  (click)="closeMenuModal()">
-          <a  class="menu-link">
-            <i class="fas fa-user"></i> Detalles de la Cuenta
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('details')">
-          <a  class="menu-link">
-            <i class="fas fa-user"></i> Detalles de la Cuenta
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('addresses')">
-          <a  class="menu-link">
-            <i class="fas fa-map-marker-alt"></i> Direcciones
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('payment')">
-          <a  class="menu-link" >
-            <i class="fas fa-credit-card"></i> Payment Methods
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('preferences')">
-          <a  class="menu-link" >
-            <i class="fas fa-cog"></i> Preferencias
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('transactions')">
-          <a  class="menu-link" >
-            <i class="fas fa-money-check-alt"></i> Transacciones
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal" (click)="selectTab('wishList')">
-          <a  class="menu-link" >
-            <i class="fa-solid fa-heart"></i> Wish List
-          </a>
-        </li>
-        <li *ngIf="showUserDetailsModal && user.role === 'ADMIN'" (click)="selectTab('admin-tools')">
-          <a  class="menu-link">
-            <i class="fas fa-tools"></i> Admin Tools
-          </a>
-        </li>
-        <li>
-          <a *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()" class="menu-link">
-            <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
+        <!-- Más enlaces según el estado del usuario -->
+        <li *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()">
+          <a class="menu-link">
+            <i class="fa-solid fa-sign-out-alt clickable-icon"></i>
             Log out
           </a>
         </li>
+        <!-- Agrega más elementos según tus necesidades -->
       </ul>
     </div>
   </div>

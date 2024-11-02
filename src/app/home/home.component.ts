@@ -15,6 +15,7 @@ import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import { KinguinService } from '../kinguin.service';
 import {GiftCard} from "../models/GiftCard";
 import {BannerComponent} from "../banner/banner.component";
+import {OffersBannerComponent} from "../offers-banner/offers-banner.component";
 
 @Component({
   selector: 'app-home',
@@ -29,7 +30,8 @@ import {BannerComponent} from "../banner/banner.component";
     HighlightsComponent,
     RecommendationsComponent,
     FiltersComponent,
-    BannerComponent
+    BannerComponent,
+    OffersBannerComponent
   ]
 })
 

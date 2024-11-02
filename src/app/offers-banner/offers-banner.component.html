@@ -1,0 +1,14 @@
+<!-- src/app/offers-banner/offers-banner.component.html -->
+<div class="banner-container">
+  <div class="banner-background"></div>
+  <div class="offers-wrapper">
+    <div class="offer-card" *ngFor="let offer of offers">
+      <div class="offer-image-container">
+        <img [src]="offer.imageUrl" [alt]="offer.title" loading="lazy">
+      </div>
+      <button class="offer-button">Ver ofertas</button>
+    </div>
+
+  </div>
+</div>
+

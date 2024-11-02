@@ -52,6 +52,7 @@ export class NavbarComponent implements OnInit {
   routerSubscription!: Subscription;
   user: User | any;
   inUserDetailsRoute: boolean = false;
+  selectedCategory: string = 'categorias';
 
   constructor(
     private authService: AuthService,
@@ -176,5 +177,10 @@ export class NavbarComponent implements OnInit {
 
   selectTab(tab: string){
     this.sharedService.emitTableAction(tab)
+  }
+
+  selectCategory(category: string) {
+    this.selectedCategory = category;
+    // Lógica adicional para manejar la selección de categoría
   }
 }

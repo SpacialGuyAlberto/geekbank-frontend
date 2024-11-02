@@ -1,0 +1,154 @@
+/* src/app/offers-banner/offers-banner.component.css */
+
+/* Conversión Global de px a rem */
+:root {
+  --font-size-base: 1rem; /* 16px */
+}
+
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 31.25rem; /* 500px */
+  background-image: url('/assets/zelda_banner.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos hijos */
+  justify-content: center; /* Centra horizontalmente los elementos hijos */
+  border-radius: 0.3125rem; /* 5px */
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* 4px 8px */
+  margin: 1.25rem auto; /* 20px */
+}
+
+.banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Superposición oscura para mejorar la legibilidad */
+  z-index: 1;
+}
+
+.offers-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem; /* 20px */
+  justify-content: center; /* Centra las tarjetas horizontalmente */
+  align-items: center; /* Centra las tarjetas verticalmente */
+  width: 90%;
+  height: 100%;
+}
+
+.offer-card {
+  position: relative;
+  width: calc(25% - 1.25rem);       /* Mantiene el ancho relativo con gap */
+  min-width: 9.375rem;               /* 150px */
+  max-width: 16.5rem;                /* 200px */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0;                  /* 10px */
+  border-radius: 0.2125rem;            /* 10px */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* 2px 4px */
+  transition: transform 0.3s ease;
+  height: 25.75rem;                   /* 412px (Aumentado para mayor altura) */
+}
+
+.offer-card:hover {
+  transform: scale(1.05);
+}
+
+.offer-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Asegura que las imágenes no sobresalgan del contenedor */
+  border-radius: 0.3125rem; /* 5px */
+}
+
+.offer-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsión */
+  border-radius: 0.3125rem; /* 5px */
+}
+
+.offer-button {
+  position: absolute;
+  bottom: 0.625rem; /* 10px desde la parte inferior */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 106, 0, 0.8); /* Transparente para destacar sobre la imagen */
+  color: #fff;
+  border: none;
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  border-radius: 0.3125rem; /* 5px */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.offer-button:hover {
+  background-color: rgba(230, 92, 0, 0.8); /* Cambio de color al pasar el cursor */
+  transform: translateX(-50%) scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
+}
+
+/* Responsividad */
+@media (max-width: 48rem) { /* 768px */
+  .banner-container {
+    height: 25rem; /* 400px */
+  }
+
+  .offers-wrapper {
+    gap: 0.9375rem; /* 15px */
+    justify-content: space-between; /* Ajuste para mejor distribución en pantallas medianas */
+    align-items: center; /* Centra verticalmente en pantallas medianas */
+  }
+
+  .offer-card {
+    width: calc(50% - 0.9375rem); /* Dos tarjetas por fila en pantallas medianas */
+    height: 20rem; /* Aumentado de 15.625rem a 20rem para mayor altura */
+  }
+
+  .offer-image-container img {
+    height: 100%; /* Asegura que la imagen abarque toda la tarjeta */
+  }
+
+  .offer-button {
+    padding: 0.5rem 1rem; /* 8px 16px */
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 30rem) { /* 480px */
+  .banner-container {
+    height: 18.75rem; /* 300px */
+  }
+
+  .offers-wrapper {
+    gap: 0.625rem; /* 10px */
+    flex-direction: column; /* Apila las tarjetas verticalmente en pantallas pequeñas */
+    align-items: center;
+  }
+
+  .offer-card {
+    width: 100%; /* Una tarjeta por fila en pantallas pequeñas */
+    height: 20rem; /* Aumentado de 12.5rem a 20rem para mantener consistencia */
+  }
+
+  .offer-image-container img {
+    height: 100%; /* Asegura que la imagen abarque toda la tarjeta */
+  }
+
+  .offer-button {
+    padding: 0.375rem 0.75rem; /* 6px 12px */
+    font-size: 0.8rem;
+    bottom: 0.3125rem; /* 5px desde la parte inferior */
+  }
+}
