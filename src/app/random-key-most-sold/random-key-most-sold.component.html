@@ -1,0 +1,20 @@
+<div class="gift-cards-container">
+  <div *ngFor="let card of displayedKeys" class="gift-card" (click)="viewDetails(card)">
+    <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+    <div class="gift-card-content">
+      <h3 class="gift-card-title">{{ card.name }}</h3>
+      <div class="gift-card-price">
+        <span>{{ card.price | currency }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="show-more-container" *ngIf="hasMoreItems">
+    <button (click)="showMoreItems()" class="show-more-button">
+      {{ isExpanded ? 'Mostrar Menos' : 'Mostrar Más' }}
+    </button>
+  </div>
+</div>
+
+<!-- Botón para mostrar más -->
+

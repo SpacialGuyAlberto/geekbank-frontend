@@ -1,0 +1,259 @@
+.flash-sale-container {
+  width: 100%;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Hacer el banner más alto */
+  height: 800px;
+}
+
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  pointer-events: none; /* Asegura que los elementos interactivos no sean afectados */
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  filter: blur(5px);
+  object-fit: cover;
+  display: block;
+}
+
+.offers-over-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px; /* Aumentar padding para mejor separación */
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center; /* Alinear al inicio (izquierda) */
+}
+
+.main-offer {
+  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px; /* Ancho fijo para la tarjeta */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 40px; /* Espacio entre la oferta principal y las otras ofertas */
+  color: #ffffff; /* Texto blanco */
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+.main-offer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://static.videezy.com/system/resources/thumbnails/000/036/991/original/firespark1.jpg'), linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+  background-size: cover;
+  opacity: 0.2; /* Ajusta la opacidad de las chispas */
+  pointer-events: none;
+  border-radius: 10px;
+}
+
+
+.timer {
+  font-size: 2.5em; /* Aumentar tamaño del cronómetro */
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 20px;
+}
+
+
+.timer div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer span {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.timer-label {
+  font-size: 0.5em;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.flash-sale-img-container {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.flash-sale-img-container img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  height: 200px; /* Ajusta la altura según prefieras */
+}
+
+.flash-sale-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1; /* Asegura que el contenido esté por encima del pseudo-elemento */
+}
+
+.flash-sale-title {
+  font-size: 1.8em;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.price-box {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.price-offer {
+  font-size: 2em;
+  color: #f44336;
+  margin: 0;
+  text-align: center;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #9e9e9e;
+  margin-left: 10px;
+}
+
+.discount {
+  color: #4caf50;
+  font-size: 1em;
+  margin-left: 10px;
+}
+
+.stock-info {
+  color: #333;
+  margin: 10px 0;
+  text-align: center;
+}
+
+.progress-bar-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+  height: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4caf50;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.buy-button,
+.cart-button{
+  background: #ff9800;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 15px;
+}
+
+.buy-button:hover {
+  background: #fb8c00;
+}
+
+
+.cart-button {
+  background: #03a9f4;
+}
+
+.cart-button:hover {
+  background: #0288d1;
+}
+
+.other-offers {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-gap: 20px;
+  margin-left: 40px;
+}
+
+.offer {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.offer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.offer p {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  margin: 0;
+  color: #ffffff;
+  font-size: 1em;
+  padding: 5px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .offers-over-banner {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .other-offers {
+    grid-template-columns: 1fr 1fr;
+    margin-left: 0;
+    margin-top: 20px;
+  }
+}

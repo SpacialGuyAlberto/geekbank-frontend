@@ -1,0 +1,479 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+
+:root {
+  --scale-factor: 0.75; /* 75% del tamaño original */
+  --primary-color: #0B0D19;
+  --secondary-color: #021526;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #88D66C;
+  --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --transition-speed: 0.3s;
+}
+
+/* Contenedores de Tournament */
+.tournament-container {
+  width: 100%;
+  margin: auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Hacer el banner más alto */
+  height: 800px;
+}
+
+.banner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  pointer-events: none; /* Asegura que los elementos interactivos no sean afectados */
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  filter: blur(5px);
+  object-fit: cover;
+  display: block;
+}
+
+.offers-over-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 40px; /* Aumentar padding para mejor separación */
+  display: flex;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center; /* Centrar contenido */
+  gap: 40px; /* Espacio entre secciones */
+}
+
+/* Sección de ofertas pequeñas a la izquierda */
+.other-offers-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Alinea al inicio (izquierda) */
+}
+
+.colliseum-title {
+  font-family: 'Saira Stencil One', cursive;
+  font-size: 7em; /* Ajusta el tamaño según prefieras */
+  color: #ffffff;
+  text-align: left;
+  margin-bottom: 20px;
+  /* Agregar bordes al texto usando text-shadow */
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  transition: transform var(--transition-speed) ease; /* Para posibles futuras animaciones */
+}
+
+/* Título "Premios a ganar" */
+.premios-a-ganar {
+  font-size: 2em; /* Ajusta el tamaño según prefieras */
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+  /* Opcional: agregar un pequeño shadow para mejorar legibilidad */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.p {
+  color: #ffffff;
+}
+
+.main-offer {
+  background: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px; /* Ancho fijo para la tarjeta */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-right: 40px; Espacio entre la oferta principal y las otras ofertas, ahora no necesario */
+  color: #ffffff; /* Texto blanco */
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  transition: transform var(--transition-speed) ease; /* Para posibles futuras animaciones */
+}
+
+.main-offer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('https://static.videezy.com/system/resources/thumbnails/000/036/991/original/firespark1.jpg'), linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.3));
+  background-size: cover;
+  opacity: 0.2; /* Ajusta la opacidad de las chispas */
+  pointer-events: none;
+  border-radius: 10px;
+}
+
+.timer {
+  font-size: 2.5em; /* Aumentar tamaño del cronómetro */
+  color: #ffffff;
+  font-weight: bold;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 20px;
+}
+
+.timer div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.timer span {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 15px 20px;
+  border-radius: 5px;
+  font-size: 1em;
+}
+
+.timer-label {
+  font-size: 0.5em;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.tournament-img-container {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.tournament-img-container img {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  height: 200px; /* Ajusta la altura según prefieras */
+}
+
+.tournament-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1; /* Asegura que el contenido esté por encima del pseudo-elemento */
+}
+
+.tournament-title {
+  font-size: 1.8em;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.price-box {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 10px 20px;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+  text-align: center;
+}
+
+.price-offer {
+  font-size: 2em;
+  color: #f44336;
+  margin: 0;
+  text-align: center;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #9e9e9e;
+  margin-left: 10px;
+}
+
+.discount {
+  color: #4caf50;
+  font-size: 1em;
+  margin-left: 10px;
+}
+
+.stock-info {
+  color: #ffffff; /* Cambiado a blanco para aclarar el texto */
+  margin: 10px 0;
+  text-align: center;
+  /* Agregar text-shadow para mejorar la legibilidad */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.progress-bar-container {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+  height: 20px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #4caf50;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.buy-button,
+.cart-button {
+  background: #ff9800;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 15px;
+  transition: background var(--transition-speed) ease;
+}
+
+.buy-button:hover {
+  background: #fb8c00;
+}
+
+.cart-button {
+  background: #03a9f4;
+}
+
+.cart-button:hover {
+  background: #0288d1;
+}
+
+/* Otras Ofertas */
+.other-offers {
+  display: grid;
+  grid-template-columns: repeat(2, 150px);
+  grid-gap: 20px;
+  /* margin-left: 40px; Retirar margen izquierda */
+}
+
+/* Animación de Hover para las Ofertas Pequeñas */
+.offer {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.offer:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.offer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.offer p {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0,0,0,0.6);
+  margin: 0;
+  color: #ffffff;
+  font-size: 1em;
+  padding: 5px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    transform: scale(1.5);
+    object-fit: cover;
+  }
+
+  .offers-over-banner {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px; /* Reducir padding para optimizar espacio */
+  }
+
+  .other-offers {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* Ajuste flexible de columnas */
+    grid-gap: 15px;
+    margin-top: 15rem; /* Reducir margen superior */
+  }
+
+  /* Ajustes para las Ofertas Pequeñas */
+  .offer {
+    width: 5rem;
+    height: 7rem;/* Ocupa todo el ancho disponible */
+    aspect-ratio: 1 / 1; /* Mantiene una relación de aspecto cuadrada */
+  }
+
+  .offer img {
+    height: 100%;
+  }
+
+  .tournament-img-container {
+    height: 50%;
+    margin-bottom: -10px;
+  }
+
+  .colliseum-title {
+    font-size: 2em; /* Tamaño adecuado para móviles */
+    text-align: center;
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
+  }
+
+  /* Mejora de `.main-offer` para móviles */
+  .main-offer {
+    width: 50%; /* Aumentar ancho para mejor visibilidad */
+    padding: 15px; /* Reducir padding para optimizar espacio */
+    margin-top: -1rem;
+    margin-bottom: 7rem; /* Reducir margen inferior */
+    height: auto; /* Eliminar altura fija */
+    box-sizing: border-box; /* Incluir padding en el cálculo de ancho */
+  }
+
+  .tournament-info {
+    width: 100%; /* Ocupa todo el ancho disponible */
+    height: auto; /* Permite ajuste automático */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0; /* Añadir padding vertical */
+  }
+
+  .tournament-title {
+    font-size: 1em;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: -10px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+  .premios-a-ganar {
+    font-size: 1.2em;
+    margin-bottom: 15px; /* Ajustar margen inferior */
+  }
+
+
+  .other-offers {
+    grid-template-columns: repeat(2, 1fr); /* Mantener dos columnas */
+    gap: 10px;
+  }
+
+  .stock-info {
+    font-size: 0.5em;
+    margin-bottom: -10px; /* Reducir margen inferior */
+  }
+
+  .timer {
+    font-size: 0.5em;
+    gap: 10px; /* Reducir espacio entre elementos */
+    flex-wrap: wrap; /* Permitir que los elementos se envuelvan */
+    margin-bottom: -1rem;
+    margin-top: -1rem;
+  }
+
+  .timer div {
+    height: auto; /* Eliminar altura fija */
+    margin-bottom: 0; /* Eliminar margen inferior erróneo */
+    margin-top: 0; /* Eliminar margen superior erróneo */
+  }
+
+  .timer span {
+    padding: 10px 15px; /* Reducir padding */
+  }
+
+  .timer-label {
+    font-size: 0.6em; /* Aumentar ligeramente el tamaño de la etiqueta */
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tournament-container {
+    padding: 10px;
+  }
+
+  .colliseum-title {
+    font-size: 1.5em;
+  }
+
+  .premios-a-ganar {
+    font-size: 1em;
+  }
+
+  .other-offers {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 3rem; /* Reducir margen superior */
+  }
+
+  .buy-button,
+  .cart-button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    box-sizing: border-box; /* Incluir padding en el cálculo de ancho */
+  }
+
+  .main-offer {
+    width: 90%; /* Ocupa todo el ancho disponible */
+    height: auto;
+    padding: 10px; /* Reducir padding */
+    margin-bottom: -5rem; /* Reducir margen inferior */
+  }
+
+  .tournament-info {
+    padding: 5px 0; /* Reducir padding vertical */
+  }
+
+  .timer {
+    font-size: 1em;
+    gap: 5px; /* Reducir espacio entre elementos */
+  }
+
+  .timer span {
+    padding: 8px 12px; /* Reducir padding */
+  }
+
+  .timer-label {
+    font-size: 0.5em;
+    margin-top: 3px; /* Reducir margen superior */
+  }
+
+  .tournament-img-container img {
+    max-height: 120px; /* Reducir altura máxima */
+  }
+
+  .main-offer {
+    padding: 10px; /* Reducir padding */
+  }
+}
+

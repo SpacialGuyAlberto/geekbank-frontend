@@ -1,0 +1,380 @@
+/* Importamos la fuente 'Zen Dots' de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
+/* Importamos la fuente 'Anton' de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+
+:root {
+  --font-size-base: 1rem; /* 16px */
+  --scale-factor: 0.85; /* Factor de escala para responsividad */
+  --primary-color: #0B0D19;
+  --secondary-color: #021526;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #88D66C;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --font-impact: 'Rubik Iso', sans-serif; /* Cambiado a 'Anton' */
+  --transition-speed: 0.3s;
+}
+
+
+/* Reset de márgenes y paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor Principal del Dashboard */
+.random-keys-main-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+
+  /*padding: 1rem;*/
+  position: relative;
+  overflow: hidden;
+  color: var(--text-color);
+}
+
+/* Contenedores de Banners */
+.banner-container {
+  position: relative;
+  width: 100%;
+  height: 50rem;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.3125rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  z-index: 3;
+  /* Eliminamos la altura fija para que se ajuste al contenido */
+}
+
+/* Banner para Claves Grandes */
+.large-banner {
+  background-image: url('src/assets/fortnite.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Superposición Oscura */
+.banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1;
+}
+
+/* Contenedor Principal del Encabezado */
+.header-container {
+  text-align: left; /* Alineamos a la izquierda */
+  color: #FFFFFF;
+  padding-left: 2rem; /* Añadimos un poco de padding izquierdo */
+  margin-top: 2rem;
+  animation: fadeIn 1.5s ease-in-out;
+  z-index: 2;
+}
+
+/* Texto principal */
+.header-container h1 {
+  font-size: 4rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin: 0;
+  color: #FFFFFF;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  font-family: 'Anton', sans-serif;
+  text-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.3), /* Sombra sutil */
+    0 0 10px #00ffe5,
+    0 0 20px #00ffe5,
+    0 0 30px rgba(0, 0, 0, 0.5); /* Efecto de resplandor */
+}
+
+/* Resaltado animado */
+.header-container h1 .highlight {
+  font-size: 2.2rem;
+  color: #ff6ec7; /* Color vibrante */
+  display: block;
+  font-weight: 700;
+  animation: colorChange 3s infinite alternate;
+  font-family: 'Anton', sans-serif;
+  text-shadow:
+    0 2px 5px rgba(0, 0, 0, 0.4), /* Sombra más ligera */
+    0 0 8px #ff6ec7,
+    0 0 15px #ff00ff; /* Resplandor para el resaltado */
+}
+
+
+
+/* Subtítulo */
+.header-container h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: #b0c4de;
+  margin-top: 0.5rem;
+  letter-spacing: 0.05rem;
+  text-shadow:
+    0px 3px 5px rgba(0, 0, 0, 0.3), /* Sombra ligera */
+    0px 0px 8px #00bfff; /* Resplandor azul claro */
+  animation: bounce 2s infinite;
+  font-family: 'Kanit', sans-serif; /* Fuente juvenil */
+}
+
+
+
+/* Estilos para el Banner */
+.banner-text h1 {
+  font-size: 5rem;
+  letter-spacing: 0.2rem;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  font-family: var(--font-podio); /* Aplicamos Anton */
+}
+
+
+.banner-text h1 {
+  font-size: 5rem; /* Aumentamos el tamaño */
+  letter-spacing: 0.2rem;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
+  font-family: var(--font-podio)
+}
+
+/* Contenedor del Podio */
+.podio-container {
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 3;
+}
+
+
+
+/* Contenedor de Ofertas */
+.offers-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5rem;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 75rem;
+  margin: 5rem auto; /* Añadimos margen superior para separar del banner */
+  transition: height var(--transition-speed) ease;
+}
+
+/* Contenedor Exterior */
+.offer-card-container {
+  /*background: url('src/assets/240_F_864018435_alqn1YWwNfEpG1Ktnk7WTbQoLEtwK1D7.jpg') repeat;*/
+  /*padding: 1.5rem;*/
+  border-radius: 0.3125rem;
+  flex: 1 1 calc(25% - 1rem); /* Cuatro tarjetas por fila */
+  min-width: 12rem;
+  max-width: 16rem;
+  flex-grow: 1;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  opacity: 1;
+}
+
+/*!* Fondo diferente para el contenedor del medio *!*/
+/*.offer-card-container.middle {*/
+/*  background: url('src/assets/240_F_813379521_SJdhkPzZuVcVcSZcumkiAjTaOY6rEhj9.jpg') repeat;*/
+/*}*/
+
+/* Escala el contenedor al hacer hover */
+.offer-card-container:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.6);
+}
+
+/* Estilos Generales para las Tarjetas de Oferta */
+.offer-card {
+  position: relative;
+  width: 100%;
+  height: 25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0;
+  border-radius: 0.3125rem;
+  overflow: hidden;
+  color: var(--text-color);
+}
+
+
+/* Contenedor de Imagen */
+.offer-image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 0.3125rem;
+}
+
+/* Imagen */
+.offer-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.3125rem;
+  transition: transform var(--transition-speed) ease;
+}
+
+/* Efecto de zoom al hover en la imagen */
+.offer-image-container:hover{
+  transform: scale(1.1);
+}
+
+/* Botón dentro de la imagen */
+.offer-button {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #d89c11;
+  border: 0.125rem solid #ae8210;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.3125rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-family: var(--font-impact);
+  text-transform: uppercase;
+  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease, color var(--transition-speed) ease;
+  z-index: 2;
+}
+
+.offer-button:hover {
+  background-color: #a06e13;
+  color: #000;
+  transform: translateX(-50%) scale(1.1);
+}
+
+/* Responsividad */
+@media (max-width: 1024px) {
+  .offer-card-container {
+    flex: 1 1 calc(33.333% - 1rem); /* Tres tarjetas por fila */
+    max-width: calc(33.333% - 1rem);
+  }
+
+  .banner-text h1 {
+    font-size: 4rem;
+  }
+
+  .banner-text h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .large-banner {
+    height: auto;
+  }
+
+  .offer-card-container {
+    flex: 1 1 calc(50% - 1rem); /* Dos tarjetas por fila */
+    max-width: calc(50% - 1rem);
+  }
+
+  .offer-card {
+    height: 20rem;
+  }
+
+  .offer-card.middle-card {
+    height: 25rem;
+  }
+
+  .offer-button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .banner-text h1 {
+    font-size: 3rem;
+  }
+
+  .banner-text h2 {
+    font-size: 1.5rem;
+  }
+
+  .podio-container {
+    top: 10px;
+    right: 10px;
+  }
+
+  .trophy-icon {
+    font-size: 2rem;
+  }
+
+  .podio-text {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .large-banner {
+    height: auto;
+  }
+
+  .offers-wrapper {
+    flex-direction: column;
+    gap: 0.625rem;
+    width: 95%;
+  }
+
+  .offer-card-container {
+    flex: 1 1 100%; /* Una tarjeta por fila */
+    max-width: 100%;
+  }
+
+  .offer-card {
+    height: 18rem;
+  }
+
+  .offer-card.middle-card {
+    height: 22rem;
+  }
+
+  .offer-button {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    bottom: 1rem;
+  }
+
+  .banner-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .banner-text h2 {
+    font-size: 1.2rem;
+  }
+
+  .podio-container {
+    top: 5px;
+    right: 5px;
+  }
+
+  .trophy-icon {
+    font-size: 1.5rem;
+  }
+
+  .podio-text {
+    font-size: 1rem;
+  }
+}

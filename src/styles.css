@@ -96,7 +96,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --footer-link-hover: #1E90FF; /* Color de enlace al hacer hover */
   --divider-color: #1E90FF;
   --transition-speed: 0.3s;
-  --font-primary: 'Roboto', sans-serif;
+  --font-podio: 'Kanit', sans-serif;
 
 
   --mark-all-button-default: linear-gradient(45deg, #103758, #ca0a91);
