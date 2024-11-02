@@ -1,0 +1,248 @@
+/* estilos-compartidos.css */
+:root {
+  --font-size-base: 1rem; /* 16px */
+  --scale-factor: 0.85; /* Factor de escala para responsividad */
+  --primary-color: #0B0D19;
+  --secondary-color: #021526;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #88D66C;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --transition-speed: 0.3s;
+}
+
+/* Reset de márgenes y paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor Principal del Dashboard */
+.random-keys-most-sold-dashboard {
+  position: relative; /* Necesario para posicionar las capas internas */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding: 0; /* Sin padding */
+  overflow: hidden; /* Evita desbordamientos */
+}
+
+/* Capa de Fondo Desenfocada */
+.random-keys-most-sold-dashboard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('src/assets/fracture-fortnite.jpg') center/cover no-repeat;
+  filter: blur(5px);
+  transform: scale(1.1); /* Aumenta ligeramente para cubrir áreas después del blur */
+  z-index: 1;
+}
+
+/* Superposición Oscura con Backdrop Filter */
+.banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* Superposición semi-transparente */
+  backdrop-filter: blur(5px); /* Aplica el desenfoque al contenido detrás */
+  z-index: 2;
+}
+
+/* Contenedores de Banners */
+.banner-container {
+  position: relative;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3125rem; /* 5px */
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* Sombra */
+  z-index: 3; /* Asegura que esté por encima de la capa de fondo */
+}
+
+/* Banner para Claves Grandes */
+.large-banner {
+  height: 31.25rem; /* 500px */
+  background-image: url('src/assets/fracture-fortnite.jpg'); /* Asegúrate de que la ruta sea correcta */
+}
+
+/* Contenedor de Ofertas */
+.offers-wrapper {
+  position: relative;
+  z-index: 4; /* Asegura que esté por encima de todas las capas */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem; /* 20px */
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  height: auto; /* Permite que el contenedor crezca según el contenido */
+}
+
+/* Estilos Generales para las Tarjetas de Oferta */
+.offer-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0; /* Sin padding */
+  border-radius: 0.3125rem; /* 5px */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* Sombra */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+/* Tarjetas Grandes */
+.offer-card.large {
+  width: calc(20% - 1rem); /* Reducido de 25% a 20%, menos gap */
+  min-width: 7rem; /* 112px */
+  max-width: 10rem; /* 160px */
+  height: 15rem; /* 240px */
+}
+
+/* Hover */
+.offer-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor de Imagen */
+.offer-image-container {
+  position: relative;
+  width: 100%;
+  height: 70%; /* 70% de la altura de la tarjeta */
+  overflow: hidden; /* Asegura que las imágenes no sobresalgan del contenedor */
+  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+}
+
+/* Imagen */
+.offer-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsión */
+  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+}
+
+/* Botón */
+.offer-button {
+  position: absolute;
+  bottom: 0.625rem; /* 10px */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 106, 0, 0.8);
+  color: #fff;
+  border: none;
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  border-radius: 0.3125rem; /* 5px */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.offer-button:hover {
+  background-color: rgba(230, 92, 0, 0.8);
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Responsividad */
+@media (max-width: 48rem) { /* 768px */
+  .large-banner {
+    height: 25rem; /* 400px */
+  }
+
+  .small-banner {
+    height: 15rem; /* 240px */
+  }
+
+  .offers-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(1.5rem * var(--scale-factor));
+    margin: auto;
+    justify-content: center;
+  }
+
+  .offer-card.large,
+  .offer-card.small {
+    width: calc(45% - 0.75rem); /* Reducido de 50% a 45% para ajustarse mejor */
+    height: 16rem; /* Reducido de 20rem a 16rem */
+  }
+
+  /* Ajuste para la tarjeta central en pantallas medianas */
+  .offer-card.middle-card.large {
+    width: calc(55% - 0.75rem); /* Reducido de 60% a 55% */
+    height: 24rem; /* Reducido de 30rem a 24rem */
+  }
+
+  .offer-button {
+    padding: 0.5rem 1rem; /* 8px 16px */
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 30rem) { /* 480px */
+  .large-banner {
+    height: 18.75rem; /* 300px */
+  }
+
+  .small-banner {
+    height: 12.5rem; /* 200px */
+  }
+
+  .offers-wrapper {
+    flex-direction: column;
+    gap: 0.625rem; /* 10px */
+  }
+
+  .offer-card.large,
+  .offer-card.small {
+    width: 100%; /* Una tarjeta por fila */
+    height: 12rem; /* Reducido de 15rem a 12rem */
+  }
+
+  /* Ajuste para la tarjeta central en pantallas pequeñas */
+  .offer-card.middle-card.large {
+    width: 100%; /* Mantener el ancho completo */
+    height: 16rem; /* Reducido de 20rem a 16rem */
+  }
+
+  .offer-button {
+    padding: 0.375rem 0.75rem; /* 6px 12px */
+    font-size: 0.8rem;
+    bottom: 0.3125rem; /* 5px */
+  }
+}
+
+/* Estilos para mensajes de carga y error */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #FFD700; /* Dorado */
+  margin-top: 2rem;
+}
+
+.loading mat-spinner {
+  margin-bottom: 1rem;
+}
+
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  color: red;
+  margin-top: 2rem;
+}

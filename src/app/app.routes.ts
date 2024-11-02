@@ -15,6 +15,8 @@ import {SetPasswordComponent} from "./set-password/set-password.component";
 import {AccountInfoComponent} from "./user-details/settings/account-info/account-info.component";
 import {PurchaseConfirmationComponent} from "./purchase-confirmation/purchase-confirmation.component";
 import {FreeFireDetailsComponent} from "./free-fire-details/free-fire-details.component";
+import {RandomKeysComponent} from "./random-keys/random-keys.component";
+
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -35,5 +37,6 @@ export const routes: Routes = [
   // { path: 'payment-cancel', component: PaymentCancelComponent },
   { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
   { path: 'free-fire-details', component: FreeFireDetailsComponent},
+  { path: 'random-keys', component: RandomKeysComponent },
   { path: '**', redirectTo: '/payment' }
 ];

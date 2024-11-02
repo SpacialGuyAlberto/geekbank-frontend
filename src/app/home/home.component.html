@@ -22,7 +22,7 @@
       </div>
     </div>
 
-    <app-banner></app-banner>
+    <app-banner *ngIf="showHighlightsAndRecommendations"></app-banner>
 
     <!-- Tarjetas principales -->
     <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
@@ -64,5 +64,5 @@
 
     </div>
   </div>
-  <app-offers-banner></app-offers-banner>
+  <app-offers-banner *ngIf="showHighlightsAndRecommendations"></app-offers-banner>
 </div>

@@ -1,0 +1,276 @@
+/* estilos-compartidos.css */
+:root {
+  --font-size-base: 1rem; /* 16px */
+  --scale-factor: 0.85; /* Factor de escala para responsividad */
+  --primary-color: #0B0D19;
+  --secondary-color: #021526;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #88D66C;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --transition-speed: 0.3s;
+}
+
+/* Reset de márgenes y paddings */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor Principal del Dashboard */
+.random-keys-main-dashboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding: 1rem; /* Añade padding para separar del borde de la pantalla */
+}
+
+/* Clase Compartida para Componentes Hijos */
+.random-key-component {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch; /* Asegura que los hijos ocupen todo el ancho */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  padding: 0; /* Sin padding para evitar espacios internos */
+  margin: 0; /* Sin margen externo */
+}
+
+/* Eliminar márgenes entre los componentes hijos */
+.random-key-component > * {
+  margin: 0; /* Elimina cualquier margen externo */
+}
+
+/* Contenedores de Banners */
+.banner-container {
+  position: relative;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.3125rem; /* 5px */
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* Sombra */
+}
+
+/* Banner para Claves Grandes */
+.large-banner {
+  height: 31.25rem; /* 500px */
+  background-image: url('/assets/fright-and-delight-fortnite-skin-10768.jpg');
+}
+
+/* Banner para Claves Pequeñas */
+.small-banner {
+  height: 20rem; /* 320px */
+  background-image: url('/assets/fracture-fortnite.jpg');
+}
+
+/* Superposición Oscura */
+.banner-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Superposición oscura */
+  z-index: 1;
+}
+
+/* Contenedor de Ofertas */
+.offers-wrapper {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem; /* 20px */
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  max-width: 1200px; /* Limitar el ancho máximo para pantallas grandes */
+  margin: 0 auto; /* Centrar horizontalmente */
+}
+
+/* Estilos Generales para las Tarjetas de Oferta */
+.offer-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0; /* Sin padding */
+  border-radius: 0.3125rem; /* 5px */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* Sombra */
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  overflow: hidden;
+}
+
+/* Tarjetas Grandes */
+.offer-card{
+  width: calc(25% - 1.25rem); /* 25% menos gap */
+  min-width: 9.375rem; /* 150px */
+  max-width: 16.5rem; /* 200px */
+  height: 25.75rem; /* 412px */
+}
+
+/* Hover */
+.offer-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+
+/* Contenedor de Imagen */
+.offer-image-container {
+  position: relative;
+  width: 100%;
+  height: 70%; /* 70% de la altura de la tarjeta */
+  overflow: hidden; /* Asegura que las imágenes no sobresalgan del contenedor */
+  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+}
+
+/* Imagen */
+.offer-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsión */
+  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+}
+
+/* Botón */
+.offer-button {
+  position: absolute;
+  bottom: 0.625rem; /* 10px */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 106, 0, 0.8);
+  color: #fff;
+  border: none;
+  padding: 0.625rem 1.25rem; /* 10px 20px */
+  border-radius: 0.3125rem; /* 5px */
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.offer-button:hover {
+  background-color: rgba(230, 92, 0, 0.8);
+  transform: translateX(-50%) scale(1.05);
+}
+
+/* Estilos para la Tarjeta Central */
+.offer-card.middle-card.large {
+  width: calc(35% - 1.25rem); /* Mayor ancho */
+  height: 30rem; /* Mayor altura */
+  background: rgba(255, 255, 255, 0.2); /* Fondo ligeramente más opaco */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más pronunciada */
+}
+
+/* Responsividad */
+@media (max-width: 48rem) { /* 768px */
+  .large-banner {
+    height: 25rem; /* 400px */
+  }
+  .offers-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    gap: calc(1.5rem * var(--scale-factor));
+    margin: auto;
+    justify-content: center;
+  }
+  .offer-card{
+    width: calc(50% - 0.9375rem);
+    height: 8rem;
+  }
+
+  /* Ajuste para la tarjeta central en pantallas medianas */
+  .offer-card.middle-card.large {
+    width: calc(60% - 0.9375rem); /* Ajusta el ancho para resaltar */
+    height: 30rem; /* Ajusta la altura */
+  }
+
+  .offer-button {
+    padding: 0.5rem 1rem; /* 8px 16px */
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 30rem) { /* 480px */
+  .large-banner {
+    height: 18.75rem; /* 300px */
+  }
+
+  .small-banner {
+    height: 12.5rem; /* 200px */
+  }
+
+  .offers-wrapper {
+    flex-direction: column;
+    gap: 0.625rem; /* 10px */
+    width: 95%;
+  }
+
+  .offer-card{
+    width: 100%; /* Una tarjeta por fila */
+    height: 12rem; /* Reducir aún más la altura */
+  }
+
+  /* Ajuste para la tarjeta central en pantallas pequeñas */
+  .offer-card.middle-card {
+    width: 100%;
+    height: 15rem;
+  }
+
+  .offer-button {
+    padding: 0.375rem 0.75rem; /* 6px 12px */
+    font-size: 0.8rem;
+    bottom: 0.3125rem; /* 5px */
+  }
+
+  /* Ajustes adicionales para asegurar que las tarjetas sean más pequeñas */
+  .offer-image-container {
+    height: 60%; /* Reducir la altura de la imagen */
+  }
+
+  .offer-card.small {
+    height: 10rem; /* 160px */
+  }
+
+  .offer-card{
+    height: 12rem; /* 192px */
+  }
+
+  /* Opcional: Reducir el tamaño de la fuente en títulos y textos */
+  .offer-card h3 {
+    font-size: 0.9rem; /* Ajusta según tu estructura HTML */
+  }
+
+  .offer-card p {
+    font-size: 0.8rem; /* Ajusta según tu estructura HTML */
+  }
+}
+
+/* Estilos para mensajes de carga y error */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #FFD700; /* Dorado */
+  margin-top: 2rem;
+}
+
+.loading mat-spinner {
+  margin-bottom: 1rem;
+}
+
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  color: red;
+  margin-top: 2rem;
+}

@@ -1,0 +1,20 @@
+<div class="random-key-main-dashboard">
+
+  <!-- Banner para Small Keys -->
+  <!-- Banner para Claves Grandes -->
+  <div class="banner-container large-banner">
+    <div class="banner-background"></div>
+    <div class="offers-wrapper">
+      <div
+        class="offer-card"
+        *ngFor="let key of keys; let i = index"
+        [ngClass]="{'middle-card': isMiddleCard(i)}">
+        <div class="offer-image-container">
+          <img [src]="key.coverImageOriginal" alt="{{ key.name }}" loading="lazy">
+        </div>
+        <button class="offer-button" (click)="viewDetails(key)">Ver ofertas</button>
+      </div>
+    </div>
+  </div>
+
+</div>

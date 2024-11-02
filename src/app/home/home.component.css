@@ -60,6 +60,7 @@ body, html {
   color: var(--text-color);
   text-align: center;
   position: relative;
+  filter: blur(2px);
 }
 
 .banner::after {

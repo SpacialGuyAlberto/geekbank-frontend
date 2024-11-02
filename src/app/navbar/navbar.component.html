@@ -47,38 +47,42 @@
 </nav>
 
 <!-- Sección de Pestañas de Categorías Mejorada -->
-<div class="navbar-categories">
-  <div class="tabs-menu">
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'categorias'}"
-      (click)="selectCategory('categorias')"
-    >
-      <i class="fas fa-th-list"></i> Categorías
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'claves-aleatorias'}"
-      (click)="selectCategory('claves-aleatorias')"
-    >
-      <i class="fas fa-random"></i> Claves Aleatorias
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'software'}"
-      (click)="selectCategory('software')"
-    >
-      <i class="fas fa-laptop-code"></i> Software
-    </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'sensacion'}"
-      (click)="selectCategory('sensacion')"
-    >
-      <i class="fas fa-music"></i> Sensación
-    </button>
-  </div>
-</div>
+<!--<div *ngIf="showNavbar" class="navbar-categories">-->
+<!--  <div class="tabs-menu">-->
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'categorias'}"-->
+<!--      (click)="selectCategory('categorias')"-->
+<!--      aria-label="Categorías"-->
+<!--    >-->
+<!--      <i class="fas fa-th-list" aria-hidden="true"></i> Categorías-->
+<!--    </button>-->
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'random-keys'}"-->
+<!--      (click)="selectCategory('random-keys')"-->
+<!--      aria-label="Claves Aleatorias"-->
+<!--    >-->
+<!--      <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
+<!--    </button>-->
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'software'}"-->
+<!--      (click)="selectCategory('software')"-->
+<!--      aria-label="Software"-->
+<!--    >-->
+<!--      <i class="fas fa-laptop-code" aria-hidden="true"></i> Software-->
+<!--    </button>-->
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'sensacion'}"-->
+<!--      (click)="selectCategory('sensacion')"-->
+<!--      aria-label="Sensación"-->
+<!--    >-->
+<!--      <i class="fas fa-music" aria-hidden="true"></i> Sensación-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->
 
 <!-- Modales -->
 <div class="search-modal" *ngIf="showSearchModal">
