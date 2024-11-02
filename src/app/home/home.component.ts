@@ -14,6 +14,7 @@ import {Subscription} from "rxjs";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import { KinguinService } from '../kinguin.service';
 import {GiftCard} from "../models/GiftCard";
+import {BannerComponent} from "../banner/banner.component";
 
 @Component({
   selector: 'app-home',
@@ -27,7 +28,8 @@ import {GiftCard} from "../models/GiftCard";
     KinguinGiftCardsComponent,
     HighlightsComponent,
     RecommendationsComponent,
-    FiltersComponent
+    FiltersComponent,
+    BannerComponent
   ]
 })
 

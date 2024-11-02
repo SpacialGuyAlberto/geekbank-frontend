@@ -10,6 +10,11 @@
   --scale-factor: 0.75; /* 75% del tamaño original */
 }
 
+/* Box-Sizing Global */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 /* Estilos Globales */
 body, html {
   margin: 0;
@@ -17,6 +22,7 @@ body, html {
   font-family: var(--font-primary);
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: var(--text-color);
+  overflow-x: hidden; /* Evita el desplazamiento horizontal */
 }
 
 .graph-container {
@@ -74,7 +80,7 @@ body, html {
 
 .banner p {
   font-size: 1.5rem;
-  z-index: 1;
+  z-index: 2;
 }
 
 .gift-cards-wrapper {
@@ -89,9 +95,14 @@ body, html {
   gap: 1.5rem;
   position: relative;
   z-index: 2; /* Asegura que esté por encima del banner */
-  margin-top: -23.5rem; /* Ajusta este valor para controlar la superposición */
+  margin-top: -20rem; /* Ajusta este valor para controlar la superposición */
+  margin-bottom: -20rem;
   /* Puedes usar una unidad relativa si prefieres */
   /* Por ejemplo: margin-top: -10vh; */
+}
+
+.app-banner {
+  margin-bottom: 1rem; /* Ajusta este valor según tus necesidades */
 }
 
 .highlights-section,
@@ -149,7 +160,6 @@ body, html {
   margin-top: -5rem; /* Ajusta el valor para mover el contenedor hacia arriba */
 }
 
-
 /* Botón de Filtros para Móvil */
 .filter-button {
   display: none;
@@ -163,7 +173,13 @@ body, html {
 @media (max-width: 768px) {
 
   .banner {
+    width: 100vw; /* Abarca todo el ancho de la ventana */
     height: 250px;
+    margin: 0; /* Elimina cualquier margen */
+    padding: 0; /* Elimina cualquier padding */
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%); /* Centra el banner */
   }
 
   .banner h1 {
@@ -174,10 +190,16 @@ body, html {
     font-size: 1rem;
   }
 
+  .app-banner {
+    width: 120vw; /* 1200px */
+    /*max-height: 40rem;*/
+  }
   .highlight-recommendations {
     flex-direction: column;
     align-items: center;
-    margin-top: -100px; /* Ajusta para dispositivos móviles */
+    margin-top: -10rem; /* Elimina márgenes negativos */
+    margin-bottom: 0; /* Elimina márgenes negativos */
+    padding: 1rem 0; /* Añade padding para espaciar */
   }
 
   .filter-giftcard-container {
@@ -230,6 +252,17 @@ body, html {
     font-size: 2rem;
     color: var(--text-color);
     cursor: pointer;
+  }
+
+  /* Ajustes adicionales para evitar superposición */
+  .main-gift-cards,
+  .gift-cards-grid {
+    margin-top: 2rem; /* Añade margen superior para separar del banner */
+  }
+
+  .app-banner {
+    margin-top: 2rem; /* Asegura que el banner no se superponga */
+    margin-bottom: 1rem;
   }
 }
 
