@@ -36,7 +36,7 @@ export class OffersBannerComponent implements OnInit {
       link: '#'
     },
     {
-      imageUrl: 'https://play-lh.googleusercontent.com/fRFOz7hD7C0r4b6Dity3muFFPm90gXPiVKAHNyJvPHA6Y__Qdi05lnsbeylGtUylJQ=w240-h480-rw',
+      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFCHbLP_12inRbkyBEl745mpPBNO9RsSc3tw&s',
       title: 'Juego 4',
       link: '#'
     }

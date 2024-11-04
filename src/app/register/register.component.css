@@ -1,37 +1,62 @@
-/* Estilos generales */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  min-height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
-  overflow-x: hidden;
-}
-
-.graph-container {
+/* Contenedor Principal */
+.container {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  background-color: #0B0D19;
-  overflow: hidden;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  z-index: 0;
+  overflow: hidden; /* Oculta cualquier borde blanco alrededor del banner */
 }
 
-#graphCanvas {
+
+.banner {
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 115%; /* Aumenta el ancho ligeramente */
+  height: 105%; /* Aumenta la altura ligeramente */
+  background-image: url('src/assets/488e0731-ac0e-4347-95e1-97e2987f2151.webp');
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: blur(5px);
+  z-index: -1;
+}
+
+
+.banner::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Ajusta la opacidad aquí */
+  z-index: 1; /* Asegura que esta superposición esté encima de la imagen de fondo */
+}
+
+.banner-content {
+  text-align: center;
   z-index: 1;
 }
 
+.banner-title {
+  font-size: 3rem;
+  font-family: 'Saira Stencil One', cursive;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+}
+
+/* Contenedor de Registro */
 .register-container {
-  position: relative;
-  margin: 10rem auto;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,9 +70,10 @@ html, body {
   color: #88D66C;
   text-align: center;
   box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5);
-  z-index: 2;
+  z-index: 9;
 }
 
+/* Resto de los estilos permanecen igual */
 .register-title {
   color: #00d4ff;
   font-size: 1.5rem;
@@ -195,6 +221,10 @@ button:focus {
 
 /* Estilos responsivos */
 @media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
   .register-container {
     width: 90%;
     padding: 0.9375rem;
@@ -217,6 +247,15 @@ button:focus {
   .password-strength-text {
     font-size: 0.75rem;
   }
+
+  /* Ajustes para el Banner en móviles */
+  .banner {
+    background: rgba(2, 21, 38, 0.6); /* Mantenemos la superposición */
+  }
+
+  .banner-title {
+    font-size: 1.5rem;
+  }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
@@ -236,5 +275,10 @@ button:focus {
   button {
     font-size: 1rem;
     padding: 0.75rem 1.25rem;
+  }
+
+  /* Ajustes para el Banner en tablets */
+  .banner-title {
+    font-size: 2rem;
   }
 }

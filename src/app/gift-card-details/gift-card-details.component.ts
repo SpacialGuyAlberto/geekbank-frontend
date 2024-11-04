@@ -17,6 +17,7 @@ import { FeedbackService } from "../services/feedback.service";
 import { Feedback } from "../models/Feedback";
 import { WishListService } from "../wish-list.service";
 import { HttpClient } from '@angular/common/http';
+import {BannerComponent} from "../banner/banner.component";
 
 interface Language {
   name: string;
@@ -35,6 +36,7 @@ interface Language {
     CommonModule,
     MatSnackBarModule,
     FormsModule,
+    BannerComponent,
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']

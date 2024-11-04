@@ -10,7 +10,7 @@
   --transition-speed: 0.3s;
 }
 
-.recommendations {
+.recommendations.home {
   display: grid;
   grid-template-columns: repeat(2, minmax(calc(200px * var(--scale-factor)), 1fr)); /* Dos columnas con ancho mínimo escalado */
   grid-gap: calc(0.8rem * var(--scale-factor));
@@ -19,6 +19,15 @@
   border-radius: calc(0.625rem * var(--scale-factor));
   justify-items: center;
   margin: 0 auto;
+}
+
+.recommendations.cart {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
+  gap: calc(1.5rem * var(--scale-factor));
+  width: 70%;
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+  margin-bottom: 5rem
 }
 
 .recommendations-gift-cards-container {

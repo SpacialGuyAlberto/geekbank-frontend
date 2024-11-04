@@ -116,6 +116,10 @@ body, html {
   background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
 }
 
+.banner-container {
+  margin-top: -10rem;
+}
+
 .banner-content {
   position: relative;
   z-index: 2; /* Asegura que el contenido esté por encima de la superposición */
@@ -617,36 +621,65 @@ body, html {
 .tabs-container {
   display: flex;
   justify-content: space-around;
-  background-color: var(--primary-color);
-  border-bottom: 1px solid var(--highlight-color);
+  background-color: var(--secondary-color);
+  border-bottom: 2px solid var(--highlight-color);
   margin-top: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
 }
 
 /* Estilos para cada pestaña */
 .tab {
-  padding: 1rem;
+  flex: 1;
+  padding: 1rem 0;
   cursor: pointer;
   color: var(--accent-color);
   font-family: var(--font-secondary);
-  transition: color var(--transition-speed), background var(--transition-speed);
+  font-size: 1rem;
+  background: none;
+  border: none;
+  outline: none;
+  position: relative;
+  transition: color var(--transition-speed) ease;
+  text-align: center;
 }
 
+/* Hover sobre las pestañas */
 .tab:hover {
-  background-color: rgba(0, 212, 255, 0.2);
+  color: var(--highlight-color);
+  background-color: rgba(0, 212, 255, 0.1);
 }
 
+/* Pestaña activa */
 .tab.active {
   color: var(--highlight-color);
-  border-bottom: 2px solid var(--highlight-color);
+  font-weight: bold;
 }
 
-/* Contenido de la pestaña activa */
+/* Indicador activo debajo de la pestaña */
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background-color: var(--highlight-color);
+  border-radius: 2px;
+  transition: all var(--transition-speed) ease;
+}
+
+/* Contenido de la pestaña */
 .tab-content {
   padding: 1.5rem;
   background-color: rgba(2, 21, 38, 0.8);
   color: var(--text-color);
   font-family: var(--font-primary);
+  border-radius: 0 8px 8px 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+
 
 /* gift-card-details.component.css */
 
@@ -666,3 +699,25 @@ body, html {
   border-radius: 2px;
 }
 
+@media (max-width: 768px) {
+  .tabs-container {
+    flex-direction: column;
+    border-bottom: none;
+    border-right: 2px solid var(--highlight-color);
+  }
+
+  .tab {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .tab.active::after {
+    left: 0;
+    width: 100%;
+  }
+
+  .tab-content {
+    border-radius: 0 8px 8px 8px;
+  }
+}

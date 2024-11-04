@@ -25,7 +25,7 @@
       <!-- Botón "Pay" -->
       <button
         type="submit"
-        class="retro-button"
+        class="primary-button"
         *ngIf="!showSpinner && transactionStatus === ''"
       >
         Pay
@@ -34,7 +34,7 @@
       <!-- Botón de Cancelación -->
       <button
         type="button"
-        class="retro-button cancel-button"
+        class="primary-button cancel-button"
         *ngIf="showSpinner"
         (click)="cancelTransaction(transactionNumber, orderRequestNumber)"
         [disabled]="isCancelling"
@@ -51,14 +51,14 @@
       <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== ''">
         <button
           type="button"
-          class="retro-button"
+          class="primary-button"
           (click)="retryPayment()"
         >
           Retry Payment
         </button>
         <button
           type="button"
-          class="retro-button cancel-button"
+          class="primary-button cancel-button"
           (click)="closeModal()"
         >
           Close
@@ -91,9 +91,9 @@
           class="retro-input"
         />
       </div>
-      <button type="submit" class="retro-button">Verificar</button>
-      <button type="button" class="retro-button cancel-button" (click)="closeModal()">Cancelar</button>
-      <div *ngIf="errorMessage" class="alert alert-danger">
+      <button type="submit" class="primary-button">Verificar</button>
+      <button type="button" class="primary-button cancel-button" (click)="closeModal()">Cancelar</button>
+      <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
     </form>
@@ -101,8 +101,8 @@
     <!-- Mensaje de Agradecimiento tras Verificación Exitosa -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
-      <p>Su transaccion esta siendo procesada en estos momentos. En Breve recibira su acreditacion directamente en su cuenta.</p>
-      <button type="button" class="retro-button" (click)="closeModal()">Cerrar</button>
+      <p>Su transacción está siendo procesada en estos momentos. En breve recibirá su acreditación directamente en su cuenta.</p>
+      <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
     </div>
 
     <!-- Sección de Confirmación y Spinner -->
@@ -122,7 +122,7 @@
 
       <button
         type="button"
-        class="retro-button cancel-button"
+        class="primary-button cancel-button"
         *ngIf="showSpinner"
         (click)="cancelTransaction(transactionNumber, orderRequestNumber)"
         [disabled]="isCancelling"
@@ -131,16 +131,16 @@
       </button>
 
       <!-- Mensaje de Cancelación Exitosa -->
-      <div *ngIf="transactionStatus === 'CANCELLED' && notifMessage" class="alert alert-success">
+      <div *ngIf="transactionStatus === 'CANCELLED' && notifMessage" class="success-message">
         {{ notifMessage }}
       </div>
     </div>
 
     <!-- Mensajes de éxito o error para la cancelación -->
-    <div *ngIf="successMessage" class="alert alert-success">
+    <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage && !showVerificationForm" class="alert alert-danger">
+    <div *ngIf="errorMessage && !showVerificationForm" class="error-message">
       {{ errorMessage }}
     </div>
   </div>

@@ -89,7 +89,7 @@
     <form (ngSubmit)="submitFeedback(feedbackForm)" #feedbackForm="ngForm">
       <!-- Puntuación (Score) -->
       <div class="form-group">
-        <label for="feedbackScore">Calificación:</label>
+        <label >Calificación:</label>
         <div class="star-rating-input">
           <i
             class="material-icons star-input"
@@ -124,6 +124,9 @@
   </div>
 </div>
 
+<div class="banner-container">
+  <app-banner></app-banner> <!-- Componente app-banner incluido -->
+</div>
 
 <div class="tabs-container">
   <div class="tab" [class.active]="activeTab === 'description'" (click)="setActiveTab('description')">

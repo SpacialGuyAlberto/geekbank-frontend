@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {CurrencyPipe, NgForOf, NgOptimizedImage} from "@angular/common";
+import {CurrencyPipe, NgClass, NgForOf, NgOptimizedImage} from "@angular/common";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {RecommendationsService} from "../services/recommendations.service";
-import {Router} from "@angular/router";
+import {NavigationEnd, Router} from "@angular/router";
 import {AuthService} from "../auth.service";
+import {filter} from "rxjs/operators";
 
 
 @Component({
@@ -12,7 +13,8 @@ import {AuthService} from "../auth.service";
   imports: [
     NgForOf,
     NgOptimizedImage,
-    CurrencyPipe
+    CurrencyPipe,
+    NgClass
   ],
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.css']
@@ -21,6 +23,7 @@ export class RecommendationsComponent implements OnInit {
 
   currentIndex = 0;
   giftCards: KinguinGiftCard[] = [];
+  routeClass: string = '';
 
   constructor(private recommendationsService: RecommendationsService,
               private router: Router,
@@ -28,6 +31,16 @@ export class RecommendationsComponent implements OnInit {
               ) { }
 
   ngOnInit(): void {
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.setRouteClass(event.urlAfterRedirects);
+      });
+
+    // Asignar la clase de ruta inicial
+    const initialUrl = this.router.url;
+    this.setRouteClass(initialUrl);
     const userId = this.getCurrentUserId(); // Implementa este método
     this.fetchRecommendations(userId)
   }
@@ -57,6 +70,16 @@ export class RecommendationsComponent implements OnInit {
         });
         this.startCarousel();
       }))
+    }
+  }
+
+  setRouteClass(url: string): void {
+    if (url.startsWith('/home')) {
+      this.routeClass = 'home';
+    } else if (url.startsWith('/cart')) {
+      this.routeClass = 'cart';
+    } else {
+      this.routeClass = '';
     }
   }
 

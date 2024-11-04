@@ -1,40 +1,77 @@
-<!-- src/app/cart/cart.component.html -->
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
 </div>
+
 <div class="cart-container">
   <h2>Shopping Cart</h2>
-  <ul>
-    <li *ngFor="let item of cartItems" class="cart-item">
-      <div class="item-details">
-        <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
-        <p>Quantity: {{ item.cartItem.quantity }}</p>
-        <p>Price: {{ (item.giftcard.price * exchangeRate).toFixed(2) }} LPS</p>
-        <p>Subtotal: {{ (item.cartItem.quantity * item.giftcard.price * exchangeRate).toFixed(2) }} LPS</p> <!-- Precio total por ítem -->
-      </div>
-      <div class="item-actions">
-        <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
-        <button (click)="incrementProductQuantity(item)">+</button>
-        <p class="quantity-display">{{ item.cartItem.quantity }}</p>
-        <button (click)="decreaseProductQuantity(item)">-</button>
-      </div>
-    </li>
-  </ul>
+  <div class="cart-content">
+    <!-- Contenedor Izquierdo: Información de los Productos -->
+    <div class="cart-items">
+      <ul>
+        <li *ngFor="let item of cartItems" class="cart-item">
+          <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="gift-card-image">
+          <div class="item-info">
+            <h3 class="item-title">{{ item.giftcard.name }}</h3>
+            <div class="item-quantity">
+              <button (click)="decreaseProductQuantity(item)">-</button>
+              <span class="quantity-display">{{ item.cartItem.quantity }}</span>
+              <button (click)="incrementProductQuantity(item)">+</button>
+            </div>
+            <p class="item-price">{{ (item.giftcard.price * exchangeRate).toFixed(2) }} LPS</p>
+          </div>
+          <div class="item-actions">
+            <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
+          </div>
+        </li>
+      </ul>
 
-  <div class="total-price-section">
-    <h3>Total Price: {{ getTotalPrice() }} €</h3>
-    <div *ngIf="isLoading">
-      <p>Cargando tasa de cambio...</p>
-      <!-- Puedes reemplazar esto con un spinner gráfico -->
+      <div class="total-price-section">
+        <h3>Total Price: {{ getTotalPrice() }} €</h3>
+        <div *ngIf="isLoading">
+          <p>Cargando tasa de cambio...</p>
+          <!-- Puedes reemplazar esto con un spinner gráfico -->
+        </div>
+        <div *ngIf="conversionError">
+          <p class="error">{{ conversionError }}</p>
+        </div>
+        <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate).toFixed(2) }} LPS</p>
+        <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
+      </div>
     </div>
-    <div *ngIf="conversionError">
-      <p class="error">{{ conversionError }}</p>
+
+    <!-- Contenedor Derecho: Información de Pago -->
+    <div class="payment-info">
+      <h3>Información de Pago</h3>
+      <form>
+        <div class="form-group">
+          <label for="email">Correo Electrónico:</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <button type="submit" class="payment-button">Continuar con el Pago</button>
+      </form>
+      <div class="discount-section">
+        <label for="discountCode">Código de Descuento:</label>
+        <input type="text" id="discountCode" name="discountCode">
+        <button class="discount-button">Aplicar Descuento</button>
+      </div>
+      <!-- Texto de Aceptación de Términos y Condiciones -->
+      <p class="terms-text">
+        Al hacer clic en "Continuar con el pago" reconozco que he leído y aceptado los
+        <a href="https://astralis.com/terminos-y-condiciones" target="_blank">Términos y Condiciones</a>
+        de Astralis.com y la
+        <a href="https://astralis.com/politica-de-privacidad" target="_blank">Política de Privacidad</a> de Astralis.com.
+      </p>
     </div>
-    <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate).toFixed(2) }} LPS</p>
-    <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
   </div>
 </div>
 
+<!-- Sección de Productos Relacionados -->
+<div class="related-products-container">
+  <h2 class="related-products-title">También te pueden interesar</h2>
+  <app-recommendations></app-recommendations>
+</div>
+
+<!-- Diálogo -->
 <div *ngIf="showDialog" class="dialog-overlay">
   <div class="dialog">
     <p>No more items in the cart.</p>
@@ -42,4 +79,5 @@
   </div>
 </div>
 
+<!-- Modal de Pago -->
 <app-tigo-payment *ngIf="showPaymentModal" [cartItems]="cartItems" [totalPrice]="getTotalPrice()"></app-tigo-payment>

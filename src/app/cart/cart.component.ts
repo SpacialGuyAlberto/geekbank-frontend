@@ -12,7 +12,9 @@ import { FormsModule } from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
-import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackBar
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {RandomKeyMostSoldComponent} from "../random-key-most-sold/random-key-most-sold.component";
+import {RecommendationsComponent} from "../recommendations/recommendations.component"; // Importar MatSnackBar
 
 @Component({
   selector: 'app-cart',
@@ -23,7 +25,9 @@ import { MatSnackBar } from '@angular/material/snack-bar'; // Importar MatSnackB
     RouterLink,
     TigoPaymentComponent,
     FormsModule,
-    MatIcon
+    MatIcon,
+    RandomKeyMostSoldComponent,
+    RecommendationsComponent
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
