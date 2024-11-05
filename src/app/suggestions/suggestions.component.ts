@@ -1,7 +1,7 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ChangeDetectorRef, NgZone } from '@angular/core';
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { RecommendationsService } from "../services/recommendations.service";
-import { Observable, of } from 'rxjs';
+import {Observable, of, Subscription} from 'rxjs';
 import {tap, catchError, map} from 'rxjs/operators';
 import {AsyncPipe, CurrencyPipe, NgClass, NgForOf} from "@angular/common";
 
@@ -15,41 +15,76 @@ import {AsyncPipe, CurrencyPipe, NgClass, NgForOf} from "@angular/common";
     CurrencyPipe,
     NgForOf
   ],
-  styleUrls: ['./suggestions.component.css']
+  styleUrls: ['./suggestions.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SuggestionsComponent implements OnInit, OnChanges {
+export class SuggestionsComponent implements OnInit {
   @Input() kinguinId: number = 0;
-  giftCards$: Observable<KinguinGiftCard[]> = of([]); // Observable para las gift cards
+  giftCards: KinguinGiftCard[] = [];
   isLoading: boolean = true; // Indicador de carga
-
-  constructor(private recommendationsService: RecommendationsService) {}
+  loadTime: number = 0;
+  private subscription: Subscription = new Subscription();
+  private readonly limit: number = 5; //
+  private startTime: number = 0;
+  private endTime: number = 0;
+  constructor(
+    private recommendationsService: RecommendationsService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
     this.loadRecommendations();
-    this.giftCards$.subscribe(card => console.log(card))
+    this.giftCards.map(card => console.log(card))
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['kinguinId'] && this.kinguinId) {
-      this.loadRecommendations();
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['kinguinId'] && this.kinguinId) {
+  //     this.loadRecommendations();
+  //   }
+  // }
 
   loadRecommendations() {
     this.isLoading = true;
-    this.giftCards$ = this.recommendationsService.getContentBasedRecommendations(this.kinguinId).pipe(
-      tap(() => this.isLoading = false),
-      map(giftCards => giftCards.map(card => {
-        card.coverImageOriginal = card.images.cover?.thumbnail || '';
-        card.coverImage = card.images.cover?.thumbnail || '';
-        return card;
-      })),
-      catchError((error) => {
-        console.error('Error fetching recommendations', error);
-        this.isLoading = false;
-        return of([]); // Devuelve un array vacío en caso de error
-      })
-    );
+    this.startTime = performance.now();
+    this.ngZone.runOutsideAngular(() => { // Ejecutar fuera de Angular para evitar ciclos de detección
+      const sub = this.recommendationsService.getContentBasedRecommendations(this.kinguinId, this.limit).pipe(
+        tap((giftCards) => {
+          this.ngZone.run(() => { // Volver a la zona de Angular para actualizar el estado
+            this.giftCards = giftCards.map(card => ({
+              ...card,
+              coverImageOriginal: card.images.cover?.thumbnail || '',
+              coverImage: card.images.cover?.thumbnail || ''
+            }));
+            this.isLoading = false;
+
+            this.endTime = performance.now(); // Detener el cronómetro
+            this.loadTime = this.endTime - this.startTime;
+            console.log(`Tiempo de carga de recomendaciones: ${this.loadTime.toFixed(2)} ms`);
+
+            this.cdr.detectChanges(); // Actualizar la vista una vez
+            this.cdr.detach(); // Desactivar la detección de cambios
+          });
+        }),
+        catchError((error) => {
+          this.ngZone.run(() => {
+            console.error('Error fetching recommendations', error);
+            this.isLoading = false;
+          });
+          return of([]);
+        })
+      ).subscribe();
+
+      this.subscription.add(sub);
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  trackById(index: number, card: KinguinGiftCard): number {
+    return card.kinguinId; // Asegúrate de que `id` es único para cada tarjeta
   }
 
 }
