@@ -18,6 +18,7 @@ import { Feedback } from "../models/Feedback";
 import { WishListService } from "../wish-list.service";
 import { HttpClient } from '@angular/common/http';
 import {BannerComponent} from "../banner/banner.component";
+import {SuggestionsComponent} from "../suggestions/suggestions.component";
 
 interface Language {
   name: string;
@@ -26,7 +27,6 @@ interface Language {
   unicode: string;
   image: string;
 }
-
 
 @Component({
   selector: 'app-gift-card-details',
@@ -37,15 +37,18 @@ interface Language {
     MatSnackBarModule,
     FormsModule,
     BannerComponent,
+    SuggestionsComponent,
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
 })
 export class GiftCardDetailsComponent implements OnInit {
 
+  suggestionLoading: boolean = false;
   giftCard: KinguinGiftCard | undefined;
   activeTab: string = 'description';
   isInCart: boolean = false;
+  kinguinId: number = 0;
   cartItemCount: number = 0;
   exchangeRate: number = 0; // Tasa de cambio actualizada
   convertedPrice: number = 0; // Precio convertido a HNL
@@ -60,6 +63,7 @@ export class GiftCardDetailsComponent implements OnInit {
   protected feedbackScore: number = 0;
   isLoading: boolean = false;
   conversionError: string = '';
+  suggestionFilter: string[] = [];
   systemRequirements: SystemRequirement[] | null= null;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
@@ -100,6 +104,7 @@ export class GiftCardDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.suggestionLoading = true;
     this.fetchCurrencyExchange();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
@@ -107,6 +112,21 @@ export class GiftCardDetailsComponent implements OnInit {
         data.coverImageOriginal = data.images.cover?.thumbnail || '';
         data.coverImage = data.images.cover?.thumbnail || '';
         this.giftCard = data;
+        this.kinguinId = data.kinguinId;
+        data.genres.forEach((genre) => {
+          if (genre && genre !== "Action") {
+            // Si el género incluye la palabra "random"
+            if (genre.toLowerCase().includes("random")) {
+              this.suggestionFilter = [genre]; // Borra todos los géneros y agrega solo este
+              return; // Sale del bucle para evitar agregar otros géneros
+            }
+            // Si no incluye "random", lo agrega normalmente
+            this.suggestionFilter.push(genre);
+          }
+        });
+
+
+
 
         if (this.giftCard.images.screenshots.length > 0){
           this.giftCard.images.screenshots.map( screenshot => this.images.push(screenshot.url));
@@ -122,8 +142,8 @@ export class GiftCardDetailsComponent implements OnInit {
           .subscribe((data) => {
             this.languagesData = data;
             this.filterGiftCardLanguages();
+            this.suggestionLoading = false;
           });
-
       });
     }
 

@@ -128,6 +128,16 @@
   <app-banner></app-banner> <!-- Componente app-banner incluido -->
 </div>
 
+<div *ngIf="isLoading" class="loading-indicator">
+  <p>Cargando...</p> <!-- Aquí puedes poner un spinner o una animación de carga -->
+</div>
+
+<!-- Contenido del componente que se mostrará solo cuando isLoading sea false -->
+<div *ngIf="!isLoading">
+  <app-suggestions [kinguinId]="kinguinId"></app-suggestions>
+</div>
+
+
 <div class="tabs-container">
   <div class="tab" [class.active]="activeTab === 'description'" (click)="setActiveTab('description')">
     Description

@@ -47,10 +47,13 @@ export class KinguinService {
     let params = new HttpParams();
 
     Object.keys(filters).forEach(key => {
-      if (filters[key]) {
+      if (filters[key] !== null && filters[key] !== undefined) {
         params = params.append(key, filters[key]);
       }
     });
+
+    // Log para verificar los parámetros
+    console.log('Parameters being sent:', params.toString());
 
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params });
   }

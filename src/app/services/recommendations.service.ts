@@ -45,4 +45,20 @@ export class RecommendationsService {
     );
   }
 
+  getContentBasedRecommendations(kinguinId: number, limit: number = 5): Observable<KinguinGiftCard[]> {
+    const url = `${this.baseUrl}/content-based/${kinguinId}?limit=${limit}`;
+    console.log(`Fetching content-based recommendations from: ${url}`);
+    return this.http.get<KinguinGiftCard[]>(url, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
+      })
+    }).pipe(
+      catchError(error => {
+        console.error('Error fetching content-based recommendations', error);
+        return of([]);
+      })
+    );
+  }
+
+
 }

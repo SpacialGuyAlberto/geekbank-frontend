@@ -1,0 +1,11 @@
+<div  class="recommendations">
+  <div class="recommendations-gift-cards-container">
+    <div *ngFor="let card of giftCards$ | async" class="gift-card" >
+      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
+      <div class="gift-card-content">
+        <h3 class="gift-card-title">{{ card.name }}</h3>
+        <p class="gift-card-price">{{ card.name  }}</p>
+      </div>
+    </div>
+  </div>
+</div>
