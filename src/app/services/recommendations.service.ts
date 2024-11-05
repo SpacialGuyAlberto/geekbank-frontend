@@ -45,7 +45,7 @@ export class RecommendationsService {
     );
   }
 
-  getContentBasedRecommendations(kinguinId: number, limit: number = 5): Observable<KinguinGiftCard[]> {
+  getContentBasedRecommendations(kinguinId: number, limit: number = 20): Observable<KinguinGiftCard[]> {
     const url = `${this.baseUrl}/content-based/${kinguinId}?limit=${limit}`;
     console.log(`Fetching content-based recommendations from: ${url}`);
     return this.http.get<KinguinGiftCard[]>(url, {

@@ -3,7 +3,9 @@ import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { RecommendationsService } from "../services/recommendations.service";
 import {Observable, of, Subscription} from 'rxjs';
 import {tap, catchError, map} from 'rxjs/operators';
-import {AsyncPipe, CurrencyPipe, NgClass, NgForOf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, DecimalPipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-suggestions',
@@ -13,7 +15,9 @@ import {AsyncPipe, CurrencyPipe, NgClass, NgForOf} from "@angular/common";
     NgClass,
     AsyncPipe,
     CurrencyPipe,
-    NgForOf
+    NgForOf,
+    NgIf,
+    DecimalPipe
   ],
   styleUrls: ['./suggestions.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -24,12 +28,13 @@ export class SuggestionsComponent implements OnInit {
   isLoading: boolean = true; // Indicador de carga
   loadTime: number = 0;
   private subscription: Subscription = new Subscription();
-  private readonly limit: number = 5; //
+  private readonly limit: number = 10; //
   private startTime: number = 0;
   private endTime: number = 0;
   constructor(
     private recommendationsService: RecommendationsService,
     private cdr: ChangeDetectorRef,
+    private router: Router,
     private ngZone: NgZone
   ) {}
 
@@ -37,12 +42,6 @@ export class SuggestionsComponent implements OnInit {
     this.loadRecommendations();
     this.giftCards.map(card => console.log(card))
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['kinguinId'] && this.kinguinId) {
-  //     this.loadRecommendations();
-  //   }
-  // }
 
   loadRecommendations() {
     this.isLoading = true;
@@ -86,5 +85,17 @@ export class SuggestionsComponent implements OnInit {
   trackById(index: number, card: KinguinGiftCard): number {
     return card.kinguinId; // Asegúrate de que `id` es único para cada tarjeta
   }
+  viewDetails(card: KinguinGiftCard): void {
+    console.log('CARD ID: ' + card.kinguinId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+      if (success) {
+        console.log('Navigation successful');
+      } else {
+        console.log('Navigation failed');
+      }
+    });
+    window.location.href = `/gift-card-details/${card.kinguinId}`;
+  }
+
 
 }

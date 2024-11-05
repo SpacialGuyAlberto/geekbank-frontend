@@ -119,9 +119,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
-  /**
-   * Obtiene la tasa de cambio de EUR a HNL.
-   */
   fetchCurrencyExchange(): void {
     this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
       (convertedAmount: number) => {

@@ -1,6 +1,6 @@
 // src/app/gift-card-details/gift-card-details.component.ts
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ActivatedRoute, ParamMap} from '@angular/router';
 import { KinguinService } from "../kinguin.service";
 import {KinguinGiftCard, Screenshot, SystemRequirement} from "../models/KinguinGiftCard";
 import { CurrencyPipe } from "@angular/common";
@@ -19,6 +19,10 @@ import { WishListService } from "../wish-list.service";
 import { HttpClient } from '@angular/common/http';
 import {BannerComponent} from "../banner/banner.component";
 import {SuggestionsComponent} from "../suggestions/suggestions.component";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {of, Subscription} from "rxjs";
+import {switchMap} from "rxjs/operators";
+
 
 interface Language {
   name: string;
@@ -38,6 +42,8 @@ interface Language {
     FormsModule,
     BannerComponent,
     SuggestionsComponent,
+    MatProgressSpinnerModule
+
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
@@ -71,6 +77,7 @@ export class GiftCardDetailsComponent implements OnInit {
   currentImageIndex: number = 0;
   images: string[] = [];
   currentImage: Screenshot | string | null = null;
+  private routeSub: Subscription = new Subscription();
 
   languageToCountryMap: { [language: string]: string } = {
     "English": "US",
@@ -95,6 +102,7 @@ export class GiftCardDetailsComponent implements OnInit {
     private kinguinService: KinguinService,
     private router: Router,
     private cartService: CartService,
+    private cdr: ChangeDetectorRef,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
     private currencyService: CurrencyService,
@@ -106,48 +114,43 @@ export class GiftCardDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.suggestionLoading = true;
     this.fetchCurrencyExchange();
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.kinguinService.getGiftCardDetails(id).subscribe(data => {
+    // const id = this.route.snapshot.paramMap.get('id');
+
+    this.routeSub = this.route.paramMap.pipe(
+
+      switchMap((params: ParamMap) => {
+        const id = params.get('id');
+        if (id){
+          this.suggestionLoading = true;
+          return this.kinguinService.getGiftCardDetails(id)
+        } else {
+          return of (null)
+        }
+      })
+    ).subscribe(data => {
+      if (data){
         data.coverImageOriginal = data.images.cover?.thumbnail || '';
         data.coverImage = data.images.cover?.thumbnail || '';
         this.giftCard = data;
         this.kinguinId = data.kinguinId;
-        data.genres.forEach((genre) => {
-          if (genre && genre !== "Action") {
-            // Si el género incluye la palabra "random"
-            if (genre.toLowerCase().includes("random")) {
-              this.suggestionFilter = [genre]; // Borra todos los géneros y agrega solo este
-              return; // Sale del bucle para evitar agregar otros géneros
-            }
-            // Si no incluye "random", lo agrega normalmente
-            this.suggestionFilter.push(genre);
-          }
-        });
-
-
-
-
         if (this.giftCard.images.screenshots.length > 0){
           this.giftCard.images.screenshots.map( screenshot => this.images.push(screenshot.url));
           this.currentImage = this.images[this.currentImageIndex];
-         console.log(this.images)
+          console.log(this.images)
         } else {
           this.images = [this.giftCard.coverImageOriginal]
           this.currentImage = this.images[0];
         }
         this.checkIfInCart(data.kinguinId);
-
         this.http.get<Language[]>('https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/index.json')
           .subscribe((data) => {
             this.languagesData = data;
             this.filterGiftCardLanguages();
             this.suggestionLoading = false;
           });
-      });
-    }
-
-    // Suscribirse al conteo de ítems en el carrito
+        this.cdr.markForCheck();
+      }
+    })
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
       this.cartItemCountChange.emit(this.cartItemCount);

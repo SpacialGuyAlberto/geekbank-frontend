@@ -33,8 +33,7 @@
             ],
             "scripts": [],
             "serviceWorker": false,
-            "inlineStyleLanguage": "scss",
-            "webWorkerTsConfig": "tsconfig.worker.json"
+            "inlineStyleLanguage": "scss"
           },
           "configurations": {
             "production": {
