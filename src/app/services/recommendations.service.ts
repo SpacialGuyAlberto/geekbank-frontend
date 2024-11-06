@@ -48,11 +48,7 @@ export class RecommendationsService {
   getContentBasedRecommendations(kinguinId: number, limit: number = 20): Observable<KinguinGiftCard[]> {
     const url = `${this.baseUrl}/content-based/${kinguinId}?limit=${limit}`;
     console.log(`Fetching content-based recommendations from: ${url}`);
-    return this.http.get<KinguinGiftCard[]>(url, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
-    }).pipe(
+    return this.http.get<KinguinGiftCard[]>(url).pipe( // Eliminado el bloque de headers
       catchError(error => {
         console.error('Error fetching content-based recommendations', error);
         return of([]);
