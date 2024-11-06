@@ -4,12 +4,10 @@
 </div>
 
 <!-- Contenedor del Banner -->
-<div class="banner">
-  <!-- Tu contenido del banner -->
+<div [ngClass]="{ 'banner' : showHighlightsAndRecommendations, '': !showHighlightsAndRecommendations}">
 </div>
 
 <div class="home-container">
-  <!-- Contenedor principal -->
   <div class="gift-cards-wrapper">
 
     <!-- Sección de Destacados y Recomendaciones -->
@@ -73,7 +71,7 @@
 <!--        </div>-->
 
         <!-- Contenedor para las Kinguin Gift Cards -->
-        <div class="gift-cards-grid">
+        <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
           <!-- Pasar los datos filtrados al componente de tarjetas -->
           <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
         </div>

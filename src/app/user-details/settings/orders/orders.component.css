@@ -22,7 +22,7 @@
 /* Estilos Generales del Dashboard de Transacciones */
 .transactions-container {
   padding: 1rem;
-  background: linear-gradient(135deg, var(--primary-bg-color), var(--secondary-bg-color), var(--tertiary-bg-color)); /* Degradado oscuro espacial */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;

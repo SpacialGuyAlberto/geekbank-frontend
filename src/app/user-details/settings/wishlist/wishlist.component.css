@@ -3,7 +3,7 @@
   width: 90%;
   max-width: 800px;
   margin: 2rem auto;
-  background-color: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   border-radius: 10px;
   padding: 1.5rem;
   backdrop-filter: blur(10px); /* Efecto vidrioso */

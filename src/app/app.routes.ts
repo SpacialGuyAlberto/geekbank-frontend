@@ -17,6 +17,9 @@ import {PurchaseConfirmationComponent} from "./purchase-confirmation/purchase-co
 import {FreeFireDetailsComponent} from "./free-fire-details/free-fire-details.component";
 import {RandomKeysComponent} from "./random-keys/random-keys.component";
 import {TournamentAnnouncementComponent} from "./tournament-announcement/tournament-announcement.component";
+import {OrdersComponent} from "./user-details/settings/orders/orders.component";
+import {WishlistComponent} from "./user-details/settings/wishlist/wishlist.component";
+import {PaymentMethodsComponent} from "./user-details/settings/payment-methods/payment-methods.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -39,5 +42,8 @@ export const routes: Routes = [
   { path: 'free-fire-details', component: FreeFireDetailsComponent},
   { path: 'random-keys', component: RandomKeysComponent },
   { path: 'tournament', component: TournamentAnnouncementComponent},
+  { path: 'orders', component: OrdersComponent },
+  { path: 'payment-methods', component: PaymentMethodsComponent },
+  { path: 'wish-list', component: WishlistComponent},
   { path: '**', redirectTo: '/payment' }
 ];

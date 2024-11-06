@@ -68,7 +68,7 @@
     <button
       class="tab-button"
       [ngClass]="{'active': selectedCategory === 'random-keys'}"
-      (click)="selectCategory('random-keys')"
+      (click)="[navigateToRandomKeys(), selectCategory('random-keys')]"
       aria-label="Claves Aleatorias"
     >
       <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias
@@ -106,11 +106,26 @@
     <span class="close-modal" (click)="closeMenuModal()">&times;</span>
     <div class="menu-links">
       <ul>
-        <li *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()">
+        <li [ngClass]="userMenu" *ngIf="isLoggedIn() && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
           <a routerLink="/user-details" (click)="closeMenuModal()" class="menu-link">
             <i class="fa-solid fa-user clickable-icon"></i>
             User Details
           </a>
+        </li>
+        <li [ngClass]="userMenu" *ngIf="isSmallScreen && inUserDetailsRoute">
+          <button (click)="toggleUserTabs()" [attr.aria-expanded]="tabsExpanded">
+            <i class="fas fa-th-list"></i> User Settings
+            <i class="fas" [ngClass]="{'fa-chevron-down': !tabsExpanded, 'fa-chevron-up': tabsExpanded}"></i>
+          </button>
+          <ul class="submenu" *ngIf="tabsExpanded">
+            <li><a href="/user-details" (click)="selectCategory('user-info'); closeMenuModal()">User Info</a></li>
+            <li><a href="/address" (click)="selectCategory('address'); closeMenuModal()">Address</a></li>
+            <li><a href="/payment-methods" (click)="selectCategory('payment-methods'); closeMenuModal()">Payment method</a></li>
+            <li><a href="/preferences" (click)="selectCategory('preferences'); closeMenuModal()">Preferences</a></li>
+            <li><a href="/orders" (click)="selectCategory('orders'); closeMenuModal()">Transactions</a></li>
+            <li><a href="/wish-list" (click)="selectCategory('wish-list'); closeMenuModal()">Wish List</a></li>
+            <li *ngIf="isLoggedIn() && user.role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
+          </ul>
         </li>
         <li *ngIf="!isLoggedIn()">
           <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
@@ -141,7 +156,7 @@
           </ul>
         </li>
         <li>
-          <a class="menu-link">
+          <a routerLink="/random-keys" class="menu-link">
             <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias
           </a>
         </li>

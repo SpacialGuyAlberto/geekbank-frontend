@@ -51,9 +51,11 @@ export class NavbarComponent implements OnInit {
   showMenuModal: boolean = false;
   routerSubscription!: Subscription;
   user: User | any;
+  userMenu: string = "";
   inUserDetailsRoute: boolean = false;
   selectedCategory: string = 'categorias';
   categoriesExpanded: boolean = false;
+  tabsExpanded: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -110,12 +112,13 @@ export class NavbarComponent implements OnInit {
       sessionStorage.setItem("email", data.email)
       console.log(this.user);
     });
-
   }
 
   updateNavBarStyle(url: string) : void {
     if (url.includes('/user-details')){
-      this.navbarClass = 'navbar-user-details'
+      this.navbarClass = 'navbar-user-details';
+      this.userMenu = 'sub-menu';
+      this.inUserDetailsRoute = true;
     } else {
       this.navbarClass = 'navbar-user-details'
     }
@@ -182,9 +185,16 @@ export class NavbarComponent implements OnInit {
 
   selectCategory(category: string) {
     this.selectedCategory = category;
-    // Lógica adicional para manejar la selección de categoría
   }
   toggleCategories() {
     this.categoriesExpanded = !this.categoriesExpanded;
+  }
+
+  navigateToRandomKeys() {
+    this.router.navigate(["/random-keys"]);
+  }
+
+  toggleUserTabs() {
+    this.tabsExpanded = !this.tabsExpanded;
   }
 }

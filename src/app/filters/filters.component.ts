@@ -43,7 +43,7 @@ export class FiltersComponent {
   operatingSystems = ['Windows', 'Mac', 'Linux'];
   genres = ['Action', 'Adventure', 'RPG', 'Anime', 'Casual'];
   languages = ['English', 'Spanish', 'German'];
-  tags = ['indie valley', 'dlc', 'base'];
+  tags = ['indie valley', 'dlc', 'base', 'software'];
 
   constructor(private kinguinService: KinguinService) {}
 
