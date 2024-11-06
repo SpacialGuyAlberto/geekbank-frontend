@@ -53,6 +53,7 @@ export class NavbarComponent implements OnInit {
   user: User | any;
   inUserDetailsRoute: boolean = false;
   selectedCategory: string = 'categorias';
+  categoriesExpanded: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -182,5 +183,8 @@ export class NavbarComponent implements OnInit {
   selectCategory(category: string) {
     this.selectedCategory = category;
     // Lógica adicional para manejar la selección de categoría
+  }
+  toggleCategories() {
+    this.categoriesExpanded = !this.categoriesExpanded;
   }
 }
