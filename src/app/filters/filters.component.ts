@@ -13,16 +13,15 @@ import { NgClass, NgForOf } from "@angular/common";
     NgClass
   ],
   templateUrl: './filters.component.html',
-  styleUrl: './filters.component.css'
+  styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent {
   @Output() filteredResults = new EventEmitter<KinguinGiftCard[]>();
+  @Output() filtersApplied = new EventEmitter<void>();
+
   isFilterOpen = false;
   isFilterVisible: boolean = false;
   showHighlightsAndRecommendations: boolean = true;
-
-  // Cambié el nombre de este Output para evitar el conflicto
-  @Output() filtersApplied = new EventEmitter<void>();
 
   filters = {
     hideOutOfStock: false,
@@ -57,7 +56,7 @@ export class FiltersComponent {
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
-      this.filteredResults.emit(giftCards);
+      this.filteredResults.emit(giftCards); // Emisión de resultados filtrados
       console.log('Filtered Results: ', giftCards);
 
       // Emitir evento al padre cuando se aplican los filtros
@@ -68,5 +67,33 @@ export class FiltersComponent {
 
   toggleFilter(): void {
     this.isFilterOpen = !this.isFilterOpen;
+  }
+
+  resetFilters(): void {
+    // Resetear los filtros a sus valores por defecto
+    this.filters = {
+      hideOutOfStock: false,
+      platform: '',
+      region: '',
+      priceRange: 50,
+      os: '',
+      genre: '',
+      language: '',
+      tags: ''
+    };
+    // Emitir los resultados filtrados vacíos o todos los giftCards
+    this.kinguinService.getKinguinGiftCards(1).subscribe(data => {
+      const giftCards: KinguinGiftCard[] = data.map(card => {
+        card.coverImageOriginal = card.images.cover?.thumbnail || '';
+        card.coverImage = card.images.cover?.thumbnail || '';
+        return card;
+      });
+      this.filteredResults.emit(giftCards); // Emisión de todos los giftCards
+      console.log('Filters reset. All gift cards loaded.');
+
+      // Emitir evento al padre para indicar que los filtros fueron reseteados
+      this.filtersApplied.emit();
+      this.isFilterVisible = false;
+    });
   }
 }

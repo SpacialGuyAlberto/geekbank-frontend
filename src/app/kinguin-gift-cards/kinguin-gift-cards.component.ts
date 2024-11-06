@@ -1,30 +1,29 @@
-// src/app/kinguin-gift-cards/kinguin-gift-cards.component.ts
-import {AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common'; // Importa CommonModule
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {KinguinService} from "../kinguin.service";
-import {PaginationComponent} from "../pagination/pagination.component";
-import {Router} from '@angular/router';
-import {FormsModule} from "@angular/forms";
-import {SearchBarComponent} from "../search-bar/search-bar.component";
-import {HighlightsComponent} from "../highlights/highlights.component";
-import {RecommendationsComponent} from "../recommendations/recommendations.component";
-import {FiltersComponent} from "../filters/filters.component";
-import {CurrencyService} from "../currency.service";
-import {Subscription} from "rxjs";
-import {UIStateServiceService} from "../uistate-service.service";
-
-import {AuthService} from "../auth.service";
-import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
-import {WishItemWithGiftcard} from "../models/WishItem";
-import {NotificationService} from "../services/notification.service";
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { KinguinService } from "../kinguin.service";
+import { PaginationComponent } from "../pagination/pagination.component";
+import { Router } from '@angular/router';
+import { FormsModule } from "@angular/forms";
+import { SearchBarComponent } from "../search-bar/search-bar.component";
+import { HighlightsComponent } from "../highlights/highlights.component";
+import { RecommendationsComponent } from "../recommendations/recommendations.component";
+import { FiltersComponent } from "../filters/filters.component";
+import { CurrencyService } from "../currency.service";
+import { Subscription } from "rxjs";
+import { UIStateServiceService } from "../uistate-service.service";
+import { AuthService } from "../auth.service";
+import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
+import { WishItemWithGiftcard } from "../models/WishItem";
+import { NotificationService } from "../services/notification.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
   standalone: true,
   styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     PaginationComponent,
     FormsModule,
     SearchBarComponent,
@@ -34,7 +33,9 @@ import {NotificationService} from "../services/notification.service";
     MatSnackBarModule
   ]
 })
-export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
+  @Input() giftCardsInput: KinguinGiftCard[] | null = null; // Renombrado para evitar conflicto
+
   giftCards: KinguinGiftCard[] = [];
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
@@ -56,16 +57,17 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     private uiStateService: UIStateServiceService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
-
   ) { }
 
   ngOnInit(): void {
-    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
-      this.giftCards = data;
+    // Si giftCardsInput está proporcionado, usarlo; de lo contrario, obtener datos predeterminados
+    if (this.giftCardsInput && this.giftCardsInput.length > 0) {
+      this.giftCards = this.giftCardsInput;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
-      this.cd.detectChanges();
-    });
+    } else {
+      this.fetchGiftCards();
+    }
 
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
@@ -73,6 +75,30 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       }
     });
     this.fetchCurrencyExchange();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['giftCardsInput']) {
+      const newGiftCards = changes['giftCardsInput'].currentValue;
+      if (newGiftCards && newGiftCards.length > 0) {
+        this.giftCards = newGiftCards;
+        this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+        this.currentIndex = this.itemsPerPage;
+        this.cd.detectChanges();
+      } else {
+        // Si giftCardsInput está vacío, recuperar datos predeterminados
+        this.fetchGiftCards();
+      }
+    }
+  }
+
+  fetchGiftCards(): void {
+    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
+      this.giftCards = data;
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+      this.cd.detectChanges();
+    });
   }
 
   isLoggedIn(): boolean {
@@ -148,7 +174,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   ngAfterViewInit(): void {
-    this.displayedGiftCards.map( item => {
+    this.displayedGiftCards.map(item => {
       // Implementa la lógica para verificar si el ítem está en la wishlist si es necesario
       item.wished = true;
     })
