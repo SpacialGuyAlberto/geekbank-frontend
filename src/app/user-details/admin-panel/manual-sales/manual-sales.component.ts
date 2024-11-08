@@ -1,12 +1,13 @@
 // src/app/components/manual-sales/manual-sales.component.ts
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {CurrencyPipe, DatePipe, NgForOf, NgIf} from "@angular/common";
+import { CurrencyPipe, DatePipe, NgForOf, NgIf } from "@angular/common";
 import { Subscription } from 'rxjs';
-import {WebSocketService} from "../../../web-socket.service";
+import { WebSocketService } from "../../../web-socket.service";
 import { ManualVerificationTransactionDto } from "../../../models/TransactionProductDto.model";
-import {TransactionsService} from "../../../transactions.service";
-import {Transaction} from "../../../models/transaction.model";
+import { TransactionsService } from "../../../transactions.service";
+import { Transaction } from "../../../models/transaction.model";
+import {ManualOrdersService} from "../../../manual-order.service";
 
 @Component({
   selector: 'app-manual-sales',
@@ -23,21 +24,23 @@ import {Transaction} from "../../../models/transaction.model";
 export class ManualSalesComponent implements OnInit, OnDestroy {
   pendingSales: ManualVerificationTransactionDto[] = [];
   isConnected: boolean = false;
-  transactions: Transaction[] = []
+  transactions: Transaction[] = [];
+
+  // Subscriptions
   private manualVerificationSubscription: Subscription | null = null;
   private manualVerificationQueueSubscription: Subscription | null = null;
   private connectionSubscription: Subscription | null = null;
 
   constructor(
     private webSocketService: WebSocketService,
-    private transactionService: TransactionsService
+    private transactionService: TransactionsService,
+    private manualOrdersService: ManualOrdersService // Inyectar el servicio
   ) {}
 
   ngOnInit(): void {
-
     this.transactionService.getWaitingForApprovalTransactions().subscribe((data) => {
       this.pendingSales = data;
-    })
+    });
 
     this.webSocketService.connect();
 
@@ -68,7 +71,22 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
   completeSale(transactionNumber: string): void {
     this.pendingSales = this.pendingSales.filter(sale => sale.transactionNumber !== transactionNumber);
     console.log(`Venta con transacción ${transactionNumber} completada`);
+  }
 
+  /**
+   * Función para ejecutar una orden manual
+   */
+  runManualOrder(): void {
+    this.manualOrdersService.runManualOrder().subscribe({
+      next: (response) => {
+        console.log('Orden manual ejecutada exitosamente:', response);
+        // Puedes manejar la respuesta según tus necesidades, por ejemplo, actualizar la lista de ventas pendientes
+      },
+      error: (error) => {
+        console.error('Error al ejecutar la orden manual:', error);
+        // Maneja el error según tus necesidades, por ejemplo, mostrar un mensaje al usuario
+      }
+    });
   }
 
   ngOnDestroy(): void {

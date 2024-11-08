@@ -135,16 +135,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('Filters reset.');
   }
 
-  /**
-   * Ejecuta la búsqueda basada en la consulta de búsqueda
-   */
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
       const queryLower = this.searchQuery.toLowerCase();
       if (
         queryLower.includes('free fire') ||
         queryLower.includes('free fair') ||
-        queryLower.includes('freefire') // Añadido 'freefire' como otra variación
+        queryLower.includes('freefire')
       ) {
         // Mostrar componente Free Fire
         this.showFreeFireComponent = true;
