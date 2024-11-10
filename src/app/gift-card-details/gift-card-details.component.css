@@ -66,7 +66,7 @@ body, html {
   align-items: stretch;
   gap: 1rem;
   margin: 10rem auto;
-  margin-top: -25rem;
+  margin-top: -20rem;
   max-width: 80%;
   /*background-color: rgba(2, 21, 38, 0.8); !* Transparent background *!*/
   color: #b5beb4;
@@ -781,6 +781,10 @@ body, html {
     flex-direction: column;
     border-bottom: none;
     border-right: 2px solid var(--highlight-color);
+  }
+
+  .gift-card-details-container{
+    margin-top: -25rem;
   }
 
   .tab {

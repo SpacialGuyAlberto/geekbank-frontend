@@ -123,7 +123,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
-
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
