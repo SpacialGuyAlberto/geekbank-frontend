@@ -16,6 +16,7 @@ import { AuthService } from "../auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { WishItemWithGiftcard } from "../models/WishItem";
 import { NotificationService } from "../services/notification.service";
+import {MainScreenGiftCardService} from "../main-screen-gift-card-service.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -55,6 +56,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     private currencyService: CurrencyService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
+    private mainGiftCards: MainScreenGiftCardService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
   ) { }
@@ -66,12 +68,14 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
     } else {
-      this.fetchGiftCards();
+      /// this.fetchGiftCards();
+      this.fetchMainGiftCard();
     }
 
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
-        this.loadGiftCards(this.currentPage)
+        ///this.loadGiftCards(this.currentPage)
+        this.fetchMainGiftCard();
       }
     });
     this.fetchCurrencyExchange();
@@ -92,6 +96,24 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
+  fetchMainGiftCard(): void {
+    this.mainGiftCards.getMainScreenGiftCardItems().subscribe( (data) => {
+      data.map( card => {
+        card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
+        card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
+        this.displayedGiftCards.push(card.giftcard);
+        return card;
+      })
+    });
+  }
+
+  //this.giftCards = data.map(card => {
+   // card.coverImageOriginal = card.images.cover?.thumbnail || '';
+    //card.coverImage = card.images.cover?.thumbnail || '';
+    // Puedes añadir lógica adicional aquí si es necesario
+   // return card;
+  //});
+
   fetchGiftCards(): void {
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data;
@@ -100,6 +122,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.cd.detectChanges();
     });
   }
+
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
