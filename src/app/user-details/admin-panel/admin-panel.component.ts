@@ -18,6 +18,9 @@ import {EmployeeDashboardComponent} from "./employee-dashboard/employee-dashboar
 import {FinancialDashboardComponent} from "./financial-dashboard/financial-dashboard.component";
 import {PromotionSenderComponent} from "./promotion-sender/promotion-sender.component";
 import {SyncComponent} from "./sync/sync.component";
+import {
+  MainScreenGiftCardConfigComponent
+} from "../../main-screen-gift-card-config/main-screen-gift-card-config.component";
 
 @Component({
   selector: 'app-admin-panel',
@@ -40,6 +43,7 @@ import {SyncComponent} from "./sync/sync.component";
     FinancialDashboardComponent,
     PromotionSenderComponent,
     SyncComponent,
+    MainScreenGiftCardConfigComponent,
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']

@@ -1,0 +1,64 @@
+<!-- src/app/components/main-screen-gift-card-config/main-screen-gift-card-config.component.html -->
+
+<div class="gift-card-dashboard">
+  <!-- Barra superior con el título y el botón Guardar -->
+  <div class="header">
+    <h1>Configuración de Tarjetas de Regalo</h1>
+    <button class="save-btn" (click)="save()">
+      <i class="fas fa-save"></i> Guardar Cambios
+    </button>
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="main-content">
+    <!-- Panel izquierdo: Resultados de búsqueda -->
+    <div class="left-panel">
+      <!-- Barra de búsqueda -->
+      <div class="search-bar-container">
+        <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
+      </div>
+      <h2>Resultados de Búsqueda</h2>
+      <div class="gift-cards-container">
+        <!-- Lista de tarjetas obtenidas de la búsqueda -->
+        <div *ngFor="let card of giftCards" class="gift-card">
+          <div class="gift-card-image-container">
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+            <!-- Botón para añadir a los destacados -->
+            <button class="add-gift-card-btn" (click)="addToGiftCards(card)">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+          </div>
+          <div class="gift-card-content">
+            <h3 class="gift-card-title">{{ card.name }}</h3>
+            <div class="gift-card-price">
+              <span>{{ card.price | currency }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel derecho: Tarjetas añadidas a los destacados -->
+    <div class="right-panel">
+      <h2>Mis Tarjetas de Regalo Destacadas</h2>
+      <div class="gift-cards-container">
+        <!-- Lista de tarjetas en los destacados actuales -->
+        <div *ngFor="let card of currentGiftCards" class="gift-card">
+          <div class="gift-card-image-container">
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+            <!-- Botón para eliminar de los destacados -->
+            <button class="remove-gift-card-btn" (click)="removeFromGiftCards(card)">
+              <i class="fas fa-minus-circle"></i>
+            </button>
+          </div>
+          <div class="gift-card-content">
+            <h3 class="gift-card-title">{{ card.name }}</h3>
+            <div class="gift-card-price">
+              <span>{{ card.price | currency }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

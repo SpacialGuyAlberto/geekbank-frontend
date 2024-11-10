@@ -41,8 +41,8 @@
           </a>
         </li>
         <li>
-          <a (click)="selectSection('monitor'); toggleModal()">
-            <i class="fa-solid fa-chart-column"></i> Monitor de Transacciones
+          <a (click)="selectSection('mainScreenGiftCards'); toggleModal()">
+            <i class="fa-solid fa-chart-column"></i> Giftcards de inicio
           </a>
         </li>
         <li>
@@ -87,7 +87,7 @@
       <li><a (click)="selectSection('products')" [class.active]="selectedSection === 'products'"><i class="fas fa-box"></i> Productos</a></li>
       <li><a (click)="selectSection('manual')" [class.active]="selectedSection === 'manual'"><i class="fa-solid fa-clipboard-list"></i> Manual</a></li>
       <li><a (click)="selectSection('transactions')" [class.active]="selectedSection === 'transactions'"><i class="fas fa-money-check-alt"></i> Transacciones</a></li>
-      <li><a (click)="selectSection('monitor')" [class.active]="selectedSection === 'monitor'"><i class="fa-solid fa-chart-column"></i> Monitor</a></li>
+      <li><a (click)="selectSection('mainScreenGiftCards')" [class.active]="selectedSection === 'mainScreenGiftCards'"><i class="fa-solid fa-chart-column"></i> giftcards</a></li>
       <li><a (click)="selectSection('statistics')" [class.active]="selectedSection === 'statistics'"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
       <li><a (click)="selectSection('highlights')" [class.active]="selectedSection === 'highlights'"><i class="fas fa-lightbulb"></i> Highlights</a></li>
       <li><a (click)="selectSection('feedbacks')" [class.active]="selectedSection === 'feedbacks'" ><i class="fa-solid fa-comment"></i> Comment Section</a></li>
@@ -120,8 +120,8 @@
       <div *ngIf="selectedSection === 'statistics'">
         <app-statistics></app-statistics>
       </div>
-      <div *ngIf="selectedSection === 'monitor'">
-        <app-transaction-monitor></app-transaction-monitor>
+      <div *ngIf="selectedSection === 'mainScreenGiftCards'">
+        <app-main-screen-gift-card-config></app-main-screen-gift-card-config>
       </div>
       <div *ngIf="selectedSection === 'highlights'">
         <app-highlights-config></app-highlights-config>
@@ -138,10 +138,6 @@
       <div *ngIf="selectedSection === 'promotions'">
         <app-promotion-sender></app-promotion-sender>
       </div>
-     <div *ngIf="selectedSection === 'sync'">
-       <app-sync></app-sync>
-     </div>
     </main>
-
   </div>
 </div>
