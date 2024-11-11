@@ -178,10 +178,9 @@
   </div>
 </div>
 
-
-<app-payment-options
+<app-payment
   *ngIf="isPaymentModalOpen"
   (closeModal)="closePaymentModal()"
-  (paymentSelected)="onPaymentSelected($event)"
-></app-payment-options>
-
+  [productId]="kinguinId"
+  [totalPrice]="getTotalPrice()"
+></app-payment>

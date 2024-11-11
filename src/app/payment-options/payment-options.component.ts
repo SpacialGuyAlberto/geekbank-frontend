@@ -1,5 +1,7 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {NgIf} from "@angular/common";
+import { PaymentMethod } from '../models/payment-method.interface';
+import { OrderDetails } from '../models/order-details.model';
 
 @Component({
   selector: 'app-payment-options',
@@ -14,12 +16,10 @@ export class PaymentOptionsComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() paymentSelected = new EventEmitter<string>();
 
-  // Método para cerrar el modal
   close() {
     this.closeModal.emit();
   }
 
-  // Método para seleccionar una opción de pago
   selectPaymentMethod(method: string) {
     this.paymentSelected.emit(method);
     this.close();

@@ -1,6 +1,4 @@
-// tigo-payment.component.ts
-
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject} from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { NgClass, NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
@@ -14,6 +12,9 @@ import { AuthService } from "../auth.service";
 import { GuestService } from "../guest.service";
 import { Router } from "@angular/router";
 import {CurrencyService} from "../currency.service";
+import {PaymentMethod} from "../models/payment-method.interface";
+import {PaymentService} from "../payment.service";
+import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -27,11 +28,11 @@ import {CurrencyService} from "../currency.service";
   styleUrls: ['./tigo-payment.component.css']
 })
 export class TigoPaymentComponent implements OnInit, OnDestroy {
-  @Input() cartItems: CartItemWithGiftcard[] = [];
-  @Input() totalPrice: number = 0;
+  cartItems = inject(CART_ITEMS, { optional: true }) || [];
+  totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
+  productId = inject(PRODUCT_ID, { optional: true });
+  gameUserId = inject(GAME_USER_ID, { optional: true });
   @Output() close = new EventEmitter<void>();
-  @Input() productId: number | null = null;
-  @Input() gameUserId: number | null = null;
 
   notifMessage: string = '';
   showModal: boolean = true;
@@ -74,6 +75,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   constructor(
     private tigoService: TigoService,
+    private paymentService: PaymentService,
     private currencyService: CurrencyService,
     private webSocketService: WebSocketService,
     private notificationService: NotificationService,
@@ -86,8 +88,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadExchangeRate();
     this.paymentDetails.total = this.totalPrice;
-    console.log('Received cartItems:', this.cartItems);
-    console.log('Received product ID:', this.productId);
+    console.log('Received product ID:', this.productId?.toString());
+    console.log('Received total price: ', this.totalPrice);
 
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
@@ -113,7 +115,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         console.log('Verification request received:', message);
         this.verificationMessage = message.message;
         this.showVerificationForm = true;
-        this.showSpinner = false; // Ocultar spinner si estaba activo
+        this.showSpinner = false;
       });
   }
 
@@ -138,7 +140,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.showSpinner = true;
     let orderDetails: any;
 
     if (this.productId !== null) {
@@ -219,82 +220,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     console.log('Order Details:', orderDetails);
 
-    this.tigoService.placeOrder(orderDetails).subscribe(
-      response => {
-        console.log('Order placed successfully', response);
-        this.showConfirmation = true;
-
-        const regex = /Order placed successfully: ([A-Z]+-\d+)\s+Transaction number: ([A-Z]+-\d+)\s+PIN\s*:?(\d{4})/;
-
-        const matches = response.match(regex);
-
-        if (matches && matches.length === 4) {
-          this.orderRequestNumber = matches[1];
-          this.transactionNumber = matches[2];
-          this.tempPin = matches[3];
-
-          console.log('Order Request Number:', this.orderRequestNumber);
-          console.log('Transaction Number:', this.transactionNumber);
-          console.log('Temporary PIN:', this.tempPin);
-
-          this.verifyTransactionSubscription = this.webSocketService
-            .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
-            .subscribe((message: any) => {
-              console.log('Verification request received:', message);
-              this.verificationMessage = message.message;
-              this.showVerificationForm = true;
-              this.showSpinner = false; // Ocultar spinner si estaba activo
-            });
-
-        } else {
-          console.error('Error parsing response:', response);
-          this.errorMessage = 'No se pudo obtener el PIN temporal. Por favor, intente nuevamente.';
-          this.notificationService.addNotification(this.errorMessage, this.tigoImageUrl);
-          this.showSpinner = false;
-          return;
-        }
-
-        this.transactionSubscription = this.webSocketService
-          .subscribeToTransactionStatus(this.paymentDetails.phoneNumber)
-          .subscribe((message: any) => {
-            console.log('Transaction status received:', message);
-            this.transactionStatus = message.status;
-
-            if (this.transactionStatus === 'COMPLETED') {
-              this.notifMessage = 'Tu pago fue exitoso.';
-              this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
-              console.log('Transaction completed');
-              this.showSpinner = false;
-
-              this.transactionService.setTransactionNumber(this.transactionNumber);
-
-              // Redirigir a la página de confirmación de compra
-              this.router.navigate(['/purchase-confirmation'], { queryParams: { transactionNumber: this.transactionNumber } });
-
-            } else if (this.transactionStatus === 'FAILED') {
-              this.notifMessage = 'Tu pago falló: ' + message.message;
-              this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
-              console.error('Transaction failed:', message.message);
-              this.showSpinner = false;
-            } else if (this.transactionStatus === 'CANCELLED') {
-              this.notifMessage = 'Tu pago fue cancelado.';
-              this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
-              console.error('Transaction cancelled');
-              this.showSpinner = false;
-            } else if (this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
-              this.notifMessage = 'Tu pago está en espera de procesamiento manual.';
-              this.notificationService.addNotification(this.notifMessage, this.tigoImageUrl);
-              this.showSpinner = false;
-            }
-          });
-
-      },
-      error => {
-        console.error('Error placing order', error);
-        this.showSpinner = false;
-      }
-    );
+    this.paymentService.initializePayment('tigo', orderDetails);
   }
+
 
   submitVerification(): void {
     // Validar que los campos no estén vacíos
