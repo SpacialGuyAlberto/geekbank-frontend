@@ -22,6 +22,8 @@ import {SuggestionsComponent} from "../suggestions/suggestions.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {of, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
+import {PaymentOptionsComponent} from "../payment-options/payment-options.component";
+import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 
 
 interface Language {
@@ -42,7 +44,9 @@ interface Language {
     FormsModule,
     BannerComponent,
     SuggestionsComponent,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    PaymentOptionsComponent,
+    TigoPaymentComponent
 
   ],
   templateUrl: './gift-card-details.component.html',
@@ -54,6 +58,7 @@ export class GiftCardDetailsComponent implements OnInit {
   giftCard: KinguinGiftCard | undefined;
   activeTab: string = 'description';
   isInCart: boolean = false;
+  isPaymentModalOpen: boolean = false;
   kinguinId: number = 0;
   cartItemCount: number = 0;
   exchangeRate: number = 0; // Tasa de cambio actualizada
@@ -95,6 +100,7 @@ export class GiftCardDetailsComponent implements OnInit {
     "Thai": "TH"
     // Añade más mapeos según sea necesario
   };
+  private isTigoPaymentModalOpen: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -421,8 +427,21 @@ export class GiftCardDetailsComponent implements OnInit {
   //     this.currentImage = this.images[index];
   //   }
   // }
+  openPaymentModal() {
+    this.isPaymentModalOpen = true;
+  }
   setActiveTab(tab: string) {
     this.activeTab = tab;
+  }
+  closePaymentModal() {
+    this.isPaymentModalOpen = false;
+  }
+  onPaymentSelected(method: string) {
+    this.closePaymentModal();
+    if (method === 'Tigo Money') {
+      this.isTigoPaymentModalOpen = true;
+    }
+    console.log(`Método de pago seleccionado: ${method}`);
   }
 
 }

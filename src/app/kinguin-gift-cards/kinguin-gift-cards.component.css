@@ -10,32 +10,37 @@
   --transition-speed: 0.3s;
 }
 
-/* Contenedores de Gift Cards */
+/* Contenedor de Gift Cards */
 .gift-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
-  gap: calc(1.5rem * var(--scale-factor));
+  grid-auto-rows: 350px;
+  gap: calc(2rem * var(--scale-factor)); /* Aumenta el gap para evitar solapamientos al escalar */
   width: 75%;
   margin: 0 auto; /* Centra el contenedor horizontalmente */
+  overflow: visible; /* Permite que las tarjetas escaladas no se recorten */
 }
 
-
+/* Tarjeta Individual */
+/* Tarjeta Individual */
 .gift-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background: linear-gradient(135deg, rgba(39, 39, 57, 0.4), rgba(8, 64, 180, 0.4));
-  border: calc(2px * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
-  border-radius: calc(8px * var(--scale-factor));
+  border: 2px solid rgba(173, 216, 230, 0.2);
+  border-radius: 8px;
   padding: 0;
   text-align: center;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
-  box-shadow: 0 calc(4px * var(--scale-factor)) calc(20px * var(--scale-factor)) rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  z-index: 0; /* Base z-index */
 }
 
+/* Efecto de borde animado */
 .gift-card::before {
   content: '';
   position: absolute;
@@ -50,11 +55,12 @@
   animation: animatedBorder 5s ease infinite;
 }
 
+/* Efecto al hacer hover sobre una tarjeta */
 .gift-card:hover {
-  background: linear-gradient(135deg, rgba(74, 35, 90, 0.4), rgba(28, 29, 50, 0.4));
-  transform: translateY(calc(-10px * var(--scale-factor)));
+  transform: scale(1.05); /* Escala al 105% */
+  box-shadow: 0 8px 30px rgba(173, 216, 230, 0.5);
   border-color: rgba(173, 216, 230, 0.4);
-  box-shadow: 0 calc(8px * var(--scale-factor)) calc(30px * var(--scale-factor)) rgba(173, 216, 230, 0.5);
+  z-index: 1; /* Superpone sobre las demás tarjetas */
 }
 
 /* Imagen de la Gift Card */
@@ -68,6 +74,7 @@
   transition: transform var(--transition-speed) ease;
 }
 
+/* Contenido de la Gift Card */
 .gift-card-content {
   display: flex;
   flex-direction: column;
@@ -78,6 +85,7 @@
   padding: calc(1rem * var(--scale-factor));
 }
 
+/* Título de la Gift Card */
 .gift-card-title {
   font-size: calc(1rem * var(--scale-factor));
   color: #dcd0d0;
@@ -88,13 +96,16 @@
   text-overflow: ellipsis;
   max-width: 100%;
   max-height: calc(1.5rem * var(--scale-factor)); /* Altura inicial para mostrar solo una línea */
-  transition: max-height 0.5s ease; /* Transición para una expansión fluida */
+  transition: max-height 0.5s ease, white-space 0.5s ease; /* Transición para una expansión fluida */
 }
 
+/* Expande el título al hacer hover */
 .gift-card:hover .gift-card-title {
   white-space: normal; /* Permite que el texto se ajuste en varias líneas */
   max-height: calc(5rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
 }
+
+/* Precio de la Gift Card */
 .gift-card-price {
   font-size: calc(1.1rem * var(--scale-factor));
   color: #88D66C;

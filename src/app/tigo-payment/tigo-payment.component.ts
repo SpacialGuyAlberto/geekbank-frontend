@@ -105,11 +105,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.guestId = this.guestService.getGuestId();
     }
 
-    console.log('USER ID:', this.userId);
-    console.log('GUEST ID:', this.guestId);
     this.webSocketService.connect();
 
-    // Suscribirse al tópico de verificación de transacción
     this.verifyTransactionSubscription = this.webSocketService
       .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
       .subscribe((message: any) => {
@@ -122,7 +119,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   loadExchangeRate(): void {
     this.isLoading = true;
-
     this.exchangeRateSubscription = this.currencyService.getExchangeRateEURtoHNL(1).subscribe({
       next: (rate) => {
         this.exchangeRate = rate;

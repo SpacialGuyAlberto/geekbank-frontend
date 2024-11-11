@@ -13,7 +13,7 @@ import {catchError} from "rxjs/operators";
 export class HighlightService {
 
   private apiUrl = environment.apiUrl
-  private baseUrl = `${this.apiUrl}/highlights`; // URL base de tu API
+  private baseUrl = `${this.apiUrl}/highlights`;
 
   constructor(private http: HttpClient) { }
 
@@ -26,30 +26,11 @@ export class HighlightService {
     );
   }
 
-  // getCartItems(): Observable<CartItemWithGiftcard[]> {
-  //   return this.http.get<CartItemWithGiftcard[]>(this.baseUrl, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-  //     })
-  //   });
-  // }
-
   addHighlights(productIds: number[]): Observable<any> {
     const requestBody = { productIds };
     console.log(requestBody);
     return this.http.post(`${this.baseUrl}`, requestBody);
   }
-
-
-
-
-  // updateCartItem(productId: number, quantity: number): Observable<KinguinGiftCard> {
-  //   return this.http.put<KinguinGiftCard>(this.baseUrl, { productId, quantity }, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-  //     })
-  //   });
-  // }
 
   removeHighlights(productIds: number[]): Observable<void> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');

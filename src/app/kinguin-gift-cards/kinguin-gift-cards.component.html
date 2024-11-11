@@ -1,5 +1,7 @@
 <div class="gift-cards-container">
-  <div *ngFor="let card of (giftCardsInput && giftCardsInput.length > 0 ? displayedGiftCards : displayedGiftCards)" class="gift-card" (click)="viewDetails(card)">
+  <div *ngFor="let card of (giftCardsInput && giftCardsInput.length > 0 ? displayedGiftCards : displayedGiftCards)"
+       class="gift-card"
+       (click)="viewDetails(card)">
     <div class="image-container">
       <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
     </div>
