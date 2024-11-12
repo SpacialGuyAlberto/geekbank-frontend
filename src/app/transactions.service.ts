@@ -15,7 +15,6 @@ export class TransactionsService {
   private apiUrl = `${environment.apiUrl}/transactions`;
 
   private transactionNumberSubject = new BehaviorSubject<string | null>(null);
-  // Observable para que otros componentes puedan suscribirse
   transactionNumber$ = this.transactionNumberSubject.asObservable();
   private pendingTransactionsSubject = new BehaviorSubject<Transaction[]>([]);
   private pendingForApprovalTransactionSubject = new BehaviorSubject<ManualVerificationTransactionDto[]>([])
@@ -58,7 +57,7 @@ export class TransactionsService {
       );
   }
 
-  cancelTransaction(transactionId: string, orderRequestId: string): Observable<Transaction> {
+  cancelTransaction(transactionId: string | null, orderRequestId: string): Observable<Transaction> {
     const url = `${this.apiUrl}/cancel/${transactionId}/${orderRequestId}`;
 
     const headers = new HttpHeaders({

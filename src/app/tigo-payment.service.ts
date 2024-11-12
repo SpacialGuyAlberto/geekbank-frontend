@@ -27,9 +27,14 @@ export class TigoPaymentService implements PaymentMethod {
   private errorMessageSubject = new Subject<string>();
   errorMessage$ = this.errorMessageSubject.asObservable();
 
-  // Nuevo Subject para la solicitud de verificación
   private verificationRequestSubject = new Subject<any>();
   verificationRequest$ = this.verificationRequestSubject.asObservable();
+
+  private showVerificationFormSubject = new Subject<boolean>();
+  showVerificationForm$ = this.showVerificationFormSubject.asObservable();
+
+  private orderRequestIdSubject = new Subject<string>();
+  orderRequestId$ = this.orderRequestIdSubject.asObservable();
 
   constructor(
     private tigoService: TigoService,
@@ -37,7 +42,10 @@ export class TigoPaymentService implements PaymentMethod {
     private notificationService: NotificationService,
     private transactionService: TransactionsService,
     private router: Router
-  ) { }
+
+  ) {
+    this.webSocketService.connect();
+  }
 
   initializePayment(orderDetails: OrderDetails): void {
     this.showSpinnerSubject.next(true);
@@ -45,7 +53,7 @@ export class TigoPaymentService implements PaymentMethod {
     this.tigoService.placeOrder(orderDetails).subscribe(
       response => {
         console.log('Order placed successfully', response);
-        // Parsear la respuesta y extraer información
+
         const regex = /Order placed successfully: ([A-Z]+-\d+)\s+Transaction number: ([A-Z]+-\d+)\s+PIN\s*:?(\d{4})/;
 
         const matches = response.match(regex);
@@ -60,12 +68,14 @@ export class TigoPaymentService implements PaymentMethod {
           console.log('Temporary PIN:', tempPin);
 
           this.tempPinSubject.next(tempPin);
+          this.transactionService.setTransactionNumber(transactionNumber);
+          this.orderRequestIdSubject.next(orderRequestNumber);
 
           this.webSocketService.subscribeToVerifyTransaction(orderDetails.phoneNumber).subscribe((message: any) => {
             console.log('Verification request received:', message);
-
             this.verificationRequestSubject.next(message);
-
+            this.showSpinnerSubject.next(false);
+            this.showVerificationFormSubject.next(true);
             this.notificationService.addNotification(message.message, 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1');
           });
 

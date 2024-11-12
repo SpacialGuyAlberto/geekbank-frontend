@@ -4,7 +4,7 @@ import { NgClass, NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { TigoService } from "../tigo.service";
 import { WebSocketService } from "../web-socket.service";
-import { Subscription } from "rxjs";
+import {Subscription, take} from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { TransactionsService } from "../transactions.service";
 import { Transaction } from "../models/transaction.model";
@@ -45,7 +45,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   transactionStatus: string = '';
   transactionSubscription: Subscription | null = null;
   transactionNumberSubscription: Subscription | null = null;
-  transactionNumber: string = '';
+  transactionNumber: string | null= "";
   orderRequestNumber: string = '';
   isCancelling: boolean = false;
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
@@ -54,11 +54,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   // Nuevas variables para manejo de verificación
   verifyTransactionSubscription: Subscription | null = null;
-  private verificationSubscription: Subscription | undefined;
+  private verificationFormSubscription: Subscription | undefined;
   private spinnerSubscription: Subscription | undefined;
   private transactionStatusSubscription: Subscription | undefined;
   private tempPinSubscription: Subscription | undefined;
   private errorMessageSubscription: Subscription | undefined;
+  private orderRequestIdSubscription: Subscription | undefined;
   showVerificationForm: boolean = false;
   verificationMessage: string = '';
   verificationData = {
@@ -118,6 +119,20 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.showSpinner = show;
     });
 
+    //suscribirse al transaction number y requestorderid
+    this.transactionNumberSubscription = this.transactionService.transactionNumber$.subscribe(transactionNumber => {
+      this.transactionNumber = transactionNumber;
+    });
+
+    this.orderRequestIdSubscription = this.tigoPaymentService.orderRequestId$.subscribe(orderRequestId => {
+      this.orderRequestNumber = orderRequestId;
+    });
+
+
+    this.verificationFormSubscription = this.tigoPaymentService.showVerificationForm$.subscribe(show => {
+      this.showVerificationForm = show;
+    })
+
     this.transactionStatusSubscription = this.tigoPaymentService.transactionStatus$.subscribe(status => {
       this.transactionStatus = status;
     });
@@ -130,6 +145,14 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
     });
+
+    this.verifyTransactionSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
+      this.verificationMessage = message;
+    })
+
+
+    //suscribe to   verificationRequest$
+
   }
 
   loadExchangeRate(): void {
@@ -259,12 +282,16 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       );
   }
 
-  cancelTransaction(transactionNumber: string, orderRequestId: string): void {
+  cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
     this.isCancelling = true;
+    console.log("TRANSACTION AND ORDER REQUEST");
+    console.log(this.orderRequestNumber);
+    console.log(this.transactionNumber);
 
     this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
-      .subscribe(
-        (updatedTransaction: Transaction) => {
+      .pipe(take(1))
+      .subscribe({
+        next: (updatedTransaction: Transaction) => {
           this.transaction = updatedTransaction;
           this.transactionStatus = 'CANCELLED';
           this.notifMessage = 'Tu pago fue cancelado.';
@@ -272,13 +299,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           this.isCancelling = false;
           this.showSpinner = false;
         },
-        (error: any) => {
+        error: (error: any) => {
           this.errorMessage = 'Error al cancelar la transacción.';
           console.error('Error cancelling the transaction:', error);
           this.isCancelling = false;
           this.showSpinner = false;
         }
-      );
+      });
   }
 
   ngOnDestroy(): void {

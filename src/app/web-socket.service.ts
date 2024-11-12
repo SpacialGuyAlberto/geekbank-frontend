@@ -2,9 +2,10 @@
 import { Injectable } from '@angular/core';
 import { Client, IMessage, Stomp, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
 import { environment } from "../environments/environment";
 import { ManualVerificationTransactionDto } from "./models/TransactionProductDto.model";
+import {filter} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -70,15 +71,20 @@ export class WebSocketService {
    * Método para suscribirse al tópico de estado de la transacción
    */
   subscribeToTransactionStatus(phoneNumber: string): Observable<any> {
-    const url = `/topic/transaction-status/${phoneNumber}`;
-
-    this.client.subscribe(url, (message: IMessage) => {
-      const parsedMessage = JSON.parse(message.body);
-      this.transactionStatusSubject.next(parsedMessage);
+    this.connected$.pipe(
+      filter(isConnected => isConnected),
+      take(1)
+    ).subscribe(() => {
+      const url = `/topic/transaction-status/${phoneNumber}`;
+      this.client.subscribe(url, (message: IMessage) => {
+        const parsedMessage = JSON.parse(message.body);
+        this.transactionStatusSubject.next(parsedMessage);
+      });
     });
 
     return this.transactionStatusSubject.asObservable();
   }
+
 
   /**
    * Método para suscribirse al tópico de número de transacción
@@ -97,19 +103,22 @@ export class WebSocketService {
    * Método para suscribirse al tópico de verificación de transacción
    */
   subscribeToVerifyTransaction(phoneNumber: string): Observable<any> {
-    const url = `/topic/verify-transaction/${phoneNumber}`;
-
-    this.client.subscribe(url, (message: IMessage) => {
-      const parsedMessage = JSON.parse(message.body);
-      this.verifyTransactionSubject.next(parsedMessage);
+    // Espera hasta que la conexión esté establecida antes de suscribirse
+    this.connected$.pipe(
+      filter(isConnected => isConnected), // Solo avanza si está conectado
+      take(1) // Solo toma el primer valor verdadero
+    ).subscribe(() => {
+      const url = `/topic/verify-transaction/${phoneNumber}`;
+      this.client.subscribe(url, (message: IMessage) => {
+        const parsedMessage = JSON.parse(message.body);
+        this.verifyTransactionSubject.next(parsedMessage);
+      });
     });
 
     return this.verifyTransactionSubject.asObservable();
   }
 
-  /**
-   * Método para suscribirse al tópico de verificaciones manuales
-   */
+
   private subscribeToManualVerifications(): void {
     const subscription: StompSubscription = this.client.subscribe('/topic/manual-verifications', (message: IMessage) => {
       const parsedMessage: ManualVerificationTransactionDto = JSON.parse(message.body);
