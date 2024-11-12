@@ -258,6 +258,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
 
+
   submitVerification(): void {
 
     if (!this.verificationData.pin || !this.verificationData.refNumber) {
@@ -323,5 +324,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   retryPayment() {
 
+  }
+
+  handleClose(): void {
+    this.closeModal();
+
+    if (this.transactionStatus === 'PENDING') {
+      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
+    }
   }
 }
