@@ -28,6 +28,7 @@ export class PaymentComponent implements OnInit{
   @Input() productId: number | null = null;
   @Input() gameUserId: number | null = null;
   @Input() isManualTransaction: boolean = false;
+  @Input() buyingBalance: boolean = false;
 
   @Output() closeModal = new EventEmitter<void>();
   @Output() paymentSelected = new EventEmitter<string>();
@@ -87,7 +88,9 @@ export class PaymentComponent implements OnInit{
     }
   }
 
-  closePaymentModal() {}
+  closePaymentModal() {
+    this.closeModal.emit();
+  }
 
   close() {
     this.closeModal.emit();

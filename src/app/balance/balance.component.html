@@ -28,6 +28,10 @@
 <!--      [totalPrice]="balanceToBuy"-->
 <!--      (close)="onModalClose()">-->
 <!--    </app-tigo-payment>-->
-    <app-payment></app-payment>
+    <app-payment
+      [totalPrice]="balanceToBuy"
+      [buyingBalance]="buyingBalance"
+      (closeModal)="onModalClose()"
+    ></app-payment>
   </div>
 </div>

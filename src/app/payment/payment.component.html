@@ -1,7 +1,9 @@
 <!-- payment.component.html -->
 <app-payment-options
+  [BuyingBalance]="buyingBalance"
   (closeModal)="closePaymentModal()"
-  (paymentSelected)="onPaymentSelected($event)">
+  (paymentSelected)="onPaymentSelected($event)"
+>
 </app-payment-options>
 
 <!-- Cargar el componente seleccionado dinámicamente -->

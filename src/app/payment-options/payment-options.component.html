@@ -1,4 +1,4 @@
-<!-- Modal de Opciones de Pago -->
+
 <div class="modal">
   <div class="modal-content">
     <span class="close" (click)="close()">&times;</span>
@@ -31,7 +31,7 @@
         </div>
         <span>Tigo Money</span>
       </button>
-      <button class="payment-option-button" (click)="selectPaymentMethod('Balance')">
+      <button *ngIf="isLoggedIn && !BuyingBalance" class="payment-option-button" (click)="selectPaymentMethod('Balance')">
         <i class="fa-solid fa-wallet add-balance-icon"></i>
         <span>Balance en cuenta</span>
       </button>

@@ -27,6 +27,7 @@ export class BalanceComponent implements OnInit {
   balanceIcon: string = 'balance-icon';
   balance: number = 0;
   balanceToBuy: number = 5;
+  buyingBalance: boolean = true;
   protected showPaymentModal: boolean = false;
 
 

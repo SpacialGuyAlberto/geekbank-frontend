@@ -253,8 +253,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Order Details:', orderDetails);
-
     this.paymentService.initializePayment('tigo', orderDetails);
   }
 
