@@ -15,7 +15,6 @@ import { AuthService } from "../auth.service";
 })
 export class PaymentOptionsComponent implements OnInit {
   @Input() BuyingBalance: boolean = false;
-
   @Output() closeModal = new EventEmitter<void>();
   @Output() paymentSelected = new EventEmitter<string>();
   isLoggedIn : boolean = false;
@@ -35,6 +34,5 @@ export class PaymentOptionsComponent implements OnInit {
 
   selectPaymentMethod(method: string) {
     this.paymentSelected.emit(method);
-    this.close();
   }
 }
