@@ -27,6 +27,10 @@ export class TigoPaymentService implements PaymentMethod {
   private errorMessageSubject = new Subject<string>();
   errorMessage$ = this.errorMessageSubject.asObservable();
 
+  // Nuevo Subject para la solicitud de verificación
+  private verificationRequestSubject = new Subject<any>();
+  verificationRequest$ = this.verificationRequestSubject.asObservable();
+
   constructor(
     private tigoService: TigoService,
     private webSocketService: WebSocketService,
@@ -60,6 +64,9 @@ export class TigoPaymentService implements PaymentMethod {
           // Suscribirse a la verificación de la transacción
           this.webSocketService.subscribeToVerifyTransaction(orderDetails.phoneNumber).subscribe((message: any) => {
             console.log('Verification request received:', message);
+
+            // Emitir el evento de verificación al componente
+            this.verificationRequestSubject.next(message);
 
             // Emitir notificación o actualizar estado
             this.notificationService.addNotification(message.message, 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1');

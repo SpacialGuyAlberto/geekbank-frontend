@@ -54,6 +54,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   // Nuevas variables para manejo de verificación
   verifyTransactionSubscription: Subscription | null = null;
+  private verificationSubscription: Subscription | undefined;
   private spinnerSubscription: Subscription | undefined;
   private transactionStatusSubscription: Subscription | undefined;
   private tempPinSubscription: Subscription | undefined;
@@ -122,7 +123,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
      //   this.verificationMessage = message.message;
       //  this.showVerificationForm = true;
     //    this.showSpinner = false;
-     // }); //
+     // });
 
     this.spinnerSubscription = this.tigoPaymentService.showSpinner$.subscribe(show => {
       this.showSpinner = show;
@@ -139,6 +140,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
+    });
+
+    this.verificationSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
+      console.log('Verification request received in component:', message);
+      this.verificationMessage = message.message;
+      this.showVerificationForm = true;
+      this.showSpinner = false;
     });
   }
 
