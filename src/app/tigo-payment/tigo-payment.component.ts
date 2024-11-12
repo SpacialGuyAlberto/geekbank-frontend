@@ -149,8 +149,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     this.verifyTransactionSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
       this.verificationMessage = message;
-    })
+    });
 
+    window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 
   loadExchangeRate(): void {
@@ -306,6 +307,26 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       });
   }
 
+
+
+  retryPayment() {
+
+  }
+
+  handleClose(): void {
+    this.closeModal();
+
+    if (this.transactionStatus === 'PENDING') {
+      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
+    }
+  }
+
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.transactionStatus === 'PENDING') {
+      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
+    }
+  }
+
   ngOnDestroy(): void {
     if (this.exchangeRateSubscription) {
       this.exchangeRateSubscription.unsubscribe();
@@ -319,18 +340,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     if (this.verifyTransactionSubscription) {
       this.verifyTransactionSubscription.unsubscribe();
     }
-    this.webSocketService.disconnect();
-  }
-
-  retryPayment() {
-
-  }
-
-  handleClose(): void {
-    this.closeModal();
-
-    if (this.transactionStatus === 'PENDING') {
-      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
+    if (this.transactionStatusSubscription){
+      this.transactionStatusSubscription.unsubscribe();
     }
+    this.webSocketService.disconnect();
+    window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 }
