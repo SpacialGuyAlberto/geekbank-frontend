@@ -14,8 +14,10 @@ import { Router } from "@angular/router";
 import {CurrencyService} from "../currency.service";
 import {PaymentMethod} from "../models/payment-method.interface";
 import {PaymentService} from "../payment.service";
-import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
+import {CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
 import {TigoPaymentService} from "../tigo-payment.service";
+import {OrderDetails} from "../models/order-details.model";
+
 
 @Component({
   selector: 'app-tigo-payment',
@@ -33,6 +35,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
   productId = inject(PRODUCT_ID, { optional: true });
   gameUserId = inject(GAME_USER_ID, { optional: true });
+  isManualTransaction = inject(IS_MANUAL_TRANSACTION)
+
   @Output() close = new EventEmitter<void>();
 
   notifMessage: string = '';
@@ -49,7 +53,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   orderRequestNumber: string = '';
   isCancelling: boolean = false;
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
-  isManualTransaction: boolean = false;
   tempPin: string = '';
 
   // Nuevas variables para manejo de verificación
@@ -119,7 +122,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.showSpinner = show;
     });
 
-    //suscribirse al transaction number y requestorderid
     this.transactionNumberSubscription = this.transactionService.transactionNumber$.subscribe(transactionNumber => {
       this.transactionNumber = transactionNumber;
     });
@@ -127,7 +129,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.orderRequestIdSubscription = this.tigoPaymentService.orderRequestId$.subscribe(orderRequestId => {
       this.orderRequestNumber = orderRequestId;
     });
-
 
     this.verificationFormSubscription = this.tigoPaymentService.showVerificationForm$.subscribe(show => {
       this.showVerificationForm = show;
@@ -149,9 +150,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.verifyTransactionSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
       this.verificationMessage = message;
     })
-
-
-    //suscribe to   verificationRequest$
 
   }
 
@@ -176,7 +174,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
-    let orderDetails: any;
+    let orderDetails: OrderDetails;
 
     if (this.productId !== null) {
       orderDetails = {
@@ -189,7 +187,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           price: this.totalPrice
         }],
         amount: this.totalPrice,
-        manual: true
+        manual: this.isManualTransaction
       };
 
       if (this.gameUserId !== null) {
@@ -206,7 +204,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.price
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: false
+          manual: this.isManualTransaction
         };
       } else {
         orderDetails = {
@@ -219,7 +217,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             name: 'balance'
           }],
           amount: this.totalPrice,
-          manual: false
+          manual: this.isManualTransaction
         };
       }
     } else if (this.guestId) {
@@ -233,7 +231,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.price
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: false
+          manual: this.isManualTransaction
         };
       } else {
         orderDetails = {
@@ -246,7 +244,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             name: 'balance'
           }],
           amount: this.totalPrice,
-          manual: false
+          manual: this.isManualTransaction
         };
       }
     } else {
@@ -268,6 +266,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
 
     this.transactionService.verifyTransaction(this.paymentDetails.phoneNumber, this.verificationData.pin, this.verificationData.refNumber)
+
       .subscribe(
         response => {
           console.log('Verification successful:', response);
@@ -284,9 +283,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
     this.isCancelling = true;
-    console.log("TRANSACTION AND ORDER REQUEST");
-    console.log(this.orderRequestNumber);
-    console.log(this.transactionNumber);
+    console.log('TRANSACTION STATUS' + this.transactionStatus)
 
     this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
       .pipe(take(1))

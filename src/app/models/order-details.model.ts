@@ -1,7 +1,7 @@
 // src/app/payment/models/order-details.model.ts
 export interface OrderDetails {
-  userId?: number;
-  guestId?: string;
+  userId?: number | null;
+  guestId?: string | null;
   phoneNumber: string;
   products: Product[];
   amount: number;

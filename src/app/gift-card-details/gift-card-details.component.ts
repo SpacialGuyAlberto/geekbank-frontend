@@ -78,6 +78,7 @@ export class GiftCardDetailsComponent implements OnInit {
   conversionError: string = '';
   suggestionFilter: string[] = [];
   systemRequirements: SystemRequirement[] | null= null;
+  isManualTransaction: boolean = false;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 

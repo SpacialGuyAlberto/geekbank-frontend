@@ -54,22 +54,24 @@ export class TigoPaymentService implements PaymentMethod {
       response => {
         console.log('Order placed successfully', response);
 
-        const regex = /Order placed successfully: ([A-Z]+-\d+)\s+Transaction number: ([A-Z]+-\d+)\s+PIN\s*:?(\d{4})/;
-
+        const regex = /Order placed successfully: ([A-Z0-9-]+)\s+Transaction number: ([A-Z0-9-]+)\s+PIN\s*:?(\d{4})\s+Status\s*:?([A-Z]+)/;
         const matches = response.match(regex);
 
-        if (matches && matches.length === 4) {
+        if (matches && matches.length === 5) {
           const orderRequestNumber = matches[1];
           const transactionNumber = matches[2];
           const tempPin = matches[3];
+          const status = matches[4];
 
           console.log('Order Request Number:', orderRequestNumber);
           console.log('Transaction Number:', transactionNumber);
-          console.log('Temporary PIN:', tempPin);
+          console.log('Temporary PIN: ', tempPin);
+          console.log('Transaction: ', status)
 
           this.tempPinSubject.next(tempPin);
           this.transactionService.setTransactionNumber(transactionNumber);
           this.orderRequestIdSubject.next(orderRequestNumber);
+          this.transactionStatusSubject.next(status);
 
           this.webSocketService.subscribeToVerifyTransaction(orderDetails.phoneNumber).subscribe((message: any) => {
             console.log('Verification request received:', message);
