@@ -15,6 +15,7 @@ import {CurrencyService} from "../currency.service";
 import {PaymentMethod} from "../models/payment-method.interface";
 import {PaymentService} from "../payment.service";
 import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
+import {TigoPaymentService} from "../tigo-payment.service";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -53,6 +54,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   // Nuevas variables para manejo de verificación
   verifyTransactionSubscription: Subscription | null = null;
+  private spinnerSubscription: Subscription | undefined;
+  private transactionStatusSubscription: Subscription | undefined;
+  private tempPinSubscription: Subscription | undefined;
+  private errorMessageSubscription: Subscription | undefined;
   showVerificationForm: boolean = false;
   verificationMessage: string = '';
   verificationData = {
@@ -75,6 +80,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   constructor(
     private tigoService: TigoService,
+    private tigoPaymentService: TigoPaymentService,
     private paymentService: PaymentService,
     private currencyService: CurrencyService,
     private webSocketService: WebSocketService,
@@ -107,16 +113,33 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.guestId = this.guestService.getGuestId();
     }
 
-    this.webSocketService.connect();
+   // this.webSocketService.connect();
 
-    this.verifyTransactionSubscription = this.webSocketService
-      .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
-      .subscribe((message: any) => {
-        console.log('Verification request received:', message);
-        this.verificationMessage = message.message;
-        this.showVerificationForm = true;
-        this.showSpinner = false;
-      });
+    //this.verifyTransactionSubscription = this.webSocketService
+    //  .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
+    //  .subscribe((message: any) => {
+    //    console.log('Verification request received:', message);
+     //   this.verificationMessage = message.message;
+      //  this.showVerificationForm = true;
+    //    this.showSpinner = false;
+     // }); //
+
+    this.spinnerSubscription = this.tigoPaymentService.showSpinner$.subscribe(show => {
+      this.showSpinner = show;
+    });
+
+    this.transactionStatusSubscription = this.tigoPaymentService.transactionStatus$.subscribe(status => {
+      this.transactionStatus = status;
+    });
+
+    this.tempPinSubscription = this.tigoPaymentService.tempPin$.subscribe(pin => {
+      this.tempPin = pin;
+      this.showConfirmation = true;
+    });
+
+    this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
+      this.errorMessage = message;
+    });
   }
 
   loadExchangeRate(): void {
