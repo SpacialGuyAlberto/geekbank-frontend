@@ -114,17 +114,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.guestId = this.guestService.getGuestId();
     }
 
-   // this.webSocketService.connect();
-
-    //this.verifyTransactionSubscription = this.webSocketService
-    //  .subscribeToVerifyTransaction(this.paymentDetails.phoneNumber)
-    //  .subscribe((message: any) => {
-    //    console.log('Verification request received:', message);
-     //   this.verificationMessage = message.message;
-      //  this.showVerificationForm = true;
-    //    this.showSpinner = false;
-     // });
-
     this.spinnerSubscription = this.tigoPaymentService.showSpinner$.subscribe(show => {
       this.showSpinner = show;
     });
@@ -140,13 +129,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
-    });
-
-    this.verificationSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
-      console.log('Verification request received in component:', message);
-      this.verificationMessage = message.message;
-      this.showVerificationForm = true;
-      this.showSpinner = false;
     });
   }
 
@@ -256,7 +238,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
 
   submitVerification(): void {
-    // Validar que los campos no estén vacíos
+
     if (!this.verificationData.pin || !this.verificationData.refNumber) {
       this.errorMessage = 'Por favor, ingrese su PIN y número de referencia.';
       return;

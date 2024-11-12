@@ -47,6 +47,7 @@ export class TigoPaymentService implements PaymentMethod {
         console.log('Order placed successfully', response);
         // Parsear la respuesta y extraer información
         const regex = /Order placed successfully: ([A-Z]+-\d+)\s+Transaction number: ([A-Z]+-\d+)\s+PIN\s*:?(\d{4})/;
+
         const matches = response.match(regex);
 
         if (matches && matches.length === 4) {
@@ -58,26 +59,20 @@ export class TigoPaymentService implements PaymentMethod {
           console.log('Transaction Number:', transactionNumber);
           console.log('Temporary PIN:', tempPin);
 
-          // Emitir el tempPin al componente
           this.tempPinSubject.next(tempPin);
 
-          // Suscribirse a la verificación de la transacción
           this.webSocketService.subscribeToVerifyTransaction(orderDetails.phoneNumber).subscribe((message: any) => {
             console.log('Verification request received:', message);
 
-            // Emitir el evento de verificación al componente
             this.verificationRequestSubject.next(message);
 
-            // Emitir notificación o actualizar estado
             this.notificationService.addNotification(message.message, 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1');
           });
 
-          // Suscribirse al estado de la transacción
           this.webSocketService.subscribeToTransactionStatus(orderDetails.phoneNumber).subscribe((message: any) => {
             console.log('Transaction status received:', message);
             const transactionStatus = message.status;
 
-            // Emitir el estado de la transacción al componente
             this.transactionStatusSubject.next(transactionStatus);
 
             if (transactionStatus === 'COMPLETED') {

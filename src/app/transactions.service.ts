@@ -73,7 +73,6 @@ export class TransactionsService {
       );
   }
 
-  // Nuevo método para verificar la transacción
   verifyTransaction(phoneNumber: string, pin: string, refNumber: string): Observable<any> {
     const payload = {
       phoneNumber: phoneNumber,
@@ -91,15 +90,12 @@ export class TransactionsService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente o de la red
       console.error('Ocurrió un error:', error.error.message);
     } else {
-      // Backend retornó un código de error
       console.error(
         `Backend retornó el código ${error.status}, ` +
         `mensaje de error: ${error.message}`);
     }
-    // Retorna un observable con un mensaje de error amigable
     return throwError('Algo malo sucedió; por favor, intenta de nuevo más tarde.');
   }
 

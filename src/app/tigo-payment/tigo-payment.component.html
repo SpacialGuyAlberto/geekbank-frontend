@@ -66,7 +66,6 @@
       </div>
     </form>
 
-    <!-- Formulario de Verificación -->
     <form *ngIf="showVerificationForm" (ngSubmit)="submitVerification()">
       <h3>Verificación de Transacción</h3>
       <div class="form-group">
@@ -98,14 +97,12 @@
       </div>
     </form>
 
-    <!-- Mensaje de Agradecimiento tras Verificación Exitosa -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
       <p>Su transacción está siendo procesada en estos momentos. En breve recibirá su acreditación directamente en su cuenta.</p>
       <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
     </div>
 
-    <!-- Sección de Confirmación y Spinner -->
     <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
       <div *ngIf="tempPin" class="pin-display">
         <p>PIN Number:</p>
