@@ -7,6 +7,9 @@ import { environment } from "../environments/environment";
 import { Transaction } from "./models/transaction.model";
 import { catchError } from "rxjs/operators";
 import {ManualVerificationTransactionDto} from "./models/TransactionProductDto.model";
+import {OrderDetails} from "./models/order-details.model";
+import {VerifyPaymentRequest} from "./models/verify-payment-request.model";
+import {OrderRequest} from "./models/order-request.model";
 
 @Injectable({
   providedIn: 'root'
@@ -112,5 +115,18 @@ export class TransactionsService {
       (error) => console.error("Error al obtener las transacciones pendientes", error)
     );
     return this.pendingForApprovalTransactionSubject.asObservable();
+  }
+
+  verifyPayment(refNumber: string, phoneNumber: string, orderRequest: OrderRequest): Observable<any> {
+    const url = `${this.apiUrl}/verifyPayment`;
+    const payload = {
+      refNumber: refNumber,
+      phoneNumber: phoneNumber,
+      orderRequest: orderRequest
+    };
+
+    return this.http.post<any>(url, payload).pipe(
+      catchError(this.handleError)
+    );
   }
 }

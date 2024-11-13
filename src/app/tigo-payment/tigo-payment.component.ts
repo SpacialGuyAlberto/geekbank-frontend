@@ -17,6 +17,7 @@ import {PaymentService} from "../payment.service";
 import {CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
 import {TigoPaymentService} from "../tigo-payment.service";
 import {OrderDetails} from "../models/order-details.model";
+import {OrderRequest} from "../models/order-request.model";
 
 
 @Component({
@@ -69,6 +70,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     pin: '',
     refNumber: ''
   };
+
+  showManualVerificationForm: boolean = false;
+  manualVerificationData = {
+    refNumber: ''
+  };
+  manualVerificationError: string = '';
+  manualVerificationSuccess: string = '';
 
   paymentDetails = {
     name: '',
@@ -154,6 +162,18 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 
+  showManualVerification(): void {
+    this.showManualVerificationForm = true;
+  }
+
+  hideManualVerification(): void {
+    this.showManualVerificationForm = false;
+    this.manualVerificationData.refNumber = '';
+    this.manualVerificationError = '';
+    this.manualVerificationSuccess = '';
+  }
+
+
   loadExchangeRate(): void {
     this.isLoading = true;
     this.exchangeRateSubscription = this.currencyService.getExchangeRateEURtoHNL(1).subscribe({
@@ -172,6 +192,126 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   closeModal(): void {
     this.showModal = false;
     this.close.emit();
+  }
+
+  submitManualVerification(): void {
+    if (!this.manualVerificationData.refNumber) {
+      this.manualVerificationError = 'Por favor, ingrese el número de referencia.';
+      return;
+    }
+
+    const refNumber = this.manualVerificationData.refNumber;
+    const phoneNumber = this.paymentDetails.phoneNumber; // Asegúrate de que este campo esté correctamente asignado
+
+    // Construir el OrderDetails basado en tu lógica existente
+    let orderDetails: OrderRequest;
+
+    if (this.productId !== null) {
+      orderDetails = {
+        userId: this.userId,
+        guestId: this.guestId,
+        phoneNumber: this.paymentDetails.phoneNumber,
+        products: [{
+          kinguinId: this.productId,
+          qty: 1,
+          price: this.totalPrice,
+          name: 'Producto'
+        }],
+        amount: this.totalPrice,
+        manual: this.isManualTransaction,
+
+      };
+    } else if (this.authService.isLoggedIn() && this.userId !== null) {
+      if (this.cartItems && this.cartItems.length > 0) {
+        orderDetails = {
+          userId: this.userId,
+          phoneNumber: this.paymentDetails.phoneNumber,
+          products: this.cartItems.map(item => ({
+            kinguinId: item.cartItem.productId,
+            qty: item.cartItem.quantity,
+            price: item.giftcard.price,
+            name: 'Producto'
+          })),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          manual: this.isManualTransaction,
+
+        };
+      } else {
+        // @ts-ignore
+        // @ts-ignore
+        orderDetails = {
+          userId: this.userId,
+          phoneNumber: this.paymentDetails.phoneNumber,
+          products: [{
+            kinguinId: -1,
+            qty: 1,
+            price: this.totalPrice,
+            name: 'Balance'
+          }],
+          amount: this.totalPrice,
+          manual: this.isManualTransaction,
+
+        };
+      }
+    } else if (this.guestId) {
+      if (this.cartItems && this.cartItems.length > 0) {
+        orderDetails = {
+          guestId: this.guestId,
+          phoneNumber: this.paymentDetails.phoneNumber,
+          products: this.cartItems.map(item => ({
+            kinguinId: item.cartItem.productId,
+            qty: item.cartItem.quantity,
+            price: item.giftcard.price,
+            name: 'Producto'
+          })),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          manual: this.isManualTransaction,
+
+        };
+      } else {
+        orderDetails = {
+          guestId: this.guestId,
+          phoneNumber: this.paymentDetails.phoneNumber,
+          products: [{
+            kinguinId: -1,
+            qty: 1,
+            price: this.totalPrice,
+            name: 'Balance'
+          }],
+          amount: this.totalPrice,
+          manual: this.isManualTransaction,
+
+        };
+      }
+    } else {
+      this.showSpinner = false;
+      return;
+    }
+
+    this.transactionService.verifyPayment(refNumber, phoneNumber, orderDetails).subscribe({
+      next: (response: any) => {
+        console.log('Pago verificado y orden creada:', response);
+
+        // Usar el número de transacción directamente del objeto de respuesta
+        const transactionNumber = response.transactionNumber || null;
+
+        if (transactionNumber) {
+          this.transactionNumber = transactionNumber;
+          this.notificationService.addNotification(`Pago verificado y orden creada exitosamente. Número de transacción: ${transactionNumber}`, this.tigoImageUrl);
+
+          // Redirige a la página de confirmación con el número de transacción
+          this.router.navigate(['/purchase-confirmation'], { queryParams: { transactionNumber: transactionNumber } });
+        } else {
+          this.manualVerificationError = 'No se pudo obtener el número de transacción de la respuesta.';
+        }
+
+        this.hideManualVerification();
+      },
+      error: (error: any) => {
+        console.error('Error al verificar el pago:', error);
+        this.manualVerificationError = error.error?.error || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+      }
+    });
   }
 
   onSubmit(): void {

@@ -1,10 +1,12 @@
+<!-- src/app/tigo-payment/tigo-payment.component.html -->
+
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Checkout</h2>
 
-    <!-- Formulario para ingresar el número de teléfono -->
-    <form *ngIf="!showVerificationForm && !showConfirmation" (ngSubmit)="onSubmit()">
+    <!-- Formulario para iniciar una nueva transacción -->
+    <form *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm" (ngSubmit)="onSubmit()">
 
       <!-- Mensaje de transacción expirada -->
       <div *ngIf="transactionStatus === 'EXPIRED'" class="error-message">
@@ -34,6 +36,16 @@
         *ngIf="!showSpinner && (transactionStatus === '' || transactionStatus === 'EXPIRED')"
       >
         Pay
+      </button>
+
+      <!-- Botón para verificar un pago existente -->
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="showManualVerification()"
+        *ngIf="!showSpinner"
+      >
+        Ya he hecho el pago
       </button>
 
       <!-- Botón de Cancelación visible si hay spinner -->
@@ -71,8 +83,8 @@
       </div>
     </form>
 
-    <!-- Formulario para la verificación de la transacción -->
-    <form *ngIf="showVerificationForm" (ngSubmit)="submitVerification()">
+    <!-- Formulario para la verificación de la transacción con PIN -->
+    <form *ngIf="showVerificationForm && !showManualVerificationForm" (ngSubmit)="submitVerification()">
       <h3>Verificación de Transacción</h3>
       <div class="form-group">
         <label for="pin">PIN</label>
@@ -103,6 +115,30 @@
       </div>
     </form>
 
+    <!-- Nuevo formulario para verificar pago existente -->
+    <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
+      <h3>Verificar Pago</h3>
+      <div class="form-group">
+        <label for="refNumber">Número de Referencia</label>
+        <input
+          type="text"
+          id="refNumber"
+          name="refNumber"
+          [(ngModel)]="manualVerificationData.refNumber"
+          required
+          class="retro-input"
+        />
+      </div>
+      <button type="submit" class="primary-button">Verificar Pago</button>
+      <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
+      <div *ngIf="manualVerificationError" class="error-message">
+        {{ manualVerificationError }}
+      </div>
+      <div *ngIf="manualVerificationSuccess" class="success-message">
+        {{ manualVerificationSuccess }}
+      </div>
+    </form>
+
     <!-- Mensaje para transacciones en espera de procesamiento manual -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
@@ -111,7 +147,7 @@
     </div>
 
     <!-- Confirmación y detalles del PIN temporal -->
-    <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
+    <div *ngIf="showConfirmation && !showVerificationForm && !showManualVerificationForm" class="confirmation">
       <div *ngIf="tempPin" class="pin-display">
         <p>PIN Number:</p>
         <h3>{{ tempPin }}</h3>
@@ -145,7 +181,7 @@
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage && !showVerificationForm" class="error-message">
+    <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
       {{ errorMessage }}
     </div>
   </div>

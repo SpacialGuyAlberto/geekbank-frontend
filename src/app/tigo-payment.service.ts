@@ -106,7 +106,6 @@ export class TigoPaymentService implements PaymentMethod {
               this.showSpinnerSubject.next(false);
             }
           });
-
         } else {
           console.error('Error parsing response:', response);
           this.notificationService.addNotification('No se pudo obtener el PIN temporal. Por favor, intente nuevamente.', 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1');

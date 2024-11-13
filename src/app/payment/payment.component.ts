@@ -26,7 +26,7 @@ export class PaymentComponent implements OnInit{
   @Input() cartItems: any[] = [];
   @Input() totalPrice: number = 0;
   @Input() productId: number | null = null;
-  @Input() gameUserId: number | null = null;
+  @Input() gameUserId: number | undefined = undefined;
   @Input() isManualTransaction: boolean = false;
   @Input() buyingBalance: boolean = false;
 

@@ -1,15 +1,17 @@
-// src/app/models/order-request.model.ts
+// src/app/payment/models/order-details.model.ts
+export interface OrderRequest {
+  userId?: number | null;
+  guestId?: string | null;
+  phoneNumber: string;
+  products: Product[];
+  amount: number;
+  manual: boolean;
+  gameUserId?: number;
+}
+
 export interface Product {
   kinguinId: number;
   qty: number;
   price: number;
-  name?: string; // Opcional, según necesidad
-}
-
-export interface OrderRequest {
-  userId?: number;    // Opcional: presente solo si el usuario está autenticado
-  guestId?: string;   // Opcional: presente solo si el usuario es invitado
-  phoneNumber: string;
-  products: Product[];
-  amount: number;
+  name?: string;
 }
