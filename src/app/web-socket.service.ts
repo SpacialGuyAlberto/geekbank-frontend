@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { Client, IMessage, Stomp, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import {BehaviorSubject, Observable, Subject, take} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject, take} from 'rxjs';
 import { environment } from "../environments/environment";
 import { ManualVerificationTransactionDto } from "./models/TransactionProductDto.model";
 import {filter} from "rxjs/operators";
@@ -16,9 +16,12 @@ export class WebSocketService {
   private client: Client;
   private transactionStatusSubject: Subject<any> = new Subject<any>();
   private transactionNumberSubject: Subject<string> = new Subject<string>();
-  private verifyTransactionSubject: Subject<any> = new Subject<any>();
+  private verifyTransactionSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
   private manualVerificationTransactionSubject: Subject<any> = new Subject<any>();
   private manualVerificationQueueSubject: Subject<any> = new Subject<any>();
+
+  private isVerifyTransactionSubscribed: boolean = false;
+
 
   private connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public connected$: Observable<boolean> = this.connectedSubject.asObservable();
@@ -103,20 +106,23 @@ export class WebSocketService {
    * Método para suscribirse al tópico de verificación de transacción
    */
   subscribeToVerifyTransaction(phoneNumber: string): Observable<any> {
-    // Espera hasta que la conexión esté establecida antes de suscribirse
-    this.connected$.pipe(
-      filter(isConnected => isConnected), // Solo avanza si está conectado
-      take(1) // Solo toma el primer valor verdadero
-    ).subscribe(() => {
-      const url = `/topic/verify-transaction/${phoneNumber}`;
-      this.client.subscribe(url, (message: IMessage) => {
-        const parsedMessage = JSON.parse(message.body);
-        this.verifyTransactionSubject.next(parsedMessage);
+    if (!this.isVerifyTransactionSubscribed) {
+      this.connected$.pipe(
+        filter(isConnected => isConnected),
+        take(1)
+      ).subscribe(() => {
+        const url = `/topic/verify-transaction/${phoneNumber}`;
+        this.client.subscribe(url, (message: IMessage) => {
+          const parsedMessage = JSON.parse(message.body);
+          this.verifyTransactionSubject.next(parsedMessage);
+        });
+        this.isVerifyTransactionSubscribed = true;
       });
-    });
+    }
 
     return this.verifyTransactionSubject.asObservable();
   }
+
 
 
   private subscribeToManualVerifications(): void {

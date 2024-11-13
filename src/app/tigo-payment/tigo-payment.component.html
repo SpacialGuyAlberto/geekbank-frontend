@@ -1,10 +1,16 @@
-
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Checkout</h2>
 
+    <!-- Formulario para ingresar el número de teléfono -->
     <form *ngIf="!showVerificationForm && !showConfirmation" (ngSubmit)="onSubmit()">
+
+      <!-- Mensaje de transacción expirada -->
+      <div *ngIf="transactionStatus === 'EXPIRED'" class="error-message">
+        <p>Tu transacción ha expirado. Por favor, inicia una nueva transacción.</p>
+      </div>
+
       <div class="form-group">
         <label for="phone">Phone No.</label>
         <input
@@ -21,16 +27,16 @@
         <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
       </div>
 
-      <!-- Botón "Pay" -->
+      <!-- Botón "Pay" visible si no hay spinner y la transacción está pendiente o expirada -->
       <button
         type="submit"
         class="primary-button"
-        *ngIf="!showSpinner && transactionStatus === ''"
+        *ngIf="!showSpinner && (transactionStatus === '' || transactionStatus === 'EXPIRED')"
       >
         Pay
       </button>
 
-      <!-- Botón de Cancelación -->
+      <!-- Botón de Cancelación visible si hay spinner -->
       <button
         type="button"
         class="primary-button cancel-button"
@@ -46,8 +52,8 @@
         <p>{{ notifMessage }}</p>
       </div>
 
-      <!-- Botones para reintentar o cerrar después de un fallo -->
-      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== ''">
+      <!-- Botones para reintentar o cerrar después de un fallo, excluyendo el estado 'EXPIRED' -->
+      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== '' && transactionStatus !== 'EXPIRED'">
         <button
           type="button"
           class="primary-button"
@@ -65,6 +71,7 @@
       </div>
     </form>
 
+    <!-- Formulario para la verificación de la transacción -->
     <form *ngIf="showVerificationForm" (ngSubmit)="submitVerification()">
       <h3>Verificación de Transacción</h3>
       <div class="form-group">
@@ -96,12 +103,14 @@
       </div>
     </form>
 
+    <!-- Mensaje para transacciones en espera de procesamiento manual -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
       <p>Su transacción está siendo procesada en estos momentos. En breve recibirá su acreditación directamente en su cuenta.</p>
       <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
     </div>
 
+    <!-- Confirmación y detalles del PIN temporal -->
     <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
       <div *ngIf="tempPin" class="pin-display">
         <p>PIN Number:</p>

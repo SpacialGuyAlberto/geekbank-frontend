@@ -101,6 +101,9 @@ export class TigoPaymentService implements PaymentMethod {
             } else if (transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
               this.notificationService.addNotification('Tu pago está en espera de procesamiento manual.', 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1');
               this.showSpinnerSubject.next(false);
+            } else if (transactionStatus === 'EXPIRED'){
+              this.notificationService.addNotification('La transaccion generada ya expiro.', 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1')
+              this.showSpinnerSubject.next(false);
             }
           });
 
