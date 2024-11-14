@@ -10,6 +10,7 @@ import {ManualVerificationTransactionDto} from "./models/TransactionProductDto.m
 import {OrderDetails} from "./models/order-details.model";
 import {VerifyPaymentRequest} from "./models/verify-payment-request.model";
 import {OrderRequest} from "./models/order-request.model";
+import {UnmatchedPaymentResponseDto} from "./models/unmatched-payment-response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +127,15 @@ export class TransactionsService {
     };
 
     return this.http.post<any>(url, payload).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  verifyUnmatchedPaymentAmount(referenceNumber: string, phoneNumber: string, expectedAmount: number): Observable<UnmatchedPaymentResponseDto> {
+    const url = `${this.apiUrl}/verify-unmatched-payment`;
+    const params = { referenceNumber, phoneNumber, expectedAmount: expectedAmount.toString() };
+
+    return this.http.get<UnmatchedPaymentResponseDto>(url, { params }).pipe(
       catchError(this.handleError)
     );
   }

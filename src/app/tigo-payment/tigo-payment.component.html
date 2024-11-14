@@ -115,7 +115,7 @@
       </div>
     </form>
 
-    <!-- Nuevo formulario para verificar pago existente -->
+    <!-- Formulario para verificar pago existente -->
     <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
       <h3>Verificar Pago</h3>
       <div class="form-group">
@@ -138,6 +138,27 @@
         {{ manualVerificationSuccess }}
       </div>
     </form>
+
+    <!-- Detalles de UnmatchedPayment y opciones si hay diferencia -->
+    <div *ngIf="unmatchedPaymentResponse">
+      <h3>Detalles del Pago</h3>
+      <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
+      <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
+      <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
+      <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
+      <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
+      <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+
+      <!-- Opciones si hay opciones -->
+      <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
+        <h4>Opciones</h4>
+        <div *ngFor="let option of unmatchedPaymentResponse.options">
+          <button class="option-button" (click)="handleOptionSelection(option)">
+            {{ option }}
+          </button>
+        </div>
+      </div>
+    </div>
 
     <!-- Mensaje para transacciones en espera de procesamiento manual -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
