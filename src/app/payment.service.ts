@@ -36,6 +36,10 @@ export class PaymentService {
   updatePaymentStatus(status: PaymentStatus) {
     this.paymentStatusSubject.next(status);
   }
+
+  applyBalance(id: number | undefined) {
+
+  }
 }
 
 export interface PaymentStatus {

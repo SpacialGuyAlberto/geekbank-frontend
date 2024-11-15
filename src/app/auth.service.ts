@@ -58,6 +58,9 @@ export class AuthService {
     );
   }
 
+  // auth.service.ts
+
+
   validatePassword( password: string): Observable<HttpResponse<any>> {
     const email = sessionStorage.getItem("email");
     return this.http.post(`${this.baseUrl}/validate-password`, { email, password }, { observe: 'response' }).pipe(
@@ -98,11 +101,14 @@ export class AuthService {
     if (this.isBrowser()) {
       if (token) {
         sessionStorage.setItem('token', token);
+        this.loggedIn.next(true); // Update logged-in status
       } else {
         sessionStorage.removeItem('token');
+        this.loggedIn.next(false);
       }
     }
   }
+
 
   getToken(): string {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';

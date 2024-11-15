@@ -1,0 +1,97 @@
+<!-- src/app/auth-modal/auth-modal.component.html -->
+
+<div class="auth-modal-overlay">
+  <div class="auth-modal-content">
+    <span class="close" (click)="onClose()">&times;</span>
+    <h2>¿Ya estás registrado?</h2>
+
+    <div class="auth-buttons">
+      <button class="primary-button" (click)="toggleLogin()">Iniciar Sesión</button>
+      <button class="secondary-button" (click)="toggleRegister()">Crear Cuenta</button>
+    </div>
+
+    <!-- Formulario de Inicio de Sesión -->
+    <form *ngIf="showLoginForm" (ngSubmit)="onLogin()">
+      <h3>Iniciar Sesión</h3>
+      <div class="form-group">
+        <label for="login-email">Correo Electrónico</label>
+        <input
+          type="email"
+          id="login-email"
+          name="email"
+          [(ngModel)]="loginData.email"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="login-password">Contraseña</label>
+        <input
+          type="password"
+          id="login-password"
+          name="password"
+          [(ngModel)]="loginData.password"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div *ngIf="loginError" class="error-message">
+        {{ loginError }}
+      </div>
+      <button type="submit" class="primary-button">Iniciar Sesión</button>
+    </form>
+
+    <!-- Formulario de Registro -->
+    <form *ngIf="showRegisterForm" (ngSubmit)="onRegister()">
+      <h3>Crear Cuenta</h3>
+      <div class="form-group">
+        <label for="register-name">Nombre</label>
+        <input
+          type="text"
+          id="register-name"
+          name="name"
+          [(ngModel)]="registerData.name"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="register-email">Correo Electrónico</label>
+        <input
+          type="email"
+          id="register-email"
+          name="email"
+          [(ngModel)]="registerData.email"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="register-password">Contraseña</label>
+        <input
+          type="password"
+          id="register-password"
+          name="password"
+          [(ngModel)]="registerData.password"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="register-confirm-password">Confirmar Contraseña</label>
+        <input
+          type="password"
+          id="register-confirm-password"
+          name="confirmPassword"
+          [(ngModel)]="registerData.confirmPassword"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div *ngIf="registerError" class="error-message">
+        {{ registerError }}
+      </div>
+      <button type="submit" class="primary-button">Crear Cuenta</button>
+    </form>
+  </div>
+</div>
