@@ -24,6 +24,7 @@ import {of, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {PaymentOptionsComponent} from "../payment-options/payment-options.component";
 import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
+import {PaymentComponent} from "../payment/payment.component";
 
 
 interface Language {
@@ -37,18 +38,19 @@ interface Language {
 @Component({
   selector: 'app-gift-card-details',
   standalone: true,
-  imports: [
-    CurrencyPipe,
-    CommonModule,
-    MatSnackBarModule,
-    FormsModule,
-    BannerComponent,
-    SuggestionsComponent,
-    MatProgressSpinnerModule,
-    PaymentOptionsComponent,
-    TigoPaymentComponent
+    imports: [
+        CurrencyPipe,
+        CommonModule,
+        MatSnackBarModule,
+        FormsModule,
+        BannerComponent,
+        SuggestionsComponent,
+        MatProgressSpinnerModule,
+        PaymentOptionsComponent,
+        TigoPaymentComponent,
+        PaymentComponent
 
-  ],
+    ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
 })
@@ -61,8 +63,8 @@ export class GiftCardDetailsComponent implements OnInit {
   isPaymentModalOpen: boolean = false;
   kinguinId: number = 0;
   cartItemCount: number = 0;
-  exchangeRate: number = 0; // Tasa de cambio actualizada
-  convertedPrice: number = 0; // Precio convertido a HNL
+  exchangeRate: number = 0;
+  convertedPrice: number = 0;
   quantityInCart: number = 0;
   notifMessage: string = '';
   isFeedbackModalOpen: boolean = false;
@@ -76,6 +78,7 @@ export class GiftCardDetailsComponent implements OnInit {
   conversionError: string = '';
   suggestionFilter: string[] = [];
   systemRequirements: SystemRequirement[] | null= null;
+  isManualTransaction: boolean = false;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
 

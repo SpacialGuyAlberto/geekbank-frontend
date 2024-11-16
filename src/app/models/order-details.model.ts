@@ -1,5 +1,5 @@
 // src/app/payment/models/order-details.model.ts
-export interface OrderRequest {
+export interface OrderDetails {
   userId?: number | null;
   guestId?: string | null;
   phoneNumber: string;

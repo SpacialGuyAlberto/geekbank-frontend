@@ -9,7 +9,6 @@
   </div>
 </div>
 
-
 <div *ngIf="giftCard" class="gift-card-details-container">
   <div class="gift-card-image-container">
     <!-- Corazón y estrellas de feedback -->
@@ -178,10 +177,10 @@
   </div>
 </div>
 
-
-<app-payment-options
+<app-payment
   *ngIf="isPaymentModalOpen"
   (closeModal)="closePaymentModal()"
-  (paymentSelected)="onPaymentSelected($event)"
-></app-payment-options>
-
+  [productId]="kinguinId"
+  [totalPrice]="getTotalPrice()"
+  [isManualTransaction]="isManualTransaction"
+></app-payment>

@@ -226,6 +226,33 @@ body::before {
   font-size: 1rem;
 }
 
+/* src/app/tigo-payment/tigo-payment.component.css */
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.secondary-button {
+  background-color: #f0ad4e; /* Color de ejemplo */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.secondary-button:hover {
+  background-color: #ec971f;
+}
+
+/* Otros estilos existentes... */
+
 /* PIN Display */
 .pin-display {
   background: rgba(76, 175, 80, 0.2); /* Fondo verde translúcido */
@@ -300,6 +327,24 @@ body::before {
   margin: 0;
   font-size: 1rem;
 }
+
+/* tigo-payment.component.css */
+
+.option-button {
+  margin: 8px 0;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+}
+
+.option-button:hover {
+  background-color: #0056b3;
+}
+
 
 /* =======================================
    Iconos Material

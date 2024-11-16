@@ -80,10 +80,10 @@
   (paymentSelected)="onPaymentSelected($event)"
 ></app-payment-options>
 
-<app-tigo-payment
-  [totalPrice]="selectedOption?.price || 0"
-  *ngIf="isTigoPaymentModalOpen"
-  [gameUserId]="gamerUserId"
-  [productId]="selectedOption?.productId ?? null"
-  (close)="closeTigoPaymentModal()">
-</app-tigo-payment>
+<!--<app-tigo-payment-->
+<!--  [totalPrice]="selectedOption?.price || 0"-->
+<!--  *ngIf="isTigoPaymentModalOpen"-->
+<!--  [gameUserId]="gamerUserId"-->
+<!--  [productId]="selectedOption?.productId ?? null"-->
+<!--  (close)="closeTigoPaymentModal()">-->
+<!--</app-tigo-payment>-->

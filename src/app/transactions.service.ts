@@ -7,6 +7,10 @@ import { environment } from "../environments/environment";
 import { Transaction } from "./models/transaction.model";
 import { catchError } from "rxjs/operators";
 import {ManualVerificationTransactionDto} from "./models/TransactionProductDto.model";
+import {OrderDetails} from "./models/order-details.model";
+import {VerifyPaymentRequest} from "./models/verify-payment-request.model";
+import {OrderRequest} from "./models/order-request.model";
+import {UnmatchedPaymentResponseDto} from "./models/unmatched-payment-response.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +19,6 @@ export class TransactionsService {
   private apiUrl = `${environment.apiUrl}/transactions`;
 
   private transactionNumberSubject = new BehaviorSubject<string | null>(null);
-  // Observable para que otros componentes puedan suscribirse
   transactionNumber$ = this.transactionNumberSubject.asObservable();
   private pendingTransactionsSubject = new BehaviorSubject<Transaction[]>([]);
   private pendingForApprovalTransactionSubject = new BehaviorSubject<ManualVerificationTransactionDto[]>([])
@@ -58,7 +61,7 @@ export class TransactionsService {
       );
   }
 
-  cancelTransaction(transactionId: string, orderRequestId: string): Observable<Transaction> {
+  cancelTransaction(transactionId: string | null, orderRequestId: string): Observable<Transaction> {
     const url = `${this.apiUrl}/cancel/${transactionId}/${orderRequestId}`;
 
     const headers = new HttpHeaders({
@@ -73,7 +76,6 @@ export class TransactionsService {
       );
   }
 
-  // Nuevo método para verificar la transacción
   verifyTransaction(phoneNumber: string, pin: string, refNumber: string): Observable<any> {
     const payload = {
       phoneNumber: phoneNumber,
@@ -91,15 +93,12 @@ export class TransactionsService {
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // Error del lado del cliente o de la red
       console.error('Ocurrió un error:', error.error.message);
     } else {
-      // Backend retornó un código de error
       console.error(
         `Backend retornó el código ${error.status}, ` +
         `mensaje de error: ${error.message}`);
     }
-    // Retorna un observable con un mensaje de error amigable
     return throwError('Algo malo sucedió; por favor, intenta de nuevo más tarde.');
   }
 
@@ -117,5 +116,27 @@ export class TransactionsService {
       (error) => console.error("Error al obtener las transacciones pendientes", error)
     );
     return this.pendingForApprovalTransactionSubject.asObservable();
+  }
+
+  verifyPayment(refNumber: string, phoneNumber: string, orderRequest: OrderRequest): Observable<any> {
+    const url = `${this.apiUrl}/verifyPayment`;
+    const payload = {
+      refNumber: refNumber,
+      phoneNumber: phoneNumber,
+      orderRequest: orderRequest
+    };
+
+    return this.http.post<any>(url, payload).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  verifyUnmatchedPaymentAmount(referenceNumber: string, phoneNumber: string, expectedAmount: number): Observable<UnmatchedPaymentResponseDto> {
+    const url = `${this.apiUrl}/verify-unmatched-payment`;
+    const params = { referenceNumber, phoneNumber, expectedAmount: expectedAmount.toString() };
+
+    return this.http.get<UnmatchedPaymentResponseDto>(url, { params }).pipe(
+      catchError(this.handleError)
+    );
   }
 }

@@ -1,0 +1,14 @@
+<!-- payment.component.html -->
+<app-payment-options
+  [BuyingBalance]="buyingBalance"
+  (closeModal)="closePaymentModal()"
+  (paymentSelected)="onPaymentSelected($event)"
+>
+</app-payment-options>
+
+<!-- Cargar el componente seleccionado dinámicamente -->
+<!-- payment.component.html -->
+<ng-container *ngIf="selectedMethodComponent">
+  <ng-container *ngComponentOutlet="selectedMethodComponent; injector: injector"></ng-container>
+</ng-container>
+

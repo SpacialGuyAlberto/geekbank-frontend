@@ -2,9 +2,10 @@
 import { Injectable } from '@angular/core';
 import { Client, IMessage, Stomp, StompSubscription } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject, take} from 'rxjs';
 import { environment } from "../environments/environment";
 import { ManualVerificationTransactionDto } from "./models/TransactionProductDto.model";
+import {filter} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,12 @@ export class WebSocketService {
   private client: Client;
   private transactionStatusSubject: Subject<any> = new Subject<any>();
   private transactionNumberSubject: Subject<string> = new Subject<string>();
-  private verifyTransactionSubject: Subject<any> = new Subject<any>();
+  private verifyTransactionSubject: ReplaySubject<any> = new ReplaySubject<any>(1);
   private manualVerificationTransactionSubject: Subject<any> = new Subject<any>();
   private manualVerificationQueueSubject: Subject<any> = new Subject<any>();
+
+  private isVerifyTransactionSubscribed: boolean = false;
+
 
   private connectedSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public connected$: Observable<boolean> = this.connectedSubject.asObservable();
@@ -70,15 +74,20 @@ export class WebSocketService {
    * Método para suscribirse al tópico de estado de la transacción
    */
   subscribeToTransactionStatus(phoneNumber: string): Observable<any> {
-    const url = `/topic/transaction-status/${phoneNumber}`;
-
-    this.client.subscribe(url, (message: IMessage) => {
-      const parsedMessage = JSON.parse(message.body);
-      this.transactionStatusSubject.next(parsedMessage);
+    this.connected$.pipe(
+      filter(isConnected => isConnected),
+      take(1)
+    ).subscribe(() => {
+      const url = `/topic/transaction-status/${phoneNumber}`;
+      this.client.subscribe(url, (message: IMessage) => {
+        const parsedMessage = JSON.parse(message.body);
+        this.transactionStatusSubject.next(parsedMessage);
+      });
     });
 
     return this.transactionStatusSubject.asObservable();
   }
+
 
   /**
    * Método para suscribirse al tópico de número de transacción
@@ -97,19 +106,25 @@ export class WebSocketService {
    * Método para suscribirse al tópico de verificación de transacción
    */
   subscribeToVerifyTransaction(phoneNumber: string): Observable<any> {
-    const url = `/topic/verify-transaction/${phoneNumber}`;
-
-    this.client.subscribe(url, (message: IMessage) => {
-      const parsedMessage = JSON.parse(message.body);
-      this.verifyTransactionSubject.next(parsedMessage);
-    });
+    if (!this.isVerifyTransactionSubscribed) {
+      this.connected$.pipe(
+        filter(isConnected => isConnected),
+        take(1)
+      ).subscribe(() => {
+        const url = `/topic/verify-transaction/${phoneNumber}`;
+        this.client.subscribe(url, (message: IMessage) => {
+          const parsedMessage = JSON.parse(message.body);
+          this.verifyTransactionSubject.next(parsedMessage);
+        });
+        this.isVerifyTransactionSubscribed = true;
+      });
+    }
 
     return this.verifyTransactionSubject.asObservable();
   }
 
-  /**
-   * Método para suscribirse al tópico de verificaciones manuales
-   */
+
+
   private subscribeToManualVerifications(): void {
     const subscription: StompSubscription = this.client.subscribe('/topic/manual-verifications', (message: IMessage) => {
       const parsedMessage: ManualVerificationTransactionDto = JSON.parse(message.body);

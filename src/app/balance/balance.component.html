@@ -24,9 +24,14 @@
     </div>
   </div>
   <div *ngIf="showPaymentModal">
-    <app-tigo-payment
+<!--    <app-tigo-payment-->
+<!--      [totalPrice]="balanceToBuy"-->
+<!--      (close)="onModalClose()">-->
+<!--    </app-tigo-payment>-->
+    <app-payment
       [totalPrice]="balanceToBuy"
-      (close)="onModalClose()">
-    </app-tigo-payment>
+      [buyingBalance]="buyingBalance"
+      (closeModal)="onModalClose()"
+    ></app-payment>
   </div>
 </div>

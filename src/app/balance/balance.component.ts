@@ -4,6 +4,7 @@ import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
+import {PaymentComponent} from "../payment/payment.component";
 
 @Component({
   selector: 'app-balance',
@@ -15,7 +16,8 @@ import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
     NgClass,
     FormsModule,
     CurrencyPipe,
-    TigoPaymentComponent
+    TigoPaymentComponent,
+    PaymentComponent
   ],
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.css']
@@ -25,6 +27,7 @@ export class BalanceComponent implements OnInit {
   balanceIcon: string = 'balance-icon';
   balance: number = 0;
   balanceToBuy: number = 5;
+  buyingBalance: boolean = true;
   protected showPaymentModal: boolean = false;
 
 

@@ -47,16 +47,30 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/activate?token=${token}`, { observe: 'response' , responseType: 'text' as 'json' });
   }
 
+  // login(email: string, password: string): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+  //     tap(response => {
+  //       const token = response.headers.get('Authorization');
+  //       if (token) {
+  //         this.setToken(token);
+  //         this.setSession(response);
+  //       }
+  //     })
+  //   );
+  // }
+
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
-      tap(response => {
-        const token = response.headers.get('Authorization');
+    return this.http.post(`${this.baseUrl}/login`, { email, password }).pipe(
+      tap((response: any) => {
+        const token = response.token; // Extraer el token del cuerpo de la respuesta
         if (token) {
           this.setToken(token);
+          this.setSession(response); // Si necesitas almacenar más datos
         }
       })
     );
   }
+
 
   validatePassword( password: string): Observable<HttpResponse<any>> {
     const email = sessionStorage.getItem("email");
@@ -98,11 +112,14 @@ export class AuthService {
     if (this.isBrowser()) {
       if (token) {
         sessionStorage.setItem('token', token);
+        this.loggedIn.next(true); // Update logged-in status
       } else {
         sessionStorage.removeItem('token');
+        this.loggedIn.next(false);
       }
     }
   }
+
 
   getToken(): string {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';

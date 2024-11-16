@@ -1,11 +1,18 @@
-<!-- Modal Component -->
+<!-- src/app/tigo-payment/tigo-payment.component.html -->
+
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
-    <span class="close" (click)="closeModal()">&times;</span>
+    <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Checkout</h2>
 
-    <!-- Formulario Principal -->
-    <form *ngIf="!showVerificationForm && !showConfirmation" (ngSubmit)="onSubmit()">
+    <!-- Formulario para iniciar una nueva transacción -->
+    <form *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm" (ngSubmit)="onSubmit()">
+
+      <!-- Mensaje de transacción expirada -->
+      <div *ngIf="transactionStatus === 'EXPIRED'" class="error-message">
+        <p>Tu transacción ha expirado. Por favor, inicia una nueva transacción.</p>
+      </div>
+
       <div class="form-group">
         <label for="phone">Phone No.</label>
         <input
@@ -22,16 +29,26 @@
         <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
       </div>
 
-      <!-- Botón "Pay" -->
+      <!-- Botón "Pay" visible si no hay spinner y la transacción está pendiente o expirada -->
       <button
         type="submit"
         class="primary-button"
-        *ngIf="!showSpinner && transactionStatus === ''"
+        *ngIf="!showSpinner && (transactionStatus === '' || transactionStatus === 'EXPIRED')"
       >
         Pay
       </button>
 
-      <!-- Botón de Cancelación -->
+      <!-- Botón para verificar un pago existente -->
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="showManualVerification()"
+        *ngIf="!showSpinner"
+      >
+        Ya he hecho el pago
+      </button>
+
+      <!-- Botón de Cancelación visible si hay spinner -->
       <button
         type="button"
         class="primary-button cancel-button"
@@ -47,8 +64,8 @@
         <p>{{ notifMessage }}</p>
       </div>
 
-      <!-- Botones para reintentar o cerrar después de un fallo -->
-      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== ''">
+      <!-- Botones para reintentar o cerrar después de un fallo, excluyendo el estado 'EXPIRED' -->
+      <div *ngIf="!showSpinner && transactionStatus !== 'COMPLETED' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== '' && transactionStatus !== 'EXPIRED'">
         <button
           type="button"
           class="primary-button"
@@ -66,8 +83,8 @@
       </div>
     </form>
 
-    <!-- Formulario de Verificación -->
-    <form *ngIf="showVerificationForm" (ngSubmit)="submitVerification()">
+    <!-- Formulario para la verificación de la transacción con PIN -->
+    <form *ngIf="showVerificationForm && !showManualVerificationForm" (ngSubmit)="submitVerification()">
       <h3>Verificación de Transacción</h3>
       <div class="form-group">
         <label for="pin">PIN</label>
@@ -98,15 +115,60 @@
       </div>
     </form>
 
-    <!-- Mensaje de Agradecimiento tras Verificación Exitosa -->
+    <!-- Formulario para verificar pago existente -->
+    <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
+      <h3>Verificar Pago</h3>
+      <div class="form-group">
+        <label for="refNumber">Número de Referencia</label>
+        <input
+          type="text"
+          id="refNumber"
+          name="refNumber"
+          [(ngModel)]="manualVerificationData.refNumber"
+          required
+          class="retro-input"
+        />
+      </div>
+      <button type="submit" class="primary-button">Verificar Pago</button>
+      <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
+      <div *ngIf="manualVerificationError" class="error-message">
+        {{ manualVerificationError }}
+      </div>
+      <div *ngIf="manualVerificationSuccess" class="success-message">
+        {{ manualVerificationSuccess }}
+      </div>
+    </form>
+
+    <!-- Detalles de UnmatchedPayment y opciones si hay diferencia -->
+    <div *ngIf="unmatchedPaymentResponse">
+      <h3>Detalles del Pago</h3>
+      <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
+      <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
+      <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
+      <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
+      <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
+      <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+
+      <!-- Opciones si hay opciones -->
+      <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
+        <h4>Opciones</h4>
+        <div *ngFor="let option of unmatchedPaymentResponse.options">
+          <button class="option-button" (click)="handleOptionSelection(option)">
+            {{ option }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje para transacciones en espera de procesamiento manual -->
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
       <p>Su transacción está siendo procesada en estos momentos. En breve recibirá su acreditación directamente en su cuenta.</p>
       <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
     </div>
 
-    <!-- Sección de Confirmación y Spinner -->
-    <div *ngIf="showConfirmation && !showVerificationForm" class="confirmation">
+    <!-- Confirmación y detalles del PIN temporal -->
+    <div *ngIf="showConfirmation && !showVerificationForm && !showManualVerificationForm" class="confirmation">
       <div *ngIf="tempPin" class="pin-display">
         <p>PIN Number:</p>
         <h3>{{ tempPin }}</h3>
@@ -130,7 +192,6 @@
         {{ isCancelling ? 'Cancelling...' : 'Cancel' }}
       </button>
 
-      <!-- Mensaje de Cancelación Exitosa -->
       <div *ngIf="transactionStatus === 'CANCELLED' && notifMessage" class="success-message">
         {{ notifMessage }}
       </div>
@@ -140,8 +201,15 @@
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
-    <div *ngIf="errorMessage && !showVerificationForm" class="error-message">
+    <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
       {{ errorMessage }}
     </div>
   </div>
 </div>
+
+
+<app-auth-modal
+  *ngIf="showAuthModal"
+  (close)="handleAuthModalClose()"
+  (authenticated)="handleAuthSuccess()"
+></app-auth-modal>

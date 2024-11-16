@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -25,6 +25,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {  provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {AuthInterceptor} from "./auth.interceptor";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -53,7 +54,16 @@ export function HttpLoaderFactory(http: HttpClient) {
     // StoreModule.forFeature('cart', cartReducer),
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
-  providers: [  HttpClient, TelegramListenerService, provideHttpClient(withInterceptorsFromDi()), provideAnimations()
+  providers: [
+    HttpClient,
+    TelegramListenerService,
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
 })
 export class AppModule { }
