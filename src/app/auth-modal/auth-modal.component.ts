@@ -4,6 +4,8 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../auth.service';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
+import {Account, User} from "../models/User";
+
 
 @Component({
   selector: 'app-auth-modal',
@@ -57,24 +59,16 @@ export class AuthModalComponent {
 
   onLogin(): void {
     this.authService.login(this.loginData.email, this.loginData.password).subscribe({
-      next: (data) => {
+      next: () => {
         this.authenticated.emit();
         this.onClose();
-        sessionStorage.setItem('token', data.headers.get('Authorization'));
-        console.log(sessionStorage.getItem('token'))
       },
       error: (err) => {
         this.loginError = err.error?.message || 'Error al iniciar sesión. Por favor, inténtelo nuevamente.';
       }
     });
-
-    // this.authService.login(this.loginData.email, this.loginData.password).subscribe( (data) => {
-    //   this.authToken = data.auth.token;
-    //   sessionStorage.setItem('token', this.authToken);
-    //   this.authenticated.emit();
-    //   this.onClose();
-    // })
   }
+
 
   // onRegister(): void {
   //   if (this.registerData.password !== this.registerData.confirmPassword) {

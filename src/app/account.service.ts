@@ -13,7 +13,7 @@ export class AccountService {
   constructor(private http: HttpClient)
   { }
 
-  applyBalance(id: number, amount: number): Observable<Account> {
+    applyBalance(id: number | undefined, amount: number): Observable<Account> {
     const url = `${this.baseUrl}/apply-balance/${id}`;
     const params = new HttpParams().set('amount', amount);
 

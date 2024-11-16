@@ -192,7 +192,6 @@
         {{ isCancelling ? 'Cancelling...' : 'Cancel' }}
       </button>
 
-      <!-- Mensaje de Cancelación Exitosa -->
       <div *ngIf="transactionStatus === 'CANCELLED' && notifMessage" class="success-message">
         {{ notifMessage }}
       </div>

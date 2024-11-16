@@ -23,6 +23,7 @@ import { UnmatchedPaymentResponseDto } from "../models/unmatched-payment-respons
 import {AuthModalComponent} from "../auth-modal/auth-modal.component";
 import {AccountService} from "../account.service";
 import {Account} from "../models/User";
+import {switchMap} from "rxjs/operators";
 
 
 @Component({
@@ -68,7 +69,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   tigoImageUrl: string = 'https://i0.wp.com/logoroga.com/wp-content/uploads/2013/11/tigo-money-01.png?fit=980%2C980&ssl=1';
   tempPin: string = '';
 
-  // Nuevas variables para manejo de verificación
   verifyTransactionSubscription: Subscription | null = null;
   private verificationFormSubscription: Subscription | undefined;
   private spinnerSubscription: Subscription | undefined;
@@ -124,6 +124,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     console.log('Received product ID:', this.productId?.toString());
     console.log('Received total price: ', this.totalPrice);
 
+
+
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
       if (storedUserId) {
@@ -139,6 +141,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     } else {
       this.guestId = this.guestService.getGuestId();
     }
+
 
     this.spinnerSubscription = this.tigoPaymentService.showSpinner$.subscribe(show => {
       this.showSpinner = show;
@@ -217,7 +220,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const refNumber = this.manualVerificationData.refNumber;
     const phoneNumber = this.paymentDetails.phoneNumber; // Asegúrate de que este campo esté correctamente asignado
 
-    // Construir el OrderDetails basado en tu lógica existente
     let orderDetails: OrderRequest;
 
     if (this.productId !== null) {
@@ -486,41 +488,44 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   private sendApplyBalanceRequest(): void {
-    this.getAccount(() => {
-      if (!this.unmatchedPaymentResponse || !this.unmatchedPaymentResponse.unmatchedPayment.id) {
-        console.error('No hay información de la cuenta para aplicar el balance.');
-        this.errorMessage = 'No se puede aplicar el balance. Información de la cuenta faltante.';
-        return;
+    if (!this.unmatchedPaymentResponse || !this.unmatchedPaymentResponse.unmatchedPayment.id) {
+      console.error('No hay información de la cuenta para aplicar el balance.');
+      this.errorMessage = 'No se puede aplicar el balance. Información de la cuenta faltante.';
+      return;
+    }
+
+    const balanceToApply = this.unmatchedPaymentResponse.difference;
+
+    if (balanceToApply <= 0) {
+      console.error('El balance a aplicar no es válido:', balanceToApply);
+      this.errorMessage = 'El balance debe ser mayor que 0 para aplicar.';
+      return;
+    }
+
+    this.authService.getUserDetails().pipe(
+      switchMap(data => {
+        this.userId = data.account.id;
+        this.account = data.account;
+        console.log("ACCOUNT ID: " + data.id);
+        return this.accountService.applyBalance(data.id, parseFloat(balanceToApply.toFixed(2)));
+      })
+    ).subscribe({
+      next: (response) => {
+        console.log('Balance aplicado exitosamente:', response);
+        this.notifMessage = 'Balance aplicado exitosamente. Tu balance ha sido actualizado.';
+      },
+      error: (error) => {
+        console.error('Error al aplicar el balance:', error);
+        this.errorMessage = 'Error al aplicar el balance. Por favor, inténtelo nuevamente.';
       }
-
-      const accountId = this.accountId; // ID de la cuenta
-      const balanceToApply = this.unmatchedPaymentResponse.difference; // Diferencia del balance
-
-      if (balanceToApply <= 0) {
-        console.error('El balance a aplicar no es válido:', balanceToApply);
-        this.errorMessage = 'El balance debe ser mayor que 0 para aplicar.';
-        return;
-      }
-
-      this.accountService.applyBalance(accountId, balanceToApply).subscribe({
-        next: (response) => {
-          console.log('Balance aplicado exitosamente:', response);
-          this.notifMessage = 'Balance aplicado exitosamente. Tu balance ha sido actualizado.';
-        },
-        error: (error) => {
-          console.error('Error al aplicar el balance:', error);
-          this.errorMessage = 'Error al aplicar el balance. Por favor, inténtelo nuevamente.';
-        }
-      });
     });
   }
 
-  private getAccount(callback: () => void): void {
+  private getAccount(): void {
     this.authService.getUserDetails().subscribe({
       next: (data) => {
         this.accountId = data.account.id;
         this.account = data.account;
-        callback();
       },
       error: (error) => {
         console.error('Error al obtener detalles del usuario:', error);
@@ -528,9 +533,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       }
     });
   }
-
-
-
 
   returnDifference(): void {
     console.log('Devolviendo la diferencia...');
@@ -546,6 +548,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   handleClose(): void {
     this.closeModal();
+
 
     if (this.transactionStatus === 'PENDING') {
       this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
@@ -567,10 +570,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.showAuthModal = false;
     if (this.postLoginAction) {
       this.postLoginAction();
-      this.postLoginAction = null; // Limpia la acción después de ejecutarla
+      this.postLoginAction = null;
     }
   }
-
 
   handleApplyDifferenceAsBalance(){
     const loggedIn = this.authService.isLoggedIn()
