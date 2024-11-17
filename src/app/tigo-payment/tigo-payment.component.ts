@@ -124,8 +124,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     console.log('Received product ID:', this.productId?.toString());
     console.log('Received total price: ', this.totalPrice);
 
-
-
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
       if (storedUserId) {

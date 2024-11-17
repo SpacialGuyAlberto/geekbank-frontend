@@ -10,13 +10,20 @@ import { HighlightsComponent } from "../highlights/highlights.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
 import { CurrencyService } from "../currency.service";
-import { Subscription } from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import { UIStateServiceService } from "../uistate-service.service";
 import { AuthService } from "../auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { WishItemWithGiftcard } from "../models/WishItem";
 import { NotificationService } from "../services/notification.service";
 import {MainScreenGiftCardService} from "../main-screen-gift-card-service.service";
+
+import {Store} from "@ngrx/store";
+import {loadGiftCards, loadGiftCardsFailure, loadGiftCardDetails, loadGiftCardDetailsFailure, loadGiftCardDetailsSuccess, loadGiftCardsPage
+        , loadGiftCardsPageFailure, loadGiftCardsPageSuccess, loadGiftCardsSuccess
+} from "./store/gift-card.actions";
+import {selectAllGiftCards, selectGiftCardsLoading} from "./store/gift-card.selector";
+
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -40,6 +47,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   giftCards: KinguinGiftCard[] = [];
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
+  cards$!: Observable<KinguinGiftCard[]>
 
   exchangeRate: number = 0; // Tasa de cambio actualizada
   totalPages: number = 3309;
@@ -59,6 +67,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     private mainGiftCards: MainScreenGiftCardService,
     private notificationService: NotificationService,
     private snackBar: MatSnackBar,
+    private store: Store
   ) { }
 
   ngOnInit(): void {
@@ -72,6 +81,8 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.fetchMainGiftCard();
     }
 
+    // this.store.dispatch(loadGiftCards());
+    // this.cards$ = this.store.select(selectAllGiftCards);
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
         ///this.loadGiftCards(this.currentPage)

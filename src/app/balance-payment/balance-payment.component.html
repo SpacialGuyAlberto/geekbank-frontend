@@ -1,0 +1,43 @@
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h2>Compra con Balance</h2>
+
+    <form *ngIf="!showSpinner" (ngSubmit)="handlePurchase()">
+      <div class="form-group">
+        <label for="phone">Número de Teléfono:</label>
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          required
+          class="retro-input"
+        />
+      </div>
+      <div class="form-group">
+        <label for="total">Total:</label>
+        <p class="total-amount">{{ totalPrice | currency: 'USD' }}</p>
+      </div>
+
+      <button type="submit" class="primary-button" [disabled]="showSpinner">
+        Confirmar Compra
+      </button>
+      <button type="button" class="primary-button cancel-button" (click)="cancelPurchase()">
+        Cancelar
+      </button>
+    </form>
+
+    <div *ngIf="showSpinner" class="spinner-container">
+      <div class="spinner"></div>
+      <p>Procesando compra...</p>
+    </div>
+
+    <!-- Mensajes de éxito o error -->
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </div>
+</div>

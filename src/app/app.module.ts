@@ -26,6 +26,9 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {  provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./auth.interceptor";
+import {EffectsModule} from "@ngrx/effects";
+import {GiftCardEffects} from "./kinguin-gift-cards/store/gift-card.effects";
+import {giftCardReducer} from "./kinguin-gift-cards/store/gift-card.reducer";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -42,7 +45,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     NoopAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    StoreModule.forRoot({cart: cartReducer}),
+    StoreModule.forRoot({cart: cartReducer, giftcards: giftCardReducer}),
+    EffectsModule.forRoot([GiftCardEffects]),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

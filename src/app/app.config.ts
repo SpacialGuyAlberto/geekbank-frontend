@@ -12,6 +12,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { routes } from './app.routes';
 import {HttpLoaderFactory} from "./app.module";
 import {provideAnimations} from "@angular/platform-browser/animations";
+import {giftCardReducer} from "./kinguin-gift-cards/store/gift-card.reducer";
+import {GiftCardEffects} from "./kinguin-gift-cards/store/gift-card.effects";
+import {provideEffects} from "@ngrx/effects";
 
 // Esta es la función de fábrica para la carga de archivos JSON de traducción.
 // export function HttpLoaderFactory(http: HttpClient) {
@@ -42,9 +45,11 @@ export const appConfig: ApplicationConfig = {
     },
 
     // Configuración de almacenamiento en NGRX
-    provideStore(), // Proveedor para el store de NGRX
+    provideStore({
+      giftcards: giftCardReducer
+    }), // Proveedor para el store de NGRX
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }), // DevTools para NGRX
-
+    provideEffects([GiftCardEffects]),
     // Configuración de la detección de zonas y optimización
     provideZoneChangeDetection({ eventCoalescing: true }),
 

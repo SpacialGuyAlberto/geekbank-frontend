@@ -15,3 +15,10 @@ export interface Product {
   price: number;
   name?: string;
 }
+
+export enum PurchaseType {
+  GIFTCARD = 'GIFTCARD',
+  BALANCE = 'BALANCE'
+}
+// PURCHASE,
+//   BALANCE_PURCHASE,
