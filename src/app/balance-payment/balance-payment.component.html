@@ -1,41 +1,73 @@
+<!-- src/app/balance-payment/balance-payment.component.html -->
+
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="closeModal()">&times;</span>
     <h2>Compra con Balance</h2>
 
-    <form *ngIf="!showSpinner" (ngSubmit)="handlePurchase()">
+    <!-- Formulario para realizar la compra -->
+    <form *ngIf="!showSpinner && !successMessage && !errorMessage" (ngSubmit)="handlePurchase()">
       <div class="form-group">
         <label for="phone">Número de Teléfono:</label>
         <input
           type="text"
           id="phone"
+          [(ngModel)]="phoneNumber"
           name="phone"
           required
           class="retro-input"
         />
       </div>
-      <div class="form-group">
-        <label for="total">Total:</label>
-        <p class="total-amount">{{ totalPrice | currency: 'USD' }}</p>
+
+      <!-- Resumen del Carrito -->
+      <div class="cart-summary">
+        <h4>Resumen del Carrito</h4>
+        <table>
+          <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio</th>
+            <th>Total</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let item of cartItems">
+            <td>{{ item.giftcard.name }}</td>
+            <td>{{ item.cartItem.quantity }}</td>
+            <td>{{ item.giftcard.price | currency:'USD' }}</td>
+            <td>{{ (item.cartItem.quantity * item.giftcard.price) | currency:'USD' }}</td>
+          </tr>
+          </tbody>
+        </table>
       </div>
 
+      <!-- Total a Pagar -->
+      <div class="total-section">
+        <p><strong>Total a Pagar:</strong> {{ totalPrice | currency:'USD' }}</p>
+      </div>
+
+      <!-- Botones de Confirmar y Cancelar -->
       <button type="submit" class="primary-button" [disabled]="showSpinner">
         Confirmar Compra
       </button>
-      <button type="button" class="primary-button cancel-button" (click)="cancelPurchase()">
+      <button type="button" class="secondary-button" (click)="cancelPurchase()" [disabled]="showSpinner">
         Cancelar
       </button>
     </form>
 
+    <!-- Spinner de carga -->
     <div *ngIf="showSpinner" class="spinner-container">
       <div class="spinner"></div>
       <p>Procesando compra...</p>
     </div>
 
-    <!-- Mensajes de éxito o error -->
+    <!-- Mensaje de Éxito -->
     <div *ngIf="successMessage" class="success-message">
       {{ successMessage }}
     </div>
+
+    <!-- Mensaje de Error -->
     <div *ngIf="errorMessage" class="error-message">
       {{ errorMessage }}
     </div>
