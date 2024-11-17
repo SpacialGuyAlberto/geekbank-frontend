@@ -16,8 +16,6 @@ interface PaymentMethod {
   blockchainNetwork?: string; // Para Blockchain
   country?: string; // Opcional para todos los tipos
 }
-
-
 @Component({
   selector: 'app-payment-methods',
   templateUrl: './payment-methods.component.html',

@@ -7,11 +7,14 @@ import { importProvidersFrom } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import {BrowserAnimationsModule, provideAnimations} from "@angular/platform-browser/animations";
 import {StoreModule, StoreRootModule} from "@ngrx/store";
+import {authReducer} from "./app/state/auth/auth.reducer";
 import {giftCardReducer} from "./app/kinguin-gift-cards/store/gift-card.reducer";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {EffectsModule} from "@ngrx/effects";
-import {GiftCardEffects} from "./app/kinguin-gift-cards/store/gift-card.effects";
 
+//Effects
+import {GiftCardEffects} from "./app/kinguin-gift-cards/store/gift-card.effects";
+import {AuthEffects} from "./app/state/auth/auth.effects";
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -20,9 +23,16 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(),
     importProvidersFrom(
       TranslateModule.forRoot(),
-      StoreModule.forRoot({ giftCards: giftCardReducer }),
+      StoreModule.forRoot({
+        giftCards: giftCardReducer,
+        auth: authReducer
+
+      }),
       StoreDevtoolsModule.instrument(),
-      EffectsModule.forRoot([GiftCardEffects])
+      EffectsModule.forRoot([
+        AuthEffects,
+        GiftCardEffects
+      ])
     )
   ]
 }).catch(err => console.error(err));

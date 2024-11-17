@@ -47,30 +47,17 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/activate?token=${token}`, { observe: 'response' , responseType: 'text' as 'json' });
   }
 
-  // login(email: string, password: string): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
-  //     tap(response => {
-  //       const token = response.headers.get('Authorization');
-  //       if (token) {
-  //         this.setToken(token);
-  //         this.setSession(response);
-  //       }
-  //     })
-  //   );
-  // }
-
   login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { email, password }).pipe(
-      tap((response: any) => {
-        const token = response.token; // Extraer el token del cuerpo de la respuesta
+    return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+      tap(response => {
+        const token = response.headers.get('Authorization');
         if (token) {
           this.setToken(token);
-          this.setSession(response); // Si necesitas almacenar más datos
+          this.setSession(response);
         }
       })
     );
   }
-
 
   validatePassword( password: string): Observable<HttpResponse<any>> {
     const email = sessionStorage.getItem("email");

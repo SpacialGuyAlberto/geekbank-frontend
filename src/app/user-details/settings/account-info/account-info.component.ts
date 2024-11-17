@@ -1,5 +1,3 @@
-// account-info.component.ts
-
 import { Component, HostListener, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
@@ -12,14 +10,19 @@ import { OrdersComponent } from "../orders/orders.component";
 import { AuthService } from "../../../auth.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { WishlistComponent } from "../wishlist/wishlist.component";
-import { Subscription } from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import { SharedService } from "../../../shared.service";
 import { filter } from "rxjs/operators";
+
+import {Store} from "@ngrx/store";
+import {selectUser, selectIsAuthenticated} from "../../../state/auth/auth.selectors";
+import {AppState} from "../../../app.state";
+import {User} from "../../../models/User";
 
 export interface DetailsBody {
   name?: string;
   email?: string;
-  phoneNumber?: string; // Asegúrate de usar 'phoneNumber'
+  phoneNumber?: string;
   password?: string;
 }
 
@@ -91,10 +94,14 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   editingEmail = false;
   editingPhone = false;
 
+  user$: Observable<User | null> = of(null);
+  isAuthenticated$: Observable<boolean> = of(false);
+
   constructor(
     private authService: AuthService,
     private router: Router,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store<AppState>
   ) {}
 
   @HostListener('window:resize', ['$event'])
@@ -121,6 +128,10 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     });
 
     this.isSmallScreen = window.innerWidth <= 768;
+
+    this.user$ = this.store.select(selectUser);
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED: " + value))
   }
 
 // account-info.component.ts

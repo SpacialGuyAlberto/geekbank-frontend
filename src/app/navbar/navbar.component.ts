@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import { AuthService } from '../auth.service';
-import {NgClass, NgIf} from '@angular/common';
+import {AsyncPipe, NgClass, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -11,11 +11,15 @@ import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
 import {UIStateServiceService} from "../uistate-service.service";
-import {Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
 import {SharedService} from "../shared.service";
 import {User} from "../models/User";
 import {BalanceComponent} from "../balance/balance.component";
+
+import {Store} from "@ngrx/store";
+import {selectUser, selectIsAuthenticated} from "../state/auth/auth.selectors";
+import {AppState} from "../app.state";
 
 @Component({
   selector: 'app-navbar',
@@ -31,6 +35,7 @@ import {BalanceComponent} from "../balance/balance.component";
     NgClass,
     NotificationBellComponent,
     BalanceComponent,
+    AsyncPipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -57,6 +62,11 @@ export class NavbarComponent implements OnInit {
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
 
+  user$: Observable<User | null> = of(null);
+  isAuthenticated$: Observable<boolean> = of(false);
+
+
+
   constructor(
     private authService: AuthService,
     protected router: Router,
@@ -64,7 +74,8 @@ export class NavbarComponent implements OnInit {
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private store: Store<AppState>
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -112,6 +123,10 @@ export class NavbarComponent implements OnInit {
       sessionStorage.setItem("email", data.email)
       console.log(this.user);
     });
+
+    this.user$ = this.store.select(selectUser);
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED NAVBAR: " + value))
   }
 
   updateNavBarStyle(url: string) : void {

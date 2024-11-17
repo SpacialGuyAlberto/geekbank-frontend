@@ -7,6 +7,10 @@ import { AuthService } from '../auth.service';
 import { BackgroundAnimationService } from "../background-animation.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {response} from "express";
+import {AppState} from "../app.state";
+import {Store} from "@ngrx/store";
+import {selectAuthError, selectAuthLoading, selectIsAuthenticated} from "../state/auth/auth.selectors";
+import {login} from "../state/auth/auth.actions";
 
 declare const google: any;
 
@@ -36,7 +40,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  isLoading$ = this.store.select(selectAuthLoading);
+  isAuthenticated$ = this.store.select(selectIsAuthenticated);
+  error$ = this.store.select(selectAuthError);
+
+  constructor(private authService: AuthService, private router: Router, private store: Store<AppState>,) {}
 
   ngOnInit(): void {
     // this.animation.initializeGraphAnimation()
@@ -48,6 +56,18 @@ export class LoginComponent implements OnInit, AfterViewInit {
         console.error('Error loading Google script', error);
       });
     }
+    this.isAuthenticated$.subscribe((isAuthenticated) => {
+      if (isAuthenticated) {
+        this.router.navigate(['/home']);
+      }
+    });
+
+    this.error$.subscribe((error) => {
+      if (error) {
+        this.message = error;
+        this.messageClass = 'error-message';
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -74,29 +94,41 @@ export class LoginComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    this.authService.login(this.email, this.password).subscribe(
-      response => {
-        if (response.status === 200) {
-          const authResult = response.body;
-          this.authService.setSession(authResult);
-          this.router.navigate(['/home']).then((success: boolean) => {
-            if (success) {
-              console.log('Navigation to home was successful!');
-            } else {
-              console.log('Navigation to home failed.');
-            }
-          });
+    if (this.isFormValid()) {
+      this.store.dispatch(login({ email: this.email, password: this.password }));
+    } else {
+      this.message = 'Please fill out the form correctly.';
+      this.messageClass = 'error-message';
+    }
 
-        } else {
-          this.message = 'Login failed. Please try again.';
-          this.messageClass = 'error-message';
-        }
-      },
-      error => {
-        this.message = 'Login failed. Please try again.';
-        this.messageClass = 'error-message';
-      }
-    );
+
+    // this.authService.login(this.email, this.password).subscribe(
+    //   response => {
+    //     if (response.status === 200) {
+    //       const authResult = response.body;
+    //       this.authService.setSession(authResult);
+    //       this.router.navigate(['/home']).then((success: boolean) => {
+    //         if (success) {
+    //           console.log('Navigation to home was successful!');
+    //         } else {
+    //           console.log('Navigation to home failed.');
+    //         }
+    //       });
+    //
+    //     } else {
+    //       this.message = 'Login failed. Please try again.';
+    //       this.messageClass = 'error-message';
+    //     }
+    //   },
+    //   error => {
+    //     this.message = 'Login failed. Please try again.';
+    //     this.messageClass = 'error-message';
+    //   }
+    // );
+  }
+
+  isFormValid(): boolean {
+    return this.isEmailValid() && this.isPasswordValid();
   }
 
 

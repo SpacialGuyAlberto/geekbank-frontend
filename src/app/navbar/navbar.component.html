@@ -16,21 +16,21 @@
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
     </li>
-    <a *ngIf="!isLoggedIn()" routerLink="/login" class="nav-link">Login</a>
-    <a *ngIf="!isLoggedIn()" routerLink="/register" class="nav-link">Register</a>
+    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/login" class="nav-link">Login</a>
+    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Register</a>
     <i
       *ngIf="isSmallScreen"
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
-    <app-balance *ngIf="isLoggedIn()"></app-balance>
-    <app-notification-bell *ngIf="isLoggedIn()"></app-notification-bell>
+    <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
+    <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
     <i
-      *ngIf="isLoggedIn()"
+      *ngIf="(isAuthenticated$ | async)"
       (click)="router.navigate(['/user-details'])"
       class="fa-solid fa-user clickable-icon"
     ></i>
-    <i *ngIf="isLoggedIn()" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
+    <i *ngIf="(isAuthenticated$ | async)" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
   </div>
 
   <div class="bell-menu-container" *ngIf="isSmallScreen">
@@ -38,8 +38,8 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
-    <app-balance *ngIf="isLoggedIn()"></app-balance>
-    <app-notification-bell *ngIf="isLoggedIn()"></app-notification-bell>
+    <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
+    <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
     <div class="navbar-hamburger" *ngIf="isSmallScreen">
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
     </div>
@@ -106,7 +106,7 @@
     <span class="close-modal" (click)="closeMenuModal()">&times;</span>
     <div class="menu-links">
       <ul>
-        <li [ngClass]="userMenu" *ngIf="isLoggedIn() && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
+        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
           <a routerLink="/user-details" (click)="closeMenuModal()" class="menu-link">
             <i class="fa-solid fa-user clickable-icon"></i>
             User Details
@@ -124,13 +124,13 @@
             <li><a href="/preferences" (click)="selectCategory('preferences'); closeMenuModal()">Preferences</a></li>
             <li><a href="/orders" (click)="selectCategory('orders'); closeMenuModal()">Transactions</a></li>
             <li><a href="/wish-list" (click)="selectCategory('wish-list'); closeMenuModal()">Wish List</a></li>
-            <li *ngIf="isLoggedIn() && user.role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
+            <li *ngIf="(isAuthenticated$ | async) && user.role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
           </ul>
         </li>
-        <li *ngIf="!isLoggedIn()">
+        <li *ngIf="(isAuthenticated$ | async)">
           <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
         </li>
-        <li *ngIf="!isLoggedIn()">
+        <li *ngIf="!(isAuthenticated$ | async)">
           <a routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
         </li>
         <li>
@@ -165,7 +165,7 @@
             <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
           </a>
         </li>
-        <li *ngIf="isLoggedIn()" (click)="logout(); closeMenuModal()">
+        <li *ngIf="(isAuthenticated$ | async)" (click)="logout(); closeMenuModal()">
           <a class="menu-link">
             <i class="fa-solid fa-sign-out-alt clickable-icon"></i>
             Log out

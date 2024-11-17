@@ -44,7 +44,7 @@ export const giftCardReducer = createReducer(
     loading: false,
     error
   })),
-  // src/app/features/gift-card/store/gift-card.reducer.ts
+
   on(GiftCardActions.loadGiftCardsPage, state => ({
     ...state,
     loading: true,
@@ -53,7 +53,7 @@ export const giftCardReducer = createReducer(
   on(GiftCardActions.loadGiftCardsPageSuccess, (state, { giftCards }) => ({
     ...state,
     loading: false,
-    giftCards: [...state.giftCards, ...giftCards] // Concatenar nuevas gift cards
+    giftCards: [...state.giftCards, ...giftCards]
   })),
   on(GiftCardActions.loadGiftCardsPageFailure, (state, { error }) => ({
     ...state,
