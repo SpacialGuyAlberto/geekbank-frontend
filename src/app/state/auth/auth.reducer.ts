@@ -23,7 +23,8 @@ export const authReducer = createReducer(
     ...state,
     userId,
     token,
-    isAuthenticated: true,
+    account: { balance: 0},
+      isAuthenticated: true,
     error: null,
   })),
   on(AuthActions.loginFailure, (state, { error }) => ({
@@ -31,11 +32,30 @@ export const authReducer = createReducer(
     error,
     isAuthenticated: false,
   })),
+  on(AuthActions.loadUserFromSession, (state) => {
+    const user = JSON.parse(sessionStorage.getItem('user') || 'null');
+    const token = sessionStorage.getItem('token');
+    return {
+      ...state,
+      user,
+      token,
+      isAuthenticated: !!token,
+      error: null,
+    };
+  }),
+  on(AuthActions.loadUserDetailsSuccess, (state, { user }) => ({
+    ...state,
+    user,
+  })),
+  on(AuthActions.loadUserDetailsFailure, (state, { error }) => ({
+    ...state,
+    error,
+  })),
   on(AuthActions.logout, (state) => ({
     ...state,
     userId: null,
     token: null,
     isAuthenticated: false,
     error: null,
-  }))
+  })),
 );

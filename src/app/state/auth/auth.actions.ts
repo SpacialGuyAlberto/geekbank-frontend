@@ -37,5 +37,20 @@ export const registerFailure = createAction(
   props<{ error: any }>()
 );
 
+
+export const loadUserDetails = createAction(
+  '[Auth] Load User Details',
+  props<{ userId: string }>()
+);
+
+export const loadUserDetailsSuccess = createAction(
+  '[Auth] Load User Details Success',
+  props<{ user: User }>()
+);
+
+export const loadUserDetailsFailure = createAction(
+  '[Auth] Load User Details Failure',
+  props<{ error: any }>()
+);
 // Load User from SessionStorage
 export const loadUserFromSession = createAction('[Auth] Load User From SessionStorage');

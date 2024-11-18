@@ -217,8 +217,16 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
   }
 
-  getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl2}/${userId}`);
+  // getUserById(userId: number): Observable<User> {
+  //   return this.http.get<User>(`${this.baseUrl2}/${userId}`);
+  // }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.getToken()}`
+      })
+    });
   }
 
   getUserDetails(): Observable<User> {

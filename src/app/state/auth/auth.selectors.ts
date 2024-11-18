@@ -15,5 +15,8 @@ export const selectAuthError = createSelector(
   selectAuthState,
   (state) => state.error
 );
-
+export const selectUserBalance = createSelector(
+  selectUser,
+  (user) => user?.account?.balance ?? 0
+);
 export const selectAuthToken = createSelector(selectAuthState, (state) => state.token);

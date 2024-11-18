@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as AuthActions from './auth.actions';
 import { AuthService } from '../../auth.service';
-import { map, switchMap, catchError, tap } from 'rxjs/operators';
+import {map, switchMap, catchError, tap, mergeMap} from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 
@@ -27,17 +27,16 @@ export class AuthEffects {
     )
   );
 
-  loginSuccess$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.loginSuccess),
-        tap(({ userId, token }) => {
-          sessionStorage.setItem('token', token);
-          sessionStorage.setItem('userId', userId);
-          this.router.navigate(['/home']);
-        })
-      ),
-    { dispatch: false }
+  loginSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loginSuccess),
+      tap(({ userId, token }) => {
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('userId', userId);
+        this.router.navigate(['/home']);
+      }),
+      map(({ userId }) => AuthActions.loadUserDetails({ userId }))
+    )
   );
   loginFailure$ = createEffect(
     () =>
@@ -49,6 +48,18 @@ export class AuthEffects {
         })
       ),
     { dispatch: false }
+  );
+
+  loadUserDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.loadUserDetails),
+      switchMap(({ userId }) =>
+        this.authService.getUserById(userId).pipe(
+          map((user) => AuthActions.loadUserDetailsSuccess({ user })),
+          catchError((error) => of(AuthActions.loadUserDetailsFailure({ error })))
+        )
+      )
+    )
   );
 
   loadUserFromSession$ = createEffect(() =>
@@ -83,4 +94,5 @@ export class AuthEffects {
       ),
     { dispatch: false } // No necesitamos despachar otra acción
   );
+
 }
