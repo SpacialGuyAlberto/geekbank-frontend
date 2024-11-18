@@ -5,7 +5,8 @@ import { Router } from "@angular/router";
 import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 import {environment} from "../environments/environment";
-
+import {Store} from "@ngrx/store";
+import {AppState} from "./app.state";
 
 
 declare const google: any;
@@ -23,11 +24,10 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private store: Store<AppState>) {
     const token = sessionStorage.getItem('token');
     this.loggedIn.next(!!token);
   }
-
 
   register(email: string, password: string, name: string): Observable<HttpResponse<any>> {
     return this.http.post(
@@ -47,17 +47,28 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/activate?token=${token}`, { observe: 'response' , responseType: 'text' as 'json' });
   }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
-      tap(response => {
-        const token = response.headers.get('Authorization');
-        if (token) {
-          this.setToken(token);
-          this.setSession(response);
-        }
-      })
+  // login(email: string, password: string): Observable<any> {
+  //   return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
+  //     tap(response => {
+  //       const token = response.headers.get('Authorization');
+  //       if (token) {
+  //         this.setToken(token);
+  //         this.setSession(response);
+  //       }
+  //     })
+  //   );
+  // }
+
+// src/app/auth.service.ts
+
+  login(email: string, password: string): Observable<{ userId: string; token: string }> {
+    return this.http.post<{ userId: string; token: string }>(
+      `${this.baseUrl}/login`,
+      { email, password }
     );
   }
+
+
 
   validatePassword( password: string): Observable<HttpResponse<any>> {
     const email = sessionStorage.getItem("email");
@@ -106,7 +117,6 @@ export class AuthService {
       }
     }
   }
-
 
   getToken(): string {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';

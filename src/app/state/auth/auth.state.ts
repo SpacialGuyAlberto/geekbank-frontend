@@ -1,18 +1,16 @@
-// auth.state.ts
-import {User} from "../../models/User";
+// src/app/state/auth/auth.state.ts
+import { User } from '../../models/User';
 
 export interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  loading: boolean;
-  error: string | null;
+  error: any;
 }
 
-export const initialState: AuthState = {
+export const initialAuthState: AuthState = {
   user: null,
   token: null,
   isAuthenticated: false,
-  loading: false,
   error: null,
 };

@@ -1,7 +1,7 @@
-<div class="balance-container">
+<div class="balance-container" *ngIf="isAuthenticated$ | async as isAuthenticated">
   <div class="balance-display" (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
     <span class="balance-symbol">≈</span>
-    <span class="balance-amount">{{ balance | currency: 'EUR' }}</span>
+    <span *ngIf="balance">Balance: {{ balance | currency }}</span>
     <i class="fa-solid fa-wallet add-balance-icon"></i>
   </div>
 

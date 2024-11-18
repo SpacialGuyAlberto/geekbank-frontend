@@ -1,78 +1,87 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule, Router } from '@angular/router';
-import {CommonModule, NgClass} from '@angular/common'; // Importa CommonModule
-import { AuthService } from '../auth.service';
-import { BackgroundAnimationService } from "../background-animation.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-import {response} from "express";
-import {AppState} from "../app.state";
-import {Store} from "@ngrx/store";
-import {selectAuthError, selectAuthLoading, selectIsAuthenticated} from "../state/auth/auth.selectors";
-import {login} from "../state/auth/auth.actions";
-
-declare const google: any;
+// src/app/login/login.component.ts
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  OnDestroy,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { NgClass, NgIf } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
+import { AppState } from '../app.state';
+import { login } from '../state/auth/auth.actions';
+import { selectIsAuthenticated } from '../state/auth/auth.selectors';
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [
-    FormsModule,
-    NgClass
-  ],
-  styleUrls: ['./login.component.css']
+  imports: [NgClass, NgIf, FormsModule],
+  styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit, AfterViewInit {
-  @ViewChild('emailInput') emailInput!: ElementRef;
-  @ViewChild('passwordInput') passwordInput!: ElementRef;
-
+export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
+  // Variables de formulario
   email: string = '';
   password: string = '';
+
+  // Variables para mensajes y validación
   message: string = '';
   messageClass: string = '';
   emailValid: boolean = false;
   passwordValid: boolean = false;
   emailTouched: boolean = false;
   passwordTouched: boolean = false;
-  submitted: boolean = false;
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
 
-  isLoading$ = this.store.select(selectAuthLoading);
-  isAuthenticated$ = this.store.select(selectIsAuthenticated);
-  error$ = this.store.select(selectAuthError);
+  // Observables para el estado de autenticación y errores
+  isAuthenticated$: Observable<boolean>;
+  // authError$: Observable<any>;
 
-  constructor(private authService: AuthService, private router: Router, private store: Store<AppState>,) {}
+  // Suscripciones
+  private subscriptions: Subscription = new Subscription();
+
+  // ViewChild para inputs
+  @ViewChild('emailInput') emailInput!: ElementRef;
+  @ViewChild('passwordInput') passwordInput!: ElementRef;
+
+  constructor(private router: Router, private store: Store<AppState>) {
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    // this.authError$ = this.store.select(selectAuthError);
+  }
 
   ngOnInit(): void {
-    // this.animation.initializeGraphAnimation()
+    // Suscribirse al estado de autenticación
+    this.subscriptions.add(
+      this.isAuthenticated$.subscribe((isAuthenticated) => {
+        if (isAuthenticated) {
+          this.router.navigate(['/home']);
+        }
+      })
+    );
 
-    if (this.authService.isBrowser()) {
-      this.authService.loadGoogleScript().then(() => {
-        this.authService.initializeGoogleSignIn();
-      }).catch(error => {
-        console.error('Error loading Google script', error);
-      });
-    }
-    this.isAuthenticated$.subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
-        this.router.navigate(['/home']);
-      }
-    });
-
-    this.error$.subscribe((error) => {
-      if (error) {
-        this.message = error;
-        this.messageClass = 'error-message';
-      }
-    });
+    // Suscribirse a errores de autenticación
+    // this.subscriptions.add(
+    //   this.authError$.subscribe((error) => {
+    //     if (error) {
+    //       this.message = 'Login failed. Please check your credentials.';
+    //       this.messageClass = 'error-message';
+    //     }
+    //   })
+    // );
   }
 
   ngAfterViewInit(): void {
-    this.animateText("Welcome back to Astralis!", 100);
+    this.animateText('Welcome back to Astralis!', 100);
     this.emailInput.nativeElement.focus();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   animateText(text: string, speed: number) {
@@ -95,42 +104,17 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
   onSubmit() {
     if (this.isFormValid()) {
+      // Despachar la acción de login
       this.store.dispatch(login({ email: this.email, password: this.password }));
     } else {
       this.message = 'Please fill out the form correctly.';
       this.messageClass = 'error-message';
     }
-
-
-    // this.authService.login(this.email, this.password).subscribe(
-    //   response => {
-    //     if (response.status === 200) {
-    //       const authResult = response.body;
-    //       this.authService.setSession(authResult);
-    //       this.router.navigate(['/home']).then((success: boolean) => {
-    //         if (success) {
-    //           console.log('Navigation to home was successful!');
-    //         } else {
-    //           console.log('Navigation to home failed.');
-    //         }
-    //       });
-    //
-    //     } else {
-    //       this.message = 'Login failed. Please try again.';
-    //       this.messageClass = 'error-message';
-    //     }
-    //   },
-    //   error => {
-    //     this.message = 'Login failed. Please try again.';
-    //     this.messageClass = 'error-message';
-    //   }
-    // );
   }
 
   isFormValid(): boolean {
     return this.isEmailValid() && this.isPasswordValid();
   }
-
 
   onEmailKeyUp() {
     clearTimeout(this.emailTypingTimeout);
@@ -182,6 +166,4 @@ export class LoginComponent implements OnInit, AfterViewInit {
     this.passwordValid = this.password.length >= 6;
     return this.passwordValid;
   }
-
-
 }

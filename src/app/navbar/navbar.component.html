@@ -16,7 +16,7 @@
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
     </li>
-    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/login" class="nav-link">Login</a>
+    <a *ngIf="!(isAuthenticated$ | async)" (click)="goToLogin()" class="nav-link">Login</a>
     <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Register</a>
     <i
       *ngIf="isSmallScreen"
@@ -124,10 +124,10 @@
             <li><a href="/preferences" (click)="selectCategory('preferences'); closeMenuModal()">Preferences</a></li>
             <li><a href="/orders" (click)="selectCategory('orders'); closeMenuModal()">Transactions</a></li>
             <li><a href="/wish-list" (click)="selectCategory('wish-list'); closeMenuModal()">Wish List</a></li>
-            <li *ngIf="(isAuthenticated$ | async) && user.role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
+            <li *ngIf="(isAuthenticated$ | async) && role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
           </ul>
         </li>
-        <li *ngIf="(isAuthenticated$ | async)">
+        <li *ngIf="!(isAuthenticated$ | async)">
           <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
         </li>
         <li *ngIf="!(isAuthenticated$ | async)">

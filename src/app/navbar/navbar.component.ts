@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+// src/app/components/navbar/navbar.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
-import { AuthService } from '../auth.service';
-import {AsyncPipe, NgClass, NgIf} from '@angular/common';
+import { AsyncPipe, NgClass, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -10,17 +10,19 @@ import { ChangeDetectorRef } from '@angular/core';
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { filter } from 'rxjs/operators';
 import { KinguinGiftCard } from '../models/KinguinGiftCard';
-import {UIStateServiceService} from "../uistate-service.service";
-import {Observable, of, Subscription} from "rxjs";
-import {NotificationBellComponent} from "../notification-bell/notification-bell.component";
-import {SharedService} from "../shared.service";
-import {User} from "../models/User";
-import {BalanceComponent} from "../balance/balance.component";
+import { UIStateServiceService } from "../uistate-service.service";
+import { Observable, of, Subscription } from "rxjs";
+import { NotificationBellComponent } from "../notification-bell/notification-bell.component";
+import { SharedService } from "../shared.service";
+import { User } from "../models/User";
+import { BalanceComponent } from "../balance/balance.component";
 
-import {Store} from "@ngrx/store";
-import {selectUser, selectIsAuthenticated} from "../state/auth/auth.selectors";
-import {AppState} from "../app.state";
-
+import { Store } from "@ngrx/store";
+import { selectUser, selectIsAuthenticated } from "../state/auth/auth.selectors";
+import { AppState } from "../app.state";
+import {loadUserFromSession, logout} from "../state/auth/auth.actions";
+import {user} from "@angular/fire/auth";
+import {loadUser} from "../state/user/user.actions";
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -40,7 +42,7 @@ import {AppState} from "../app.state";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
   selectedLanguage: string = 'en';
   isLanguageMenuOpen: boolean = false;
@@ -55,30 +57,30 @@ export class NavbarComponent implements OnInit {
   navbarClass: string = '';
   showMenuModal: boolean = false;
   routerSubscription!: Subscription;
-  user: User | any;
   userMenu: string = "";
   inUserDetailsRoute: boolean = false;
   selectedCategory: string = 'categorias';
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
+  role : string | undefined = '';
+  user$: Observable<User | null>;
+  isAuthenticated$: Observable<boolean>;
 
-  user$: Observable<User | null> = of(null);
-  isAuthenticated$: Observable<boolean> = of(false);
-
-
+  private subscriptions: Subscription = new Subscription();
 
   constructor(
-    private authService: AuthService,
+    private store: Store<AppState>,
     protected router: Router,
     private cartService: CartService,
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
-    private sharedService: SharedService,
-    private store: Store<AppState>
+    private sharedService: SharedService
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
+    this.user$ = this.store.select(selectUser);
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 
   ngOnInit(): void {
@@ -86,11 +88,13 @@ export class NavbarComponent implements OnInit {
     this.translate.setDefaultLang('en');
     this.checkScreenSize();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
+    this.user$.subscribe(data => this.role = data?.role)
+    this.store.dispatch(loadUserFromSession());
 
-    this.routerSubscription = this.router.events.subscribe( event => {
-      if (event instanceof NavigationEnd){
-        this.updateNavBarStyle(this.router.url)
-        if (this.router.url.includes('/user-details')){
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateNavBarStyle(this.router.url);
+        if (this.router.url.includes('/user-details')) {
           this.showUserDetailsModal = true;
           this.inUserDetailsRoute = true;
         } else {
@@ -117,25 +121,29 @@ export class NavbarComponent implements OnInit {
       this.cd.detectChanges();
     });
 
-    this.authService.getUserDetails().subscribe(data => {
-      this.user = data;
-      console.log(data.email)
-      sessionStorage.setItem("email", data.email)
-      console.log(this.user);
-    });
+    // Elimina la llamada directa al AuthService
+    // this.authService.getUserDetails().subscribe(data => { ... });
 
-    this.user$ = this.store.select(selectUser);
-    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED NAVBAR: " + value))
+    // Suscripción adicional (si es necesario)
+    this.subscriptions.add(
+      this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED NAVBAR: " + value))
+    );
   }
 
-  updateNavBarStyle(url: string) : void {
-    if (url.includes('/user-details')){
+  ngOnDestroy(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+    this.subscriptions.unsubscribe();
+  }
+
+  updateNavBarStyle(url: string): void {
+    if (url.includes('/user-details')) {
       this.navbarClass = 'navbar-user-details';
       this.userMenu = 'sub-menu';
       this.inUserDetailsRoute = true;
     } else {
-      this.navbarClass = 'navbar-user-details'
+      this.navbarClass = 'navbar-user-details';
     }
   }
 
@@ -148,13 +156,15 @@ export class NavbarComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+    // Puedes eliminar este método si ya usas isAuthenticated$
+    // return this.authService.isLoggedIn();
+    return false; // Placeholder
   }
 
   async logout() {
-    await this.authService.performLogout(this.router);
+    // Despachar la acción de logout en lugar de llamar directamente al servicio
+    this.store.dispatch(logout());
   }
-
   openSearchModal() {
     this.showSearchModal = true;
     this.searchResultsMessage = '';
@@ -178,6 +188,10 @@ export class NavbarComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  goToLogin() {
+    this.router.navigate(['login']);
+  }
+
   checkScreenSize() {
     this.isSmallScreen = window.innerWidth <= 768;
   }
@@ -194,13 +208,14 @@ export class NavbarComponent implements OnInit {
     this.showMenuModal = false;
   }
 
-  selectTab(tab: string){
-    this.sharedService.emitTableAction(tab)
+  selectTab(tab: string) {
+    this.sharedService.emitTableAction(tab);
   }
 
   selectCategory(category: string) {
     this.selectedCategory = category;
   }
+
   toggleCategories() {
     this.categoriesExpanded = !this.categoriesExpanded;
   }
@@ -212,4 +227,6 @@ export class NavbarComponent implements OnInit {
   toggleUserTabs() {
     this.tabsExpanded = !this.tabsExpanded;
   }
+
+  protected readonly user = user;
 }

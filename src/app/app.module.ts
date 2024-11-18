@@ -15,7 +15,7 @@ import {SocialLoginModule,   SocialAuthServiceConfig} from '@abacritt/angularx-s
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import {TelegramListenerService} from "./telegram-listener.service";
 import {CartComponent} from "./cart/cart.component";
-import { StoreModule } from '@ngrx/store';
+import {MetaReducer, StoreModule} from '@ngrx/store';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import {TransactionsComponent} from "./user-details/admin-panel/transactions/transactions.component";
@@ -38,6 +38,7 @@ import {EffectsModule} from "@ngrx/effects";
 import {GiftCardEffects} from "./kinguin-gift-cards/store/gift-card.effects";
 
 
+
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -57,7 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       auth: authReducer,
       cart: cartReducer,
       giftcards: giftCardReducer
-    }),
+    }, ),
     EffectsModule.forRoot([
       AuthEffects,
       GiftCardEffects,

@@ -1,49 +1,51 @@
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
-import {HomeComponent} from "./home/home.component";
-import {ActivationComponent} from "./activation/activation.component";
-import {LogoutComponent} from "./logout/logout.component";
-import {AuthGuard} from "./auth.guard";
-import {NoAuthGuard} from "./noauth.guard";
-import {GiftCardDetailsComponent} from "./gift-card-details/gift-card-details.component";
-import {UserDetailsComponent} from "./user-details/user-details.component";
-import {CartComponent} from "./cart/cart.component";
-import {TigoPaymentComponent} from "./tigo-payment/tigo-payment.component";
-import {AdminPanelComponent} from "./user-details/admin-panel/admin-panel.component";
-import {SetPasswordComponent} from "./set-password/set-password.component";
-import {AccountInfoComponent} from "./user-details/settings/account-info/account-info.component";
-import {PurchaseConfirmationComponent} from "./purchase-confirmation/purchase-confirmation.component";
-import {FreeFireDetailsComponent} from "./free-fire-details/free-fire-details.component";
-import {RandomKeysComponent} from "./random-keys/random-keys.component";
-import {TournamentAnnouncementComponent} from "./tournament-announcement/tournament-announcement.component";
-import {OrdersComponent} from "./user-details/settings/orders/orders.component";
-import {WishlistComponent} from "./user-details/settings/wishlist/wishlist.component";
-import {PaymentMethodsComponent} from "./user-details/settings/payment-methods/payment-methods.component";
+import { HomeComponent } from "./home/home.component";
+import { ActivationComponent } from "./activation/activation.component";
+import { LogoutComponent } from "./logout/logout.component";
+import { AuthGuard } from "./auth.guard";
+import { NoAuthGuard } from "./noauth.guard";
+import { GiftCardDetailsComponent } from "./gift-card-details/gift-card-details.component";
+import { UserDetailsComponent } from "./user-details/user-details.component";
+import { CartComponent } from "./cart/cart.component";
+import { TigoPaymentComponent } from "./tigo-payment/tigo-payment.component";
+import { AdminPanelComponent } from "./user-details/admin-panel/admin-panel.component";
+import { SetPasswordComponent } from "./set-password/set-password.component";
+import { AccountInfoComponent } from "./user-details/settings/account-info/account-info.component";
+import { PurchaseConfirmationComponent } from "./purchase-confirmation/purchase-confirmation.component";
+import { FreeFireDetailsComponent } from "./free-fire-details/free-fire-details.component";
+import { RandomKeysComponent } from "./random-keys/random-keys.component";
+import { TournamentAnnouncementComponent } from "./tournament-announcement/tournament-announcement.component";
+import { OrdersComponent } from "./user-details/settings/orders/orders.component";
+import { WishlistComponent } from "./user-details/settings/wishlist/wishlist.component";
+import { PaymentMethodsComponent } from "./user-details/settings/payment-methods/payment-methods.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] },
-  { path: 'home', component: HomeComponent},
+  { path: 'home', component: HomeComponent },
   { path: 'activate', component: ActivationComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
-  { path: '', redirectTo: '/register', pathMatch: 'full' },
+  { path: '', redirectTo: '/register', pathMatch: 'full' }, // Solo una ruta vacía
   { path: 'user-details', component: AccountInfoComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
-  { path:'tigo-payment', component: TigoPaymentComponent },
+  { path: 'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'set-password', component: SetPasswordComponent },
-  // { path: '**', redirectTo: '/home' },
-  { path: '', redirectTo: '/payment', pathMatch: 'full' },
-  // { path: 'payment-success', component: PaymentSuccessComponent },
-  // { path: 'payment-cancel', component: PaymentCancelComponent },
+  // Opción 1: Si defines '/payment'
+  // { path: 'payment', component: PaymentComponent },
+
+  // Opción 2: Actualizar las redirecciones a rutas existentes
   { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
-  { path: 'free-fire-details', component: FreeFireDetailsComponent},
+  { path: 'free-fire-details', component: FreeFireDetailsComponent },
   { path: 'random-keys', component: RandomKeysComponent },
-  { path: 'tournament', component: TournamentAnnouncementComponent},
+  { path: 'tournament', component: TournamentAnnouncementComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
-  { path: 'wish-list', component: WishlistComponent},
-  { path: '**', redirectTo: '/payment' }
+  { path: 'wish-list', component: WishlistComponent },
+
+  // Ruta comodín al final
+  { path: '**', redirectTo: '/register' } // Cambia a '/home' o otra ruta válida si lo prefieres
 ];
