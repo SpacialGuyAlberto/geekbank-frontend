@@ -1,0 +1,262 @@
+.modal {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: var(--overlay-bg); /* Fondo semitransparente oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: var(--secondary-bg-color); /* Fondo oscuro plano */
+  padding: 2rem;
+  border: 1px solid var(--border-color); /* Borde verde sutil */
+  color: var(--text-color); /* Texto claro */
+  width: var(--modal-width); /* Ancho fijo */
+  max-width: var(--modal-max-width); /* Para pantallas pequeñas */
+  position: relative;
+  border-radius: 0.5rem; /* Bordes redondeados */
+  text-align: center;
+  animation: fadeIn 0.5s ease-in-out;
+  font-family: var(--font-primary);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Icono de cerrar */
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text-color); /* Color del icono de cierre */
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color var(--transition-speed) ease;
+  font-family: var(--font-secondary);
+}
+
+.close:hover {
+  color: var(--accent-blue); /* Cambio a azul claro al pasar el cursor */
+}
+
+/* Título */
+.modal-content h2 {
+  margin-bottom: 1.5rem;
+  color: var(--accent-blue);
+  font-size: 1.8rem;
+  font-family: var(--font-primary); /* Fuente neutral para el título */
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
+.retro-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color); /* Borde verde */
+  background-color: rgba(26, 42, 56, 0.8); /* Fondo oscuro translúcido */
+  color: var(--text-color); /* Texto claro */
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  font-family: var(--font-secondary);
+}
+
+.retro-input:focus {
+  border-color: var(--accent-blue); /* Borde azul claro al enfocar */
+  box-shadow: 0 0 0.5rem var(--accent-blue); /* Sombra azul al enfocar */
+  outline: none;
+}
+
+/* Total Amount */
+.total-amount {
+  font-size: 1.5rem; /* Tamaño ajustado */
+  color: var(--text-color);
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-family: var(--font-secondary);
+}
+
+.balance-payment {
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.primary-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  background: #3a8dff;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.dialog button:hover {
+  background: #1e6fd8;
+  transform: translateY(-2px);
+}
+
+/* Botones específicos */
+.cancel-button {
+  background: #ff4d4d; /* Rojo para cancelación */
+}
+
+.cancel-button:hover {
+  background: #e60000; /* Rojo más oscuro al hover */
+}
+
+/* Mensajes de Estado */
+.success-message {
+  color: var(--success-color);
+  margin-top: 1rem;
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
+.error-message {
+  color: var(--error-color);
+  margin-top: 1rem;
+  font-weight: 500;
+  font-family: var(--font-secondary);
+}
+
+
+@media (max-width: 1024px) {
+  .modal-content {
+    width: 80%; /* Reducir el tamaño para pantallas medianas */
+    padding: 1.5rem;
+  }
+
+  .modal-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .primary-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .confirmation {
+    padding: 0.75rem;
+  }
+
+  .spinner {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.2rem;
+  }
+
+  .pin-display h3 {
+    font-size: 1.5rem;
+  }
+
+  .pin-display p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%; /* Ajuste adicional para pantallas pequeñas */
+    padding: 1.5rem;
+  }
+
+  .modal-content h2 {
+    font-size: 1.6rem;
+  }
+
+  .primary-button {
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .confirmation {
+    padding: 0.75rem;
+  }
+
+  .spinner {
+    width: 2rem;
+    height: 2rem;
+    border-width: 0.2rem;
+  }
+
+  .pin-display h3 {
+    font-size: 1.5rem;
+  }
+
+  .pin-display p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%; /* Ancho adaptado para pantallas muy pequeñas */
+    padding: 1rem;
+  }
+
+  .modal-content h2 {
+    font-size: 1.4rem;
+  }
+
+  .primary-button {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .confirmation {
+    padding: 0.5rem;
+  }
+
+  .spinner {
+    width: 1.8rem;
+    height: 1.8rem;
+    border-width: 0.2rem;
+  }
+
+  .pin-display h3 {
+    font-size: 1.2rem;
+  }
+
+  .pin-display p {
+    font-size: 0.9rem;
+  }
+}

@@ -1,7 +1,6 @@
 // Importar la interfaz KinguinGiftCard que ya tienes
 import {KinguinGiftCard} from "./KinguinGiftCard";
 
-// Interfaz para el objeto CartItem que recibes del backend
 export interface CartItem {
   id: number;
   productId: number;
@@ -14,7 +13,6 @@ export interface CartItem {
   };
 }
 
-// Interfaz que combina CartItem y KinguinGiftCard
 export interface CartItemWithGiftcard {
   cartItem: CartItem;
   giftcard: KinguinGiftCard;

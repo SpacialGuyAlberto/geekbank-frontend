@@ -1,14 +1,10 @@
-<!-- src/app/tigo-payment/tigo-payment.component.html -->
-
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Checkout</h2>
 
-    <!-- Formulario para iniciar una nueva transacción -->
     <form *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm" (ngSubmit)="onSubmit()">
 
-      <!-- Mensaje de transacción expirada -->
       <div *ngIf="transactionStatus === 'EXPIRED'" class="error-message">
         <p>Tu transacción ha expirado. Por favor, inicia una nueva transacción.</p>
       </div>

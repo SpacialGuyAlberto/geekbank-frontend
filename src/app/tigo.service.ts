@@ -5,6 +5,7 @@ import {environment} from "../environments/environment";
 import {TransactionResponse} from "./models/transaction-response.model";
 import {PaymentMethod} from "./models/payment-method.interface";
 import {OrderDetails} from "./models/order-details.model";
+import {OrderRequest} from "./models/order-request.model";
 
 
 @Injectable({
@@ -19,6 +20,10 @@ export class TigoService{
   placeOrder(orderDetails: any): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post(this.apiUrl, orderDetails, { headers, responseType: 'text' });
+  }
+
+  purchaseWithBalance(orderRequest: OrderRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/purchase-with-balance`, orderRequest);
   }
 
 }

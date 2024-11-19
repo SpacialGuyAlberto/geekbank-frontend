@@ -6,6 +6,7 @@ import { NgComponentOutlet, NgIf } from "@angular/common";
 import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE, IS_MANUAL_TRANSACTION} from "./payment.token";
 import {TigoService} from "../tigo.service";
 import {TigoPaymentService} from "../tigo-payment.service";
+import {BalancePaymentComponent} from "../balance-payment/balance-payment.component";
 
 @Component({
   selector: 'app-payment',
@@ -81,7 +82,9 @@ export class PaymentComponent implements OnInit{
         // this.selectedMethodComponent = BitcoinPaymentComponent;
         break;
       case 'balance':
-        // this.selectedMethodComponent = BalancePaymentComponent;
+        this.selectedMethodComponent = BalancePaymentComponent;
+        this.injector = this.createInjector();
+        console.log('Injector' + this.injector);
         break;
       default:
         this.selectedMethodComponent = null;

@@ -1,14 +1,14 @@
-<div class="balance-container">
+<div class="balance-container" *ngIf="isAuthenticated$ | async as isAuthenticated">
   <div class="balance-display" (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
     <span class="balance-symbol">≈</span>
-    <span class="balance-amount">{{ balance | currency: 'EUR' }}</span>
+    <span>Balance: {{ balance$ | async | currency }}</span>
     <i class="fa-solid fa-wallet add-balance-icon"></i>
   </div>
 
   <div class="balance-dropdown" *ngIf="isDropdownVisible">
     <div class="balance-info">
       <span class="balance-label">MY BALANCE</span>
-      <h2 class="balance-amount-large">{{ balance | currency: 'L. ' }}</h2>
+      <h2 class="balance-amount-large">{{ balance$ | async | currency: 'L. ' }}</h2>
     </div>
     <div class="add-balance-section">
       <label for="add-amount" class="add-balance-label">ADD BALANCE</label>

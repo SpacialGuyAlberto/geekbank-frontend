@@ -14,6 +14,13 @@ import {FooterComponent} from "./footer/footer.component";
 import { AuthService } from './auth.service';
 import { CartService } from './cart.service';
 import {CartItemWithGiftcard} from "./models/CartItem";
+// import {loadUserDetails} from "./state/auth/auth.actions";
+import {Store} from "@ngrx/store";
+import {User} from "./models/User";
+import {Observable} from "rxjs";
+import {AuthState} from "./state/auth/auth.state";
+import {selectUser} from "./state/user/user.selector";
+import {selectIsAuthenticated} from "./state/auth/auth.selectors";
 
 @Component({
   standalone: true,
@@ -26,15 +33,19 @@ import {CartItemWithGiftcard} from "./models/CartItem";
 
 export class AppComponent implements OnInit {
   title = 'geekbank-frontend';
+  isLoggedIn$: Observable<boolean>;
+  user$: Observable<User | null>;
   // constructor(private authService: SocialAuthService, private telegramListenerService: TelegramListenerService) {
   //   this.authService.authState.subscribe((user) => {
   //     // handle user state
   //   });
   // }
 
-  constructor(private translate: TranslateService, private authService: AuthService, private cartService: CartService) {
+  constructor(private translate: TranslateService, private authService: AuthService, private cartService: CartService, private store: Store<AuthState>) {
     // Establece el idioma predeterminado
     this.translate.setDefaultLang('en');
+    this.isLoggedIn$ = this.store.select(selectIsAuthenticated);
+    this.user$ = this.store.select(selectUser);
   }
 
   ngOnInit(): void {

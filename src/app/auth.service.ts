@@ -5,7 +5,8 @@ import { Router } from "@angular/router";
 import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 import {environment} from "../environments/environment";
-
+import {Store} from "@ngrx/store";
+import {AppState} from "./app.state";
 
 
 declare const google: any;
@@ -23,11 +24,10 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private store: Store<AppState>) {
     const token = sessionStorage.getItem('token');
     this.loggedIn.next(!!token);
   }
-
 
   register(email: string, password: string, name: string): Observable<HttpResponse<any>> {
     return this.http.post(
@@ -59,17 +59,15 @@ export class AuthService {
   //   );
   // }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, { email, password }).pipe(
-      tap((response: any) => {
-        const token = response.token; // Extraer el token del cuerpo de la respuesta
-        if (token) {
-          this.setToken(token);
-          this.setSession(response); // Si necesitas almacenar más datos
-        }
-      })
+// src/app/auth.service.ts
+
+  login(email: string, password: string): Observable<{ userId: string; token: string }> {
+    return this.http.post<{ userId: string; token: string }>(
+      `${this.baseUrl}/login`,
+      { email, password }
     );
   }
+
 
 
   validatePassword( password: string): Observable<HttpResponse<any>> {
@@ -119,7 +117,6 @@ export class AuthService {
       }
     }
   }
-
 
   getToken(): string {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';
@@ -220,8 +217,16 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
   }
 
-  getUserById(userId: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl2}/${userId}`);
+  // getUserById(userId: number): Observable<User> {
+  //   return this.http.get<User>(`${this.baseUrl2}/${userId}`);
+  // }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.getToken()}`
+      })
+    });
   }
 
   getUserDetails(): Observable<User> {
