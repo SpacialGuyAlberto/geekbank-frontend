@@ -19,9 +19,9 @@
 
 .cart-container {
   width: 80%;
-  margin: 10rem auto; /* Reducido para un diseño más compacto */
-  background: #1a2a38; /* Color de fondo más plano */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+  margin: 10rem auto;
+  background: #1a2a38;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem; /* Bordes ligeramente redondeados */
   padding: 2rem;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
