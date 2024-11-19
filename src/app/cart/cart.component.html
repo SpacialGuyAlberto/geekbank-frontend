@@ -35,6 +35,7 @@
           <p class="error">{{ conversionError }}</p>
         </div>
         <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate).toFixed(2) }} LPS</p>
+        <app-paypal-button [amount]="totalAmountString"></app-paypal-button>
         <button (click)="openPaymentModal()">PAY WITH TIGO MONEY</button>
       </div>
     </div>

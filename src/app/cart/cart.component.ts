@@ -14,7 +14,8 @@ import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "../auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import {RandomKeyMostSoldComponent} from "../random-key-most-sold/random-key-most-sold.component";
-import {RecommendationsComponent} from "../recommendations/recommendations.component"; // Importar MatSnackBar
+import {RecommendationsComponent} from "../recommendations/recommendations.component";
+import {PayPalButtonComponent} from "../paypal-button/paypal-button.component";
 
 @Component({
   selector: 'app-cart',
@@ -27,7 +28,8 @@ import {RecommendationsComponent} from "../recommendations/recommendations.compo
     FormsModule,
     MatIcon,
     RandomKeyMostSoldComponent,
-    RecommendationsComponent
+    RecommendationsComponent,
+    PayPalButtonComponent
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
@@ -43,7 +45,7 @@ export class CartComponent implements OnInit {
   conversionError: string = '';
   userId: string | null = null;
   showPaypalPaymentModal: boolean = false;
-
+  totalAmountString: string | null = '';
   constructor(
     private cartService: CartService,
     private animation: BackgroundAnimationService,
@@ -56,10 +58,9 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.animation.initializeGraphAnimation();
     this.loadCartItems();
-    this.userId = sessionStorage.getItem('userId'); // Asegúrate de tener un método para obtener el ID del usuario
+    this.userId = sessionStorage.getItem('userId');
     console.log('USER ID : ' + this.userId);
 
-    // Suscribirse al conteo de ítems en el carrito
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
     });
@@ -70,7 +71,8 @@ export class CartComponent implements OnInit {
       this.cartItems = data;
       this.updateCartItemCount();
       console.log("Loaded cart items: ", data);
-      this.calculateTotalPriceEUR(); // Calcular el total en EUR después de cargar los ítems
+      this.calculateTotalPriceEUR();
+      this.totalAmountString =  this.totalPriceEUR.toString()
     });
   }
 
@@ -80,7 +82,7 @@ export class CartComponent implements OnInit {
   calculateTotalPriceEUR(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
     this.totalPriceEUR = parseFloat(total.toFixed(2));
-    this.getExchangeRate(); // Obtener la tasa de cambio después de calcular el total
+    this.getExchangeRate();
   }
 
   /**
