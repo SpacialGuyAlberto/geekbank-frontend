@@ -9,7 +9,7 @@ import {PayPalService} from "../pay-pal.service";
   standalone: true
 })
 export class PayPalButtonComponent implements OnInit {
-  @Input() amount: string | null = ''; // Monto a cobrar
+  @Input() amount: string | null = '';
 
   constructor(private payPalService: PayPalService) {}
 
