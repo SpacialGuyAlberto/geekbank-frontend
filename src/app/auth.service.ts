@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import {BehaviorSubject, firstValueFrom, Observable, tap} from 'rxjs';
+import {BehaviorSubject, firstValueFrom, Observable, of, tap} from 'rxjs';
 import { Router } from "@angular/router";
 import { User } from "./models/User";
 import {AbstractControl, ɵFormGroupRawValue, ɵGetProperty, ɵTypedOrUntyped} from "@angular/forms";
 import {environment} from "../environments/environment";
 import {Store} from "@ngrx/store";
 import {AppState} from "./app.state";
+import {CookieService} from "ngx-cookie-service";
+import { catchError, map } from 'rxjs/operators';
 
 
 declare const google: any;
@@ -15,6 +17,8 @@ declare const google: any;
   providedIn: 'root'
 })
 export class AuthService {
+  private authenticated = false;
+  private userId: string | null = null;
 
   private apiUrl = environment.apiUrl
   private baseUrl =  `${this.apiUrl}/auth`;
@@ -24,8 +28,15 @@ export class AuthService {
   private loggedIn = new BehaviorSubject<boolean>(false);
   loggedIn$ = this.loggedIn.asObservable();
 
-  constructor(private http: HttpClient, private router: Router, private store: Store<AppState>) {
+  constructor(
+    private cookieService: CookieService,
+    private http: HttpClient,
+    private router: Router,
+    private store: Store<AppState>
+  ) {
     const token = sessionStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId');
+    this.userId = userId;
     this.loggedIn.next(!!token);
   }
 
@@ -61,14 +72,26 @@ export class AuthService {
 
 // src/app/auth.service.ts
 
-  login(email: string, password: string): Observable<{ userId: string; token: string }> {
-    return this.http.post<{ userId: string; token: string }>(
+  // login(email: string, password: string): Observable<{ userId: string; token: string }> {
+  //   return this.http.post<{ userId: string; token: string }>(
+  //     `${this.baseUrl}/login`,
+  //     { email, password }
+  //   );
+  // }
+
+  login(email: string, password: string): Observable<{ userId: string }> {
+    return this.http.post<{ userId: string }>(
       `${this.baseUrl}/login`,
-      { email, password }
+      { email, password },
+      { withCredentials: true }
+    ).pipe(
+      tap(response => {
+        this.authenticated = true;
+        this.userId = response.userId;
+        sessionStorage.setItem('userId', this.userId);
+      })
     );
   }
-
-
 
   validatePassword( password: string): Observable<HttpResponse<any>> {
     const email = sessionStorage.getItem("email");
@@ -106,6 +129,10 @@ export class AuthService {
     return this.isBrowser() && !!sessionStorage.getItem('token');
   }
 
+  // isAuthenticated(): boolean {
+  //   // Puedes verificar la existencia de la cookie
+  //   return this.cookieService.check('jwtToken');
+  // }
   setToken(token: string): void {
     if (this.isBrowser()) {
       if (token) {
@@ -122,13 +149,23 @@ export class AuthService {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';
   }
 
+  // logout(): Observable<any> {
+  //   const headers = new HttpHeaders({
+  //     'Authorization': `Bearer ${this.getToken()}`
+  //   });
+  //   sessionStorage.removeItem('token');
+  //   sessionStorage.removeItem('userId');
+  //   return this.http.post(`${this.baseUrl}/logout`, {}, { headers, responseType: 'text' });
+  // }
+
   logout(): Observable<any> {
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.getToken()}`
-    });
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('userId');
-    return this.http.post(`${this.baseUrl}/logout`, {}, { headers, responseType: 'text' });
+    return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.authenticated = false;
+        this.userId = null;
+        sessionStorage.removeItem('userId');
+      })
+    );
   }
 
   async performLogout(router: Router): Promise<void> {
@@ -221,22 +258,38 @@ export class AuthService {
   //   return this.http.get<User>(`${this.baseUrl2}/${userId}`);
   // }
 
+  // getUserById(userId: string): Observable<User> {
+  //   return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
+  //     headers: new HttpHeaders({
+  //       'Authorization': `Bearer ${this.getToken()}`
+  //     })
+  //   });
+  // }
+
+  // auth.service.ts
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.getToken()}`
-      })
+      withCredentials: true
     });
   }
 
+  // auth.service.ts
   getUserDetails(): Observable<User> {
-    const userId = this.getUserId();
     return this.http.get<User>(`${this.baseUrl2}/user-details`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.getToken()}`
-      })
+      withCredentials: true
     });
   }
+
+
+
+  // getUserDetails(): Observable<User> {
+  //   const userId = this.getUserId();
+  //   return this.http.get<User>(`${this.baseUrl2}/user-details`, {
+  //     headers: new HttpHeaders({
+  //       'Authorization': `Bearer ${this.getToken()}`
+  //     })
+  //   });
+  // }
 
   setSession(authResult: any) {
     sessionStorage.setItem('token', authResult.token)
@@ -244,7 +297,35 @@ export class AuthService {
     sessionStorage.setItem('email', authResult.email)
   }
 
-  getUserId(): string {
-    return sessionStorage.getItem('userId') || '';
+  // getUserId(): string {
+  //   return sessionStorage.getItem('userId') || '';
+  // }
+  getUserId(): string | null {
+    return this.userId || sessionStorage.getItem('userId');
+  }
+
+
+  isAuthenticated(): boolean {
+    return this.authenticated;
+  }
+
+  checkAuthentication(): Observable<boolean> {
+    if (this.authenticated) {
+      return of(true);
+    } else {
+      return this.http.get<{ authenticated: boolean }>(
+        `${this.baseUrl}/check-auth`,
+        { withCredentials: true }
+      ).pipe(
+        map(response => {
+          this.authenticated = response.authenticated;
+          return this.authenticated;
+        }),
+        catchError(() => {
+          this.authenticated = false;
+          return of(false);
+        })
+      );
+    }
   }
 }

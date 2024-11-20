@@ -27,7 +27,7 @@ import {  provideHttpClient, withInterceptorsFromDi } from '@angular/common/http
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptor} from "./auth.interceptor";
 
-
+import { CookieService } from 'ngx-cookie-service';
 //Reducers
 import {authReducer} from "./state/auth/auth.reducer";
 import { cartReducer } from './store/cart/cart.reducer';
@@ -75,6 +75,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   providers: [
+    CookieService,
     HttpClient,
     TelegramListenerService,
     provideHttpClient(withInterceptorsFromDi()),

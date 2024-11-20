@@ -21,13 +21,24 @@ import {Observable} from "rxjs";
 import {AuthState} from "./state/auth/auth.state";
 import {selectUser} from "./state/user/user.selector";
 import {selectIsAuthenticated} from "./state/auth/auth.selectors";
+import {CookieConsentComponent} from "./cookie-consent/cookie-consent.component";
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule, HttpClientModule, TranslateModule, FooterComponent],
+  styleUrls: ['./app.component.css'],
+  imports: [
+    RegisterComponent,
+    RouterOutlet,
+    RouterModule,
+    NavbarComponent,
+    CommonModule,
+    HttpClientModule,
+    TranslateModule,
+    FooterComponent,
+    CookieConsentComponent
+  ],
   providers: [ HttpClient]
 })
 

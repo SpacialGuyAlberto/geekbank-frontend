@@ -1,0 +1,192 @@
+
+
+/* Barra fija al fondo de la página */
+.cookie-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #202021; /* Fondo sólido */
+  color: var(--text-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+  z-index: 99999; /* Asegurar visibilidad */
+  font-family: var(--font-primary);
+  opacity: 1; /* Fondo completamente opaco */
+}
+
+/* Mensaje de la barra */
+.cookie-message p {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+/* Contenedor de los botones */
+.cookie-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Botones */
+.accept-button,
+.reject-button,
+.customize-button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.accept-button {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+}
+
+.reject-button {
+  background-color: var(--highlight-color);
+  color: var(--secondary-color);
+}
+
+.customize-button {
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: 2px solid var(--highlight-color);
+}
+
+.accept-button:hover {
+  background-color: #77c56f;
+}
+
+.reject-button:hover {
+  background-color: #00b0cc;
+}
+
+.customize-button:hover {
+  background-color: var(--highlight-color);
+  color: var(--secondary-color);
+}
+
+/* Modal de Personalización de Cookies */
+.cookie-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-color); /* Fondo sólido */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100000; /* Asegura visibilidad */
+  font-family: var(--font-primary);
+  opacity: 1; /* Fondo completamente opaco */
+}
+
+/* Contenido del modal */
+.cookie-content {
+  background-color: var(--secondary-color); /* Fondo sólido */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  color: var(--text-color);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Título del modal */
+.cookie-content h2 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+/* Opciones de cookies */
+.cookie-option {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.cookie-option p {
+  margin: 0.5rem 0 0 0;
+  font-size: 0.9rem;
+  color: #CCCCCC;
+}
+
+/* Botones del modal */
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.save-button {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color var(--transition-speed);
+}
+
+.save-button:hover {
+  background-color: #77c56f;
+}
+
+.close-button {
+  background-color: var(--primary-color);
+  color: var(--highlight-color);
+  padding: 0.5rem 1rem;
+  border: 2px solid var(--highlight-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+.close-button:hover {
+  background-color: var(--highlight-color);
+  color: var(--secondary-color);
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividad para dispositivos móviles */
+@media (max-width: 768px) {
+  .cookie-bar {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+
+  .cookie-buttons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cookie-content {
+    max-width: 90%;
+  }
+}

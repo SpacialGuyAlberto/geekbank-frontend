@@ -18,8 +18,8 @@ export class AuthEffects {
       switchMap(({ email, password }) =>
         this.authService.login(email, password).pipe(
           map((response) => {
-            const { userId, token } = response;
-            return AuthActions.loginSuccess({ userId, token });
+            const { userId } = response;
+            return AuthActions.loginSuccess({ userId });
           }),
           catchError((error) => of(AuthActions.loginFailure({ error })))
         )
@@ -30,14 +30,13 @@ export class AuthEffects {
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      tap(({ userId, token }) => {
-        sessionStorage.setItem('token', token);
-        sessionStorage.setItem('userId', userId);
+      tap(({ userId }) => {
         this.router.navigate(['/home']);
       }),
       map(({ userId }) => AuthActions.loadUserDetails({ userId }))
     )
   );
+
   loginFailure$ = createEffect(
     () =>
       this.actions$.pipe(
@@ -62,20 +61,32 @@ export class AuthEffects {
     )
   );
 
+// auth.effects.ts
   loadUserFromSession$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loadUserFromSession),
-      map(() => {
-        const token = sessionStorage.getItem('token');
-        const userId = sessionStorage.getItem('userId');
-        if (token && userId) {
-          return AuthActions.loginSuccess({ userId, token });
-        } else {
-          return AuthActions.loginFailure({ error: 'No user in session storage' });
-        }
-      })
+      switchMap(() =>
+        this.authService.checkAuthentication().pipe(
+          switchMap(authenticated => {
+            if (authenticated) {
+              const userId = sessionStorage.getItem('userId');
+              if (userId) {
+                return of(AuthActions.loginSuccess({ userId }));
+              } else {
+                return of(AuthActions.loginFailure({ error: 'No userId in session storage' }));
+              }
+            } else {
+              return of(AuthActions.loginFailure({ error: 'Not authenticated' }));
+            }
+          }),
+          catchError(error => of(AuthActions.loginFailure({ error })))
+        )
+      )
     )
   );
+
+
+
   logout$ = createEffect(
     () =>
       this.actions$.pipe(
