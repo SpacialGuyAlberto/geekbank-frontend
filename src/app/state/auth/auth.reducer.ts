@@ -1,28 +1,28 @@
-// src/app/state/auth/auth.reducer.ts
-
 import { createReducer, on } from '@ngrx/store';
 import * as AuthActions from './auth.actions';
+import {User} from "../../models/User";
 
+// auth.state.ts
 export interface AuthState {
   userId: string | null;
-  token: string | null;
-  isAuthenticated: boolean;
+  user: User | null;
+  isAuthenticated: boolean | null;
   error: any;
 }
 
 export const initialAuthState: AuthState = {
   userId: null,
-  token: null,
-  isAuthenticated: false,
+  user: null,
+  isAuthenticated: null,
   error: null,
 };
 
+
 export const authReducer = createReducer(
   initialAuthState,
-  on(AuthActions.loginSuccess, (state, { userId, token }) => ({
+  on(AuthActions.loginSuccess, (state, { userId}) => ({
     ...state,
     userId,
-    token,
     account: { balance: 0},
       isAuthenticated: true,
     error: null,
@@ -34,27 +34,31 @@ export const authReducer = createReducer(
   })),
   on(AuthActions.loadUserFromSession, (state) => {
     const user = JSON.parse(sessionStorage.getItem('user') || 'null');
-    const token = sessionStorage.getItem('token');
     return {
       ...state,
       user,
-      token,
-      isAuthenticated: !!token,
+      isAuthenticated: user != null,
       error: null,
     };
   }),
+
+  // auth.reducer.ts
   on(AuthActions.loadUserDetailsSuccess, (state, { user }) => ({
     ...state,
     user,
+    isAuthenticated: true,
+    error: null,
   })),
+
   on(AuthActions.loadUserDetailsFailure, (state, { error }) => ({
     ...state,
+    user: null,
+    isAuthenticated: false,
     error,
   })),
   on(AuthActions.logout, (state) => ({
     ...state,
     userId: null,
-    token: null,
     isAuthenticated: false,
     error: null,
   })),

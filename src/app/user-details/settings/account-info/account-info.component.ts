@@ -95,7 +95,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   editingPhone = false;
 
   user$: Observable<User | null> = of(null);
-  isAuthenticated$: Observable<boolean> = of(false);
+  isAuthenticated$: Observable<boolean | null> = of(false);
 
   constructor(
     private authService: AuthService,

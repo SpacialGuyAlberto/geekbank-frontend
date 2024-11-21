@@ -1,0 +1,46 @@
+<!-- cookie-consent.component.html -->
+<div *ngIf="showBanner" class="cookie-bar">
+  <div class="cookie-message">
+    <p>Utilizamos cookies para mejorar tu experiencia. Al continuar, aceptas el uso de cookies.</p>
+  </div>
+  <div class="cookie-buttons">
+    <button class="accept-button" (click)="acceptAllCookies()">Aceptar todo</button>
+    <button class="customize-button" (click)="openCustomizeModal()">Personalizar</button>
+    <button class="reject-button" (click)="rejectAllCookies()">Rechazar todo</button>
+  </div>
+</div>
+
+<!-- Modal de Personalización de Cookies -->
+<div *ngIf="showCustomizeModal" class="cookie-modal">
+  <div class="cookie-content">
+    <h2>Personaliza tus preferencias de cookies</h2>
+    <form>
+      <div class="cookie-option">
+        <input type="checkbox" id="analytics" [(ngModel)]="cookiePreferences.analytics" name="analytics">
+        <label for="analytics">Cookies de Analítica</label>
+        <p>Estas cookies nos ayudan a entender cómo interactúas con nuestro sitio web.</p>
+      </div>
+      <div class="cookie-option">
+        <input type="checkbox" id="ads" [(ngModel)]="cookiePreferences.ads" name="ads">
+        <label for="ads">Cookies de Anuncios</label>
+        <p>Estas cookies se utilizan para mostrar anuncios relevantes para ti.</p>
+      </div>
+      <div class="cookie-option">
+        <input type="checkbox" id="performance" [(ngModel)]="cookiePreferences.performance" name="performance">
+        <label for="performance">Cookies de Rendimiento</label>
+        <p>Estas cookies mejoran el rendimiento y la funcionalidad de nuestro sitio web.</p>
+      </div>
+      <div class="cookie-option">
+        <input type="checkbox" id="functional" [(ngModel)]="cookiePreferences.functional" name="functional">
+        <label for="functional">Cookies Funcionales</label>
+        <p>Estas cookies son necesarias para el funcionamiento básico del sitio web.</p>
+      </div>
+    </form>
+    <div class="modal-buttons">
+      <button class="save-button" (click)="savePreferences()">Guardar preferencias</button>
+      <button class="accept-all-button" (click)="acceptAllCookies()">Aceptar todo</button>
+      <button class="reject-all-button" (click)="rejectAllCookies()">Rechazar todo</button>
+      <button class="close-button" (click)="closeCustomizeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>

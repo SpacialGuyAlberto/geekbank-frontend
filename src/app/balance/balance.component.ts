@@ -5,7 +5,7 @@ import { FormsModule } from "@angular/forms";
 import {AuthService} from "../auth.service";
 import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 import {PaymentComponent} from "../payment/payment.component";
-import {selectUser, selectIsAuthenticated} from "../state/auth/auth.selectors";
+import {selectUser, selectIsAuthenticated, selectUserBalance} from "../state/auth/auth.selectors";
 import { AppState } from "../app.state";
 import {Observable, of} from "rxjs";
 import {User} from "../models/User";
@@ -38,8 +38,8 @@ export class BalanceComponent implements OnInit {
   buyingBalance: boolean = true;
   protected showPaymentModal: boolean = false;
 
-  user$: Observable<User | null> = of(null);
-  isAuthenticated$: Observable<boolean> = of(false);
+  user$: Observable<User| null> = of(null);
+  isAuthenticated$: Observable<boolean | null> = of(false);
   balance$: Observable<number> = of(0);
 
   constructor(
@@ -48,9 +48,10 @@ export class BalanceComponent implements OnInit {
     ) {
     this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    this.balance$ = this.user$.pipe(
-      map((user) => user?.account?.balance || 0)
-    );
+    // this.balance$ = this.user$.pipe(
+    //   map((user) => user?.account?.balance || 0)
+    // );
+    this.balance$ = this.store.select(selectUserBalance);
   }
 
   ngOnInit(): void {

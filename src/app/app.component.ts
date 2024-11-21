@@ -21,19 +21,31 @@ import {Observable} from "rxjs";
 import {AuthState} from "./state/auth/auth.state";
 import {selectUser} from "./state/user/user.selector";
 import {selectIsAuthenticated} from "./state/auth/auth.selectors";
+import {CookieConsentComponent} from "./cookie-consent/cookie-consent.component";
+import {loadUserFromSession} from "./state/auth/auth.actions";
 
 @Component({
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  imports: [RegisterComponent, RouterOutlet, RouterModule, NavbarComponent, CommonModule, HttpClientModule, TranslateModule, FooterComponent],
+  styleUrls: ['./app.component.css'],
+  imports: [
+    RegisterComponent,
+    RouterOutlet,
+    RouterModule,
+    NavbarComponent,
+    CommonModule,
+    HttpClientModule,
+    TranslateModule,
+    FooterComponent,
+    CookieConsentComponent
+  ],
   providers: [ HttpClient]
 })
 
 export class AppComponent implements OnInit {
   title = 'geekbank-frontend';
-  isLoggedIn$: Observable<boolean>;
+  isLoggedIn$: Observable<boolean | null>;
   user$: Observable<User | null>;
   // constructor(private authService: SocialAuthService, private telegramListenerService: TelegramListenerService) {
   //   this.authService.authState.subscribe((user) => {
@@ -49,11 +61,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.loggedIn$.subscribe(isLoggedIn => {
-      if (isLoggedIn) {
-        this.syncCart();
-      }
-    });
+    this.store.dispatch(loadUserFromSession());
+    // this.authService.loggedIn$.subscribe(isLoggedIn => {
+    //   if (isLoggedIn) {
+    //     this.syncCart();
+    //   }
+    // });
   }
 
   // // Método para cambiar el idioma
