@@ -63,8 +63,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
   role : string | undefined = '';
-  // user$: Observable<User | null>;
-  isAuthenticated$: Observable<boolean>;
+  user$: Observable<User | null>;
+  isAuthenticated$: Observable<boolean | null>;
 
   private subscriptions: Subscription = new Subscription();
 
@@ -79,7 +79,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
-    // this.user$ = this.store.select(selectUser);
+   this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 
@@ -90,6 +90,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     window.addEventListener('resize', this.checkScreenSize.bind(this));
     // this.user$.subscribe(data => this.role = data?.role)
     this.store.dispatch(loadUserFromSession());
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
 
     this.routerSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -162,7 +163,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async logout() {
-    // Despachar la acción de logout en lugar de llamar directamente al servicio
     this.store.dispatch(logout());
   }
   openSearchModal() {

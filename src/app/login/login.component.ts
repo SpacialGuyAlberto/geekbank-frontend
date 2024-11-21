@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   private passwordTypingTimeout: any;
 
   // Observables para el estado de autenticación y errores
-  isAuthenticated$: Observable<boolean>;
+  isAuthenticated$: Observable<boolean | null>;
   // authError$: Observable<any>;
 
   // Suscripciones

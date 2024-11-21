@@ -328,4 +328,13 @@ export class AuthService {
       );
     }
   }
+  // checkAuthentication(): Observable<boolean> {
+  //   return this.http.get<{ authenticated: boolean }>(
+  //     `${this.baseUrl}/check-auth`,
+  //     { withCredentials: true }
+  //   ).pipe(
+  //     map(response => response.authenticated),
+  //     catchError(() => of(false))
+  //   );
+  // }
 }

@@ -6,14 +6,14 @@ import {User} from "../../models/User";
 export interface AuthState {
   userId: string | null;
   user: User | null;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   error: any;
 }
 
 export const initialAuthState: AuthState = {
   userId: null,
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: null,
   error: null,
 };
 
@@ -37,11 +37,11 @@ export const authReducer = createReducer(
     return {
       ...state,
       user,
-
-      isAuthenticated: true,
+      isAuthenticated: user != null,
       error: null,
     };
   }),
+
   // auth.reducer.ts
   on(AuthActions.loadUserDetailsSuccess, (state, { user }) => ({
     ...state,
@@ -52,6 +52,8 @@ export const authReducer = createReducer(
 
   on(AuthActions.loadUserDetailsFailure, (state, { error }) => ({
     ...state,
+    user: null,
+    isAuthenticated: false,
     error,
   })),
   on(AuthActions.logout, (state) => ({

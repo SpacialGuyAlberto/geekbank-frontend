@@ -27,15 +27,21 @@ export class AuthEffects {
     )
   );
 
+// src/app/state/auth/auth.effects.ts
+
   loginSuccess$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loginSuccess),
-      tap(({ userId }) => {
-        this.router.navigate(['/home']);
-      }),
-      map(({ userId }) => AuthActions.loadUserDetails({ userId }))
+      switchMap(() =>
+        this.authService.getUserDetails().pipe(
+          map(user => AuthActions.loadUserDetailsSuccess({ user })),
+          tap(() => this.router.navigate(['/home'])),
+          catchError(error => of(AuthActions.loadUserDetailsFailure({ error })))
+        )
+      )
     )
   );
+
 
   loginFailure$ = createEffect(
     () =>
@@ -61,7 +67,18 @@ export class AuthEffects {
     )
   );
 
-// auth.effects.ts
+  loadUserDetailsSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loadUserDetailsSuccess),
+        tap(({ user }) => {
+          sessionStorage.setItem('user', JSON.stringify(user));
+        })
+      ),
+    { dispatch: false }
+  );
+
+
   loadUserFromSession$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.loadUserFromSession),
@@ -69,12 +86,10 @@ export class AuthEffects {
         this.authService.checkAuthentication().pipe(
           switchMap(authenticated => {
             if (authenticated) {
-              const userId = sessionStorage.getItem('userId');
-              if (userId) {
-                return of(AuthActions.loginSuccess({ userId }));
-              } else {
-                return of(AuthActions.loginFailure({ error: 'No userId in session storage' }));
-              }
+              return this.authService.getUserDetails().pipe(
+                map(user => AuthActions.loadUserDetailsSuccess({ user })),
+                catchError(error => of(AuthActions.loadUserDetailsFailure({ error })))
+              );
             } else {
               return of(AuthActions.loginFailure({ error: 'Not authenticated' }));
             }
@@ -92,18 +107,15 @@ export class AuthEffects {
       this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
-          // Limpiar el sessionStorage
           sessionStorage.removeItem('token');
           sessionStorage.removeItem('userId');
+          sessionStorage.removeItem('user');
 
-          // Opcional: Llamada al backend para invalidar el token
-          this.authService.logout().subscribe(); // Si el backend lo soporta
-
-          // Redirigir al usuario a la página de login
+          this.authService.logout().subscribe();
           this.router.navigate(['/login']);
         })
       ),
-    { dispatch: false } // No necesitamos despachar otra acción
+    { dispatch: false }
   );
 
 }

@@ -39,7 +39,7 @@ export class BalanceComponent implements OnInit {
   protected showPaymentModal: boolean = false;
 
   user$: Observable<User| null> = of(null);
-  isAuthenticated$: Observable<boolean> = of(false);
+  isAuthenticated$: Observable<boolean | null> = of(false);
   balance$: Observable<number> = of(0);
 
   constructor(

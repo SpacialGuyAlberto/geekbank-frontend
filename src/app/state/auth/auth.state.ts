@@ -5,14 +5,14 @@ import { User } from '../../models/User';
 export interface AuthState {
   userId: string | null;
   user: User | null;
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | null;
   error: any;
 }
 
 export const initialAuthState: AuthState = {
   userId: null,
   user: null,
-  isAuthenticated: false,
+  isAuthenticated: null,
   error: null,
 };
 
