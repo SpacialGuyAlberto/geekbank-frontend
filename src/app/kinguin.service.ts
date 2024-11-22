@@ -58,4 +58,17 @@ export class KinguinService {
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params });
   }
 
+  getGiftCardsByCategory(category: string): Observable<KinguinGiftCard[]> {
+    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const params = new HttpParams().set('genre', category);
+
+    return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params }).pipe(
+      tap((giftCards: KinguinGiftCard[]) => {
+        this.updateGiftCardsModel(giftCards);
+      })
+    );
+  }
+
+
+
 }

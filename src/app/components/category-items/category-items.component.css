@@ -1,0 +1,323 @@
+/* category-items.component.css */
+
+/* Variables CSS para facilitar la personalización */
+:host {
+  --primary-color: #0B0D19;
+  --secondary-color: #4f5252;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --highlight-color-1: #ff5733; /* Puedes ajustar estos colores según tu diseño */
+  --highlight-color-2: #33ff57;
+  --highlight-color-3: #3357ff;
+  --highlight-color-4: #ff33a8;
+  --accent-color: #88D66C;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
+  --transition-speed: 0.3s;
+  --scale-factor: 0.80; /* Asegúrate de mantener esta variable si ya está definida */
+}
+
+/* Contenedor principal */
+.category-items-container {
+  position: relative; /* Permite posicionar el loading-indicator */
+  top: 0;
+  left: 200px; /* Ajusta según la posición del menú */
+  width: 100%; /* Cambiado a 100% para permitir flexibilidad */
+  max-height: 400px; /* Añade scroll si hay muchos elementos */
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #222;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+
+  /* Flexbox para disposición horizontal */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Espacio entre tarjetas */
+  justify-content: flex-start; /* Alineación a la izquierda */
+}
+
+/* Estilo para el mensaje de no datos */
+.no-data-message {
+  text-align: center;
+  color: #555;
+  font-size: 1rem;
+  padding: 20px 0;
+  width: 100%;
+}
+
+/* Estilos para cada tarjeta de categoría */
+.category-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(39, 39, 57, 0.4), rgba(8, 64, 180, 0.4));
+  border: 1px solid rgba(173, 216, 230, 0.2);
+  border-radius: 8px;
+  padding: 0;
+  text-align: center;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  min-height: 200px;
+
+  /* Ancho para 5 tarjetas por fila */
+  flex: 0 1 calc(20% - 10px); /* 100% / 5 = 20%, menos el gap */
+
+  /* Para tamaños más pequeños */
+  max-width: calc(20% - 10px);
+
+  /* Transición suave para aparecer */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.category-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsividad para tablets */
+@media (max-width: 1200px) {
+  .category-item {
+    flex: 0 1 calc(25% - 10px); /* 4 por fila */
+    max-width: calc(25% - 10px);
+  }
+}
+
+@media (max-width: 992px) {
+  .category-item {
+    flex: 0 1 calc(33.33% - 10px); /* 3 por fila */
+    max-width: calc(33.33% - 10px);
+  }
+}
+
+@media (max-width: 768px) {
+  .category-item {
+    flex: 0 1 calc(50% - 10px); /* 2 por fila */
+    max-width: calc(50% - 10px);
+  }
+
+  .category-items-container {
+    width: 80%;
+    left: 10%;
+  }
+
+  .category-item-image-wrapper {
+    height: 120px;
+  }
+
+  .category-item-title {
+    font-size: 1rem;
+  }
+
+  .category-item-price {
+    font-size: 1.1rem;
+  }
+}
+
+/* Responsividad para móviles */
+@media (max-width: 480px) {
+  .category-items-container {
+    width: 100%;
+    left: 0;
+    border-radius: 0;
+  }
+
+  .category-item {
+    flex: 0 1 100%; /* 1 por fila */
+    max-width: 100%;
+  }
+
+  .category-item-image-wrapper {
+    height: 100px;
+  }
+
+  .category-item-title {
+    font-size: 0.9rem;
+  }
+
+  .category-item-price {
+    font-size: 1rem;
+  }
+}
+
+/* Efecto de borde animado */
+.category-item::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 8px;
+  background: linear-gradient(135deg,
+  rgba(139, 0, 139, 0.8) 20%,
+  rgba(75, 0, 130, 0.8) 20%,
+  rgba(0, 128, 128, 0.8) 40%,
+  rgba(184, 134, 11, 0.8) 60%,
+  rgba(25, 25, 112, 0.8) 80%);
+  background-size: 300% 300%;
+  z-index: -1;
+  animation: animatedBorder 7s ease infinite;
+  filter: blur(0px);
+}
+
+/* Animación del borde */
+@keyframes animatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efectos al pasar el ratón sobre la tarjeta */
+.category-item:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+/* Contenedor de la imagen */
+.category-item-image-wrapper {
+  width: 100%;
+  height: 150px;
+  overflow: hidden;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* Estilo de la imagen */
+.category-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-speed) ease;
+  display: block;
+}
+
+/* Efecto de zoom en la imagen al hacer hover */
+.category-item:hover .category-item-image {
+  transform: scale(1.05);
+}
+
+/* Contenedor del contenido de la tarjeta */
+.category-item-content {
+  padding: 15px;
+  background-color: #fff;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Título de la tarjeta */
+.category-item-title {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  transition: max-height 0.5s ease;
+}
+
+/* Expande el título al hacer hover */
+.category-item:hover .category-item-title {
+  white-space: normal;
+  max-height: 5rem;
+}
+
+/* Precio de la tarjeta */
+.category-item-price {
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+/* Estilos para el indicador de carga */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(4px * var(--scale-factor));
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor));
+  height: calc(20px * var(--scale-factor));
+  background-color: var(--highlight-color);
+  border-radius: calc(4px * var(--scale-factor));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar1 {
+  background-color: var(--highlight-color-1);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
+  animation-delay: -0.4s;
+}
+
+.bar2 {
+  background-color: var(--highlight-color-2);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
+  animation-delay: -0.2s;
+}
+
+.bar3 {
+  background-color: var(--highlight-color-3);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
+  animation-delay: 0s;
+}
+
+.bar4 {
+  background-color: var(--highlight-color-4);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
+  animation-delay: 0.2s;
+}
+
+.bar5 {
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse-bars {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
+}

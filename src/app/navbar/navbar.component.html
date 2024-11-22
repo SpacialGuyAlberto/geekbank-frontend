@@ -46,25 +46,27 @@
   </div>
 </nav>
 
-<!-- Sección de Pestañas de Categorías Debajo de la Navbar -->
 <div class="navbar-categories" *ngIf="!isSmallScreen && showNavbar">
   <div class="tabs-menu">
-    <!-- Categorías con Dropdown para pantallas grandes -->
-    <div class="dropdown" >
-      <button class="tab-button dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown" (mouseenter)="onDropdownMouseEnter()" (mouseleave)="onDropdownMouseLeave()">
+      <button class="tab-button dropdown-toggle" aria-haspopup="true" aria-expanded="undefined">
         <i class="fas fa-th-list" aria-hidden="true"></i> Categorías
       </button>
-      <div class="dropdown-content" role="menu">
-        <a href="#" (click)="selectCategory('vr')">VR</a>
-        <a href="#" (click)="selectCategory('aventura')">Aventura</a>
-        <a href="#" (click)="selectCategory('accion')">Acción</a>
-        <a href="#" (click)="selectCategory('terror')">Terror</a>
-        <a href="#" (click)="selectCategory('battle-royal')">Battle Royal</a>
-        <a href="#" (click)="selectCategory('etc')">ETC</a>
+      <div class="dropdown-content" role="menu" *ngIf="isDropdownHovered">
+        <div class="dropdown-items">
+          <a *ngFor="let genre of genres" (click)="onSelectGenre(genre.key)">
+            {{ genre.label }}
+          </a>
+        </div>
+        <app-category-items
+          *ngIf="selectedGenre"
+          [selectedCategory]="selectedGenre"
+          class="app-category-items">
+        </app-category-items>
       </div>
     </div>
 
-    <!-- Categorías sin Dropdown para pantallas grandes -->
+
     <button
       class="tab-button"
       [ngClass]="{'active': selectedCategory === 'random-keys'}"
@@ -147,13 +149,13 @@
             <i class="fas" [ngClass]="{'fa-chevron-down': !categoriesExpanded, 'fa-chevron-up': categoriesExpanded}"></i>
           </button>
           <ul class="submenu" *ngIf="categoriesExpanded">
-            <li><a href="#" (click)="selectCategory('vr'); closeMenuModal()">VR</a></li>
-            <li><a href="#" (click)="selectCategory('aventura'); closeMenuModal()">Aventura</a></li>
-            <li><a href="#" (click)="selectCategory('accion'); closeMenuModal()">Acción</a></li>
-            <li><a href="#" (click)="selectCategory('terror'); closeMenuModal()">Terror</a></li>
-            <li><a href="#" (click)="selectCategory('battle-royal'); closeMenuModal()">Battle Royal</a></li>
-            <li><a href="#" (click)="selectCategory('etc'); closeMenuModal()">ETC</a></li>
+            <li *ngFor="let category of genres">
+              <a href="#" (click)="selectCategory(category.key); closeMenuModal()">
+                {{ category.label }}
+              </a>
+            </li>
           </ul>
+
         </li>
         <li>
           <a routerLink="/random-keys" class="menu-link">
