@@ -28,7 +28,7 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 })
 export class MainScreenGiftCardConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
-  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = [];
+  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []
   currentGiftCards: KinguinGiftCard[] = [];
 
   constructor(
@@ -71,17 +71,24 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
     this.mainScreenGiftCardService.removeMainScreenGiftCardItems([]).subscribe(
       () => {
+        console.log('Previous highlights removed successfully!');
         this.showSnackBar("Changes saved successfully.")
         this.mainScreenGiftCardService.addMainScreenGiftCardItems(productIds).subscribe(
           () => {
+            console.log('Highlights saved successfully!');
+            this.showSnackBar("Changes saved successfully.")
+          },
+          (error) => {
+            console.error('Failed to save highlights', error);
             this.showSnackBar("Failed saving changes.")
           }
         );
       },
       (error) => {
-        this.showSnackBar("Failed to save changes.");
+        console.error('Failed to remove previous highlights', error);
+        this.showSnackBar("Failed saving changes.")
       }
-    )
+    );
   }
 
   showSnackBar(message: string): void {

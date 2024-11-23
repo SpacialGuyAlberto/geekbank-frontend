@@ -78,7 +78,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.currentIndex = this.itemsPerPage;
     } else {
       /// this.fetchGiftCards();
-      this.fetchMainGiftCard();
     }
 
     // this.store.dispatch(loadGiftCards());
