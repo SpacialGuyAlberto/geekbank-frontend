@@ -116,13 +116,13 @@
   color: #dcd0d0;
   margin-bottom: calc(0.625rem * var(--scale-factor));
   text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; /* Permite que el texto ajuste automáticamente */
+  overflow: visible; /* Evita recortar el texto */
+  text-overflow: clip; /* Deshabilita los puntos suspensivos */
   max-width: 100%;
-  max-height: calc(1.5rem * var(--scale-factor)); /* Altura inicial para mostrar solo una línea */
-  transition: max-height 0.5s ease; /* Transición para una expansión fluida */
+  line-height: 1.2; /* Opcional: ajusta la separación entre líneas */
 }
+
 
 .gift-card:hover .gift-card-title {
   white-space: normal; /* Permite que el texto se ajuste en varias líneas */

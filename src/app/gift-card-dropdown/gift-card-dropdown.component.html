@@ -1,0 +1,13 @@
+<!-- src/app/components/gift-card-dropdown/gift-card-dropdown.component.html -->
+<div class="gift-card-dropdown" *ngIf="giftCards.length > 0">
+  <div *ngFor="let card of giftCards" class="gift-card-item">
+    <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+    <div class="gift-card-details">
+      <h3>{{ card.name }}</h3>
+      <p>{{ card.price | currency }}</p>
+    </div>
+  </div>
+</div>
+<div *ngIf="giftCards.length === 0" class="no-results">
+  <p>No se encontraron tarjetas de regalo.</p>
+</div>

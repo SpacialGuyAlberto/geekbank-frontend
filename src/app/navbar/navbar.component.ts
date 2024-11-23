@@ -47,27 +47,27 @@ import {CategoryItemsComponent} from "../components/category-items/category-item
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
-  genres: { key: string; label: string }[] = [
-    { key: 'Action', label: 'Action' },
-    { key: 'Adventure', label: 'Adventure' },
+  genres: { key: string; label: string, icon?: string }[] = [
+    { key: 'Action', label: 'Action', icon: "fa-solid fa-plane"},
+    { key: 'Adventure', label: 'Adventure', icon: "fa-brands fa-space-awesome"},
     { key: 'Anime', label: 'Anime' },
     { key: 'Casual', label: 'Casual' },
-    { key: 'Co op', label: 'Co op' },
-    { key: 'Dating simulator', label: 'Dating Simulator' },
+    { key: 'Co-op', label: 'Co op' },
+    { key: 'Dating Simulator', label: 'Dating Simulator' },
     { key: 'Fighting', label: 'Fighting' },
     { key: 'Fps', label: 'FPS' },
-    { key: 'Hack and slash', label: 'Hack and Slash' },
-    { key: 'Hidden object', label: 'Hidden Object' },
+    { key: 'Hack and Slash', label: 'Hack and Slash' },
+    { key: 'Hidden Object', label: 'Hidden Object' },
     { key: 'Horror', label: 'Horror' },
     { key: 'Indie', label: 'Indie' },
     { key: 'Life simulation', label: 'Life simulation' },
     { key: 'Mmo', label: 'MMO' },
     { key: 'Music soundtrack', label: 'Music / Soundtrack' },
     { key: 'Online courses', label: 'Online Courses' },
-    { key: 'Open world', label: 'Open World' },
+    { key: 'Open World', label: 'Open World' },
     { key: 'Platformer', label: 'Platformer' },
     { key: 'Point and click', label: 'Point & click' },
-    { key: 'Psn card', label: 'PSN Card' },
+    { key: 'PSN Card', label: 'PSN Card' },
     { key: 'Puzzle', label: 'Puzzle' },
     { key: 'Racing', label: 'Racing' },
     { key: 'Rpg', label: 'RPG' },
@@ -78,11 +78,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     { key: 'Strategy', label: 'Strategy' },
     { key: 'Subscription', label: 'Subscription' },
     { key: 'Survival', label: 'Survival' },
-    { key: 'Third person shooter', label: 'Third-Person Shooter' },
+    { key: 'Third-Person Shooter', label: 'Third-Person Shooter' },
     { key: 'Visual novel', label: 'Visual Novel' },
-    { key: 'Vr games', label: 'VR Games' },
-    { key: 'Xbox live gold card', label: 'XBOX LIVE Gold Card' },
-    { key: 'Xbox live points', label: 'XBOX LIVE Points' },
+    { key: 'VR Games', label: 'VR Games' },
+    { key: 'XBOX LIVE Gold Card', label: 'XBOX LIVE Gold Card' },
+    { key: 'XBOX LIVE Points', label: 'XBOX LIVE Points' },
   ];
   selectedLanguage: string = 'en';
   isLanguageMenuOpen: boolean = false;

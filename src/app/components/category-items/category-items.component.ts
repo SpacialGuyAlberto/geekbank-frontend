@@ -25,7 +25,7 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
     hideOutOfStock: false,
     platform: '',
     region: '',
-    priceRange: 50,
+    priceRange: undefined,
     os: '',
     genre: '',
     language: '',
@@ -74,7 +74,12 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
         if (giftCards.length === 0) {
           console.warn(`No products found for genre: ${genre}`);
         }
-        this.giftCards = giftCards;
+        this.giftCards = giftCards.map(card => {
+          card.coverImageOriginal = card.images.cover?.thumbnail || '';
+          card.coverImage = card.images.cover?.thumbnail || '';
+          return card;
+        });
+
       },
       (error) => {
         console.error('Error fetching gift cards by genre:', error);

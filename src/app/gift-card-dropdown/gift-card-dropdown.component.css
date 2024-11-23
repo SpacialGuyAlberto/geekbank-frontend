@@ -1,0 +1,48 @@
+/* src/app/components/gift-card-dropdown/gift-card-dropdown.component.css */
+.gift-card-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  max-height: 400px;
+  overflow-y: auto;
+  display: block;
+  background-color: rgba(255, 0, 0, 0.1); /* Fondo temporal para visualización */
+}
+
+.gift-card-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.gift-card-item:hover {
+  background-color: #f1f1f1;
+}
+
+.gift-card-image {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.gift-card-details h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.gift-card-details p {
+  margin: 0;
+  color: #555;
+}
+
+.no-results {
+  padding: 10px;
+  text-align: center;
+  color: #888;
+}

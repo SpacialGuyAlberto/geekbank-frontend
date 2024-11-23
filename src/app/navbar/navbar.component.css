@@ -582,20 +582,30 @@ app-category-items .card p {
   position: absolute;
   top: 100%; /* Justo debajo del botón */
   left: 0;
+  min-width: 400px; /* Asegura un ancho mínimo */
+  width: auto; /* Permite que el contenido interno defina el ancho */
   background-color: #111; /* Fondo oscuro */
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  min-width: 200px;
-  overflow: visible; /* Importante: permite que app-category-items sea visible */
+  z-index: 1000;
+  display: flex; /* Flexbox para diseño horizontal */
+  flex-wrap: nowrap; /* Evita que los elementos bajen a una nueva línea */
+  padding: 15px;
+  box-sizing: border-box;
+  overflow: hidden; /* Evita que los elementos se desborden */
 }
+
+
+
 
 /* Contenedor Scrollable para las Categorías */
 .dropdown-items {
-  max-height: 300px; /* Ajusta según tus necesidades */
-  overflow-y: auto;
-  padding: 0 10px; /* Añade padding para los enlaces */
+  max-height: 300px; /* Altura máxima con scrollbar */
+  overflow-y: auto; /* Activa el scroll vertical */
+  flex: 0 0 200px; /* Fija el ancho a 200px */
+  padding-right: 15px; /* Espacio para el scrollbar */
 }
+
 
 /* Estilos de los enlaces dentro del dropdown */
 .dropdown-items a {
@@ -605,6 +615,7 @@ app-category-items .card p {
   text-decoration: none;
   font-size: 14px;
   transition: background-color 0.3s;
+  flex: 1;
 }
 
 .dropdown-items a:hover {
@@ -612,25 +623,28 @@ app-category-items .card p {
 }
 
 /* Estilos para el componente de items de categoría */
+/* Contenedor de app-category-items */
 .app-category-items {
-  position: absolute;
-  top: 0;
-  left: 100%; /* Posiciona a la derecha del dropdown-content */
-  background-color: #222; /* Ajusta el color de fondo según tu diseño */
+  position: relative; /* Relativo al contenedor principal */
+  margin-left: 15px; /* Separación desde el scrollbar */
+  background-color: #111; /* Fondo oscuro */
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 11; /* Asegura que esté por encima del dropdown-content */
-  min-width: 200px;
-  display: none; /* Por defecto oculto */
+  z-index: 10;
+  min-width: 300px; /* Define un ancho mínimo */
+  flex: 1; /* Ocupa el espacio restante disponible */
+  display: block; /* Asegura que se renderice correctamente */
 }
 
-/* Mostrar app-category-items cuando isDropdownHovered y selectedGenre son verdaderos */
-.dropdown:hover .app-category-items {
+
+
+.dropdown-content:hover .app-category-items {
   display: block;
 }
 
-/* Opcional: Personalizar la barra de scroll */
+
+
 .dropdown-items::-webkit-scrollbar {
   width: 8px;
 }
@@ -645,18 +659,54 @@ app-category-items .card p {
   border-radius: 4px;
 }
 
-/* Asegurar que app-category-items no tenga espacios no deseados */
+
 .dropdown-content, .app-category-items {
   box-sizing: border-box;
 }
 
-/* Ajustes adicionales para app-category-items */
+
 .app-category-items {
-  /* Asegúrate de que no haya margenes que puedan causar recorte */
-  margin-top: 0; /* Elimina margen superior */
+
+  margin-top: 0;
 }
 
-/* ... otros estilos existentes ... */
+/* src/app/components/navbar/navbar.component.css */
+
+/* Asegura que el contenedor de la barra de búsqueda es relativo para el posicionamiento absoluto del dropdown */
+.navbar-center {
+  position: relative;
+}
+
+/* Estilos adicionales para el dropdown */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-results-dropdown .gift-card-item {
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.search-results-dropdown .gift-card-item:hover {
+  background-color: #f1f1f1;
+}
+
+.no-results {
+  padding: 10px;
+  text-align: center;
+  color: #888;
+}
+
+
 
 
 @media (max-width: 30rem) { /* 480px */

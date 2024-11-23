@@ -53,11 +53,14 @@
         <i class="fas fa-th-list" aria-hidden="true"></i> Categorías
       </button>
       <div class="dropdown-content" role="menu" *ngIf="isDropdownHovered">
+        <!-- Lista de categorías -->
         <div class="dropdown-items">
           <a *ngFor="let genre of genres" (click)="onSelectGenre(genre.key)">
             {{ genre.label }}
           </a>
         </div>
+
+        <!-- Contenedor de elementos seleccionados -->
         <app-category-items
           *ngIf="selectedGenre"
           [selectedCategory]="selectedGenre"
