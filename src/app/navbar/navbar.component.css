@@ -57,7 +57,7 @@ html {
 
 .tab-button {
   background: transparent;
-  color: #E1E6F1; /* Color de texto claro */
+  color: #B5CDE2FF; /* Color de texto claro */
   padding: 0.75rem 1.5rem;
   text-align: center;
   cursor: pointer;
@@ -611,7 +611,7 @@ app-category-items .card p {
 .dropdown-items a {
   display: block;
   padding: 8px 15px;
-  color: #fff;
+  color: #B5CDE2FF;
   text-decoration: none;
   font-size: 14px;
   transition: background-color 0.3s;
