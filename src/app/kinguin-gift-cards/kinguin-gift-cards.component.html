@@ -8,10 +8,17 @@
     <div class="gift-card-content">
       <h3 class="gift-card-title">{{ card.name }}</h3>
       <div class="gift-card-price">
-        <span>{{ (card.price * exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>
+        <span>{{ (card.price * 26.32).toFixed(2) | currency: 'Lps. ' }}</span>
       </div>
     </div>
   </div>
+</div>
+
+<div class="load-more-container">
+  <button class="load-more-button" (click)="loadMore()">
+    <span class="arrow"></span>
+    <span class="text">Load More</span>
+  </button>
 </div>
 
 

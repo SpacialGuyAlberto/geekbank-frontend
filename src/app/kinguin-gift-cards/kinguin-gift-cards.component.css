@@ -2,7 +2,7 @@
   --scale-factor: 0.75; /* 75% del tamaño original */
   --primary-color: #0B0D19;
   --secondary-color: #021526;
-  --text-color: #FFFFFF;
+  --text-color: #B5CDE2FF;
   --highlight-color: #00d4ff;
   --accent-color: #88D66C;
   --font-primary: 'Roboto', sans-serif;
@@ -85,19 +85,70 @@
   padding: calc(1rem * var(--scale-factor));
 }
 
-/* Título de la Gift Card */
 .gift-card-title {
   font-size: calc(1rem * var(--scale-factor));
-  color: #dcd0d0;
+  color: var(--text-color);
   margin-bottom: calc(0.625rem * var(--scale-factor));
   text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal; /* Permite que el texto ajuste automáticamente */
+  overflow: visible; /* Evita recortar el texto */
+  text-overflow: clip; /* Deshabilita los puntos suspensivos */
   max-width: 100%;
-  max-height: calc(1.5rem * var(--scale-factor)); /* Altura inicial para mostrar solo una línea */
-  transition: max-height 0.5s ease, white-space 0.5s ease; /* Transición para una expansión fluida */
+  line-height: 1.2; /* Opcional: ajusta la separación entre líneas */
 }
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.load-more-button {
+  background:  rgba(28, 29, 50, 0.4);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.load-more-button:hover {
+  background-color:   rgba(28, 29, 50, 0.4);
+  transform: translateY(-2px);
+}
+
+.load-more-button:active {
+  transform: translateY(0);
+}
+
+.arrow {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-left: 2px solid #B5CDE2FF;
+  border-bottom: 2px solid #B5CDE2FF;
+  transform: rotate(-45deg);
+  margin-top: 2px;
+  transition: transform 0.2s;
+}
+
+.load-more-button:hover .arrow {
+  transform: rotate(135deg);
+}
+
+.text {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-color)
+}
+
 
 /* Expande el título al hacer hover */
 .gift-card:hover .gift-card-title {

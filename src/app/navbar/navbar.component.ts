@@ -1,7 +1,7 @@
 // src/app/components/navbar/navbar.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
-import { AsyncPipe, NgClass, NgIf } from '@angular/common';
+import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -23,6 +23,7 @@ import { AppState } from "../app.state";
 import {loadUserFromSession, logout} from "../state/auth/auth.actions";
 import {user} from "@angular/fire/auth";
 import {loadUser} from "../state/user/user.actions";
+import {CategoryItemsComponent} from "../components/category-items/category-items.component";
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -38,14 +39,54 @@ import {loadUser} from "../state/user/user.actions";
     NotificationBellComponent,
     BalanceComponent,
     AsyncPipe,
+    NgForOf,
+    CategoryItemsComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
+  genres: { key: string; label: string, icon?: string }[] = [
+    { key: 'Action', label: 'Action', icon: "fa-solid fa-plane"},
+    { key: 'Adventure', label: 'Adventure', icon: "fa-brands fa-space-awesome"},
+    { key: 'Anime', label: 'Anime' },
+    { key: 'Casual', label: 'Casual' },
+    { key: 'Co-op', label: 'Co op' },
+    { key: 'Dating Simulator', label: 'Dating Simulator' },
+    { key: 'Fighting', label: 'Fighting' },
+    { key: 'Fps', label: 'FPS' },
+    { key: 'Hack and Slash', label: 'Hack and Slash' },
+    { key: 'Hidden Object', label: 'Hidden Object' },
+    { key: 'Horror', label: 'Horror' },
+    { key: 'Indie', label: 'Indie' },
+    { key: 'Life simulation', label: 'Life simulation' },
+    { key: 'Mmo', label: 'MMO' },
+    { key: 'Music soundtrack', label: 'Music / Soundtrack' },
+    { key: 'Online courses', label: 'Online Courses' },
+    { key: 'Open World', label: 'Open World' },
+    { key: 'Platformer', label: 'Platformer' },
+    { key: 'Point and click', label: 'Point & click' },
+    { key: 'PSN Card', label: 'PSN Card' },
+    { key: 'Puzzle', label: 'Puzzle' },
+    { key: 'Racing', label: 'Racing' },
+    { key: 'Rpg', label: 'RPG' },
+    { key: 'Simulation', label: 'Simulation' },
+    { key: 'Software', label: 'Software' },
+    { key: 'Sport', label: 'Sport' },
+    { key: 'Story rich', label: 'Story rich' },
+    { key: 'Strategy', label: 'Strategy' },
+    { key: 'Subscription', label: 'Subscription' },
+    { key: 'Survival', label: 'Survival' },
+    { key: 'Third-Person Shooter', label: 'Third-Person Shooter' },
+    { key: 'Visual novel', label: 'Visual Novel' },
+    { key: 'VR Games', label: 'VR Games' },
+    { key: 'XBOX LIVE Gold Card', label: 'XBOX LIVE Gold Card' },
+    { key: 'XBOX LIVE Points', label: 'XBOX LIVE Points' },
+  ];
   selectedLanguage: string = 'en';
   isLanguageMenuOpen: boolean = false;
+  dropdownOpen: boolean = false;
   showNavbar: boolean = true;
   isMenuOpen: boolean = false;
   showSearchBar: boolean = true;
@@ -59,12 +100,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
   routerSubscription!: Subscription;
   userMenu: string = "";
   inUserDetailsRoute: boolean = false;
-  selectedCategory: string = 'categorias';
+  selectedCategory: string = '';
+  selectedGenre: string | null = null;
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
   role : string | undefined = '';
   user$: Observable<User | null>;
   isAuthenticated$: Observable<boolean | null>;
+  isDropdownHovered: boolean = false;
+  hideDropdownTimeout: any;
+
 
   private subscriptions: Subscription = new Subscription();
 
@@ -227,6 +272,43 @@ export class NavbarComponent implements OnInit, OnDestroy {
   toggleUserTabs() {
     this.tabsExpanded = !this.tabsExpanded;
   }
+
+
+
+  onDropdownMouseEnter(): void {
+    this.isDropdownHovered = true;
+    // Cancelar el temporizador si el mouse vuelve a entrar al dropdown
+    if (this.hideDropdownTimeout) {
+      clearTimeout(this.hideDropdownTimeout);
+      this.hideDropdownTimeout = null;
+    }
+  }
+
+  onDropdownMouseLeave(): void {
+    // Configurar un temporizador para ocultar el dropdown después de 1 segundo
+    this.hideDropdownTimeout = setTimeout(() => {
+      this.isDropdownHovered = false;
+      this.selectedGenre = null;
+    }, 1000);
+  }
+
+  onHoverGenre(genre: string | null): void {
+    if (genre) {
+      this.selectedGenre = genre;
+    } else {
+      this.selectedGenre = null;
+    }
+  }
+  onSelectGenre(genre: string): void {
+    if (this.selectedGenre === genre) {
+      // Si la misma categoría se selecciona nuevamente, deseleccionarla
+      this.selectedGenre = null;
+    } else {
+      this.selectedGenre = genre;
+    }
+  }
+
+
 
   protected readonly user = user;
 }

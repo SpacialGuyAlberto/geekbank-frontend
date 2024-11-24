@@ -84,8 +84,9 @@
   bottom: 0.625rem; /* 10px desde la parte inferior */
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(255, 106, 0, 0.8); /* Transparente para destacar sobre la imagen */
-  color: #fff;
+  font-weight: bold;
+  background-color: rgba(255, 106, 0, 0.9); /* Transparente para destacar sobre la imagen */
+  color: #140706;
   border: none;
   padding: 0.625rem 1.25rem; /* 10px 20px */
   border-radius: 0.3125rem; /* 5px */

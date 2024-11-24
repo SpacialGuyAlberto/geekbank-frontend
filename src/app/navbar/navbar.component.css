@@ -57,7 +57,7 @@ html {
 
 .tab-button {
   background: transparent;
-  color: #E1E6F1; /* Color de texto claro */
+  color: #B5CDE2FF; /* Color de texto claro */
   padding: 0.75rem 1.5rem;
   text-align: center;
   cursor: pointer;
@@ -461,10 +461,6 @@ html {
   transform: scale(1.2);
 }
 
-.dropdown {
-  position: relative;
-}
-
 .tab-button.dropdown-toggle {
   background-color: rgba(6, 50, 50, 0.9); /* Fondo más oscuro */
   color: #a0e4ff; /* Color de texto */
@@ -482,38 +478,44 @@ html {
   transform: scale(1.05); /* Efecto de crecimiento */
 }
 
-/* Estilo para el contenido desplegable */
-.dropdown-content {
-  display: none; /* Oculto por defecto */
+
+app-category-items {
   position: absolute;
-  top: 100%; /* Debajo del botón */
+  top: 100%; /* Justo debajo de la lista */
   left: 0;
-  background-color: rgba(10, 10, 21, 0.9);
-  min-width: 12rem; /* Ancho mínimo */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-  border-radius: 0.5rem;
-  overflow: hidden;
-  z-index: 1000;
+  background-color: #111; /* Combina con el diseño */
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-top: 5px; /* Espacio entre el dropdown y el cuadro */
+  z-index: 15;
+  padding: 10px;
+  min-width: 300px; /* Ajusta el ancho según el contenido */
 }
 
-/* Mostrar el contenido desplegable al hacer hover en el botón */
-.dropdown:hover .dropdown-content {
-  display: block;
+app-category-items .card {
+  background-color: #222; /* Fondo oscuro para las tarjetas */
+  border: none;
+  border-radius: 5px;
+  margin: 10px 0;
+  padding: 10px;
+  color: #fff;
 }
 
-/* Estilos para las opciones de categorías */
-.dropdown-content a {
-  color: #a0e4ff;
-  padding: 0.75rem 1.5rem;
-  text-decoration: none;
-  display: block;
-  transition: background-color 0.3s ease, color 0.3s ease;
+app-category-items .card img {
+  max-width: 100%;
+  border-radius: 5px;
 }
 
-.dropdown-content a:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #88D66C;
+app-category-items .card h3 {
+  font-size: 16px;
+  margin: 10px 0 5px;
 }
+
+app-category-items .card p {
+  font-size: 14px;
+  color: #aaa;
+}
+
 
 
 /* Responsividad */
@@ -558,20 +560,6 @@ html {
     padding: 0.5rem 1rem;
   }
 
-  .dropdown-content {
-    position: static;
-    background-color: transparent;
-    box-shadow: none;
-    width: 100%;
-    text-align: center;
-  }
-
-  .dropdown-content a {
-    padding: 0.5rem 0;
-    font-size: 0.9rem;
-    color: #88D66C;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  }
 
   .tab-button.dropdown-toggle {
     width: 100%;
@@ -579,6 +567,147 @@ html {
     font-size: 1rem;
   }
 }
+
+/* src/app/components/navbar/navbar.component.css */
+
+/* ... otros estilos existentes ... */
+
+/* Contenedor del dropdown con posición relativa */
+.dropdown {
+  position: relative;
+}
+
+/* Estilos del contenido del dropdown */
+.dropdown-content {
+  position: absolute;
+  top: 100%; /* Justo debajo del botón */
+  left: 0;
+  min-width: 400px; /* Asegura un ancho mínimo */
+  width: auto; /* Permite que el contenido interno defina el ancho */
+  background-color: #111; /* Fondo oscuro */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex; /* Flexbox para diseño horizontal */
+  flex-wrap: nowrap; /* Evita que los elementos bajen a una nueva línea */
+  padding: 15px;
+  box-sizing: border-box;
+  overflow: hidden; /* Evita que los elementos se desborden */
+}
+
+
+
+
+/* Contenedor Scrollable para las Categorías */
+.dropdown-items {
+  max-height: 300px; /* Altura máxima con scrollbar */
+  overflow-y: auto; /* Activa el scroll vertical */
+  flex: 0 0 200px; /* Fija el ancho a 200px */
+  padding-right: 15px; /* Espacio para el scrollbar */
+}
+
+
+/* Estilos de los enlaces dentro del dropdown */
+.dropdown-items a {
+  display: block;
+  padding: 8px 15px;
+  color: #B5CDE2FF;
+  text-decoration: none;
+  font-size: 14px;
+  transition: background-color 0.3s;
+  flex: 1;
+}
+
+.dropdown-items a:hover {
+  background-color: #444; /* Color de fondo al pasar el ratón */
+}
+
+/* Estilos para el componente de items de categoría */
+/* Contenedor de app-category-items */
+.app-category-items {
+  position: relative; /* Relativo al contenedor principal */
+  margin-left: 15px; /* Separación desde el scrollbar */
+  background-color: #111; /* Fondo oscuro */
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+  min-width: 300px; /* Define un ancho mínimo */
+  flex: 1; /* Ocupa el espacio restante disponible */
+  display: block; /* Asegura que se renderice correctamente */
+}
+
+
+
+.dropdown-content:hover .app-category-items {
+  display: block;
+}
+
+
+
+.dropdown-items::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dropdown-items::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.dropdown-items::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+
+.dropdown-content, .app-category-items {
+  box-sizing: border-box;
+}
+
+
+.app-category-items {
+
+  margin-top: 0;
+}
+
+/* src/app/components/navbar/navbar.component.css */
+
+/* Asegura que el contenedor de la barra de búsqueda es relativo para el posicionamiento absoluto del dropdown */
+.navbar-center {
+  position: relative;
+}
+
+/* Estilos adicionales para el dropdown */
+.search-results-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.search-results-dropdown .gift-card-item {
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.search-results-dropdown .gift-card-item:hover {
+  background-color: #f1f1f1;
+}
+
+.no-results {
+  padding: 10px;
+  text-align: center;
+  color: #888;
+}
+
+
+
 
 @media (max-width: 30rem) { /* 480px */
   .navbar-links a,

@@ -3,236 +3,168 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  background: rgba(26, 42, 56, 0.9); /* Fondo oscuro con opacidad */
-  backdrop-filter: blur(10px); /* Desenfoque moderado */
-  border-radius: 12px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Sombra más pronunciada */
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem;
+  background: #1c1c1c; /* Fondo oscuro */
+  border-radius: 0.5rem;
+  border: 1px solid #2d2d2d; /* Borde sutil */
+  width: 18rem; /* Ancho ajustado */
+  margin-top: 5rem;
 }
 
 /* Contenedor de Filtros */
 .filters-wrapper {
   width: 100%;
-  max-width: 450px;
-  padding: 30px;
-  background: rgba(26, 42, 56, 0.85); /* Fondo oscuro ligeramente transparente */
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra más sutil */
-  color: #A0E4FF; /* Texto azul claro suave */
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  padding: 1rem;
+  background: #1c1c1c; /* Fondo ligeramente más claro */
+  border-radius: 0.5rem;
+  color: #f1f1f1; /* Texto claro */
+  font-family: 'Arial', sans-serif;
+  font-size: 0.875rem;
 }
 
 /* Título */
 .filters-title {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #A0E4FF; /* Color del texto azul claro */
-  font-size: 1.8em;
-  font-weight: 700;
+  text-align: left;
+  margin-bottom: 1rem;
+  color: #f1f1f1;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* Grupos de Filtros */
 .filter-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
+  margin-bottom: 0.75rem; /* Espaciado reducido */
 }
 
 /* Etiquetas */
 .filter-group label {
-  margin-bottom: 8px;
-  font-size: 1em;
-  color: #A0E4FF; /* Color azul claro para etiquetas */
-  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #f1f1f1;
+  font-weight: 400;
 }
 
 /* Inputs y Selects */
 .filter-group input[type="checkbox"],
 .filter-group select,
 .filter-group input[type="range"] {
-  padding: 12px;
-  border: 1px solid #34495e; /* Borde gris azulado */
-  border-radius: 6px;
-  background: #1a2a38; /* Fondo oscuro */
-  color: #A0E4FF; /* Texto azul claro */
-  font-size: 1em;
+  padding: 0.5rem;
+  border: 1px solid #3a3a3a; /* Borde neutro */
+  border-radius: 0.25rem;
+  background: #1c1c1c; /* Fondo oscuro */
+  color: #f1f1f1;
+  font-size: 0.875rem;
   outline: none;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Checkbox específico */
+.filter-group input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #54c7d9; /* Color naranja para el check */
+}
+
+/* Inputs interactivos */
+.filter-group select:hover,
+.filter-group input[type="range"]:hover {
+  border-color: #54c7d9; /* Resaltado naranja */
+}
+
+.filter-group input[type="range"] {
+  -webkit-appearance: none;
+  background: #3a3a3a; /* Fondo del slider */
+  height: 0.25rem;
+  border-radius: 0.125rem;
+}
+
+.filter-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: #54c7d9; /* Thumb naranja */
   cursor: pointer;
 }
 
-/* Estilo específico para Checkbox */
-.filter-group input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  background: #1a2a38;
+.filter-group input[type="range"]::-moz-range-thumb {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: #54c7d9;
+  cursor: pointer;
 }
 
-.filter-group input[type="checkbox"]:checked {
-  background: #3498db; /* Azul brillante al estar marcado */
-  border-color: #2980b9;
-}
-
-/* Efectos al pasar el ratón */
-.filter-group select:hover,
-.filter-group input[type="range"]:hover,
-.filter-group input[type="checkbox"]:hover {
-  border-color: #2980b9; /* Borde azul más oscuro al interactuar */
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.5); /* Sombra azul suave */
-}
-
-/* Rango de Precios */
+/* Texto debajo del slider */
 .price-value {
-  margin-top: 6px;
-  font-size: 0.95em;
-  color: #A0E4FF; /* Color azul claro */
-  text-align: right;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #f1f1f1;
+  text-align: left;
 }
 
 /* Botones de Acción */
 .button-group {
   display: flex;
   justify-content: space-between;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
-/* Botón de Aplicar Filtros */
 .apply-filters-button {
   flex: 1;
-  padding: 14px;
-  background: #2980b9; /* Azul sólido */
+  padding: 0.5rem;
+  background: #54c7d9; /* Fondo naranja */
   border: none;
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 1em;
-  font-weight: 600;
+  border-radius: 0.25rem;
+  color: #1c1c1c; /* Texto oscuro */
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
 }
 
 .apply-filters-button:hover {
-  background: #1f6391; /* Azul más oscuro al pasar el ratón */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+  background: #33a4b5; /* Naranja más oscuro */
 }
 
-.apply-filters-button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-/* Botón de Resetear Filtros */
 .reset-filters-button {
   flex: 1;
-  padding: 14px;
-  background: #e74c3c; /* Rojo sólido */
+  padding: 0.5rem;
+  background: #3a3a3a; /* Fondo neutro oscuro */
   border: none;
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 1em;
-  font-weight: 600;
+  border-radius: 0.25rem;
+  color: #f1f1f1; /* Texto claro */
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: background 0.2s ease;
 }
 
 .reset-filters-button:hover {
-  background: #c0392b; /* Rojo más oscuro al pasar el ratón */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
-}
-
-.reset-filters-button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
-}
-
-loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.bars {
-  display: flex;
-  align-items: flex-end;
-  gap: calc(4px * var(--scale-factor));
-}
-
-.bar {
-  width: calc(8px * var(--scale-factor));
-  height: calc(20px * var(--scale-factor));
-  background-color: var(--highlight-color);
-  border-radius: calc(4px * var(--scale-factor));
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
-  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-.bar1 {
-  background-color: var(--highlight-color-1);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
-  animation-delay: -0.4s;
-}
-
-.bar2 {
-  background-color: var(--highlight-color-2);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
-  animation-delay: -0.2s;
-}
-
-.bar3 {
-  background-color: var(--highlight-color-3);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
-  animation-delay: 0s;
-}
-
-.bar4 {
-  background-color: var(--highlight-color-4);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
-  animation-delay: 0.2s;
-}
-
-.bar5 {
-  background-color: var(--highlight-color);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
-  animation-delay: 0.4s;
-}
-
-@keyframes pulse-bars {
-  0%, 100% {
-    transform: scaleY(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scaleY(1.5);
-    opacity: 1;
-  }
+  background: #2d2d2d; /* Fondo más oscuro al hover */
 }
 
 /* Responsividad */
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
   .filters-wrapper {
-    padding: 25px;
+    padding: 0.75rem;
   }
 
   .filters-title {
-    font-size: 1.5em;
+    font-size: 0.875rem;
   }
 
   .filter-group {
-    margin-bottom: 18px;
-  }
-
-  .button-group {
-    flex-direction: column;
+    margin-bottom: 0.5rem;
   }
 
   .apply-filters-button,
   .reset-filters-button {
-    padding: 12px;
-    font-size: 0.95em;
+    padding: 0.4rem;
+    font-size: 0.75rem;
   }
 }

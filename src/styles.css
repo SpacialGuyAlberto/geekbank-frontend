@@ -41,7 +41,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --accent-green: #39ff14; /* Verde neón */
   --accent-purple: #23abab; /* Púrpura intenso */
   --accent-blue: #1e90ff; /* Azul brillante */
-  --text-color: #e0e0e0; /* Gris claro para texto */
+  --text-color: #B5CDE2FF; /* Gris claro para texto */
   --border-color: rgba(255, 255, 255, 0.1); /* Borde muy sutil */
 
   /* Botones con Linear Gradients */
@@ -83,7 +83,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --bell-icon-hover-admin: linear-gradient(45deg, #d1931f, #c9541c);
 
   --card-border: rgba(255, 255, 255, 0.6); /* Borde visible */
-  --card-hover-border: rgba(255, 255, 255, 0.9);
+  --card-hover-border:#B5CDE2FF;
   --price-bg: linear-gradient(45deg, #1e90ff, #ff6ec7); /* Fondo suave debajo del precio */
   --shadow-color: rgba(0, 0, 0, 0.7); /* Sombra más oscura para mejor contraste */
 

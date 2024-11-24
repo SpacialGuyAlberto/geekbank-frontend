@@ -32,7 +32,7 @@
   justify-content: center;
   height: 100%;
   padding: 0 2.5rem; /* 40px */
-  color: #fff;
+  color: #d1d1d1;
   background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
 }
 
@@ -43,7 +43,7 @@
 
 .banner-text h1 {
   font-size: 2.2rem;
-  font-weight: bold;
+    font-weight: bold;
   margin: 0;
 }
 
@@ -60,7 +60,7 @@
 
 .call-to-action-button {
   background-color: #ff6a00;
-  color: #fff;
+  color: #140706;
   padding: 0.625rem 1.25rem; /* 10px 20px */
   font-size: 1.2rem;
   font-weight: bold;
@@ -80,7 +80,7 @@
   align-items: center;
   gap: 0.9375rem; /* 15px */
   font-size: 1.5rem; /* 24px */
-  color: #ccc;
+  color: #d1d1d1;
   margin-top: 1.25rem; /* 20px */
 }
 

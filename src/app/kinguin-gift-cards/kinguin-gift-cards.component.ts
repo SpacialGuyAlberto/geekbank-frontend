@@ -48,11 +48,11 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
   cards$!: Observable<KinguinGiftCard[]>
-
   exchangeRate: number = 0; // Tasa de cambio actualizada
   totalPages: number = 3309;
-  itemsPerPage: number = 8; // Número de tarjetas por carga
-  currentIndex: number = 0; // Índice para el 'Load More'
+  itemsPerPage: number = 5;
+  currentIndex: number = 0;
+  displayedLimit: number = 10;
   totalItems: number = 8000;
   isSearching: boolean = false;
   private giftCardsSubscription!: Subscription;
@@ -71,22 +71,23 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   ) { }
 
   ngOnInit(): void {
-    // Si giftCardsInput está proporcionado, usarlo; de lo contrario, obtener datos predeterminados
     if (this.giftCardsInput && this.giftCardsInput.length > 0) {
       this.giftCards = this.giftCardsInput;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
     } else {
       /// this.fetchGiftCards();
-      this.fetchMainGiftCard();
     }
 
     // this.store.dispatch(loadGiftCards());
     // this.cards$ = this.store.select(selectAllGiftCards);
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
-        ///this.loadGiftCards(this.currentPage)
         this.fetchMainGiftCard();
+
+
+
+
       }
     });
     this.fetchCurrencyExchange();
@@ -112,18 +113,20 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       data.map( card => {
         card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
         card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
-        this.displayedGiftCards.push(card.giftcard);
+        this.giftCards.push(card.giftcard)
+        console.log(this.giftCards)
+        this.displayGiftCards();
+        // this.displayedGiftCards.push(card.giftcard);
         return card;
       })
     });
   }
 
-  //this.giftCards = data.map(card => {
-   // card.coverImageOriginal = card.images.cover?.thumbnail || '';
-    //card.coverImage = card.images.cover?.thumbnail || '';
-    // Puedes añadir lógica adicional aquí si es necesario
-   // return card;
-  //});
+  displayGiftCards(): void {
+    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+    console.log(this.displayedGiftCards);
+    this.currentIndex = this.itemsPerPage;
+  }
 
   fetchGiftCards(): void {
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
@@ -139,16 +142,13 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   loadGiftCards(page: number): void {
-    // Cargar las tarjetas primero
     this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
         card.coverImage = card.images.cover?.thumbnail || '';
-        // Puedes añadir lógica adicional aquí si es necesario
         return card;
       });
 
-      // Actualizar las tarjetas que se muestran
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
     });
@@ -208,7 +208,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
   ngAfterViewInit(): void {
     this.displayedGiftCards.map(item => {
-      // Implementa la lógica para verificar si el ítem está en la wishlist si es necesario
       item.wished = true;
     })
   }
