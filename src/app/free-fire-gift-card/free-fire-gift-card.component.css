@@ -1,149 +1,79 @@
-/* Variables de Color */
-:root {
-  --primary-bg-color: rgba(2, 21, 38, 0.8); /* Fondo oscuro translúcido */
-  --secondary-bg-color: rgba(10, 10, 35, 0.85); /* Fondo translúcido */
-  --tertiary-bg-color: #0B0D19; /* Azul oscuro */
-  --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */
-  --text-color: #E1E6F1; /* Color de texto claro */
-  --accent-pink: #FF6EC7; /* Rosa psicodélico */
-  --accent-green: #A7F432; /* Verde neón */
-  --accent-yellow: #F4D35E; /* Amarillo vibrante */
-  --accent-blue: #7873f5; /* Azul vibrante */
-  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado para botones */
-  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
-  --border-radius: 1rem;
-  --shadow-color: rgba(0, 0, 0, 0.7);
-  --transition-speed: 0.3s;
-}
-
-/* Contenedor Principal */
-.gift-card-details-container {
+/* Contenedor principal del detalle del regalo */
+.contenedor-detalles-regalo {
   display: flex;
-  justify-content: center;
-  align-items: stretch;
   flex-direction: column;
-  gap: 1rem;
-  margin: 10rem auto;
-  max-width: 80%;
-  background-color: var(--primary-bg-color);
-  color: var(--text-color);
-  border: 0.125rem solid rgba(255, 255, 255, 0.3);
-  border-radius: var(--border-radius);
-  box-shadow: 0 0.5rem 1.25rem var(--shadow-color);
-  padding: 2rem;
-  z-index: 1;
-}
-
-/* Imagen de Gift Card */
-.gift-card-image-container {
-  position: relative;
-  flex: 1;
-  max-width: 50%;
-  background-color: var(--glass-bg-color);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  box-shadow: 0 0.25rem 0.5rem var(--shadow-color);
-  overflow: hidden;
-}
-
-.gift-card-image-container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
-  pointer-events: none;
-}
-
-.gift-card-image {
-  width: 100%;
-  border-radius: 0.5rem;
-  transition: transform var(--transition-speed);
-}
-
-.gift-card-image:hover {
-  transform: scale(1.05);
-}
-
-/* Información de la Tarjeta */
-.gift-card-info-card {
-  flex: 1;
-  background-color: var(--secondary-bg-color);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  box-shadow: 0 0.25rem 1rem var(--shadow-color);
-  text-align: center;
-}
-
-/* Títulos y Precios */
-.gift-card-title {
-  font-size: 1.8rem;
-  color: var(--accent-blue);
-}
-
-.gift-card-price {
-  font-size: 2.5rem;
-  color: var(--accent-green);
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-/* Opciones de Diamantes */
-.options-section select {
-  width: 100%;
-  padding: 0.5rem;
-  background-color: var(--tertiary-bg-color);
-  border: 1px solid #bdc3c7;
-  border-radius: 0.25rem;
-  color: var(--text-color);
-}
-
-/* Inputs de Usuario */
-.user-inputs input {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: var(--tertiary-bg-color);
-  border: 1px solid #bdc3c7;
-  border-radius: 0.25rem;
-  color: var(--text-color);
-}
-
-/* Botones de Acción */
-.button-container {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-.btn {
-  display: flex;
-  align-items: center;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 0.5rem;
-  color: #fff;
+  background-color: #2c2c2c; /* Gris oscuro */
+  border: 1px solid #444444; /* Borde ligeramente más claro */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5); /* Sombra más pronunciada para contraste */
+  overflow: hidden; /* Asegura que los bordes redondeados afecten también a las imágenes */
   cursor: pointer;
-  background: var(--button-gradient);
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
-  transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  max-width: 600px;
+  margin: 20px auto;
 }
 
-.btn:hover {
-  background: var(--button-gradient-hover);
-  transform: translateY(-3px);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
+.contenedor-detalles-regalo:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.7);
+}
+
+/* Contenedor de la imagen del regalo */
+.contenedor-imagen-regalo {
+  width: 100%;
+}
+
+.imagen-regalo {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+/* Información de la tarjeta regalo */
+.tarjeta-info-regalo {
+  padding: 16px;
+}
+
+.titulo-regalo {
+  font-size: 1.5rem;
+  color: #f0f0f0; /* Texto claro */
+  margin-bottom: 8px;
+}
+
+.separator {
+  border: none;
+  height: 1px;
+  background-color: #555555; /* Separador en tono medio */
+  margin: 12px 0;
+}
+
+.gift-card-info {
+  font-size: 1rem;
+  color: #dddddd; /* Texto claro */
+  margin: 4px 0;
+}
+
+.gift-card-info span {
+  font-weight: bold;
+  color: #ffffff; /* Texto aún más claro para resaltar */
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
-  .gift-card-details-container {
-    flex-direction: column;
-    padding: 1.5rem;
+  .contenedor-detalles-regalo {
+    margin: 10px;
   }
-  .gift-card-image-container, .gift-card-info-card {
-    width: 100%;
+
+  .tarjeta-info-regalo {
+    padding: 12px;
+  }
+
+  .titulo-regalo {
+    font-size: 1.25rem;
+  }
+
+  .gift-card-info {
+    font-size: 0.95rem;
   }
 }

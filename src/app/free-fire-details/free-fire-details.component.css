@@ -47,7 +47,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
-  margin: 2rem auto;
+  margin: 15rem auto;
   max-width: 1200px;
   padding: 2rem;
   background: var(--glass-bg-color);

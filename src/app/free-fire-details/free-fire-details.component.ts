@@ -5,6 +5,8 @@ import { FreeFireProductService } from "../free-fire-product.service";
 import { FreeFireDiamondProduct } from "../models/free-fire-diamond-product.interface";
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
+import {CartService} from "../cart.service";
+
 
 @Component({
   selector: 'app-free-fire-details',
