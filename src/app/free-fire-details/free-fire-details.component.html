@@ -74,11 +74,11 @@
   </div>
 </div>
 
-<app-payment-options
-  *ngIf="isPaymentModalOpen"
-  (closeModal)="closePaymentModal()"
-  (paymentSelected)="onPaymentSelected($event)"
-></app-payment-options>
+<!--<app-payment-options-->
+<!--  *ngIf="isPaymentModalOpen"-->
+<!--  (closeModal)="closePaymentModal()"-->
+<!--  (paymentSelected)="onPaymentSelected($event)"-->
+<!--&gt;</app-payment-options>-->
 
 <!--<app-tigo-payment-->
 <!--  [totalPrice]="selectedOption?.price || 0"-->
@@ -87,3 +87,13 @@
 <!--  [productId]="selectedOption?.productId ?? null"-->
 <!--  (close)="closeTigoPaymentModal()">-->
 <!--</app-tigo-payment>-->
+
+
+<app-payment
+  *ngIf="isPaymentModalOpen"
+  (closeModal)="closePaymentModal()"
+  [gameUserId]="gamerUserId"
+  [productId]="selectedOption?.productId ?? null"
+  [totalPrice]="selectedOption?.price || 0"
+  [isManualTransaction]="true"
+></app-payment>

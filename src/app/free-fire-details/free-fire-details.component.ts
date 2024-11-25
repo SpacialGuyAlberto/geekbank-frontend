@@ -6,12 +6,13 @@ import { FreeFireDiamondProduct } from "../models/free-fire-diamond-product.inte
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import {CartService} from "../cart.service";
+import {PaymentComponent} from "../payment/payment.component";
 
 
 @Component({
   selector: 'app-free-fire-details',
   standalone: true,
-  imports: [FormsModule, CommonModule, PaymentOptionsComponent, TigoPaymentComponent],
+  imports: [FormsModule, CommonModule, PaymentOptionsComponent, TigoPaymentComponent, PaymentComponent],
   templateUrl: './free-fire-details.component.html',
   styleUrls: ['./free-fire-details.component.css']
 })
