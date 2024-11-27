@@ -17,6 +17,7 @@ export class TigoService{
 
   constructor(private http: HttpClient) {}
 
+  //// Pasar el numero de referencia del unmatched payment
   placeOrder(orderDetails: any): Observable<any> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post(this.apiUrl, orderDetails, { headers, responseType: 'text' });

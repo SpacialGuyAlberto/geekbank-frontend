@@ -24,7 +24,7 @@ import {AuthModalComponent} from "../auth-modal/auth-modal.component";
 import {AccountService} from "../account.service";
 import {Account} from "../models/User";
 import {switchMap} from "rxjs/operators";
-
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-tigo-payment',
@@ -209,7 +209,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.close.emit();
   }
 
-  submitManualVerification(): void {
+  async submitManualVerification(): Promise<void> {
     if (!this.manualVerificationData.refNumber) {
       this.manualVerificationError = 'Por favor, ingrese el número de referencia.';
       return;
@@ -298,21 +298,31 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     // Calcula el monto esperado ajustado con la tasa de cambio
     const expectedAmount = this.totalPrice * this.exchangeRate;
 
-    this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
+    const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
+    if (isVerified) {
+      this.paymentService.initializePayment('tigo', orderDetails);
+    }
   }
 
-  verifyUnmatchedPayment(referenceNumber: string, phoneNumber: string, expectedAmount: number): void {
-    this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, phoneNumber, expectedAmount).subscribe({
-      next: (response) => {
-        this.unmatchedPaymentResponse = response;
-        console.log('Unmatched Payment Response:', response);
-      },
-      error: (error) => {
-        console.error('Error al verificar el monto de pago no coincidente:', error);
-        this.manualVerificationError = error.error?.message || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+  async verifyUnmatchedPayment(referenceNumber: string, phoneNumber: string, expectedAmount: number): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(
+        this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, phoneNumber, expectedAmount)
+      );
+      this.unmatchedPaymentResponse = response;
+      console.log('Unmatched Payment Response:', response);
+      return true;
+    } catch (error: any) { // Utilizamos `any` para manejar el tipo del error.
+      if (error && typeof error === 'object' && 'error' in error) {
+        this.manualVerificationError = (error as any).error?.message || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+      } else {
+        this.manualVerificationError = 'Error desconocido al verificar el pago.';
       }
-    });
+      console.error('Error al verificar el monto de pago no coincidente:', error);
+      return false;
+    }
   }
+
 
   onSubmit(): void {
     let orderDetails: OrderRequest;
