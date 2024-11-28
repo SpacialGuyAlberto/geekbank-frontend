@@ -49,6 +49,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   unmatchedPaymentResponse: UnmatchedPaymentResponseDto | null = null;
   account: Account | null = null;
   accountId: number = 0;
+  paymentReferenceNumber: string = "";
 
   @Output() close = new EventEmitter<void>();
 
@@ -295,11 +296,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Calcula el monto esperado ajustado con la tasa de cambio
     const expectedAmount = this.totalPrice * this.exchangeRate;
 
     const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
     if (isVerified) {
+      orderDetails.refNumber = refNumber;
+      this.paymentReferenceNumber = refNumber;
       this.paymentService.initializePayment('tigo', orderDetails);
     }
   }
@@ -503,6 +505,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
 
     const balanceToApply = this.unmatchedPaymentResponse.difference;
+    const refNumber = this.manualVerificationData.refNumber;
 
     if (balanceToApply <= 0) {
       console.error('El balance a aplicar no es válido:', balanceToApply);
@@ -515,7 +518,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.userId = data.account.id;
         this.account = data.account;
         console.log("ACCOUNT ID: " + data.id);
-        return this.accountService.applyBalance(data.id, parseFloat(balanceToApply.toFixed(2)));
+        return this.accountService.applyBalance(data.id, parseFloat(balanceToApply.toFixed(2)), this.paymentReferenceNumber);
       })
     ).subscribe({
       next: (response) => {
