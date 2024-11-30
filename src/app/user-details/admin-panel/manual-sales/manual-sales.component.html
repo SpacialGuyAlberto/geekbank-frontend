@@ -3,13 +3,6 @@
 <div class="manual-sales-container">
   <h2>Transacciones Pendientes de Verificación Manual</h2>
 
-  <!-- Botón para ejecutar una orden manual -->
-  <div class="manual-order-button">
-    <button (click)="runManualOrder()" class="btn btn-primary">
-      Ejecutar Orden Manual
-    </button>
-  </div>
-
   <div *ngIf="!isConnected" class="connection-status">
     <p>Conectando al servidor WebSocket...</p>
   </div>
@@ -50,9 +43,14 @@
           <td>
             <!-- Puedes agregar más acciones aquí -->
             <!-- Por ejemplo, un botón para completar la venta -->
-            <button class="complete-sale-btn" (click)="completeSale(sale.transactionNumber)">
-              <i class="fas fa-check"></i> Completar venta
-            </button>
+<!--            <button class="complete-sale-btn" (click)="completeSale(sale.transactionNumber)">-->
+<!--              <i class="fas fa-check"></i> Completar venta-->
+<!--            </button>-->
+            <div class="manual-order-button">
+              <button (click)="runManualOrder(sale.transactionNumber)" class="complete-sale-btn">
+                Ejecutar Orden Manual
+              </button>
+            </div>
           </td>
         </tr>
         </tbody>

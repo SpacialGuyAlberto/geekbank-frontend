@@ -5,6 +5,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import {environment} from "../environments/environment";
+import {Transaction} from "./models/transaction.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class ManualOrdersService {
 
   constructor(private http: HttpClient) { }
 
-  runManualOrder(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/run`, {})
+  runManualOrder(transactionNumber: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/run`, {transactionNumber})
       .pipe(
         catchError(this.handleError)
       );

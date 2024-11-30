@@ -76,8 +76,8 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
   /**
    * Función para ejecutar una orden manual
    */
-  runManualOrder(): void {
-    this.manualOrdersService.runManualOrder().subscribe({
+  runManualOrder(transaction: string): void {
+    this.manualOrdersService.runManualOrder(transaction).subscribe({
       next: (response) => {
         console.log('Orden manual ejecutada exitosamente:', response);
         // Puedes manejar la respuesta según tus necesidades, por ejemplo, actualizar la lista de ventas pendientes
