@@ -17,11 +17,12 @@ export class ManualOrdersService {
   constructor(private http: HttpClient) { }
 
   runManualOrder(transactionNumber: string): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/run`, {transactionNumber})
+    return this.http.post<any>(`${this.apiUrl}/run/${transactionNumber}`, {})
       .pipe(
         catchError(this.handleError)
       );
   }
+
 
   private handleError(error: HttpErrorResponse) {
     let errorMsg = '';
