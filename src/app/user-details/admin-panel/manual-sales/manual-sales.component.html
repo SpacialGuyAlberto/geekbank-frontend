@@ -47,7 +47,7 @@
 <!--              <i class="fas fa-check"></i> Completar venta-->
 <!--            </button>-->
             <div class="manual-order-button">
-              <button (click)="runManualOrder(sale.transactionNumber)" class="complete-sale-btn">
+              <button (click)="[openModal(sale.transactionNumber), runManualOrder(sale.transactionNumber)]" class="complete-sale-btn">
                 Ejecutar Orden Manual
               </button>
             </div>
@@ -58,3 +58,26 @@
     </div>
   </div>
 </div>
+
+
+<div *ngIf="isModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <h3>Información de la Orden</h3>
+    <div *ngIf="order">
+      <p><strong>ID de Orden:</strong> {{ order.id }}</p>
+      <p><strong>Monto:</strong> {{ order.amount | currency }}</p>
+      <p><strong>Número de Teléfono:</strong> {{ order.phoneNumber }}</p>
+      <p><strong>Productos:</strong></p>
+      <ul>
+        <li *ngFor="let product of order.products">
+          ID Producto: {{ product.id }}, Nombre: {{ product.productName }}
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="!order">
+      <p>Cargando información...</p>
+    </div>
+  </div>
+</div>
+
