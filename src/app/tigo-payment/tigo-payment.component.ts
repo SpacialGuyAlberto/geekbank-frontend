@@ -239,6 +239,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         amount: this.totalPrice,
         manual: this.isManualTransaction,
       };
+      if (this.gameUserId !== null) {
+        orderDetails.gameUserId = this.gameUserId;
+      }
     } else if (this.authService.isLoggedIn() && this.userId !== null) {
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
@@ -253,6 +256,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       } else {
         orderDetails = {
           userId: this.userId,
@@ -266,6 +272,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
         };
+      }
+      if (this.gameUserId !== null) {
+        orderDetails.gameUserId = this.gameUserId;
       }
     } else if (this.guestId) {
       if (this.cartItems && this.cartItems.length > 0) {
@@ -281,6 +290,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       } else {
         orderDetails = {
           guestId: this.guestId,
@@ -294,6 +306,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       }
     } else {
       this.showSpinner = false;
@@ -365,6 +380,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       } else {
         orderDetails = {
           userId: this.userId,
@@ -378,6 +396,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction
         };
+      }
+      if (this.gameUserId !== null) {
+        orderDetails.gameUserId = this.gameUserId;
       }
     } else if (this.guestId) {
       if (this.cartItems && this.cartItems.length > 0) {
@@ -393,6 +414,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       } else {
         orderDetails = {
           guestId: this.guestId,
@@ -406,6 +430,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction
         };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
       }
     } else {
       this.showSpinner = false;
