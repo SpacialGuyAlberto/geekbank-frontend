@@ -28,8 +28,8 @@ export class CartService {
   /**
    * Carga los elementos del carrito desde el servidor o localStorage dependiendo del estado de autenticación.
    */
-  private loadCartItems(): void {
-    if (this.authService.isLoggedIn()) {
+ loadCartItems(): void {
+    if (this.authService.isAuthenticated()) {
       this.getCartItemsFromServer().subscribe(items => {
         this.cartItemsSubject.next(items);
         this.updateCartItemCount();
@@ -41,35 +41,22 @@ export class CartService {
     }
   }
 
-  /**
-   * Obtiene los elementos del carrito desde el servidor.
-   */
+
   private getCartItemsFromServer(): Observable<CartItemWithGiftcard[]> {
     return this.http.get<CartItemWithGiftcard[]>(this.baseUrl, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
+      withCredentials: true // Incluir cookies automáticamente en la solicitud
     });
   }
 
-  /**
-   * Obtiene los elementos del carrito desde localStorage.
-   */
   private getCartItemsFromLocalStorage(): CartItemWithGiftcard[] {
     const cart = localStorage.getItem('cart');
     return cart ? JSON.parse(cart) : [];
   }
 
-  /**
-   * Guarda los elementos del carrito en localStorage.
-   */
   private saveCartItemsToLocalStorage(items: CartItemWithGiftcard[]): void {
     localStorage.setItem('cart', JSON.stringify(items));
   }
 
-  /**
-   * Obtiene los elementos del carrito observables.
-   */
   getCartItems(): Observable<CartItemWithGiftcard[]> {
     return this.cartItems$;
   }
@@ -78,13 +65,10 @@ export class CartService {
    * Agrega un elemento al carrito.
    */
   addCartItem(productId: number, quantity: number, price: number): Observable<void> {
-    if (this.authService.isLoggedIn()) {
-      // Agregar al carrito en el servidor
+    if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
         this.http.post<KinguinGiftCard>(this.baseUrl, { productId, quantity, price }, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+          withCredentials: true // Asegura que las cookies se incluyan en la solicitud
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -97,7 +81,7 @@ export class CartService {
         });
       });
     } else {
-      // Agregar al carrito en localStorage
+      console.log("You are probably not logged in my friend");
       const items = this.getCartItemsFromLocalStorage();
       const existingItem = items.find(item => item.cartItem.productId === productId);
       if (existingItem) {
@@ -111,6 +95,7 @@ export class CartService {
       return of();
     }
   }
+
 
   /**
    * Actualiza un elemento del carrito.
@@ -135,7 +120,6 @@ export class CartService {
         });
       });
     } else {
-      // Actualizar en localStorage
       const items = this.getCartItemsFromLocalStorage();
       const item = items.find(item => item.cartItem.productId === productId);
       if (item) {
@@ -148,11 +132,8 @@ export class CartService {
     }
   }
 
-  /**
-   * Remueve un elemento del carrito.
-   */
   removeCartItem(productId: number): Observable<void> {
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isAuthenticated()) {
       // Remover del carrito en el servidor
       return new Observable<void>(observer => {
         this.http.delete(`${this.baseUrl}/${productId}`, {
@@ -181,9 +162,6 @@ export class CartService {
     }
   }
 
-  /**
-   * Verifica si un ítem está en el carrito.
-   */
   isItemInCart(kinguinId: number): Observable<boolean> {
     if (this.authService.isLoggedIn()) {
       return this.getCartItemsFromServer().pipe(
@@ -197,9 +175,6 @@ export class CartService {
     }
   }
 
-  /**
-   * Remueve todos los elementos del carrito.
-   */
   removeAllCartItems(): Observable<void> {
     if (this.authService.isLoggedIn()) {
       // Remover todos los elementos del carrito en el servidor
@@ -229,9 +204,6 @@ export class CartService {
     }
   }
 
-  /**
-   * Actualiza el conteo de ítems en el carrito.
-   */
   updateCartItemCount(): void {
     let items: CartItemWithGiftcard[];
     if (this.authService.isLoggedIn()) {
@@ -244,9 +216,6 @@ export class CartService {
     sessionStorage.setItem('cartItemCount', JSON.stringify(totalCount));
   }
 
-  /**
-   * Permite actualizar manualmente el conteo de ítems en el carrito.
-   */
   updateCartItemCountManual(count: number): void {
     this.cartItemCountSubject.next(count);
     sessionStorage.setItem('cartItemCount', JSON.stringify(count));
