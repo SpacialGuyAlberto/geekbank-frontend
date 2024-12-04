@@ -102,20 +102,20 @@ export class AuthEffects {
 
 
 
-  logout$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(AuthActions.logout),
-        tap(() => {
-          sessionStorage.removeItem('token');
-          sessionStorage.removeItem('userId');
-          sessionStorage.removeItem('user');
-
-          this.authService.logout().subscribe();
-          this.router.navigate(['/login']);
-        })
-      ),
-    { dispatch: false }
-  );
+  // logout$ = createEffect(
+  //   () =>
+  //     this.actions$.pipe(
+  //       ofType(AuthActions.logout),
+  //       tap(() => {
+  //         sessionStorage.removeItem('token');
+  //         sessionStorage.removeItem('userId');
+  //         sessionStorage.removeItem('user');
+  //
+  //         this.authService.logout()
+  //         this.router.navigate(['/login']);
+  //       })
+  //     ),
+  //   { dispatch: false }
+  // );
 
 }

@@ -15,7 +15,7 @@ export class LogoutComponent {
     this.logout();
   }
 
-  async logout() {
-    await this.authService.performLogout(this.router);
+  logout() {
+    this.authService.logout(this.router);
   }
 }

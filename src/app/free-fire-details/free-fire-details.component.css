@@ -1,34 +1,42 @@
 /* Importación de fuentes */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=VT323&display=swap');
 
 /* Variables de Color */
 :root {
-  --primary-bg-color: #0f2027;
-  --secondary-bg-color: #203a43;
-  --tertiary-bg-color: #2c5364;
-  --glass-bg-color: rgba(255, 255, 255, 0.1);
-  --text-color: #E1E6F1;
-  --accent-pink: #FF6EC7;
-  --accent-green: #A7F432;
-  --accent-yellow: #F4D35E;
-  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5);
-  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4);
-  --font-family: 'Roboto', sans-serif;
+  --primary-color: #0B0D19;
+  --secondary-color: #31313b;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #ffffff;
+  --font-primary: 'Roboto', sans-serif;
+  --font-secondary: 'VT323', monospace;
   --transition-speed: 0.3s;
+  --scale-factor: 0.75; /* 75% del tamaño original */
+
+  /* Colores adicionales para botones */
+  --button-add-bg: linear-gradient(45deg, #87add7, #d3a1e6);
+  --button-add-hover-bg: linear-gradient(45deg, #e91e63, #7a3ea0);
+  --button-buy-bg: linear-gradient(45deg, #00c853, #009624);
+  --button-buy-hover-bg: linear-gradient(45deg, #00b248, #007d1e);
+  --error-bg: rgba(255, 0, 0, 0.1);
+  --error-text: rgba(255, 0, 0, 0.8);
+  --error-border: rgba(255, 0, 0, 0.5);
+  --accent-purple: #84b2dc;
+  --accent-green: #00FF00;
 }
 
-/* Estilos Generales */
-body {
-  background: linear-gradient(135deg, var(--primary-bg-color), var(--secondary-bg-color), var(--tertiary-bg-color));
-  color: var(--text-color);
-  font-family: var(--font-family);
+/* Estilos Globales */
+body, html {
   margin: 0;
   padding: 0;
+  font-family: var(--font-primary);
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: var(--text-color);
+  line-height: 1.6;
 }
 
-/* Canvas de Gráfico */
 .graph-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -39,34 +47,63 @@ body {
 #graphCanvas {
   width: 100%;
   height: 100%;
-  background-color: #0B0D19;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
 /* Contenedor Principal */
 .gift-card-details-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  margin: 15rem auto;
-  max-width: 1200px;
-  padding: 2rem;
-  background: var(--glass-bg-color);
-  border-radius: 1rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  margin: 10rem auto;
+  max-width: 80%;
+  color: #b5beb4;
+  border-radius: 0.125rem;
+  z-index: 2;
+  padding: 1rem;
+  flex-direction: row;
+  transition: transform 0.5s ease, border-color 0.5s ease;
 }
 
-/* Imagen y Sección de Feedback */
+.gift-card-details-container:hover {
+  transform: scale(1.02); /* Efecto de agrandamiento */
+}
+
+/* Contenedor de la Imagen de la Gift Card */
 .gift-card-image-container {
   flex: 1;
-  min-width: 300px;
+  max-width: 70%; /* Imagen más grande */
+  background-color: rgba(57, 255, 20, 0.1); /* Verde neón suave con transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.125rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
   position: relative;
+}
+
+.gift-card-image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0)); /* Añade un degradado suave */
+  pointer-events: none;
 }
 
 .gift-card-image {
   width: 100%;
-  border-radius: 1rem;
+  height: auto;
   object-fit: cover;
+  border-top-left-radius: calc(0.5rem * var(--scale-factor));
+  border-top-right-radius: calc(0.5rem * var(--scale-factor));
+  display: block;
   transition: transform var(--transition-speed) ease;
 }
 
@@ -74,52 +111,66 @@ body {
   transform: scale(1.05);
 }
 
+/* Sección de Feedback */
 .feedback-section {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 10px;
+  right: 10px;
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(56, 56, 59, 0.9); /* Fondo oscuro translúcido */
+  padding: 0.5rem;
+  border-radius: 0.125rem;
+  z-index: 3;
 }
 
 /* Botón de Wishlist */
 .wishlist-button {
-  background: none;
-  border: none;
+  background: none; /* Eliminamos el fondo */
+  border: none; /* Eliminamos el borde */
+  padding: 0; /* Eliminamos el padding para que el ícono sea el único visible */
   cursor: pointer;
-  color: var(--accent-pink);
-  font-size: 24px;
-  transition: color var(--transition-speed);
+  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease; /* Transición en color y escala */
 }
 
-.wishlist-button:hover,
+.wishlist-button:hover {
+  transform: scale(1.1); /* El ícono se agranda ligeramente en hover */
+}
+
+.wishlist-button .material-icons {
+  color: rgba(255, 255, 255, 0.8); /* Color del ícono */
+  font-size: 1.5rem; /* Ajustamos el tamaño del ícono */
+  transition: color var(--transition-speed) ease; /* Suavizamos la transición del color */
+}
+
 .wishlist-button.wished .material-icons {
-  color: #e53935;
+  color: red; /* Color rojo cuando el ítem está en la wishlist */
 }
 
-/* Iconos de Estrellas */
-.star-rating .material-icons {
-  color: gold;
-  font-size: 24px;
+.wishlist-button:hover .material-icons {
+  color: var(--highlight-color); /* Cambiamos el color del ícono en hover */
 }
 
 /* Información de Plataformas */
 .platform-info {
   text-align: center;
   margin-top: 1rem;
-  color: #E1E6F1;
+  color: var(--text-color);
 }
+
 .platform-info h3 {
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--accent-yellow);
+  color: var(--accent-purple);
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   margin-bottom: 0.5rem;
+  transition: color var(--transition-speed);
 }
 
 .platform-info h3:hover {
-  color: var(--accent-pink);
+  color: var(--highlight-color);
 }
 
 .platform-icons {
@@ -136,7 +187,7 @@ body {
   padding: 0.5rem;
   border-radius: 50%;
   color: #46b2bb;
-  transition: transform var(--transition-speed), filter var(--transition-speed);
+  transition: transform var(--transition-speed), filter var(--transition-speed), color var(--transition-speed);
   animation: starGlow 3s infinite alternate;
   display: flex;
   align-items: center;
@@ -153,152 +204,243 @@ body {
   100% { color: #1E90FF; }
 }
 
-/* Sección de Información y Opciones */
+/* Tarjeta de Información de la Gift Card */
 .gift-card-info-card {
   flex: 1;
-  min-width: 300px;
+  background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
+  border: 0.125rem solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.125rem;
+  padding: 1rem;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 50%;
+  transition: background var(--transition-speed) ease;
+}
+
+.gift-card-info-card:hover {
+  background-color: rgba(10, 20, 40, 0.85); /* Cambio sutil de fondo al hacer hover */
+}
+
+.gift-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .gift-card-title {
-  font-size: 2rem;
-  margin: 0;
-  color: var(--accent-yellow);
-  text-shadow: 0 0 10px rgba(255, 211, 94, 0.7);
+  font-size: 1.5rem;
+  color: #A0E4FF; /* Azul claro suave */
+  margin-bottom: 0.625rem;
+  text-align: center;
+  font-family: var(--font-secondary);
 }
 
 .gift-card-price {
-  font-size: 1.75rem;
-  color: var(--accent-green);
-  margin: 0;
-}
-
-.gift-card-info-card p {
-  margin: 0;
-  color: #ccc;
+  font-size: 2rem;
+  color: #7EC8E3; /* Azul suave retro */
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-family: var(--font-secondary);
 }
 
 /* Sección de Opciones */
+.options-section {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.options-section h2 {
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.options-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
 .option-button {
   padding: 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.5);
-  color: #fff;
+  border: 1px solid var(--error-border);
+  border-radius: 0.125rem;
+  background: var(--secondary-color);
+  color: var(--text-color);
   cursor: pointer;
   transition: background-color var(--transition-speed), border-color var(--transition-speed), transform var(--transition-speed);
-  width: 150px; /* Ajusta el ancho si es necesario */
+  width: 150px;
   text-align: center;
-  overflow: hidden; /* Oculta el texto que sobrepasa el ancho */
+  overflow: hidden;
 }
 
 .option-button.selected,
 .option-button:hover {
-  background: var(--button-gradient);
-  border-color: var(--accent-pink);
+  background: var(--highlight-color);
+  border-color: var(--highlight-color);
   transform: scale(1.05);
 }
-
-
 
 /* Campos de Usuario */
 .user-inputs {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .input-group label {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
   text-transform: uppercase;
   letter-spacing: 0.05rem;
   transition: color var(--transition-speed);
+  margin-bottom: 0.5rem;
   position: relative;
 }
 
-.input-group label::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0;
-  height: 2px;
-  background-color: var(--accent-pink);
-  transition: width var(--transition-speed);
-}
-
 .input-group label:hover {
-  color: var(--accent-pink);
-}
-
-.input-group label:hover::after {
-  width: 100%;
+  color: var(--highlight-color);
 }
 
 .input-group input {
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.5);
-  color: #fff;
+  border: 1px solid var(--error-border);
+  border-radius: 0.125rem;
+  background: var(--secondary-color);
+  color: var(--text-color);
   font-size: 1rem;
+  transition: border-color var(--transition-speed), background var(--transition-speed);
 }
 
 .input-group input:focus {
   outline: none;
-  border-color: var(--accent-pink);
-  background: rgba(36, 59, 83, 0.7);
+  border-color: var(--highlight-color);
+  background: rgba(49, 49, 59, 0.9);
 }
 
-/* Botones de Acción */
+.error-message {
+  color: var(--error-text);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Contenedor de Botones */
 .button-container {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.5rem;
 }
 
+/* Estilos de Botones con Linear Gradients */
 .btn {
-  flex: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
-  color: #fff;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.125rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background var(--transition-speed) ease, transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  color: #ffffff;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  font-family: var(--font-secondary);
 }
 
+/* Botón Agregar al Carrito con Linear Gradient */
 .add-to-cart {
-  background: var(--button-gradient);
+  background: var(--button-add-bg);
+  background-size: 200% 200%;
 }
 
 .add-to-cart:hover {
-  background: var(--button-gradient-hover);
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  background: var(--button-add-hover-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(57, 255, 20, 0.4);
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
+/* Botón Comprar Ahora con Linear Gradient */
 .buy-now {
-  background: var(--accent-green);
+  background: var(--button-buy-bg);
+  background-size: 200% 200%;
 }
 
 .buy-now:hover {
-  background: #8bc34a;
-  transform: scale(1.05);
-  box-shadow: 0 6px 20px rgba(167, 244, 50, 0.6);
+  background: var(--button-buy-hover-bg);
+  transform: translateY(-3px);
+  box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4);
+  background-position: right center; /* Cambio de posición del gradiente */
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
   .gift-card-details-container {
     flex-direction: column;
+    margin-top: 8rem;
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  .gift-card-image-container {
+    max-width: 100%;
+    flex: 1.5; /* Aumenta la proporción para mantener la imagen más grande */
+  }
+
+  .gift-card-info-card {
+    max-width: 100%;
+    flex: 1; /* Reduce la proporción para el contenido */
+  }
+
+  .gift-card-title {
+    font-size: 1.5rem;
+  }
+
+  .gift-card-price {
+    font-size: 2rem;
+  }
+
+  .platform-info h3 {
+    font-size: 1rem;
+  }
+
+  .platform-icons i {
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+  }
+
+  .button-container {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .options-grid {
+    justify-content: center;
+  }
+
+  .option-button {
+    width: 100%;
   }
 }

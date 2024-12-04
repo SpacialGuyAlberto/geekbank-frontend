@@ -16,7 +16,7 @@ import { NotificationBellComponent } from "../notification-bell/notification-bel
 import { SharedService } from "../shared.service";
 import { User } from "../models/User";
 import { BalanceComponent } from "../balance/balance.component";
-
+import {AuthService} from "../auth.service";
 import { Store } from "@ngrx/store";
 import { selectUser, selectIsAuthenticated } from "../state/auth/auth.selectors";
 import { AppState } from "../app.state";
@@ -114,6 +114,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   constructor(
+    private authService: AuthService,
     private store: Store<AppState>,
     protected router: Router,
     private cartService: CartService,
@@ -207,8 +208,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return false; // Placeholder
   }
 
-  async logout() {
-    this.store.dispatch(logout());
+  // async logout() {
+  //   this.store.dispatch(logout());
+  //
+  // }
+
+  logout() {
+    this.authService.logout(this.router);
   }
   openSearchModal() {
     this.showSearchModal = true;

@@ -1,4 +1,3 @@
-// src/app/payment/models/order-details.model.ts
 export interface OrderDetails {
   userId?: number | null;
   guestId?: string | null;
