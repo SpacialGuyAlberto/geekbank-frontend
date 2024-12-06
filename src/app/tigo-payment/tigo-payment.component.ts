@@ -122,50 +122,21 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadExchangeRate();
     this.paymentDetails.total = this.totalPrice;
-    console.log('Received product ID:', this.productId?.toString());
-    console.log('Received total price: ', this.totalPrice);
 
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
       if (storedUserId) {
         this.userId = parseInt(storedUserId, 10);
         if (isNaN(this.userId)) {
-          console.error('Invalid userId in sessionStorage:', storedUserId);
           this.userId = null;
         }
       } else {
-        console.error('No userId found in sessionStorage.');
         this.userId = null;
       }
     } else {
       this.guestId = this.guestService.getGuestId();
     }
 
-
-    this.spinnerSubscription = this.tigoPaymentService.showSpinner$.subscribe(show => {
-      this.showSpinner = show;
-    });
-
-    this.transactionNumberSubscription = this.transactionService.transactionNumber$.subscribe(transactionNumber => {
-      this.transactionNumber = transactionNumber;
-    });
-
-    this.orderRequestIdSubscription = this.tigoPaymentService.orderRequestId$.subscribe(orderRequestId => {
-      this.orderRequestNumber = orderRequestId;
-    });
-
-    this.verificationFormSubscription = this.tigoPaymentService.showVerificationForm$.subscribe(show => {
-      this.showVerificationForm = show;
-    });
-
-    this.transactionStatusSubscription = this.tigoPaymentService.transactionStatus$.subscribe(status => {
-      this.transactionStatus = status;
-    });
-
-    this.tempPinSubscription = this.tigoPaymentService.tempPin$.subscribe(pin => {
-      this.tempPin = pin;
-      this.showConfirmation = true;
-    });
 
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
@@ -191,7 +162,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.manualVerificationData.refNumber = '';
     this.manualVerificationError = '';
     this.manualVerificationSuccess = '';
-    this.unmatchedPaymentResponse = null; // Limpiar respuesta previa si la hay
+    this.unmatchedPaymentResponse = null;
   }
 
   loadExchangeRate(): void {
@@ -202,7 +173,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error al obtener la tasa de cambio:', err);
         this.conversionError = 'No se pudo cargar la tasa de cambio. Inténtelo más tarde.';
         this.isLoading = false;
       }
@@ -221,15 +191,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
 
     const refNumber = this.manualVerificationData.refNumber;
-    const phoneNumber = this.paymentDetails.phoneNumber; // Asegúrate de que este campo esté correctamente asignado
-
+    const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest;
-
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId,
         guestId: this.guestId,
-        phoneNumber: this.paymentDetails.phoneNumber,
+        phoneNumber: phoneNumber,
         products: [{
           kinguinId: this.productId,
           qty: 1,
@@ -246,7 +214,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           userId: this.userId,
-          phoneNumber: this.paymentDetails.phoneNumber,
+          phoneNumber: phoneNumber,
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -262,7 +230,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       } else {
         orderDetails = {
           userId: this.userId,
-          phoneNumber: this.paymentDetails.phoneNumber,
+          phoneNumber: phoneNumber,
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -280,7 +248,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           guestId: this.guestId,
-          phoneNumber: this.paymentDetails.phoneNumber,
+          phoneNumber: phoneNumber,
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -296,7 +264,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       } else {
         orderDetails = {
           guestId: this.guestId,
-          phoneNumber: this.paymentDetails.phoneNumber,
+          phoneNumber: phoneNumber,
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -320,8 +288,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
     if (isVerified) {
       orderDetails.refNumber = refNumber;
-      this.paymentReferenceNumber = refNumber;
-      this.paymentService.initializePayment('tigo', orderDetails);
+      this.paymentReferenceNumber = refNumber; // Asignamos el número de referencia
+      // this.paymentService.initializePayment('tigo', orderDetails);
+      this.tigoPaymentService.initializePayment(orderDetails);
     }
   }
 
@@ -342,104 +311,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       console.error('Error al verificar el monto de pago no coincidente:', error);
       return false;
     }
-  }
-
-
-  onSubmit(): void {
-    let orderDetails: OrderRequest;
-
-    if (this.productId !== null) {
-      orderDetails = {
-        userId: this.userId,
-        guestId: this.guestId,
-        phoneNumber: this.paymentDetails.phoneNumber,
-        products: [{
-          kinguinId: this.productId,
-          qty: 1,
-          price: this.totalPrice,
-          name: 'Producto'
-        }],
-        amount: this.totalPrice,
-        manual: this.isManualTransaction
-      };
-
-      if (this.gameUserId !== null) {
-        orderDetails.gameUserId = this.gameUserId;
-      }
-    } else if (this.authService.isLoggedIn() && this.userId !== null) {
-      if (this.cartItems && this.cartItems.length > 0) {
-        orderDetails = {
-          userId: this.userId,
-          phoneNumber: this.paymentDetails.phoneNumber,
-          products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.price,
-            name: 'Producto'
-          })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: this.isManualTransaction
-        };
-        if (this.gameUserId !== null) {
-          orderDetails.gameUserId = this.gameUserId;
-        }
-      } else {
-        orderDetails = {
-          userId: this.userId,
-          phoneNumber: this.paymentDetails.phoneNumber,
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
-          manual: this.isManualTransaction
-        };
-      }
-      if (this.gameUserId !== null) {
-        orderDetails.gameUserId = this.gameUserId;
-      }
-    } else if (this.guestId) {
-      if (this.cartItems && this.cartItems.length > 0) {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: this.paymentDetails.phoneNumber,
-          products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.price,
-            name: 'Producto'
-          })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: this.isManualTransaction
-        };
-        if (this.gameUserId !== null) {
-          orderDetails.gameUserId = this.gameUserId;
-        }
-      } else {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: this.paymentDetails.phoneNumber,
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
-          manual: this.isManualTransaction
-        };
-        if (this.gameUserId !== null) {
-          orderDetails.gameUserId = this.gameUserId;
-        }
-      }
-    } else {
-      this.showSpinner = false;
-      return;
-    }
-    this.tigoPaymentService.initializePayment( orderDetails);
-    this.paymentService.initializePayment('tigo', orderDetails);
   }
 
   cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
@@ -560,44 +431,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       });
     });
   }
-
-
-  private sendApplyBalanceRequest(): void {
-    if (!this.unmatchedPaymentResponse || !this.unmatchedPaymentResponse.unmatchedPayment.id) {
-      console.error('No hay información de la cuenta para aplicar el balance.');
-      this.errorMessage = 'No se puede aplicar el balance. Información de la cuenta faltante.';
-      return;
-    }
-
-    const balanceToApply = this.unmatchedPaymentResponse.difference;
-    const refNumber = this.manualVerificationData.refNumber;
-
-    if (balanceToApply <= 0) {
-      console.error('El balance a aplicar no es válido:', balanceToApply);
-      this.errorMessage = 'El balance debe ser mayor que 0 para aplicar.';
-      return;
-    }
-
-    this.authService.getUserDetails().pipe(
-      switchMap(data => {
-        this.userId = data.account.id;
-        this.account = data.account;
-        console.log("ACCOUNT ID: " + data.id);
-        return this.accountService.applyBalance(data.id, parseFloat(balanceToApply.toFixed(2)), this.paymentReferenceNumber);
-      })
-    ).subscribe({
-      next: (response) => {
-        console.log('Balance aplicado exitosamente:', response);
-        this.notifMessage = 'Balance aplicado exitosamente. Tu balance ha sido actualizado.';
-      },
-      error: (error) => {
-        console.error('Error al aplicar el balance:', error);
-        this.errorMessage = 'Error al aplicar el balance. Por favor, inténtelo nuevamente.';
-      }
-    });
-  }
-
-
 
   returnDifference(): void {
     console.log('Devolviendo la diferencia...');

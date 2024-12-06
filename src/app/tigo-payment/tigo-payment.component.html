@@ -3,8 +3,8 @@
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Tigo Checkout</h2>
 
-    <form *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm" (ngSubmit)="onSubmit()">
-
+    <!-- Formulario inicial sin (ngSubmit), sólo un botón para mostrar el formulario de verificación manual -->
+    <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm">
       <div class="form-group">
         <label for="phone">Phone No.</label>
         <input
@@ -29,8 +29,9 @@
       >
         Proceder con el numero de referencia
       </button>
-    </form>
+    </div>
 
+    <!-- Formulario de verificación manual con submitManualVerification en onSubmit -->
     <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
       <h3>Verificar Pago</h3>
       <div class="form-group">
@@ -54,9 +55,11 @@
       </div>
     </form>
 
-    <div *ngIf="unmatchedPaymentResponse">
+    <!-- Una vez verificado, se mostrará el número de referencia asignado -->
+    <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
       <h3>Detalles del Pago</h3>
       <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
+      <!-- Resto de detalles -->
       <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
       <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
       <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
@@ -75,7 +78,7 @@
 
     <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
       <h3>¡Gracias por verificar su transacción!</h3>
-      <p>Su transacción está siendo procesada en estos momentos. En breve recibirá su acreditación directamente en su cuenta.</p>
+      <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
       <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
     </div>
 
@@ -87,7 +90,6 @@
     </div>
   </div>
 </div>
-
 
 <app-auth-modal
   *ngIf="showAuthModal"
