@@ -1,15 +1,14 @@
-// src/app/purchase-confirmation/purchase-confirmation.component.ts
 import { Component, OnInit } from '@angular/core';
 import { TransactionsService } from '../transactions.service';
-import {Transaction, TransactionProduct} from '../models/transaction.model';
+import { Transaction, TransactionProduct } from '../models/transaction.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RecommendationsService } from "../services/recommendations.service";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { AuthService } from "../auth.service";
-import {KinguinService} from "../kinguin.service";
-import {firstValueFrom} from "rxjs";
+import { KinguinService } from "../kinguin.service";
+import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: 'app-purchase-confirmation',
@@ -25,7 +24,6 @@ export class PurchaseConfirmationComponent implements OnInit {
   errorMessage: string = '';
   transactionProducts: TransactionProduct[] = [];
 
-
   // Filtros
   searchQuery: string = '';
   // Paginación
@@ -37,6 +35,11 @@ export class PurchaseConfirmationComponent implements OnInit {
   recentTransaction: Transaction | null = null;
   private productDetailsCache: Map<number, KinguinGiftCard> = new Map();
 
+  // Mostrar/ocultar modal de keys
+  showKeysModal: boolean = false;
+
+  recommendedGiftCards: KinguinGiftCard[] = [];
+
   constructor(
     private transactionsService: TransactionsService,
     private route: ActivatedRoute,
@@ -47,7 +50,6 @@ export class PurchaseConfirmationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(params => {
       const transactionNumber = params['transactionNumber'];
       if (transactionNumber) {
@@ -61,8 +63,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     this.fetchRecommendations(userId);
   }
 
-
-
   getCurrentUserId(): number {
     const userIdStr = sessionStorage.getItem('userId');
     if (userIdStr !== null) {
@@ -73,6 +73,7 @@ export class PurchaseConfirmationComponent implements OnInit {
     }
     return 1; // Valor por defecto si no se puede obtener el userId
   }
+
   /**
    * Obtiene una transacción específica por su transactionNumber
    */
@@ -100,6 +101,7 @@ export class PurchaseConfirmationComponent implements OnInit {
       }
     );
   }
+
   async fetchProductPicture(productId: number): Promise<string> {
     try {
       const card = await firstValueFrom(this.kinguinService.getGiftCardDetails(productId.toString()));
@@ -112,8 +114,6 @@ export class PurchaseConfirmationComponent implements OnInit {
       return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU"; // URL de imagen por defecto
     }
   }
-
-
 
   getPageNumbers(): number[] {
     const pages: number[] = [];
@@ -142,14 +142,6 @@ export class PurchaseConfirmationComponent implements OnInit {
       this.goToPage(this.currentPage + 1);
     }
   }
-
-  /**
-   * Filtrar transacciones
-   */
-
-
-  // **Nuevas Funcionalidades para Recomendaciones**
-  recommendedGiftCards: KinguinGiftCard[] = [];
 
   /**
    * Obtener recomendaciones de compras
@@ -210,5 +202,15 @@ export class PurchaseConfirmationComponent implements OnInit {
         console.log('Navigation failed');
       }
     });
+  }
+
+  // Método para abrir el modal de keys
+  openKeysModal(): void {
+    this.showKeysModal = true;
+  }
+
+  // Método para cerrar el modal de keys
+  closeKeysModal(): void {
+    this.showKeysModal = false;
   }
 }

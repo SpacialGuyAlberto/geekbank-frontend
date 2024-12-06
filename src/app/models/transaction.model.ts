@@ -33,4 +33,5 @@ export interface Transaction {
   user: User | null;
   account: Account | null;
   products: TransactionProduct[];
+  keys?: string[] | undefined
 }

@@ -1,10 +1,7 @@
-<!-- src/app/purchase-confirmation/purchase-confirmation.component.html -->
 <div class="main-container">
   <div class="transactions-container">
     <!-- Mensaje de Agradecimiento -->
     <h1 class="thank-you-message">¡Gracias por tu compra!</h1>
-
-    <!-- <h2 class="section-title">Muchas gracias por tu compra!</h2>-->
 
     <!-- Indicador de Carga -->
     <div *ngIf="isLoading" class="loading-indicator">
@@ -15,7 +12,6 @@
     <div *ngIf="errorMessage" class="error-message">
       <p>{{ errorMessage }}</p>
     </div>
-
 
     <!-- Tabla de Transacciones -->
     <div class="transaction-table" *ngIf="!isLoading && !errorMessage">
@@ -28,7 +24,7 @@
         <span class="header-amount">Monto</span>
       </div>
 
-      <!-- Fila por cada transacción paginada -->
+      <!-- Fila por cada producto de la transacción reciente -->
       <div *ngIf="recentTransaction">
         <div *ngFor="let product of recentTransaction?.products" class="transaction-row">
           <!-- Columna de Imagen -->
@@ -52,11 +48,30 @@
           <span class="date-column">{{ recentTransaction.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>
 
           <!-- Estado -->
-          <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">{{ recentTransaction.status }}</span>
+          <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">
+            {{ recentTransaction.status }}
+          </span>
 
           <!-- Monto -->
           <span class="amount-column">{{ recentTransaction.amount | currency: "Lps. " }}</span>
         </div>
+      </div>
+    </div>
+
+    <!-- Botón para revelar keys si existen -->
+    <div *ngIf="(recentTransaction?.keys?.length ?? 0) > 0" class="keys-button-container">
+      <button (click)="openKeysModal()">Revelar keys</button>
+    </div>
+    <!-- Modal para mostrar las keys -->
+    <div class="modal-overlay" *ngIf="showKeysModal">
+      <div class="modal-content">
+        <h3 class="modal-title">Keys obtenidas</h3>
+        <ul>
+          <li *ngFor="let key of recentTransaction?.keys!">
+            {{ key }}
+          </li>
+        </ul>
+        <button class="close-button" (click)="closeKeysModal()">Cerrar</button>
       </div>
     </div>
 
@@ -69,7 +84,6 @@
         <i class="fas fa-angle-left"></i>
       </button>
 
-      <!-- Mostrar botones de páginas alrededor de la página actual -->
       <span *ngFor="let page of getPageNumbers()">
         <button (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
       </span>
