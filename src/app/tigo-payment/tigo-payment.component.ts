@@ -442,28 +442,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.paymentService.initializePayment('tigo', orderDetails);
   }
 
-  submitVerification(): void {
-
-    if (!this.verificationData.pin || !this.verificationData.refNumber) {
-      this.errorMessage = 'Por favor, ingrese su PIN y número de referencia.';
-      return;
-    }
-
-    this.transactionService.verifyTransaction(this.paymentDetails.phoneNumber, this.verificationData.pin, this.verificationData.refNumber)
-      .subscribe(
-        response => {
-          console.log('Verification successful:', response);
-          this.showVerificationForm = false;
-          this.showConfirmation = false;
-          this.showSpinner = false;
-        },
-        error => {
-          console.error('Verification error:', error);
-          this.errorMessage = 'Error al verificar la transacción. Por favor, inténtelo nuevamente.';
-        }
-      );
-  }
-
   cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
     this.isCancelling = true;
     console.log('TRANSACTION STATUS' + this.transactionStatus)
@@ -558,7 +536,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         return;
       }
 
-      // Llamamos al servicio para aplicar el balance
       this.authService.getUserDetails().pipe(
         switchMap(data => {
           this.userId = data.account.id;
@@ -573,12 +550,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         next: (response) => {
           console.log('Balance aplicado exitosamente:', response);
           this.notifMessage = 'Balance aplicado exitosamente. Tu balance ha sido actualizado.';
-          resolve(); // Resolvemos la promesa
+          resolve();
         },
         error: (error) => {
           console.error('Error al aplicar el balance:', error);
           this.errorMessage = 'Error al aplicar el balance. Por favor, inténtelo nuevamente.';
-          reject(error); // Rechazamos la promesa en caso de error
+          reject(error);
         }
       });
     });
