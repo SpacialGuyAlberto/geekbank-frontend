@@ -395,7 +395,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.showSpinner = false;
       return;
     }
-
+    this.tigoPaymentService.initializePayment( orderDetails);
     this.paymentService.initializePayment('tigo', orderDetails);
   }
 
