@@ -1,22 +1,24 @@
-// src/app/models/order.model.ts
-import {CartItem} from "./CartItem";
-
-export enum PurchaseType {
-  Digital = 'Digital',
-  Balance = 'Balance'
-}
-
 export interface Order {
-  id?: string;
-  items: CartItem[];
-  type: PurchaseType;
-  total: number;
-  userId: string;
-  createdAt?: Date;
+  id?: number; // opcional para creación
+  orderRequestId: string;
+  userId?: number;
+  guestId?: string;
+  gameUserId?: number;
+  manual: boolean;
+  phoneNumber?: string;
+  amount: number;
+  refNumber?: string;
+  createdAt: Date; // LocalDateTime mapeado a Date en TypeScript
+  transaction?: Transaction; // Transacción relacionada
+  products?: TransactionProduct[]; // Lista de productos asociados
 }
 
-export interface PurchaseResult {
-  success: boolean;
-  message: string;
-  orderId?: string;
+export interface Transaction {
+  id: number;
+  transactionDetails: string; // Agregar las propiedades específicas según tu implementación
+}
+
+export interface TransactionProduct {
+  id: number;
+  productName: string; // Agregar las propiedades específicas según tu implementación
 }

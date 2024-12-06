@@ -7,6 +7,7 @@ export interface OrderRequest {
   amount: number;
   manual: boolean;
   gameUserId?: number;
+  refNumber?: string;
 }
 
 export interface Product {

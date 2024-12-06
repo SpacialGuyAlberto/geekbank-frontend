@@ -58,27 +58,6 @@ export class AuthService {
     return this.http.get(`${this.baseUrl}/activate?token=${token}`, { observe: 'response' , responseType: 'text' as 'json' });
   }
 
-  // login(email: string, password: string): Observable<any> {
-  //   return this.http.post(`${this.baseUrl}/login`, { email, password }, { observe: 'response' }).pipe(
-  //     tap(response => {
-  //       const token = response.headers.get('Authorization');
-  //       if (token) {
-  //         this.setToken(token);
-  //         this.setSession(response);
-  //       }
-  //     })
-  //   );
-  // }
-
-// src/app/auth.service.ts
-
-  // login(email: string, password: string): Observable<{ userId: string; token: string }> {
-  //   return this.http.post<{ userId: string; token: string }>(
-  //     `${this.baseUrl}/login`,
-  //     { email, password }
-  //   );
-  // }
-
   login(email: string, password: string): Observable<{ userId: string }> {
     return this.http.post<{ userId: string }>(
       `${this.baseUrl}/login`,
@@ -88,6 +67,7 @@ export class AuthService {
       tap(response => {
         this.authenticated = true;
         this.userId = response.userId;
+        this.loggedIn.next(true);
         sessionStorage.setItem('userId', this.userId);
       })
     );
@@ -126,13 +106,9 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
-    return this.isBrowser() && !!sessionStorage.getItem('token');
+    return this.cookieService.check('jwtToken');
   }
 
-  // isAuthenticated(): boolean {
-  //   // Puedes verificar la existencia de la cookie
-  //   return this.cookieService.check('jwtToken');
-  // }
   setToken(token: string): void {
     if (this.isBrowser()) {
       if (token) {
@@ -149,39 +125,46 @@ export class AuthService {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';
   }
 
-  // logout(): Observable<any> {
-  //   const headers = new HttpHeaders({
-  //     'Authorization': `Bearer ${this.getToken()}`
-  //   });
-  //   sessionStorage.removeItem('token');
-  //   sessionStorage.removeItem('userId');
-  //   return this.http.post(`${this.baseUrl}/logout`, {}, { headers, responseType: 'text' });
-  // }
-
-  logout(): Observable<any> {
-    return this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => {
-        this.authenticated = false;
-        this.userId = null;
-        sessionStorage.removeItem('userId');
-      })
-    );
+  logout(router: Router): void {
+    this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe(() => {
+      this.cookieService.delete('jwtToken', '/');
+      this.loggedIn.next(false);
+      this.authenticated = false;
+      sessionStorage.clear();
+          if (this.isBrowser()) {
+            sessionStorage.removeItem('token');
+            sessionStorage.removeItem('userId');
+          }
+      this.router.navigate(['/login']);
+    });
   }
 
-  async performLogout(router: Router): Promise<void> {
-    try {
-      await firstValueFrom(this.logout());
-      console.log('Logout successful');
-      if (this.isBrowser()) {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('username');
-      }
-      this.setToken('');
-      await router.navigate(['/login']);
-    } catch (error) {
-      console.error('Logout error', error);
+
+  isAuthenticated(): boolean {
+    return this.authenticated;
+  }
+
+  checkAuthentication(): Observable<boolean> {
+    if (this.authenticated) {
+      return of(true);
+    } else {
+      return this.http.get<{ authenticated: boolean }>(
+        `${this.baseUrl}/check-auth`,
+        { withCredentials: true }
+      ).pipe(
+        map(response => {
+          this.authenticated = response.authenticated;
+          return this.authenticated;
+        }),
+        catchError(() => {
+          this.authenticated = false;
+          return of(false);
+        })
+      );
     }
   }
+
+
 
   isBrowser(): boolean {
     return typeof window !== 'undefined';
@@ -254,26 +237,13 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
   }
 
-  // getUserById(userId: number): Observable<User> {
-  //   return this.http.get<User>(`${this.baseUrl2}/${userId}`);
-  // }
 
-  // getUserById(userId: string): Observable<User> {
-  //   return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${this.getToken()}`
-  //     })
-  //   });
-  // }
-
-  // auth.service.ts
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl2}/${userId}`, {
       withCredentials: true
     });
   }
 
-  // auth.service.ts
   getUserDetails(): Observable<User> {
     return this.http.get<User>(`${this.baseUrl2}/user-details`, {
       withCredentials: true
@@ -281,60 +251,4 @@ export class AuthService {
   }
 
 
-
-  // getUserDetails(): Observable<User> {
-  //   const userId = this.getUserId();
-  //   return this.http.get<User>(`${this.baseUrl2}/user-details`, {
-  //     headers: new HttpHeaders({
-  //       'Authorization': `Bearer ${this.getToken()}`
-  //     })
-  //   });
-  // }
-
-  setSession(authResult: any) {
-    sessionStorage.setItem('token', authResult.token)
-    sessionStorage.setItem('userId', authResult.userId);
-    sessionStorage.setItem('email', authResult.email)
-  }
-
-  // getUserId(): string {
-  //   return sessionStorage.getItem('userId') || '';
-  // }
-  getUserId(): string | null {
-    return this.userId || sessionStorage.getItem('userId');
-  }
-
-
-  isAuthenticated(): boolean {
-    return this.authenticated;
-  }
-
-  checkAuthentication(): Observable<boolean> {
-    if (this.authenticated) {
-      return of(true);
-    } else {
-      return this.http.get<{ authenticated: boolean }>(
-        `${this.baseUrl}/check-auth`,
-        { withCredentials: true }
-      ).pipe(
-        map(response => {
-          this.authenticated = response.authenticated;
-          return this.authenticated;
-        }),
-        catchError(() => {
-          this.authenticated = false;
-          return of(false);
-        })
-      );
-    }
-  }
-  // checkAuthentication(): Observable<boolean> {
-  //   return this.http.get<{ authenticated: boolean }>(
-  //     `${this.baseUrl}/check-auth`,
-  //     { withCredentials: true }
-  //   ).pipe(
-  //     map(response => response.authenticated),
-  //     catchError(() => of(false))
-  //   );
-  // }
 }

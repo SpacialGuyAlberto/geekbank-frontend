@@ -3,13 +3,6 @@
 <div class="manual-sales-container">
   <h2>Transacciones Pendientes de Verificación Manual</h2>
 
-  <!-- Botón para ejecutar una orden manual -->
-  <div class="manual-order-button">
-    <button (click)="runManualOrder()" class="btn btn-primary">
-      Ejecutar Orden Manual
-    </button>
-  </div>
-
   <div *ngIf="!isConnected" class="connection-status">
     <p>Conectando al servidor WebSocket...</p>
   </div>
@@ -50,9 +43,14 @@
           <td>
             <!-- Puedes agregar más acciones aquí -->
             <!-- Por ejemplo, un botón para completar la venta -->
-            <button class="complete-sale-btn" (click)="completeSale(sale.transactionNumber)">
-              <i class="fas fa-check"></i> Completar venta
-            </button>
+<!--            <button class="complete-sale-btn" (click)="completeSale(sale.transactionNumber)">-->
+<!--              <i class="fas fa-check"></i> Completar venta-->
+<!--            </button>-->
+            <div class="manual-order-button">
+              <button (click)="[openModal(sale.transactionNumber), runManualOrder(sale.transactionNumber)]" class="complete-sale-btn">
+                Ejecutar Orden Manual
+              </button>
+            </div>
           </td>
         </tr>
         </tbody>
@@ -60,3 +58,27 @@
     </div>
   </div>
 </div>
+
+
+<div *ngIf="isModalOpen" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" (click)="closeModal()">&times;</span>
+    <h3>Información de la Orden</h3>
+    <div *ngIf="order">
+      <p><strong>ID de Orden:</strong> {{ order.id }}</p>
+      <p><strong>Monto:</strong> {{ order.amount | currency }}</p>
+      <p><strong>Número de Teléfono:</strong> {{ order.phoneNumber }}</p>
+      <p><strong>Productos:</strong></p>
+      <ul>
+        <li *ngFor="let product of order.products">
+          ID Producto: {{ product.id }}, Nombre: {{ product.productName }}
+        </li>
+      </ul>
+      <p><strong>Número de Teléfono:</strong> {{ order.gameUserId }}</p>
+    </div>
+    <div *ngIf="!order">
+      <p>Cargando información...</p>
+    </div>
+  </div>
+</div>
+

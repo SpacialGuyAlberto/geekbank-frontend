@@ -8,6 +8,8 @@ import { ManualVerificationTransactionDto } from "../../../models/TransactionPro
 import { TransactionsService } from "../../../transactions.service";
 import { Transaction } from "../../../models/transaction.model";
 import {ManualOrdersService} from "../../../manual-order.service";
+import {OrderService} from "../../../order.service";
+import {Order} from "../../../models/order.model";
 
 @Component({
   selector: 'app-manual-sales',
@@ -22,16 +24,19 @@ import {ManualOrdersService} from "../../../manual-order.service";
   styleUrls: ['./manual-sales.component.css']
 })
 export class ManualSalesComponent implements OnInit, OnDestroy {
+  order: Order | null = null;
   pendingSales: ManualVerificationTransactionDto[] = [];
   isConnected: boolean = false;
   transactions: Transaction[] = [];
-
+  transaction: Transaction  | null = null;
+  isModalOpen: boolean = false; // Controla la visibilidad del modal
   // Subscriptions
   private manualVerificationSubscription: Subscription | null = null;
   private manualVerificationQueueSubscription: Subscription | null = null;
   private connectionSubscription: Subscription | null = null;
 
   constructor(
+    private orderService: OrderService,
     private webSocketService: WebSocketService,
     private transactionService: TransactionsService,
     private manualOrdersService: ManualOrdersService // Inyectar el servicio
@@ -73,13 +78,24 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
     console.log(`Venta con transacción ${transactionNumber} completada`);
   }
 
+  openModal(transactionNumber: string): void {
+    this.fetchOrderInfo(transactionNumber);
+    this.isModalOpen = true; // Abre el modal
+  }
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+
   /**
    * Función para ejecutar una orden manual
    */
-  runManualOrder(): void {
-    this.manualOrdersService.runManualOrder().subscribe({
+  runManualOrder(transaction: string): void {
+    console.log(transaction);
+    this.manualOrdersService.runManualOrder(transaction).subscribe({
       next: (response) => {
         console.log('Orden manual ejecutada exitosamente:', response);
+        console.log("Transaction Number", transaction)
         // Puedes manejar la respuesta según tus necesidades, por ejemplo, actualizar la lista de ventas pendientes
       },
       error: (error) => {
@@ -87,6 +103,12 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
         // Maneja el error según tus necesidades, por ejemplo, mostrar un mensaje al usuario
       }
     });
+  }
+
+  fetchOrderInfo(transactionNumber: string) {
+      this.orderService.findOrder(transactionNumber).subscribe( data => {
+        this.order = data;
+      });
   }
 
   ngOnDestroy(): void {

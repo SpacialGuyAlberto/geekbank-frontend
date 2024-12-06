@@ -67,12 +67,19 @@ export class CartComponent implements OnInit {
   }
 
   loadCartItems(): void {
-    this.cartService.getCartItems().subscribe(data => {
-      this.cartItems = data;
-      this.updateCartItemCount();
-      console.log("Loaded cart items: ", data);
-      this.calculateTotalPriceEUR();
-      this.totalAmountString =  this.totalPriceEUR.toString()
+    // this.cartService.loadCartItems().subscribe(data => {
+    //   this.cartItems = data;
+    //   this.updateCartItemCount();
+    //   console.log("Loaded cart items: ", data);
+    //   this.calculateTotalPriceEUR();
+    //   this.totalAmountString =  this.totalPriceEUR.toString()
+    // });
+
+    this.cartService.loadCartItems();
+
+    // Suscribirse a los cambios en cartItems$
+    this.cartService.cartItems$.subscribe(items => {
+      this.cartItems = items;
     });
   }
 
