@@ -118,19 +118,6 @@ export class TransactionsService {
     return this.pendingForApprovalTransactionSubject.asObservable();
   }
 
-  verifyPayment(refNumber: string, phoneNumber: string, orderRequest: OrderRequest): Observable<any> {
-    const url = `${this.apiUrl}/verifyPayment`;
-    const payload = {
-      refNumber: refNumber,
-      phoneNumber: phoneNumber,
-      orderRequest: orderRequest
-    };
-
-    return this.http.post<any>(url, payload).pipe(
-      catchError(this.handleError)
-    );
-  }
-
   verifyUnmatchedPaymentAmount(referenceNumber: string, phoneNumber: string, expectedAmount: number): Observable<UnmatchedPaymentResponseDto> {
     const url = `${this.apiUrl}/verify-unmatched-payment`;
     const params = { referenceNumber, phoneNumber, expectedAmount: expectedAmount.toString() };

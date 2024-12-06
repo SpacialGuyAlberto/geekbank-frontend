@@ -29,7 +29,6 @@ export class TigoService{
     return this.transactionSubject.asObservable();
   }
 
-  // Método para emitir una nueva transacción
   emitTransaction(transaction: Transaction): void {
     this.transactionSubject.next(transaction);
   }
@@ -38,8 +37,6 @@ export class TigoService{
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<Transaction>(this.apiUrlOrder, orderDetails, { headers });
   }
-
-
   purchaseWithBalance(orderRequest: OrderRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/purchase-with-balance`, orderRequest);
   }
