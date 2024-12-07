@@ -177,7 +177,11 @@
     width: 100%;
   }
 
-  .gift-card-image {
-    height: calc(7.5rem * var(--scale-factor));
+  gift-card-image {
+    height: calc(15rem * var(--scale-factor));
+    object-fit: cover;
+    border-top-left-radius: calc(0.5rem * var(--scale-factor));
+    border-top-right-radius: calc(0.5rem * var(--scale-factor));
+    margin-bottom: calc(0.625rem * var(--scale-factor));
   }
 }
