@@ -24,7 +24,6 @@ export class RecommendationsComponent implements OnInit {
   currentIndex = 0;
   giftCards: KinguinGiftCard[] = [];
   routeClass: string = '';
-
   constructor(private recommendationsService: RecommendationsService,
               private router: Router,
               private authService: AuthService

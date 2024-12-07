@@ -204,8 +204,14 @@
 
 @media (max-width: 480px) {
   .gift-cards-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: calc(1.5rem * var(--scale-factor));
+    grid-template-rows: repeat(2, 1fr);
+    grid-gap: calc(3rem * var(--scale-factor));
+    justify-content: center;
+    margin-right: 4rem;
+  }
+
+  .gift-card {
+    width: 120%;
   }
 
   .gift-card-title {
