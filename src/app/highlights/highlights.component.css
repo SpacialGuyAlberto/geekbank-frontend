@@ -125,7 +125,7 @@
     border-radius: 0.9375rem; /* 15px */
     overflow: hidden;
     box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px */
-    margin-left: 8rem;
+    margin-left: 5.5rem;
     margin-top: -5rem;
     border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px */
     transition: transform 0.5s ease, border-color 0.5s ease;
@@ -163,6 +163,19 @@
 
 /* Adaptación adicional para pantallas muy pequeñas */
 @media (max-width: 480px) {
+  .highlights-carousel {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    border-radius: 0.9375rem; /* 15px */
+    overflow: hidden;
+    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px */
+    margin-left: 5rem;
+    margin-top: -5rem;
+    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px */
+    transition: transform 0.5s ease, border-color 0.5s ease;
+  }
+
   .highlight-card {
     min-width: 100%;
   }
@@ -176,6 +189,11 @@
   }
 
   .highlight-card-image {
-    height: 9.375rem; /* 150px */
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 0.625rem; /* 10px */
+    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px */
+    transition: box-shadow 0.4s ease;
   }
 }
