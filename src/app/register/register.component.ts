@@ -49,6 +49,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   private passwordTypingTimeout: any;
   submitted: boolean = false;
   userExists: boolean = false;
+  showPassword: boolean = false;
 
   constructor(private authService: AuthService, private userService: UserService) { }
 
@@ -60,6 +61,11 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.animateText("¡Bienvenido a Astralis!", 100);
     this.nameInput.nativeElement.focus();
   }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
 
   // Animación de texto
   animateText(text: string, speed: number) {
@@ -89,6 +95,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     if (!this.isPasswordValid()) {
       this.message = 'La contraseña debe tener al menos 6 caracteres';
       this.messageClass = 'error-message';
+      this.submitted = false;
       return;
     }
 
@@ -96,30 +103,36 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     if (this.password !== this.confirmPassword) {
       this.message = 'Las contraseñas no coinciden';
       this.messageClass = 'error-message';
+      this.submitted = false;
       return;
     }
+    this.message = 'Registrando usuario, por favor espera...';
+    this.messageClass = 'info-message';
 
     // Intentar registrar
     this.authService.register(this.email, this.password, this.name).subscribe({
       next: (response: HttpResponse<any>) => {
-        console.log('Respuesta completa:', response);
-        if (response.status === 200) {
-          this.message = '¡Registro exitoso! Por favor, revisa tu correo electrónico para activar tu cuenta.';
-          this.messageClass = 'success-message';
-          this.resetForm();
-        } else {
+        setTimeout(() => {
+          if (response.status === 200) {
+            this.message = response.body || '¡Registro exitoso! Por favor, revisa tu correo electrónico para activar tu cuenta.';
+            this.messageClass = 'success-message';
+          } else {
+            this.message = 'Registro fallido. Por favor, intenta de nuevo.';
+            this.messageClass = 'error-message';
+          }
+          this.submitted = false; // Restaurar estado
+        }, 2000); // Retraso de 2 segundos
+      },
+      error: (error) => {
+        setTimeout(() => {
+          console.error('Error:', error);
           this.message = 'Registro fallido. Por favor, intenta de nuevo.';
           this.messageClass = 'error-message';
-        }
+          this.submitted = false; // Restaurar estado
+        }, 2000); // Retraso de 2 segundos
       },
-      error: error => {
-        console.error('Error:', error);
-        this.message = 'Registro fallido. Por favor, intenta de nuevo.';
-        this.messageClass = 'error-message';
-      }
     });
   }
-
   // Manejo de pasos del formulario
   nextStep() {
     if (this.currentStep === 1) {
