@@ -117,7 +117,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private guestService: GuestService,
     private router: Router
-  ) { }
+  ) {
+    this.webSocketService.connect();
+  }
 
   ngOnInit(): void {
     this.loadExchangeRate();
@@ -149,6 +151,17 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe( message => {
       this.currentTransaction = message;
     })
+
+    this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
+      this.transactionStatus = parsedMessage.status;
+      if (this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
+        this.showSpinner = false;
+        // this.showOptions = true; // Una variable booleana en tu componente que muestre oculte las opciones
+      } else {
+        this.showSpinner = true;
+      }
+    });
+
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
@@ -291,6 +304,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.paymentReferenceNumber = refNumber; // Asignamos el número de referencia
       // this.paymentService.initializePayment('tigo', orderDetails);
       this.tigoPaymentService.initializePayment(orderDetails);
+      this.showSpinner = true;
     }
   }
 
@@ -371,8 +385,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.returnDifference();
         break;
 
-      case 'Adjust the payment to match the expected amount':
-        this.adjustPayment();
+      case 'Pay Anyways':
+        this.router.navigate(['/purchase-confirmation'], {
+          queryParams: { transactionNumber: this.currentTransaction?.transactionNumber }
+        });
         break;
 
       default:

@@ -3,91 +3,114 @@
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Tigo Checkout</h2>
 
-    <!-- Formulario inicial sin (ngSubmit), sólo un botón para mostrar el formulario de verificación manual -->
-    <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm">
-      <div class="form-group">
-        <label for="phone">Phone No.</label>
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          [(ngModel)]="paymentDetails.phoneNumber"
-          required
-          class="retro-input"
-        />
-      </div>
-      <div class="form-group">
-        <label>Total:</label>
-        <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
-      </div>
-
-      <button
-        type="button"
-        class="secondary-button"
-        (click)="showManualVerification()"
-        *ngIf="!showSpinner"
-      >
-        Proceder con el numero de referencia
-      </button>
+    <!-- Mostrar el spinner cuando se está esperando la finalización de la transacción -->
+    <div *ngIf="showSpinner" class="spinner-container">
+      <p>Cargando, por favor espere...</p>
+      <!-- Aquí puedes colocar un spinner gráfico (un GIF animado, CSS spinner, etc.) -->
+      <!-- Ejemplo:
+      <div class="loading-spinner"></div>
+      -->
     </div>
 
-    <!-- Formulario de verificación manual con submitManualVerification en onSubmit -->
-    <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
-      <h3>Verificar Pago</h3>
-      <div class="form-group">
-        <label for="refNumber">Número de Referencia</label>
-        <input
-          type="text"
-          id="refNumber"
-          name="refNumber"
-          [(ngModel)]="manualVerificationData.refNumber"
-          required
-          class="retro-input"
-        />
-      </div>
-      <button type="submit" class="primary-button">Verificar Pago</button>
-      <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
-      <div *ngIf="manualVerificationError" class="error-message">
-        {{ manualVerificationError }}
-      </div>
-      <div *ngIf="manualVerificationSuccess" class="success-message">
-        {{ manualVerificationSuccess }}
-      </div>
-    </form>
+    <!-- Contenido principal sólo se muestra cuando NO está el spinner activo -->
+    <ng-container *ngIf="!showSpinner">
 
-    <!-- Una vez verificado, se mostrará el número de referencia asignado -->
-    <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
-      <h3>Detalles del Pago</h3>
-      <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
-      <!-- Resto de detalles -->
-      <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
-      <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
-      <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
-      <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
-      <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+      <!-- Si la transacción ya está COMPLETADA o en ESPERA DE PROCESO MANUAL, mostramos el mensaje de agradecimiento u opciones -->
+      <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING'">
 
-      <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
-        <h4>Opciones</h4>
-        <div *ngFor="let option of unmatchedPaymentResponse.options">
-          <button class="option-button" (click)="handleOptionSelection(option)">
-            {{ option }}
+        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
+          <h3>¡Gracias por verificar su transacción!</h3>
+          <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
+          <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
+        </div>
+
+        <!-- Si hay una respuesta de pago no coincidente con opciones disponibles -->
+        <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
+          <h3>Detalles del Pago</h3>
+          <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
+          <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
+          <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
+          <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
+          <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
+          <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+
+          <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
+            <h4>Opciones</h4>
+            <div *ngFor="let option of unmatchedPaymentResponse.options">
+              <button class="option-button" (click)="handleOptionSelection(option)">
+                {{ option }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Si todavía no tenemos COMPLETED o AWAITING_MANUAL_PROCESSING y no estamos mostrando el spinner,
+           mostramos los formularios iniciales -->
+      <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING'">
+
+        <!-- Formulario inicial sin (ngSubmit), sólo un botón para mostrar el formulario de verificación manual -->
+        <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm && !paymentReferenceNumber">
+          <div class="form-group">
+            <label for="phone">Phone No.</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              [(ngModel)]="paymentDetails.phoneNumber"
+              required
+              class="retro-input"
+            />
+          </div>
+          <div class="form-group">
+            <label>Total:</label>
+            <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
+          </div>
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="showManualVerification()"
+          >
+            Proceder con el numero de referencia
           </button>
         </div>
+
+        <!-- Formulario de verificación manual con submitManualVerification en onSubmit -->
+        <form *ngIf="showManualVerificationForm && !paymentReferenceNumber" (ngSubmit)="submitManualVerification()">
+          <h3>Verificar Pago</h3>
+          <div class="form-group">
+            <label for="refNumber">Número de Referencia</label>
+            <input
+              type="text"
+              id="refNumber"
+              name="refNumber"
+              [(ngModel)]="manualVerificationData.refNumber"
+              required
+              class="retro-input"
+            />
+          </div>
+          <button type="submit" class="primary-button">Verificar Pago</button>
+          <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
+          <div *ngIf="manualVerificationError" class="error-message">
+            {{ manualVerificationError }}
+          </div>
+          <div *ngIf="manualVerificationSuccess" class="success-message">
+            {{ manualVerificationSuccess }}
+          </div>
+        </form>
+
+      </ng-container>
+
+      <!-- Mensajes de éxito y error generales (si no se están mostrando formularios ni spinner) -->
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
       </div>
-    </div>
+      <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
+        {{ errorMessage }}
+      </div>
 
-    <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
-      <h3>¡Gracias por verificar su transacción!</h3>
-      <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
-      <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
-    </div>
-
-    <div *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
-      {{ errorMessage }}
-    </div>
+    </ng-container>
   </div>
 </div>
 
