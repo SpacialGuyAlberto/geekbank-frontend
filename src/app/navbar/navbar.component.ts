@@ -1,7 +1,7 @@
 // src/app/components/navbar/navbar.component.ts
 import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
-import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart.service';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ import {loadUserFromSession, logout} from "../state/auth/auth.actions";
 import {user} from "@angular/fire/auth";
 import {loadUser} from "../state/user/user.actions";
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";
+import {CartItemWithGiftcard} from "../models/CartItem";
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -41,6 +42,7 @@ import {CategoryItemsComponent} from "../components/category-items/category-item
     AsyncPipe,
     NgForOf,
     CategoryItemsComponent,
+    CurrencyPipe,
   ],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
@@ -109,7 +111,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isAuthenticated$: Observable<boolean | null>;
   isDropdownHovered: boolean = false;
   hideDropdownTimeout: any;
-
+  showCartModal = false;
+  cartItems: CartItemWithGiftcard[] = [];
 
   private subscriptions: Subscription = new Subscription();
 
@@ -133,6 +136,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang('en');
     this.checkScreenSize();
+    this.loadCartItems();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
     // this.user$.subscribe(data => this.role = data?.role)
     this.store.dispatch(loadUserFromSession());
@@ -326,6 +330,27 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
     });
+  }
+
+  loadCartItems(): void {
+    this.cartService.cartItems$.subscribe((items) => {
+      this.cartItems = items;
+    });
+  }
+  goToCart(): void {
+    // Navegar al carrito
+    window.location.href = '/cart';
+  }
+
+  onCartHover(): void {
+    this.showCartModal = true;
+  }
+  closeCartModal(): void {
+    this.showCartModal = false;
+  }
+
+  onCartLeave(): void {
+    this.showCartModal = false;
   }
 
   protected readonly user = user;

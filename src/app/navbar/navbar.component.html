@@ -10,12 +10,36 @@
   </div>
 
   <div class="navbar-links">
-    <li class="cart-icon-container">
+    <li class="cart-icon-container" (mouseenter)="onCartHover()">
       <a routerLink="/cart">
         <i class="fa-solid fa-cart-shopping"></i>
         <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
       </a>
+      <!-- Modal que permanece visible -->
+      <div class="cart-modal-backdrop" (click)="closeCartModal()">
+      <div class="cart-modal" *ngIf="showCartModal"  (click)="$event.stopPropagation()">
+        <button class="close-modal-btn" (click)="closeCartModal()">×</button>
+        <div *ngIf="cartItems.length > 0; else emptyCart">
+          <div *ngFor="let item of cartItems" class="cart-item">
+            <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="cart-item-image" />
+            <div class="cart-item-details">
+              <p>{{ item.giftcard.name }}</p>
+              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.price | currency:'USD' }}</p>
+            </div>
+          </div>
+          <div class="cart-modal-footer">
+<!--            <p class="cart-total">Total: {{  | currency:'USD' }}</p>-->
+            <button (click)="goToCart()" class="btn-view-cart">Ver carrito</button>
+          </div>
+        </div>
+        <ng-template #emptyCart>
+          <p class="empty-cart-message">Tu carrito está vacío.</p>
+        </ng-template>
+      </div>
+      </div>
     </li>
+
+
     <a *ngIf="!(isAuthenticated$ | async)" (click)="goToLogin()" class="nav-link">Login</a>
     <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Register</a>
     <i
