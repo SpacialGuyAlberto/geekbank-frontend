@@ -1,12 +1,11 @@
 // src/app/cart.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { KinguinGiftCard } from './models/KinguinGiftCard';
-import { CartItemWithGiftcard } from "./models/CartItem";
+import {map, tap} from 'rxjs/operators';
 import { environment } from "../environments/environment";
 import { AuthService } from './auth.service';
+import { CartItemWithGiftcard } from "./models/CartItem";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +15,7 @@ export class CartService {
   private baseUrl = `${this.apiUrl}/cart`;
 
   private cartItemCountSubject = new BehaviorSubject<number>(0);
-  cartItemCount$: Observable<number> = this.cartItemCountSubject.asObservable();
+  cartItemCount$ = this.cartItemCountSubject.asObservable();
 
   private cartItemsSubject = new BehaviorSubject<CartItemWithGiftcard[]>([]);
   cartItems$ = this.cartItemsSubject.asObservable();
@@ -25,10 +24,7 @@ export class CartService {
     this.loadCartItems();
   }
 
-  /**
-   * Carga los elementos del carrito desde el servidor o localStorage dependiendo del estado de autenticación.
-   */
- loadCartItems(): void {
+  loadCartItems(): void {
     if (this.authService.isAuthenticated()) {
       this.getCartItemsFromServer().subscribe(items => {
         this.cartItemsSubject.next(items);
@@ -41,10 +37,9 @@ export class CartService {
     }
   }
 
-
   private getCartItemsFromServer(): Observable<CartItemWithGiftcard[]> {
     return this.http.get<CartItemWithGiftcard[]>(this.baseUrl, {
-      withCredentials: true // Incluir cookies automáticamente en la solicitud
+      withCredentials: true // Enviar cookies con la solicitud
     });
   }
 
@@ -61,14 +56,11 @@ export class CartService {
     return this.cartItems$;
   }
 
-  /**
-   * Agrega un elemento al carrito.
-   */
   addCartItem(productId: number, quantity: number, price: number): Observable<void> {
     if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
-        this.http.post<KinguinGiftCard>(this.baseUrl, { productId, quantity, price }, {
-          withCredentials: true // Asegura que las cookies se incluyan en la solicitud
+        this.http.post<any>(this.baseUrl, { productId, quantity, price }, {
+          withCredentials: true // Enviar cookies con la solicitud
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -96,18 +88,11 @@ export class CartService {
     }
   }
 
-
-  /**
-   * Actualiza un elemento del carrito.
-   */
   updateCartItem(productId: number, quantity: number): Observable<void> {
-    if (this.authService.isLoggedIn()) {
-      // Actualizar en el carrito del servidor
+    if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
-        this.http.put<KinguinGiftCard>(this.baseUrl, { productId, quantity }, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+        this.http.put<void>(this.baseUrl, { productId, quantity }, {
+          withCredentials: true // Enviar cookies con la solicitud
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -134,12 +119,9 @@ export class CartService {
 
   removeCartItem(productId: number): Observable<void> {
     if (this.authService.isAuthenticated()) {
-      // Remover del carrito en el servidor
       return new Observable<void>(observer => {
         this.http.delete(`${this.baseUrl}/${productId}`, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+          withCredentials: true // Enviar cookies con la solicitud
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -152,7 +134,6 @@ export class CartService {
         });
       });
     } else {
-      // Remover del carrito en localStorage
       let items = this.getCartItemsFromLocalStorage();
       items = items.filter(item => item.cartItem.productId !== productId);
       this.saveCartItemsToLocalStorage(items);
@@ -162,27 +143,11 @@ export class CartService {
     }
   }
 
-  isItemInCart(kinguinId: number): Observable<boolean> {
-    if (this.authService.isLoggedIn()) {
-      return this.getCartItemsFromServer().pipe(
-        map(cartItems => {
-          return cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId);
-        })
-      );
-    } else {
-      const items = this.getCartItemsFromLocalStorage();
-      return of(items.some(item => item.cartItem.productId === kinguinId));
-    }
-  }
-
   removeAllCartItems(): Observable<void> {
-    if (this.authService.isLoggedIn()) {
-      // Remover todos los elementos del carrito en el servidor
+    if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
         this.http.delete(this.baseUrl, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+          withCredentials: true // Enviar cookies con la solicitud
         }).subscribe({
           next: () => {
             this.cartItemsSubject.next([]);
@@ -196,7 +161,6 @@ export class CartService {
         });
       });
     } else {
-      // Remover todos los elementos del carrito en localStorage
       localStorage.removeItem('cart');
       this.cartItemsSubject.next([]);
       this.updateCartItemCount();
@@ -206,7 +170,7 @@ export class CartService {
 
   updateCartItemCount(): void {
     let items: CartItemWithGiftcard[];
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isAuthenticated()) {
       items = this.cartItemsSubject.value;
     } else {
       items = this.getCartItemsFromLocalStorage();
@@ -219,5 +183,18 @@ export class CartService {
   updateCartItemCountManual(count: number): void {
     this.cartItemCountSubject.next(count);
     sessionStorage.setItem('cartItemCount', JSON.stringify(count));
+  }
+
+  isItemInCart(kinguinId: number): Observable<boolean> {
+    if (this.authService.isLoggedIn()) {
+      return this.getCartItemsFromServer().pipe(
+        map(cartItems => {
+          return cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId);
+        })
+      );
+    } else {
+      const items = this.getCartItemsFromLocalStorage();
+      return of(items.some(item => item.cartItem.productId === kinguinId));
+    }
   }
 }
