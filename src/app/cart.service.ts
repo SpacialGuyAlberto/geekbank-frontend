@@ -6,13 +6,15 @@ import { map, tap } from 'rxjs/operators';
 import { environment } from "../environments/environment";
 import { AuthService } from './auth.service';
 import { CartItemWithGiftcard } from "./models/CartItem";
-
+import {KinguinService} from "./kinguin.service";
+import {KinguinGiftCard} from "./models/KinguinGiftCard";
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
   private apiUrl = environment.apiUrl;
   private baseUrl = `${this.apiUrl}/cart`;
+  GiftCard: KinguinGiftCard | null = null;
 
   private cartItemCountSubject = new BehaviorSubject<number>(0);
   cartItemCount$ = this.cartItemCountSubject.asObservable();
@@ -22,7 +24,7 @@ export class CartService {
 
   private isLoadingCartItems = false; // Indicador para evitar múltiples cargas
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private kinguinService: KinguinService) {
     this.loadCartItems();
   }
 
@@ -36,6 +38,11 @@ export class CartService {
     if (this.authService.isAuthenticated()) {
       this.getCartItemsFromServer().subscribe({
         next: (items) => {
+          items.map(item => {
+            item.giftcard.coverImageOriginal = item.giftcard.images.cover?.thumbnail || '';
+            item.giftcard.coverImage = item.giftcard.images.cover?.thumbnail || '';
+            return item;
+          });
           this.cartItemsSubject.next(items);
           this.updateCartItemCount();
         },
@@ -49,6 +56,11 @@ export class CartService {
       });
     } else {
       const items = this.getCartItemsFromLocalStorage();
+      items.map(item => {
+        item.giftcard.coverImageOriginal = item.giftcard.images.cover?.thumbnail || '';
+        item.giftcard.coverImage = item.giftcard.images.cover?.thumbnail || '';
+        return item;
+      });
       this.cartItemsSubject.next(items);
       this.updateCartItemCount();
       this.isLoadingCartItems = false; // Resetea el indicador
@@ -137,18 +149,26 @@ export class CartService {
         });
       });
     } else {
-      console.log("Probablemente no estás logueado, amigo.");
-      const items = this.getCartItemsFromLocalStorage();
+      const items = [...this.getCartItemsFromLocalStorage()];
       const existingItem = items.find(item => item.cartItem.productId === productId);
+
       if (existingItem) {
         existingItem.cartItem.quantity += quantity;
+        this.saveCartItemsToLocalStorage(items);
+        this.cartItemsSubject.next(items);
+        this.updateCartItemCount();
+        return of();
       } else {
-        items.push({ cartItem: { productId, quantity }, giftcard: { price } } as CartItemWithGiftcard);
+        return this.kinguinService.getGiftCardDetails(productId.toString()).pipe(
+          tap(giftCard => {
+            items.push({ cartItem: { productId, quantity }, giftcard: giftCard } as CartItemWithGiftcard);
+            this.saveCartItemsToLocalStorage(items);
+            this.cartItemsSubject.next(items);
+            this.updateCartItemCount();
+          }),
+          map(() => {})
+        );
       }
-      this.saveCartItemsToLocalStorage(items);
-      this.cartItemsSubject.next(items);
-      this.updateCartItemCount();
-      return of();
     }
   }
 
