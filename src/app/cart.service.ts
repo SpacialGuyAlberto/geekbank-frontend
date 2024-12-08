@@ -64,6 +64,31 @@ export class CartService {
     });
   }
 
+  loadCartItemCountFromServer(): void {
+    if (this.authService.isAuthenticated()) {
+      this.getCartItemsFromServer().subscribe({
+        next: (cartItems) => {
+          // Actualiza el subject con los ítems obtenidos
+          this.cartItemsSubject.next(cartItems);
+
+          // Calcula la cantidad total de ítems en el carrito
+          const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
+
+          // Actualiza el subject del conteo
+          this.cartItemCountSubject.next(totalCount);
+
+          // Guarda el conteo en sessionStorage
+          sessionStorage.setItem('cartItemCount', JSON.stringify(totalCount));
+        },
+        error: (err) => {
+          console.error('Error al cargar los ítems del carrito desde el servidor:', err);
+        }
+      });
+    } else {
+      console.warn('El usuario no está autenticado. No se puede cargar el carrito desde el servidor.');
+    }
+  }
+
   /**
    * Obtiene los ítems del carrito desde localStorage con validación.
    */
@@ -256,4 +281,5 @@ export class CartService {
       return of(items.some(item => item.cartItem.productId === kinguinId));
     }
   }
+
 }

@@ -62,6 +62,7 @@ export class CartComponent implements OnInit, OnDestroy {
   onLoad(event: Event) {
     console.log('Evento window:load detectado');
     this.loadCartItems();
+    this.countCartItems();
   }
 
   ngOnInit(): void {
@@ -227,6 +228,14 @@ export class CartComponent implements OnInit, OnDestroy {
   updateCartItemCount(): void {
     this.cartService.updateCartItemCount();
     console.log(this.cartItemCount);
+  }
+
+  countCartItems(){
+    this.cartService.cartItemCount$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        this.cartItemCount = count;
+      });
   }
 
   protected readonly Number = Number;

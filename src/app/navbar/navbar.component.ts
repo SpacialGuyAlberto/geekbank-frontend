@@ -1,5 +1,5 @@
 // src/app/components/navbar/navbar.component.ts
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
 import {AsyncPipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -150,7 +150,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         }
       }
     });
-
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: any) => {
@@ -175,6 +174,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED NAVBAR: " + value))
     );
+  }
+
+  @HostListener('window:load', ['$event'])
+  onLoad(event: Event) {
+    console.log('Evento window:load detectado en navbar');
+    this.countCartItems();
   }
 
   ngOnDestroy(): void {
@@ -314,7 +319,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  countCartItems(){
+    this.cartService.loadCartItemCountFromServer();
 
+    // Escucha cambios en el conteo de ítems
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.cartItemCount = count;
+    });
+  }
 
   protected readonly user = user;
 }
