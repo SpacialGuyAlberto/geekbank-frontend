@@ -1,12 +1,11 @@
 // src/app/cart.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { KinguinGiftCard } from './models/KinguinGiftCard';
-import { CartItemWithGiftcard } from "./models/CartItem";
+import { map, tap } from 'rxjs/operators';
 import { environment } from "../environments/environment";
 import { AuthService } from './auth.service';
+import { CartItemWithGiftcard } from "./models/CartItem";
 
 @Injectable({
   providedIn: 'root'
@@ -16,59 +15,116 @@ export class CartService {
   private baseUrl = `${this.apiUrl}/cart`;
 
   private cartItemCountSubject = new BehaviorSubject<number>(0);
-  cartItemCount$: Observable<number> = this.cartItemCountSubject.asObservable();
+  cartItemCount$ = this.cartItemCountSubject.asObservable();
 
-  private cartItemsSubject = new BehaviorSubject<CartItemWithGiftcard[]>([]);
+  cartItemsSubject = new BehaviorSubject<CartItemWithGiftcard[]>([]);
   cartItems$ = this.cartItemsSubject.asObservable();
+
+  private isLoadingCartItems = false; // Indicador para evitar múltiples cargas
 
   constructor(private http: HttpClient, private authService: AuthService) {
     this.loadCartItems();
   }
 
   /**
-   * Carga los elementos del carrito desde el servidor o localStorage dependiendo del estado de autenticación.
+   * Carga los ítems del carrito desde el servidor o localStorage.
    */
- loadCartItems(): void {
+  loadCartItems(): void {
+    if (this.isLoadingCartItems) return; // Evita múltiples llamadas simultáneas
+    this.isLoadingCartItems = true;
+
     if (this.authService.isAuthenticated()) {
-      this.getCartItemsFromServer().subscribe(items => {
-        this.cartItemsSubject.next(items);
-        this.updateCartItemCount();
+      this.getCartItemsFromServer().subscribe({
+        next: (items) => {
+          this.cartItemsSubject.next(items);
+          this.updateCartItemCount();
+        },
+        error: (err) => {
+          console.error('Error loading cart items from server:', err);
+          this.cartItemsSubject.next([]); // Asegura emitir un array vacío en caso de error
+        },
+        complete: () => {
+          this.isLoadingCartItems = false; // Resetea el indicador
+        }
       });
     } else {
       const items = this.getCartItemsFromLocalStorage();
       this.cartItemsSubject.next(items);
       this.updateCartItemCount();
+      this.isLoadingCartItems = false; // Resetea el indicador
     }
   }
 
-
+  /**
+   * Obtiene los ítems del carrito desde el servidor.
+   */
   private getCartItemsFromServer(): Observable<CartItemWithGiftcard[]> {
     return this.http.get<CartItemWithGiftcard[]>(this.baseUrl, {
-      withCredentials: true // Incluir cookies automáticamente en la solicitud
+      withCredentials: true // Enviar cookies con la solicitud
     });
   }
 
-  private getCartItemsFromLocalStorage(): CartItemWithGiftcard[] {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
+  loadCartItemCountFromServer(): void {
+    if (this.authService.isAuthenticated()) {
+      this.getCartItemsFromServer().subscribe({
+        next: (cartItems) => {
+          // Actualiza el subject con los ítems obtenidos
+          this.cartItemsSubject.next(cartItems);
+
+          // Calcula la cantidad total de ítems en el carrito
+          const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
+
+          // Actualiza el subject del conteo
+          this.cartItemCountSubject.next(totalCount);
+
+          // Guarda el conteo en sessionStorage
+          sessionStorage.setItem('cartItemCount', JSON.stringify(totalCount));
+        },
+        error: (err) => {
+          console.error('Error al cargar los ítems del carrito desde el servidor:', err);
+        }
+      });
+    } else {
+      console.warn('El usuario no está autenticado. No se puede cargar el carrito desde el servidor.');
+    }
   }
 
+  /**
+   * Obtiene los ítems del carrito desde localStorage con validación.
+   */
+  private getCartItemsFromLocalStorage(): CartItemWithGiftcard[] {
+    const cart = localStorage.getItem('cart');
+    try {
+      return cart ? JSON.parse(cart) : [];
+    } catch (error) {
+      console.error('Error parsing cart data from localStorage:', error);
+      localStorage.removeItem('cart'); // Limpia localStorage si los datos no son válidos
+      return [];
+    }
+  }
+
+  /**
+   * Guarda los ítems del carrito en localStorage.
+   */
   private saveCartItemsToLocalStorage(items: CartItemWithGiftcard[]): void {
     localStorage.setItem('cart', JSON.stringify(items));
   }
 
+  /**
+   * Obtiene un Observable de los ítems del carrito.
+   */
   getCartItems(): Observable<CartItemWithGiftcard[]> {
     return this.cartItems$;
   }
 
   /**
-   * Agrega un elemento al carrito.
+   * Agrega un ítem al carrito.
    */
   addCartItem(productId: number, quantity: number, price: number): Observable<void> {
     if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
-        this.http.post<KinguinGiftCard>(this.baseUrl, { productId, quantity, price }, {
-          withCredentials: true // Asegura que las cookies se incluyan en la solicitud
+        this.http.post<any>(this.baseUrl, { productId, quantity, price }, {
+          withCredentials: true
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -81,7 +137,7 @@ export class CartService {
         });
       });
     } else {
-      console.log("You are probably not logged in my friend");
+      console.log("Probablemente no estás logueado, amigo.");
       const items = this.getCartItemsFromLocalStorage();
       const existingItem = items.find(item => item.cartItem.productId === productId);
       if (existingItem) {
@@ -96,18 +152,14 @@ export class CartService {
     }
   }
 
-
   /**
-   * Actualiza un elemento del carrito.
+   * Actualiza la cantidad de un ítem en el carrito.
    */
   updateCartItem(productId: number, quantity: number): Observable<void> {
-    if (this.authService.isLoggedIn()) {
-      // Actualizar en el carrito del servidor
+    if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
-        this.http.put<KinguinGiftCard>(this.baseUrl, { productId, quantity }, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+        this.http.put<void>(this.baseUrl, { productId, quantity }, {
+          withCredentials: true
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -132,14 +184,14 @@ export class CartService {
     }
   }
 
+  /**
+   * Elimina un ítem del carrito.
+   */
   removeCartItem(productId: number): Observable<void> {
     if (this.authService.isAuthenticated()) {
-      // Remover del carrito en el servidor
       return new Observable<void>(observer => {
         this.http.delete(`${this.baseUrl}/${productId}`, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+          withCredentials: true
         }).subscribe({
           next: () => {
             this.loadCartItems();
@@ -152,7 +204,6 @@ export class CartService {
         });
       });
     } else {
-      // Remover del carrito en localStorage
       let items = this.getCartItemsFromLocalStorage();
       items = items.filter(item => item.cartItem.productId !== productId);
       this.saveCartItemsToLocalStorage(items);
@@ -162,27 +213,14 @@ export class CartService {
     }
   }
 
-  isItemInCart(kinguinId: number): Observable<boolean> {
-    if (this.authService.isLoggedIn()) {
-      return this.getCartItemsFromServer().pipe(
-        map(cartItems => {
-          return cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId);
-        })
-      );
-    } else {
-      const items = this.getCartItemsFromLocalStorage();
-      return of(items.some(item => item.cartItem.productId === kinguinId));
-    }
-  }
-
+  /**
+   * Elimina todos los ítems del carrito.
+   */
   removeAllCartItems(): Observable<void> {
-    if (this.authService.isLoggedIn()) {
-      // Remover todos los elementos del carrito en el servidor
+    if (this.authService.isAuthenticated()) {
       return new Observable<void>(observer => {
         this.http.delete(this.baseUrl, {
-          headers: new HttpHeaders({
-            'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-          })
+          withCredentials: true
         }).subscribe({
           next: () => {
             this.cartItemsSubject.next([]);
@@ -196,7 +234,6 @@ export class CartService {
         });
       });
     } else {
-      // Remover todos los elementos del carrito en localStorage
       localStorage.removeItem('cart');
       this.cartItemsSubject.next([]);
       this.updateCartItemCount();
@@ -204,9 +241,12 @@ export class CartService {
     }
   }
 
+  /**
+   * Actualiza el conteo de ítems en el carrito.
+   */
   updateCartItemCount(): void {
     let items: CartItemWithGiftcard[];
-    if (this.authService.isLoggedIn()) {
+    if (this.authService.isAuthenticated()) {
       items = this.cartItemsSubject.value;
     } else {
       items = this.getCartItemsFromLocalStorage();
@@ -216,8 +256,30 @@ export class CartService {
     sessionStorage.setItem('cartItemCount', JSON.stringify(totalCount));
   }
 
+  /**
+   * Actualiza manualmente el conteo de ítems en el carrito.
+   */
   updateCartItemCountManual(count: number): void {
     this.cartItemCountSubject.next(count);
     sessionStorage.setItem('cartItemCount', JSON.stringify(count));
   }
+
+  /**
+   * Verifica si un ítem está en el carrito.
+   */
+  isItemInCart(kinguinId: number): Observable<boolean> {
+    if (this.authService.isAuthenticated()) {
+       console.log("IS ITEM IN CART BEING EXECUTTED");
+      return this.getCartItemsFromServer().pipe(
+        map(cartItems => {
+          console.log("IS ITEM IN CART SERVICE: " + cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId ))
+          return cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId);
+        })
+      );
+    } else {
+      const items = this.getCartItemsFromLocalStorage();
+      return of(items.some(item => item.cartItem.productId === kinguinId));
+    }
+  }
+
 }

@@ -1,8 +1,8 @@
 // src/app/gift-card-details/gift-card-details.component.ts
-import {ChangeDetectorRef, Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {ActivatedRoute, ParamMap} from '@angular/router';
+import { ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { KinguinService } from "../kinguin.service";
-import {KinguinGiftCard, Screenshot, SystemRequirement} from "../models/KinguinGiftCard";
+import { KinguinGiftCard, Screenshot, SystemRequirement } from "../models/KinguinGiftCard";
 import { CurrencyPipe } from "@angular/common";
 import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
@@ -17,15 +17,15 @@ import { FeedbackService } from "../services/feedback.service";
 import { Feedback } from "../models/Feedback";
 import { WishListService } from "../wish-list.service";
 import { HttpClient } from '@angular/common/http';
-import {BannerComponent} from "../banner/banner.component";
-import {SuggestionsComponent} from "../suggestions/suggestions.component";
+import { BannerComponent } from "../banner/banner.component";
+import { SuggestionsComponent } from "../suggestions/suggestions.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {of, Subscription} from "rxjs";
-import {switchMap} from "rxjs/operators";
-import {PaymentOptionsComponent} from "../payment-options/payment-options.component";
-import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
-import {PaymentComponent} from "../payment/payment.component";
-
+import { of, Subscription, combineLatest } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
+import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
+import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
+import { PaymentComponent } from "../payment/payment.component";
+import {CartItemWithGiftcard} from "../models/CartItem";
 
 interface Language {
   name: string;
@@ -38,19 +38,18 @@ interface Language {
 @Component({
   selector: 'app-gift-card-details',
   standalone: true,
-    imports: [
-        CurrencyPipe,
-        CommonModule,
-        MatSnackBarModule,
-        FormsModule,
-        BannerComponent,
-        SuggestionsComponent,
-        MatProgressSpinnerModule,
-        PaymentOptionsComponent,
-        TigoPaymentComponent,
-        PaymentComponent
-
-    ],
+  imports: [
+    CurrencyPipe,
+    CommonModule,
+    MatSnackBarModule,
+    FormsModule,
+    BannerComponent,
+    SuggestionsComponent,
+    MatProgressSpinnerModule,
+    PaymentOptionsComponent,
+    TigoPaymentComponent,
+    PaymentComponent
+  ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
 })
@@ -62,6 +61,7 @@ export class GiftCardDetailsComponent implements OnInit {
   isInCart: boolean = false;
   isPaymentModalOpen: boolean = false;
   kinguinId: number = 0;
+  productId: string | null = '';
   cartItemCount: number = 0;
   exchangeRate: number = 0;
   convertedPrice: number = 0;
@@ -77,7 +77,7 @@ export class GiftCardDetailsComponent implements OnInit {
   isLoading: boolean = false;
   conversionError: string = '';
   suggestionFilter: string[] = [];
-  systemRequirements: SystemRequirement[] | null= null;
+  systemRequirements: SystemRequirement[] | null = null;
   isManualTransaction: boolean = false;
 
   @Output() cartItemCountChange: EventEmitter<number> = new EventEmitter<number>();
@@ -105,6 +105,7 @@ export class GiftCardDetailsComponent implements OnInit {
   };
   private isTigoPaymentModalOpen: boolean = false;
 
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -120,55 +121,121 @@ export class GiftCardDetailsComponent implements OnInit {
     private http: HttpClient
   ) { }
 
+  @HostListener('window:load', ['$event'])
+  onLoad(event: Event) {
+    console.log('Evento window:load detectado');
+    const productId = localStorage.getItem('productId'); // Recuperar el valor
+    if (productId) { // Validar que no sea null
+      this.checkIfInCart(parseInt(productId, 10));
+      console.log('CHeking if im cart')
+    }
+  }
+
   ngOnInit(): void {
     this.suggestionLoading = true;
     this.fetchCurrencyExchange();
-    // const id = this.route.snapshot.paramMap.get('id');
 
     this.routeSub = this.route.paramMap.pipe(
-
       switchMap((params: ParamMap) => {
         const id = params.get('id');
-        if (id){
-          this.suggestionLoading = true;
-          return this.kinguinService.getGiftCardDetails(id)
+        if (id) {
+          this.kinguinId = parseInt(id, 10);
+          localStorage.setItem('productId', id);
+          this.productId = id;
+          console.log(`Gift Card ID: ${this.kinguinId}`);
+          return this.kinguinService.getGiftCardDetails(id);
+
         } else {
-          return of (null)
+          return of(null); // Maneja el caso donde no hay ID
         }
       })
-    ).subscribe(data => {
-      if (data){
-        data.coverImageOriginal = data.images.cover?.thumbnail || '';
-        data.coverImage = data.images.cover?.thumbnail || '';
-        this.giftCard = data;
-        this.kinguinId = data.kinguinId;
-        if (this.giftCard.images.screenshots.length > 0){
-          this.giftCard.images.screenshots.map( screenshot => this.images.push(screenshot.url));
-          this.currentImage = this.images[this.currentImageIndex];
-          console.log(this.images)
+    ).subscribe({
+      next: (data) => {
+        if (data) {
+          this.giftCard = data;
+          this.processGiftCardDetails();
+          this.checkIfInCart(data.kinguinId);
+          this.waitForCartItemsAndCheck(this.kinguinId);
+          this.loadGiftCardLanguages();
         } else {
-          this.images = [this.giftCard.coverImageOriginal]
-          this.currentImage = this.images[0];
+          console.error('No se recibió ningún dato de la tarjeta de regalo.');
         }
-        this.checkIfInCart(data.kinguinId);
-        this.http.get<Language[]>('https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/index.json')
-          .subscribe((data) => {
-            this.languagesData = data;
-            this.filterGiftCardLanguages();
-            this.suggestionLoading = false;
-          });
-        this.cdr.markForCheck();
+        this.suggestionLoading = false;
+      },
+      error: (error) => {
+        console.error('Error al cargar los detalles de la tarjeta de regalo:', error);
+        this.suggestionLoading = false;
       }
-    })
+    });
+
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
       this.cartItemCountChange.emit(this.cartItemCount);
     });
   }
 
+  /**
+   * Espera a que los ítems del carrito estén disponibles y verifica si la tarjeta actual está en el carrito.
+   * Utiliza `combineLatest` para sincronizar los datos.
+   */
+  private waitForCartItemsAndCheck(kinguinId: number): void {
+    combineLatest([this.cartService.cartItems$, of(kinguinId)]).pipe(
+      map(([cartItems, id]) => {
+        const itemInCart = cartItems.find(item => item.cartItem.productId === id);
+        if (itemInCart) {
+          this.isInCart = true;
+          this.quantityInCart = itemInCart.cartItem.quantity;
+          console.log(`Item encontrado en el carrito: ${JSON.stringify(itemInCart)}`);
+        } else {
+          this.isInCart = false;
+          this.quantityInCart = 0;
+          console.log('Item no encontrado en el carrito.');
+        }
+      })
+    ).subscribe({
+      error: (err) => console.error('Error al esperar los ítems del carrito:', err)
+    });
+  }
+
+  /**
+   * Procesa los detalles de la tarjeta de regalo.
+   */
+  private processGiftCardDetails(): void {
+    if (this.giftCard) {
+      this.giftCard.coverImageOriginal = this.giftCard.images.cover?.thumbnail || '';
+      this.giftCard.coverImage = this.giftCard.images.cover?.thumbnail || '';
+      if (this.giftCard.images.screenshots.length > 0) {
+        this.images = this.giftCard.images.screenshots.map(screenshot => screenshot.url);
+        this.currentImage = this.images[this.currentImageIndex];
+      } else {
+        this.images = [this.giftCard.coverImageOriginal];
+        this.currentImage = this.images[0];
+      }
+      console.log('Detalles de la tarjeta de regalo procesados:', this.giftCard);
+    }
+  }
+
+  /**
+   * Carga las banderas de idioma de la tarjeta de regalo.
+   */
+  private loadGiftCardLanguages(): void {
+    this.http.get<Language[]>('https://cdn.jsdelivr.net/npm/country-flag-emoji-json@2.0.0/dist/index.json')
+      .subscribe((data) => {
+        this.languagesData = data;
+        this.filterGiftCardLanguages();
+        this.suggestionLoading = false;
+      }, error => {
+        console.error('Error al cargar los datos de idiomas:', error);
+        this.suggestionLoading = false;
+      });
+  }
+
+  /**
+   * Filtra los idiomas disponibles para la tarjeta de regalo usando el mapeo de idiomas.
+   */
   private filterGiftCardLanguages() {
-    // Filtrar los países específicos de la gift card usando el mapeo de idiomas
-    this.giftCardLanguages = this.giftCard?.languages
+    if (!this.giftCard) return;
+    this.giftCardLanguages = this.giftCard.languages
       .map(language => this.languageToCountryMap[language])
       .filter(code => code) // Filtrar códigos no definidos
       .map(code => this.languagesData.find(language => language.code === code))
@@ -185,14 +252,14 @@ export class GiftCardDetailsComponent implements OnInit {
     // Obtener la tasa de cambio para 1 EUR a HNL
     this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
       (convertedAmount: number) => {
-        console.log('Exchange Rate (1 EUR):', convertedAmount);
+        console.log('Tasa de cambio (1 EUR):', convertedAmount);
         this.exchangeRate = convertedAmount;
         this.isLoading = false;
         // Mostrar notificación de éxito
         this.snackBar.open('Tasa de cambio actualizada.', 'Cerrar', {
           duration: 3000,
         });
-        // Actualizar el precio convertido si el giftCard ya está cargado
+        // Actualizar el precio convertido si la tarjeta ya está cargada
         if (this.giftCard) {
           this.calculateConvertedPrice();
         }
@@ -247,7 +314,7 @@ export class GiftCardDetailsComponent implements OnInit {
     const feedback: Partial<Feedback> = {
       score: this.feedbackScore,
       message: this.feedbackMessage.trim(),
-      userId: sessionStorage.getItem('userId'), // Ahora es string
+      userId: userId, // Ahora es string
       giftCardId: this.giftCard.kinguinId.toString(),
       createdAt: new Date()
     };
@@ -268,6 +335,9 @@ export class GiftCardDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Verifica si el usuario está logueado.
+   */
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
@@ -275,47 +345,30 @@ export class GiftCardDetailsComponent implements OnInit {
   /**
    * Verifica si el ítem está en el carrito.
    */
-  checkIfInCart(kinguinId: number): void {
-    this.cartService.isItemInCart(kinguinId).subscribe(isInCart => {
-      this.isInCart = isInCart;
-      console.log(`isInCart is now: ${this.isInCart}`);
-      if (this.isInCart) {
-        this.cartService.getCartItems().subscribe(cartItems => {
-          const itemInCart = cartItems.find(item => item.cartItem.productId === kinguinId);
-          if (itemInCart) {
-            this.quantityInCart = itemInCart.cartItem.quantity;
-            console.log(`Item found in cart: ${JSON.stringify(itemInCart)}`);
-          }
-          this.emitCartItemCount();
-        });
-      } else {
-        this.quantityInCart = 0;
-        console.log('Item not found in cart.');
-        this.emitCartItemCount();
-      }
-    });
-  }
 
-  /**
-   * Alterna la inclusión en la wishlist.
-   */
   toggleWishList(giftCard: KinguinGiftCard, event: MouseEvent): void {
     event.stopPropagation(); // Prevenir que el click propague al viewDetails
 
     if (!this.isLoggedIn()) {
-      this.showSnackBar('You are not logged in. Please log in to add items to your wishlist.');
+      this.showSnackBar('No estás logueado. Por favor, inicia sesión para agregar ítems a tu wishlist.');
       return;
     }
 
     if (giftCard.wished) {
       this.wishListService.removeWishItem(giftCard.kinguinId).subscribe(() => {
         giftCard.wished = false; // Actualiza el estado de la tarjeta específica
-        this.showSnackBar('Product removed from wishlist.');
+        this.showSnackBar('Producto eliminado de la wishlist.');
+      }, error => {
+        console.error('Error al eliminar de la wishlist:', error);
+        this.showSnackBar('Hubo un error al eliminar el producto de la wishlist.');
       });
     } else {
       this.wishListService.addWishItem(giftCard.kinguinId, giftCard.price).subscribe(() => {
         giftCard.wished = true; // Actualiza el estado de la tarjeta específica
-        this.showSnackBar('Product added to wishlist: ' + giftCard.name);
+        this.showSnackBar(`Producto agregado a la wishlist: ${giftCard.name}`);
+      }, error => {
+        console.error('Error al agregar a la wishlist:', error);
+        this.showSnackBar('Hubo un error al agregar el producto a la wishlist.');
       });
     }
   }
@@ -329,18 +382,24 @@ export class GiftCardDetailsComponent implements OnInit {
         this.isInCart = false;
         this.quantityInCart = 0;
         this.emitCartItemCount();
-        this.notifMessage = `You removed ${giftCard.name} from cart.`;
+        this.notifMessage = `Has eliminado ${giftCard.name} del carrito.`;
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
-        this.showSnackBar('Product removed from cart');
+        this.showSnackBar('Producto eliminado del carrito.');
+      }, error => {
+        console.error('Error al eliminar del carrito:', error);
+        this.showSnackBar('Hubo un error al eliminar el producto del carrito.');
       });
     } else {
       this.cartService.addCartItem(giftCard.kinguinId, 1, giftCard.price).subscribe(() => {
         this.isInCart = true;
         this.quantityInCart = 1;
         this.emitCartItemCount();
-        this.notifMessage = `You added ${giftCard.name} to cart.`;
-        this.showSnackBar('Product added to cart: ' + giftCard.kinguinId);
+        this.notifMessage = `Has agregado ${giftCard.name} al carrito.`;
+        this.showSnackBar(`Producto agregado al carrito: ${giftCard.name}`);
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
+      }, error => {
+        console.error('Error al agregar al carrito:', error);
+        this.showSnackBar('Hubo un error al agregar el producto al carrito.');
       });
     }
   }
@@ -349,17 +408,14 @@ export class GiftCardDetailsComponent implements OnInit {
    * Emite el conteo actualizado de ítems en el carrito.
    */
   emitCartItemCount(): void {
-    this.cartService.getCartItems().subscribe(cartItems => {
-      const totalCount = cartItems.reduce((total, item) => total + item.cartItem.quantity, 0);
-      this.cartService.updateCartItemCountManual(totalCount);
-    });
+    this.cartService.updateCartItemCount();
   }
 
   /**
    * Muestra una notificación tipo snackBar.
    */
   showSnackBar(message: string): void {
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
     });
   }
@@ -384,6 +440,7 @@ export class GiftCardDetailsComponent implements OnInit {
   closeFeedbackModal(): void {
     this.isFeedbackModalOpen = false;
     this.feedbackMessage = '';
+    this.feedbackScore = 0;
   }
 
   /**
@@ -398,6 +455,7 @@ export class GiftCardDetailsComponent implements OnInit {
    */
   buyNow(giftCard: KinguinGiftCard): void {
     // Implementa la funcionalidad de compra ahora
+    this.showSnackBar('Funcionalidad "Comprar ahora" en desarrollo.');
   }
 
   /**
@@ -407,38 +465,50 @@ export class GiftCardDetailsComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
+  /**
+   * Cambia a la siguiente imagen en el carrusel.
+   */
   nextImage(): void {
     if (this.images.length > 0) {
       this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
       this.currentImage = this.images[this.currentImageIndex];
     }
   }
-  //
-  // /**
-  //  * Cambia a la imagen anterior en el carrusel.
-  //  */
+
+  /**
+   * Cambia a la imagen anterior en el carrusel.
+   */
   previousImage(): void {
     if (this.images.length > 0) {
       this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
       this.currentImage = this.images[this.currentImageIndex];
     }
   }
-  //
-  // selectImage(index: number): void {
-  //   if (index >= 0 && index < this.images.length) {
-  //     this.currentImageIndex = index;
-  //     this.currentImage = this.images[index];
-  //   }
-  // }
+
+  /**
+   * Abre el modal de pago.
+   */
   openPaymentModal() {
     this.isPaymentModalOpen = true;
   }
+
+  /**
+   * Establece la pestaña activa.
+   */
   setActiveTab(tab: string) {
     this.activeTab = tab;
   }
+
+  /**
+   * Cierra el modal de pago.
+   */
   closePaymentModal() {
     this.isPaymentModalOpen = false;
   }
+
+  /**
+   * Maneja la selección de método de pago.
+   */
   onPaymentSelected(method: string) {
     this.closePaymentModal();
     if (method === 'Tigo Money') {
@@ -447,4 +517,15 @@ export class GiftCardDetailsComponent implements OnInit {
     console.log(`Método de pago seleccionado: ${method}`);
   }
 
+  checkIfInCart(kinguinId: number){
+    this.cartService.isItemInCart(this.kinguinId).subscribe(isInCart => {
+      if (isInCart) {
+        this.isInCart = isInCart
+        console.log(`El producto con ID ${this.kinguinId} está en el carrito.`);
+      } else {
+        console.log(`El producto con ID ${this.kinguinId} NO está en el carrito.`);
+        this.isInCart = false;
+      }
+    });
+  }
 }

@@ -41,13 +41,25 @@
       <div class="form-group" *ngIf="currentStep >= 3">
         <label for="password">Ingresa tu contraseña*</label>
         <div class="input-container">
-          <input type="password" id="password" #passwordInput [(ngModel)]="password" name="password"
-                 (blur)="onPasswordBlur()"
-                 (keydown.enter)="nextStep()"
-                 (keyup)="onPasswordKeyUp(); calculatePasswordStrength()"
-                 required>
-          <span *ngIf="passwordTouched && passwordValid" class="valid-feedback">✔</span>
-          <span *ngIf="passwordTouched && !passwordValid && password.length > 0" class="invalid-feedback">✘</span>
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="password"
+            #passwordInput
+            [(ngModel)]="password"
+            name="password"
+            (blur)="onPasswordBlur()"
+            (keydown.enter)="nextStep()"
+            (keyup)="onPasswordKeyUp(); calculatePasswordStrength()"
+            required
+          >
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+          </button>
         </div>
         <!-- Barra de fortaleza de la contraseña -->
         <div *ngIf="password.length > 0" class="password-strength-container">
@@ -55,6 +67,8 @@
           <p class="password-strength-text">{{ passwordStrengthText }}</p>
         </div>
       </div>
+
+
 
       <!-- Paso 4: Confirmar Contraseña -->
       <div class="form-group" *ngIf="currentStep >= 4">
@@ -78,7 +92,7 @@
                 [disabled]="userExists">
           Continuar
         </button>
-        <button type="submit" *ngIf="currentStep === 4">Registrar</button>
+        <button type="submit" *ngIf="currentStep === 4"  [disabled]="submitted" >Registrar</button>
         <button type="button" *ngIf="currentStep > 1" (click)="previousStep()">Atrás</button>
       </div>
     </form>

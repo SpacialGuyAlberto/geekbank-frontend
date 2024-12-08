@@ -106,6 +106,7 @@
 .input-container input {
   flex: 1;
   padding: 0.75rem;
+  padding-right: 2.5rem;
   border: 0.125rem solid #88D66C;
   background-color: #0B0D19 !important;
   color: #88D66C !important;
@@ -217,6 +218,22 @@ button:focus {
   text-align: left;
   color: #fff;
   font-size: 0.875rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.5rem;
+  top:30%; /* Ajusta el ícono ligeramente más arriba */
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #6c757d; /* Color del icono */
+}
+
+.toggle-password:hover {
+  color: #000; /* Cambiar el color al pasar el mouse */
 }
 
 /* Estilos responsivos */

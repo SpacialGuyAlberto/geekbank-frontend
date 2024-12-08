@@ -1,71 +1,70 @@
+/* Contenedor general */
 .search-bar {
+  position: relative;
   display: flex;
-  border-radius: 25px; /* Bordes más redondeados */
-  backdrop-filter: blur(15px); /* Efecto de desenfoque de fondo tipo vidrio */
-   /* Borde blanco translúcido */
+  align-items: center;
+  border-radius: 25px;
+  overflow: hidden;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  background: transparent; /* Fondo del contenedor principal transparente */
 }
 
-.search-bar input[type="text"] {
+/* Fondo desenfocado en un elemento separado */
+.search-bar-background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 10px 20px; /* Reducido para hacerlo más elegante */
-  border: 1px solid rgba(255, 255, 255, 0.5); /* Borde blanco translúcido más ligero */
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido tipo cristal */
-  color: #ffffff; /* Color de texto blanco */
-  font-size: 1.2rem; /* Tamaño de fuente más pequeño */
-  font-family: 'Courier New', monospace; /* Fuente futurista */
+  height: 100%;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.1);
+  z-index: -1; /* Se ubica detrás del input */
+}
+
+/* Estilos del input */
+.search-bar input[type="text"] {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
   outline: none;
-  border-radius: 25px; /* Bordes redondeados */
-  transition: border-color 0.3s ease;
-  backdrop-filter: blur(10px); /* Efecto de desenfoque de fondo */
-  box-shadow: none; /* Eliminar cualquier sombra o resplandor */
+
+  /* Fondo sólido o transparente sin desenfoque */
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff; /* Texto blanco */
+  -webkit-text-fill-color: #ffffff; /* Forzar el color en iOS */
+
+  font-size: 1.2rem;
+  font-family: 'Courier New', monospace;
+  position: relative; /* Asegura que esté sobre el fondo desenfocado */
+  z-index: 1; /* Por encima del fondo */
+  border-radius: 25px;
 }
 
 .search-bar input[type="text"]::placeholder {
-  color: rgba(255, 255, 255, 0.6); /* Placeholder blanco translúcido */
-  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.6);
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
 }
 
 .search-bar input[type="text"]:focus {
-  border-color: rgba(255, 255, 255, 1); /* Borde blanco más intenso al hacer focus */
-  box-shadow: none; /* Elimina el resplandor al hacer focus */
+  border: none;
+  outline: none;
 }
 
-.search-bar button {
-  margin-left: -35px; /* Ajusta el margen para que el botón esté más alineado */
+/* Botón de cerrar (limpiar texto) */
+.search-bar .close-button {
+  position: relative;
+  z-index: 1;
   background: none;
   border: none;
+  color: #ffffff;
+  font-size: 1.2rem;
   cursor: pointer;
-  outline: none;
-  transition: transform 0.3s ease;
+  margin-right: 10px;
 }
 
-.search-bar button:hover {
-  transform: scale(1.1); /* Zoom en hover */
-}
-
-.search-bar .search-icon {
-  width: 24px; /* Tamaño más pequeño del ícono */
-  height: 24px;
-  filter: invert(85%) sepia(20%) saturate(300%) hue-rotate(200deg); /* Ajuste de color del ícono a blanco */
-  transition: filter 0.3s ease;
-}
-
-.search-bar button:hover .search-icon {
-  filter: invert(100%) sepia(100%) saturate(500%) hue-rotate(180deg); /* Efecto brillante en hover */
-}
-
-/* Responsividad */
-@media (max-width: 480px) {
-  .search-bar {
-    max-width: 100%;
-  }
-
-  .search-bar input[type="text"] {
-    font-size: 1rem; /* Tamaño de fuente más pequeño para móviles */
-  }
-
-  .search-bar .search-icon {
-    width: 20px;
-    height: 20px;
-  }
+.search-bar .close-button:hover {
+  color: rgba(255, 106, 0, 0.9);
 }

@@ -1,7 +1,7 @@
 // src/app/cart/cart.component.ts
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import { CartService } from '../cart.service';
-import { NgForOf, NgIf } from "@angular/common";
+import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
@@ -16,6 +16,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {RandomKeyMostSoldComponent} from "../random-key-most-sold/random-key-most-sold.component";
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {PayPalButtonComponent} from "../paypal-button/paypal-button.component";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-cart',
@@ -29,12 +30,13 @@ import {PayPalButtonComponent} from "../paypal-button/paypal-button.component";
     MatIcon,
     RandomKeyMostSoldComponent,
     RecommendationsComponent,
-    PayPalButtonComponent
+    PayPalButtonComponent,
+    DecimalPipe
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItemWithGiftcard[] = [];
   exchangeRate: number = 0; // Tasa de cambio HNL por 1 EUR
   showDialog: boolean = false;
@@ -46,6 +48,7 @@ export class CartComponent implements OnInit {
   userId: string | null = null;
   showPaypalPaymentModal: boolean = false;
   totalAmountString: string | null = '';
+  private destroy$ = new Subject<void>();
   constructor(
     private cartService: CartService,
     private animation: BackgroundAnimationService,
@@ -55,34 +58,44 @@ export class CartComponent implements OnInit {
     private snackBar: MatSnackBar // Inyectar MatSnackBar
   ) {}
 
+  @HostListener('window:load', ['$event'])
+  onLoad(event: Event) {
+    console.log('Evento window:load detectado');
+    this.loadCartItems();
+    this.countCartItems();
+  }
+
   ngOnInit(): void {
-    this.animation.initializeGraphAnimation();
     this.loadCartItems();
     this.userId = sessionStorage.getItem('userId');
     console.log('USER ID : ' + this.userId);
 
-    this.cartService.cartItemCount$.subscribe(count => {
-      this.cartItemCount = count;
-    });
+    this.cartService.cartItemCount$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        this.cartItemCount = count;
+      });
+  }
+
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadCartItems(): void {
-    // this.cartService.loadCartItems().subscribe(data => {
-    //   this.cartItems = data;
-    //   this.updateCartItemCount();
-    //   console.log("Loaded cart items: ", data);
-    //   this.calculateTotalPriceEUR();
-    //   this.totalAmountString =  this.totalPriceEUR.toString()
-    // });
-
     this.cartService.loadCartItems();
 
-    // Suscribirse a los cambios en cartItems$
-    this.cartService.cartItems$.subscribe(items => {
-      this.cartItems = items;
-    });
+    this.cartService.cartItems$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(items => {
+        this.cartItems = items;
+        console.log("Loaded cart items: ", this.cartItems); // Añadir este log
+        this.updateCartItemCount();
+        this.calculateTotalPriceEUR();
+        this.totalAmountString = this.totalPriceEUR.toString();
+      });
   }
-
   /**
    * Calcula el precio total en EUR.
    */
@@ -215,6 +228,14 @@ export class CartComponent implements OnInit {
   updateCartItemCount(): void {
     this.cartService.updateCartItemCount();
     console.log(this.cartItemCount);
+  }
+
+  countCartItems(){
+    this.cartService.cartItemCount$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(count => {
+        this.cartItemCount = count;
+      });
   }
 
   protected readonly Number = Number;
