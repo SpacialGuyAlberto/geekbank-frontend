@@ -2,6 +2,8 @@
 export interface OrderRequest {
   userId?: number | null;
   guestId?: string | null;
+  email?: string | null;
+  sendKeyToSMS?: boolean;
   phoneNumber: string;
   products: Product[];
   amount: number;

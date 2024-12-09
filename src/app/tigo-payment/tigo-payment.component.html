@@ -6,25 +6,20 @@
     <!-- Mostrar el spinner cuando se está esperando la finalización de la transacción -->
     <div *ngIf="showSpinner" class="spinner-container">
       <p>Cargando, por favor espere...</p>
-      <!-- Aquí puedes colocar un spinner gráfico (un GIF animado, CSS spinner, etc.) -->
-      <!-- Ejemplo:
-      <div class="loading-spinner"></div>
-      -->
     </div>
 
     <!-- Contenido principal sólo se muestra cuando NO está el spinner activo -->
     <ng-container *ngIf="!showSpinner">
 
-      <!-- Si la transacción ya está COMPLETADA o en ESPERA DE PROCESO MANUAL, mostramos el mensaje de agradecimiento u opciones -->
+      <!-- Si la transacción está completada o esperando procesamiento manual -->
       <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING'">
-
         <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
           <h3>¡Gracias por verificar su transacción!</h3>
           <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
           <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
         </div>
 
-        <!-- Si hay una respuesta de pago no coincidente con opciones disponibles -->
+        <!-- Si hay un pago no coincidente con opciones -->
         <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
           <h3>Detalles del Pago</h3>
           <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
@@ -45,11 +40,10 @@
         </div>
       </ng-container>
 
-      <!-- Si todavía no tenemos COMPLETED o AWAITING_MANUAL_PROCESSING y no estamos mostrando el spinner,
-           mostramos los formularios iniciales -->
+      <!-- Si la transacción no está completada o en espera manual, mostrar formularios -->
       <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING'">
 
-        <!-- Formulario inicial sin (ngSubmit), sólo un botón para mostrar el formulario de verificación manual -->
+        <!-- Form inicial sin submit -->
         <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm && !paymentReferenceNumber">
           <div class="form-group">
             <label for="phone">Phone No.</label>
@@ -76,7 +70,7 @@
           </button>
         </div>
 
-        <!-- Formulario de verificación manual con submitManualVerification en onSubmit -->
+        <!-- Form de verificación manual -->
         <form *ngIf="showManualVerificationForm && !paymentReferenceNumber" (ngSubmit)="submitManualVerification()">
           <h3>Verificar Pago</h3>
           <div class="form-group">
@@ -99,10 +93,66 @@
             {{ manualVerificationSuccess }}
           </div>
         </form>
-
       </ng-container>
 
-      <!-- Mensajes de éxito y error generales (si no se están mostrando formularios ni spinner) -->
+      <!-- Prompt para el envío de clave por email -->
+      <!-- Prompt para el envío de clave por email y sms -->
+      <div class="email-prompt-modal" *ngIf="showEmailPrompt">
+        <div class="email-prompt-content">
+          <h3>Opciones de entrega de la clave</h3>
+
+          <!-- Opción de envío por email -->
+          <div class="form-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="wantsEmailKey" />
+              Enviar la clave por correo electrónico.
+            </label>
+          </div>
+
+          <div *ngIf="wantsEmailKey">
+            <ng-container *ngIf="authService.isLoggedIn()">
+              <p>Se utilizará el email: {{ userEmail }}</p>
+              <p *ngIf="!userEmail">No se encontró email en su cuenta, por favor ingrese uno:</p>
+              <div *ngIf="!userEmail" class="form-group">
+                <label for="emailForKey">Email</label>
+                <input
+                  type="email"
+                  id="emailForKey"
+                  [(ngModel)]="emailForKey"
+                  required
+                  class="retro-input"
+                />
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!authService.isLoggedIn()">
+              <p>Por favor ingrese su email:</p>
+              <div class="form-group">
+                <label for="emailForKey">Email</label>
+                <input
+                  type="email"
+                  id="emailForKey"
+                  [(ngModel)]="emailForKey"
+                  required
+                  class="retro-input"
+                />
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Opción de envío por SMS -->
+          <div class="form-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="wantsSMSKey" />
+              Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} (Costo extra: 1 Lps)
+            </label>
+          </div>
+
+          <button class="primary-button" (click)="confirmEmailPrompt()">Continuar</button>
+        </div>
+      </div>
+
+
+      <!-- Mensajes de éxito/error -->
       <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
       </div>
