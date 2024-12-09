@@ -5,7 +5,7 @@ import { NgClass, NgForOf, NgIf } from "@angular/common";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { TigoService } from "../tigo.service";
 import { WebSocketService } from "../web-socket.service";
-import { Subscription, take } from "rxjs";
+import { Subscription, take, firstValueFrom } from "rxjs";
 import { NotificationService } from "../services/notification.service";
 import { TransactionsService } from "../transactions.service";
 import { Transaction } from "../models/transaction.model";
@@ -20,11 +20,10 @@ import { TigoPaymentService } from "../tigo-payment.service";
 import { OrderDetails } from "../models/order-details.model";
 import { OrderRequest } from "../models/order-request.model";
 import { UnmatchedPaymentResponseDto } from "../models/unmatched-payment-response.model";
-import {AuthModalComponent} from "../auth-modal/auth-modal.component";
-import {AccountService} from "../account.service";
-import {Account} from "../models/User";
-import {switchMap} from "rxjs/operators";
-import { firstValueFrom } from 'rxjs';
+import { AuthModalComponent } from "../auth-modal/auth-modal.component";
+import { AccountService } from "../account.service";
+import { Account, User } from "../models/User";
+import { switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-tigo-payment',
@@ -45,14 +44,16 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   productId = inject(PRODUCT_ID, { optional: true });
   gameUserId = inject(GAME_USER_ID, { optional: true });
   isManualTransaction = inject(IS_MANUAL_TRANSACTION);
+
   private postLoginAction: (() => void) | null = null;
   unmatchedPaymentResponse: UnmatchedPaymentResponseDto | null = null;
   account: Account | null = null;
   accountId: number = 0;
   paymentReferenceNumber: string = "";
-
+  user: User | null = null;
   @Output() close = new EventEmitter<void>();
 
+  userEmail: string = '';
   notifMessage: string = '';
   showModal: boolean = true;
   showAuthModal: boolean = false;
@@ -105,6 +106,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   isLoading: boolean = false;
   conversionError: string = '';
 
+  // Variables para el prompt de envío de clave por email
+  wantsEmailKey: boolean = false;
+  wantsSMSKey: boolean = false;
+  showEmailPrompt: boolean = false;
+  emailForKey: string = '';
+  isEmailPromptComplete: boolean = false;
+
   constructor(
     private accountService: AccountService,
     private tigoService: TigoService,
@@ -114,10 +122,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     private webSocketService: WebSocketService,
     private notificationService: NotificationService,
     private transactionService: TransactionsService,
-    private authService: AuthService,
+    protected authService: AuthService,
     private guestService: GuestService,
     private router: Router
-  ) { }
+  ) {
+    this.webSocketService.connect();
+  }
 
   ngOnInit(): void {
     this.loadExchangeRate();
@@ -125,6 +135,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
+      this.authService.getUserDetails().subscribe(data => {
+        this.user = data;
+        this.userEmail = data.email;
+      });
       if (storedUserId) {
         this.userId = parseInt(storedUserId, 10);
         if (isNaN(this.userId)) {
@@ -137,7 +151,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.guestId = this.guestService.getGuestId();
     }
 
-
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
     });
@@ -146,9 +159,18 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.verificationMessage = message;
     });
 
-    this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe( message => {
+    this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(message => {
       this.currentTransaction = message;
-    })
+    });
+
+    this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
+      this.transactionStatus = parsedMessage.status;
+      if (this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
+        this.showSpinner = false;
+      } else {
+        this.showSpinner = true;
+      }
+    });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
@@ -190,6 +212,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Si no hemos completado el prompt de email, lo mostramos
+    if (!this.isEmailPromptComplete) {
+      this.showEmailPrompt = true;
+      return;
+    }
+
     const refNumber = this.manualVerificationData.refNumber;
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest;
@@ -197,6 +225,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       orderDetails = {
         userId: this.userId,
         guestId: this.guestId,
+        email: this.wantsEmailKey
+          ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+          : '',
         phoneNumber: phoneNumber,
         products: [{
           kinguinId: this.productId,
@@ -206,15 +237,19 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         }],
         amount: this.totalPrice,
         manual: this.isManualTransaction,
+        sendKeyToSMS: this.wantsSMSKey
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
       }
-    } else if (this.authService.isLoggedIn() && this.userId !== null) {
+    } else if (this.authService.isAuthenticated() && this.userId !== null) {
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           userId: this.userId,
           phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -223,6 +258,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -231,6 +267,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           userId: this.userId,
           phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
+
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -239,6 +279,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           }],
           amount: this.totalPrice,
           manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
         };
       }
       if (this.gameUserId !== null) {
@@ -249,6 +290,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: phoneNumber,
+          email: this.wantsEmailKey ? this.emailForKey : undefined,
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -257,6 +299,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -265,6 +308,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
+
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -273,6 +320,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           }],
           amount: this.totalPrice,
           manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -288,9 +336,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
     if (isVerified) {
       orderDetails.refNumber = refNumber;
-      this.paymentReferenceNumber = refNumber; // Asignamos el número de referencia
-      // this.paymentService.initializePayment('tigo', orderDetails);
+      this.paymentReferenceNumber = refNumber;
       this.tigoPaymentService.initializePayment(orderDetails);
+      this.showSpinner = true;
     }
   }
 
@@ -300,23 +348,19 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, phoneNumber, expectedAmount)
       );
       this.unmatchedPaymentResponse = response;
-      console.log('Unmatched Payment Response:', response);
       return true;
-    } catch (error: any) { // Utilizamos `any` para manejar el tipo del error.
+    } catch (error: any) {
       if (error && typeof error === 'object' && 'error' in error) {
         this.manualVerificationError = (error as any).error?.message || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
       } else {
         this.manualVerificationError = 'Error desconocido al verificar el pago.';
       }
-      console.error('Error al verificar el monto de pago no coincidente:', error);
       return false;
     }
   }
 
   cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
     this.isCancelling = true;
-    console.log('TRANSACTION STATUS' + this.transactionStatus)
-
     this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
       .pipe(take(1))
       .subscribe({
@@ -324,13 +368,11 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           this.transaction = updatedTransaction;
           this.transactionStatus = 'CANCELLED';
           this.notifMessage = 'Tu pago fue cancelado.';
-          console.log('Transaction cancelled:', updatedTransaction);
           this.isCancelling = false;
           this.showSpinner = false;
         },
         error: (error: any) => {
           this.errorMessage = 'Error al cancelar la transacción.';
-          console.error('Error cancelling the transaction:', error);
           this.isCancelling = false;
           this.showSpinner = false;
         }
@@ -338,8 +380,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   async handleOptionSelection(option: string): Promise<void> {
-    console.log('Opción seleccionada:', option);
-
     switch (option) {
       case 'Quiero mi dinero de nuevo':
         this.requestRefund();
@@ -351,14 +391,11 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
       case 'Apply the difference as a balance':
         try {
-          // Espera a que `applyBalance` se complete exitosamente
           await this.applyBalance();
-          console.log('Balance aplicado exitosamente. Redirigiendo...');
           this.router.navigate(['/purchase-confirmation'], {
             queryParams: { transactionNumber: this.currentTransaction?.transactionNumber }
           });
         } catch (error) {
-          // Manejo explícito del error
           console.error('Error al aplicar el balance. No se puede redirigir.', error);
           this.notificationService.addNotification(
             'Error al aplicar el balance. Por favor, inténtelo nuevamente.',
@@ -371,8 +408,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.returnDifference();
         break;
 
-      case 'Adjust the payment to match the expected amount':
-        this.adjustPayment();
+      case 'Pay Anyways':
+        this.router.navigate(['/purchase-confirmation'], {
+          queryParams: { transactionNumber: this.currentTransaction?.transactionNumber }
+        });
         break;
 
       default:
@@ -391,7 +430,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   applyBalance(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (!this.unmatchedPaymentResponse || !this.unmatchedPaymentResponse.unmatchedPayment.id) {
-        console.error('No hay información de la cuenta para aplicar el balance.');
         this.errorMessage = 'No se puede aplicar el balance. Información de la cuenta faltante.';
         reject('Información faltante');
         return;
@@ -401,7 +439,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       const refNumber = this.manualVerificationData.refNumber;
 
       if (balanceToApply <= 0) {
-        console.error('El balance a aplicar no es válido:', balanceToApply);
         this.errorMessage = 'El balance debe ser mayor que 0 para aplicar.';
         reject('Balance inválido');
         return;
@@ -419,12 +456,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         })
       ).subscribe({
         next: (response) => {
-          console.log('Balance aplicado exitosamente:', response);
           this.notifMessage = 'Balance aplicado exitosamente. Tu balance ha sido actualizado.';
           resolve();
         },
         error: (error) => {
-          console.error('Error al aplicar el balance:', error);
           this.errorMessage = 'Error al aplicar el balance. Por favor, inténtelo nuevamente.';
           reject(error);
         }
@@ -446,7 +481,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   handleClose(): void {
     this.closeModal();
-
     if (this.transactionStatus === 'PENDING') {
       this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
     }
@@ -460,7 +494,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   handleAuthModalClose(): void {
     this.showAuthModal = false;
-    this.postLoginAction = null; // Limpia cualquier acción pendiente
+    this.postLoginAction = null;
   }
 
   handleAuthSuccess(): void {
@@ -473,6 +507,30 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   handleApplyDifferenceAsBalance(){
     const loggedIn = this.authService.isLoggedIn()
+  }
+
+  confirmEmailPrompt() {
+    if (this.wantsEmailKey) {
+      if (this.authService.isLoggedIn()) {
+        // Usuario loggeado, ya tenemos this.userEmail
+        this.isEmailPromptComplete = true;
+        this.showEmailPrompt = false;
+        this.submitManualVerification();
+      } else {
+        // Usuario no loggeado, debe ingresar email
+        if (!this.emailForKey) {
+          return; // No hace nada si no hay email
+        }
+        this.isEmailPromptComplete = true;
+        this.showEmailPrompt = false;
+        this.submitManualVerification();
+      }
+    } else {
+      // No quiere email
+      this.isEmailPromptComplete = true;
+      this.showEmailPrompt = false;
+      this.submitManualVerification();
+    }
   }
 
   ngOnDestroy(): void {

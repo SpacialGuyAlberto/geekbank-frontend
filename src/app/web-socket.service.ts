@@ -67,18 +67,15 @@ export class WebSocketService {
       this.connect(); // Intentar reconectar después de un tiempo
     }, 5000); // Intentar reconectar después de 5 segundos
   }
-
-
-
   /**
    * Método para suscribirse al tópico de estado de la transacción
    */
-  subscribeToTransactionStatus(phoneNumber: string): Observable<any> {
+  subscribeToTransactionStatus(): Observable<any> {
     this.connected$.pipe(
       filter(isConnected => isConnected),
       take(1)
     ).subscribe(() => {
-      const url = `/topic/transaction-status/${phoneNumber}`;
+      const url = `/topic/transaction-status`; // Mismo tópico utilizado en el backend
       this.client.subscribe(url, (message: IMessage) => {
         const parsedMessage = JSON.parse(message.body);
         this.transactionStatusSubject.next(parsedMessage);
@@ -87,7 +84,6 @@ export class WebSocketService {
 
     return this.transactionStatusSubject.asObservable();
   }
-
 
   /**
    * Método para suscribirse al tópico de número de transacción

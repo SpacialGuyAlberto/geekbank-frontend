@@ -3,91 +3,164 @@
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Tigo Checkout</h2>
 
-    <!-- Formulario inicial sin (ngSubmit), sólo un botón para mostrar el formulario de verificación manual -->
-    <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm">
-      <div class="form-group">
-        <label for="phone">Phone No.</label>
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          [(ngModel)]="paymentDetails.phoneNumber"
-          required
-          class="retro-input"
-        />
-      </div>
-      <div class="form-group">
-        <label>Total:</label>
-        <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
-      </div>
-
-      <button
-        type="button"
-        class="secondary-button"
-        (click)="showManualVerification()"
-        *ngIf="!showSpinner"
-      >
-        Proceder con el numero de referencia
-      </button>
+    <!-- Mostrar el spinner cuando se está esperando la finalización de la transacción -->
+    <div *ngIf="showSpinner" class="spinner-container">
+      <p>Cargando, por favor espere...</p>
     </div>
 
-    <!-- Formulario de verificación manual con submitManualVerification en onSubmit -->
-    <form *ngIf="showManualVerificationForm" (ngSubmit)="submitManualVerification()">
-      <h3>Verificar Pago</h3>
-      <div class="form-group">
-        <label for="refNumber">Número de Referencia</label>
-        <input
-          type="text"
-          id="refNumber"
-          name="refNumber"
-          [(ngModel)]="manualVerificationData.refNumber"
-          required
-          class="retro-input"
-        />
-      </div>
-      <button type="submit" class="primary-button">Verificar Pago</button>
-      <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
-      <div *ngIf="manualVerificationError" class="error-message">
-        {{ manualVerificationError }}
-      </div>
-      <div *ngIf="manualVerificationSuccess" class="success-message">
-        {{ manualVerificationSuccess }}
-      </div>
-    </form>
+    <!-- Contenido principal sólo se muestra cuando NO está el spinner activo -->
+    <ng-container *ngIf="!showSpinner">
 
-    <!-- Una vez verificado, se mostrará el número de referencia asignado -->
-    <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
-      <h3>Detalles del Pago</h3>
-      <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
-      <!-- Resto de detalles -->
-      <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
-      <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
-      <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
-      <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
-      <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+      <!-- Si la transacción está completada o esperando procesamiento manual -->
+      <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING'">
+        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
+          <h3>¡Gracias por verificar su transacción!</h3>
+          <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
+          <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
+        </div>
 
-      <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
-        <h4>Opciones</h4>
-        <div *ngFor="let option of unmatchedPaymentResponse.options">
-          <button class="option-button" (click)="handleOptionSelection(option)">
-            {{ option }}
+        <!-- Si hay un pago no coincidente con opciones -->
+        <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
+          <h3>Detalles del Pago</h3>
+          <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
+          <p><strong>Teléfono:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.phoneNumber }}</p>
+          <p><strong>Monto recibido:</strong> {{ unmatchedPaymentResponse.receivedAmount }}</p>
+          <p><strong>Monto esperado:</strong> {{ unmatchedPaymentResponse.expectedAmount }}</p>
+          <p><strong>Diferencia:</strong> {{ unmatchedPaymentResponse.difference }}</p>
+          <p><strong>Mensaje:</strong> {{ unmatchedPaymentResponse.message }}</p>
+
+          <div *ngIf="unmatchedPaymentResponse.options && unmatchedPaymentResponse.options.length > 0">
+            <h4>Opciones</h4>
+            <div *ngFor="let option of unmatchedPaymentResponse.options">
+              <button class="option-button" (click)="handleOptionSelection(option)">
+                {{ option }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- Si la transacción no está completada o en espera manual, mostrar formularios -->
+      <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING'">
+
+        <!-- Form inicial sin submit -->
+        <div *ngIf="!showVerificationForm && !showConfirmation && !showManualVerificationForm && !paymentReferenceNumber">
+          <div class="form-group">
+            <label for="phone">Phone No.</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              [(ngModel)]="paymentDetails.phoneNumber"
+              required
+              class="retro-input"
+            />
+          </div>
+          <div class="form-group">
+            <label>Total:</label>
+            <p class="total-amount">{{ (totalPrice * exchangeRate).toFixed(2) }} LPS</p>
+          </div>
+
+          <button
+            type="button"
+            class="secondary-button"
+            (click)="showManualVerification()"
+          >
+            Proceder con el numero de referencia
           </button>
         </div>
+
+        <!-- Form de verificación manual -->
+        <form *ngIf="showManualVerificationForm && !paymentReferenceNumber" (ngSubmit)="submitManualVerification()">
+          <h3>Verificar Pago</h3>
+          <div class="form-group">
+            <label for="refNumber">Número de Referencia</label>
+            <input
+              type="text"
+              id="refNumber"
+              name="refNumber"
+              [(ngModel)]="manualVerificationData.refNumber"
+              required
+              class="retro-input"
+            />
+          </div>
+          <button type="submit" class="primary-button">Verificar Pago</button>
+          <button type="button" class="primary-button cancel-button" (click)="hideManualVerification()">Cancelar</button>
+          <div *ngIf="manualVerificationError" class="error-message">
+            {{ manualVerificationError }}
+          </div>
+          <div *ngIf="manualVerificationSuccess" class="success-message">
+            {{ manualVerificationSuccess }}
+          </div>
+        </form>
+      </ng-container>
+
+      <!-- Prompt para el envío de clave por email -->
+      <!-- Prompt para el envío de clave por email y sms -->
+      <div class="email-prompt-modal" *ngIf="showEmailPrompt">
+        <div class="email-prompt-content">
+          <h3>Opciones de entrega de la clave</h3>
+
+          <!-- Opción de envío por email -->
+          <div class="form-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="wantsEmailKey" />
+              Enviar la clave por correo electrónico.
+            </label>
+          </div>
+
+          <div *ngIf="wantsEmailKey">
+            <ng-container *ngIf="authService.isLoggedIn()">
+              <p>Se utilizará el email: {{ userEmail }}</p>
+              <p *ngIf="!userEmail">No se encontró email en su cuenta, por favor ingrese uno:</p>
+              <div *ngIf="!userEmail" class="form-group">
+                <label for="emailForKey">Email</label>
+                <input
+                  type="email"
+                  id="emailForKey"
+                  [(ngModel)]="emailForKey"
+                  required
+                  class="retro-input"
+                />
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!authService.isLoggedIn()">
+              <p>Por favor ingrese su email:</p>
+              <div class="form-group">
+                <label for="emailForKey">Email</label>
+                <input
+                  type="email"
+                  id="emailForKey"
+                  [(ngModel)]="emailForKey"
+                  required
+                  class="retro-input"
+                />
+              </div>
+            </ng-container>
+          </div>
+
+          <!-- Opción de envío por SMS -->
+          <div class="form-group">
+            <label>
+              <input type="checkbox" [(ngModel)]="wantsSMSKey" />
+              Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} (Costo extra: 1 Lps)
+            </label>
+          </div>
+
+          <button class="primary-button" (click)="confirmEmailPrompt()">Continuar</button>
+        </div>
       </div>
-    </div>
 
-    <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
-      <h3>¡Gracias por verificar su transacción!</h3>
-      <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
-      <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
-    </div>
 
-    <div *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
-      {{ errorMessage }}
-    </div>
+      <!-- Mensajes de éxito/error -->
+      <div *ngIf="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+      <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
+        {{ errorMessage }}
+      </div>
+
+    </ng-container>
   </div>
 </div>
 
