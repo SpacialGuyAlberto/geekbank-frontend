@@ -3,7 +3,7 @@ import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import { CartService } from '../cart.service';
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { RouterLink } from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import { CartItemWithGiftcard } from "../models/CartItem";
 import { BackgroundAnimationService } from "../background-animation.service";
@@ -17,6 +17,9 @@ import {RandomKeyMostSoldComponent} from "../random-key-most-sold/random-key-mos
 import {RecommendationsComponent} from "../recommendations/recommendations.component";
 import {PayPalButtonComponent} from "../paypal-button/paypal-button.component";
 import {Subject, takeUntil} from "rxjs";
+import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION } from "../payment/payment.token";
+import {OrderRequest} from "../models/order-request.model";
+
 
 @Component({
   selector: 'app-cart',
@@ -34,7 +37,31 @@ import {Subject, takeUntil} from "rxjs";
     DecimalPipe
   ],
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  styleUrls: ['./cart.component.css'],
+  providers: [
+    {
+      provide: CART_ITEMS,
+      useFactory: (component: CartComponent) => component.cartItems,
+      deps: [CartComponent]
+    },
+    {
+      provide: TOTAL_PRICE,
+      useFactory: (component: CartComponent) => component.getTotalPrice(),
+      deps: [CartComponent]
+    },
+    {
+      provide: PRODUCT_ID,
+      useValue: null
+    },
+    {
+      provide: GAME_USER_ID,
+      useValue: null
+    },
+    {
+      provide: IS_MANUAL_TRANSACTION,
+      useValue: false
+    }
+  ]
 })
 export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItemWithGiftcard[] = [];
@@ -49,14 +76,39 @@ export class CartComponent implements OnInit, OnDestroy {
   showPaypalPaymentModal: boolean = false;
   totalAmountString: string | null = '';
   private destroy$ = new Subject<void>();
+  showPayPalButton: boolean = false; // Nueva bandera para PayPal
+
+  isEmailPromptComplete: boolean = false;
+  showEmailPrompt: boolean = false;
+  wantsEmailKey: boolean = false;
+  wantsSMSKey: boolean = false;
+  emailForKey?: string;
+  userEmail?: string;
+  paymentDetails = { phoneNumber: '' };
+  guestId?: string | null = '';
+  totalPrice: number = 0;
+  isManualTransaction = false;
+  gameUserId?: number;
+  manualVerificationData = { refNumber: '' };
+  manualVerificationError?: string;
+  showSpinner: boolean = false;
+  private productId: number | null = null;
+  // Almacenar orderDetails una vez creados
+  orderDetails?: OrderRequest;
+
+  selectedOption: string | null = null;
+
+
   constructor(
     private cartService: CartService,
     private animation: BackgroundAnimationService,
     private currencyService: CurrencyService,
     private dialog: MatDialog,
     private authService: AuthService,
-    private snackBar: MatSnackBar // Inyectar MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+  private router: Router
+
+) {}
 
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
@@ -76,7 +128,6 @@ export class CartComponent implements OnInit, OnDestroy {
         this.cartItemCount = count;
       });
   }
-
 
   ngOnDestroy(): void {
     this.destroy$.next();
@@ -105,6 +156,28 @@ export class CartComponent implements OnInit, OnDestroy {
     this.getExchangeRate();
   }
 
+  selectOption(option: string): void {
+    this.selectedOption = option;
+    console.log('Opción seleccionada:', option);
+  }
+
+  continueWithOption(): void {
+    if (this.selectedOption == "TIGO MONEY") {
+      console.log('Procesando la opción seleccionada:', this.selectedOption);
+      this.selectedOption = null; // Reinicia la selección después de procesar
+      this.showPaymentModal = true; // Mostrar modal de TIGO
+    } else if (this.selectedOption == "PayPal") {
+      console.log('Procesando la opción seleccionada:', this.selectedOption);
+      this.selectedOption = null; // Reinicia la selección después de procesar
+      this.showPayPalButton = true; // Mostrar botón de PayPal
+    } else {
+      console.log('No se ha seleccionado ninguna opción.');
+    }
+  }
+
+
+
+
   /**
    * Obtiene la tasa de cambio EUR a HNL.
    */
@@ -132,10 +205,6 @@ export class CartComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Elimina un ítem del carrito.
-   * @param productId ID del producto a eliminar.
-   */
   removeCartItem(productId: number): void {
     console.log('Removing item with ID: ' + productId);
     this.cartService.removeCartItem(productId).subscribe(() => {
@@ -143,19 +212,12 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Elimina todos los ítems del carrito.
-   */
   removeAllCartItems(): void {
     this.cartService.removeAllCartItems().subscribe(() => {
       this.loadCartItems(); // Recargar los elementos después de la eliminación
     });
   }
 
-  /**
-   * Incrementa la cantidad de un producto en el carrito.
-   * @param item Ítem del carrito.
-   */
   incrementProductQuantity(item: CartItemWithGiftcard): void {
     const newQuantity = item.cartItem.quantity + 1;
     this.cartService.updateCartItem(item.cartItem.productId, newQuantity).subscribe(() => {
@@ -166,10 +228,6 @@ export class CartComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Decrementa la cantidad de un producto en el carrito.
-   * @param item Ítem del carrito.
-   */
   decreaseProductQuantity(item: CartItemWithGiftcard): void {
     if (item.cartItem.quantity > 1) {
       const newQuantity = item.cartItem.quantity - 1;
@@ -194,9 +252,6 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Abre el modal de pago.
-   */
   openPaymentModal(): void {
     if (this.cartItems.length === 0) {
       this.snackBar.open('No hay items en el carrito.', 'Cerrar', {
@@ -208,23 +263,14 @@ export class CartComponent implements OnInit, OnDestroy {
     console.log('Total en HNL:', this.totalPriceEUR * this.exchangeRate);
   }
 
-  /**
-   * Cierra el diálogo de notificación.
-   */
   closeDialog(): void {
     this.showDialog = false;
   }
 
-  /**
-   * Calcula y retorna el precio total en EUR.
-   */
   getTotalPrice(): number {
     return this.totalPriceEUR;
   }
 
-  /**
-   * Actualiza el conteo de ítems en el carrito.
-   */
   updateCartItemCount(): void {
     this.cartService.updateCartItemCount();
     console.log(this.cartItemCount);
@@ -236,6 +282,135 @@ export class CartComponent implements OnInit, OnDestroy {
       .subscribe(count => {
         this.cartItemCount = count;
       });
+  }
+
+  async submitOrder(): Promise<OrderRequest | null> {
+    if (!this.manualVerificationData.refNumber) {
+      this.manualVerificationError = 'Por favor, ingrese el número de referencia.';
+      return null;
+    }
+
+    // Si no hemos completado el prompt de email, lo mostramos
+    if (!this.isEmailPromptComplete) {
+      this.showEmailPrompt = true;
+      return null;
+    }
+
+    const phoneNumber = this.paymentDetails.phoneNumber;
+    let orderDetails: OrderRequest;
+
+    if (this.productId !== null) {
+      orderDetails = {
+        userId: this.userId ? Number(this.userId) : null, // Convertimos a número o null
+        guestId: this.guestId || null, // Garantizamos que sea string o null
+        email: this.wantsEmailKey
+          ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+          : '',
+        phoneNumber: phoneNumber,
+        products: [{
+          kinguinId: this.productId,
+          qty: 1,
+          price: this.totalPrice,
+          name: 'Producto'
+        }],
+        amount: this.totalPrice,
+        manual: this.isManualTransaction,
+        sendKeyToSMS: this.wantsSMSKey,
+        gameUserId: this.gameUserId || undefined
+      };
+    } else if (this.authService.isAuthenticated() && this.userId !== null) {
+      if (this.cartItems && this.cartItems.length > 0) {
+        orderDetails = {
+          userId: this.userId ? Number(this.userId) : null,
+          guestId: this.guestId || null,
+          phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
+          products: this.cartItems.map(item => ({
+            kinguinId: item.cartItem.productId!, // Forzamos que no sea undefined
+            qty: item.cartItem.quantity,
+            price: item.giftcard.price,
+            name: 'Producto'
+          })),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey,
+          gameUserId: this.gameUserId || undefined // Opcional
+        };
+      } else {
+        orderDetails = {
+          userId: this.userId ? Number(this.userId) : null,
+          guestId: this.guestId || null,
+          phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
+          products: [{
+            kinguinId: -1, // Representa "Balance" o un producto genérico
+            qty: 1,
+            price: this.totalPrice,
+            name: 'Balance'
+          }],
+          amount: this.totalPrice,
+          manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey,
+          gameUserId: this.gameUserId || undefined // Opcional
+        };
+      }
+    }
+    else if (this.guestId) {
+      if (this.cartItems && this.cartItems.length > 0) {
+        orderDetails = {
+          guestId: this.guestId,
+          phoneNumber: phoneNumber,
+          email: this.wantsEmailKey ? this.emailForKey : undefined,
+          products: this.cartItems.map(item => ({
+            kinguinId: item.cartItem.productId,
+            qty: item.cartItem.quantity,
+            price: item.giftcard.price,
+            name: 'Producto'
+          })),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
+        };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
+      } else {
+        orderDetails = {
+          guestId: this.guestId,
+          phoneNumber: phoneNumber,
+          email: this.wantsEmailKey
+            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
+            : '',
+          products: [{
+            kinguinId: -1,
+            qty: 1,
+            price: this.totalPrice,
+            name: 'Balance'
+          }],
+          amount: this.totalPrice,
+          manual: this.isManualTransaction,
+          sendKeyToSMS: this.wantsSMSKey
+        };
+        if (this.gameUserId !== null) {
+          orderDetails.gameUserId = this.gameUserId;
+        }
+      }
+    } else {
+      this.showSpinner = false;
+      return null;
+    }
+
+    return orderDetails;
+  }
+
+  onPaymentSuccess(transactionNumber: string) {
+    this.router.navigate(['/purchase-confirmation'], {
+      queryParams: { transactionNumber: transactionNumber }
+    });
   }
 
   protected readonly Number = Number;

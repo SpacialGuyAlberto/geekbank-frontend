@@ -52,15 +52,41 @@
           <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate) | number:'1.2-2' }} LPS</p>
 
           <!-- Botón para Abrir el Modal de Pago con TIGO -->
-          <button (click)="openPaymentModal()" class="payment-option-button" [disabled]="cartItems.length === 0">
-            <div class="icon">
-              <div class="tigo">TIGO</div>
-              <div class="money">MONEY</div>
-            </div>
-          </button>
+<!--<div class="payment-options">
+  <button (click)="selectOption('TIGO MONEY')" [class.selected]="selectedOption === 'TIGO MONEY'">
+    TIGO MONEY
+  </button>
+  <button (click)="selectOption('PayPal')" [class.selected]="selectedOption === 'PayPal'">
+    PayPal
+  </button>
+</div>-->
 
+          <div class="payment-options">
+            <button (click)="selectOption('TIGO MONEY')" [class.selected]="selectedOption === 'TIGO MONEY'">
+              TIGO MONEY
+            </button>
+            <button (click)="selectOption('PayPal')" [class.selected]="selectedOption === 'PayPal'">
+              PayPal
+            </button>
+          </div>
+
+          <!-- Botón de continuar -->
+          <div class="continue-button-container">
+            <button (click)="continueWithOption()" [disabled]="!selectedOption">
+              Continuar
+            </button>
+          </div>
+
+          <app-tigo-payment *ngIf="showPaymentModal"></app-tigo-payment>
           <!-- Componente de Botón de PayPal -->
-          <app-paypal-button [amount]="totalAmountString"></app-paypal-button>
+          <div *ngIf="showPayPalButton">
+            <app-paypal-button
+              [amount]="totalAmountString"
+              [paymentSource]="'paypal'"
+              (paymentSuccess)="onPaymentSuccess($event)">
+            </app-paypal-button>
+          </div>
+
         </div>
       </ng-container>
 

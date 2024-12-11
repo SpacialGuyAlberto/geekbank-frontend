@@ -31,7 +31,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(1000), // Espera 1000ms después del último evento
+      debounceTime(5000), // Espera 1000ms después del último evento
       distinctUntilChanged(),
       switchMap(query => {
         if (query.trim() === '') {
