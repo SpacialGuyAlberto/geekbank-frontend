@@ -379,6 +379,66 @@ payment-option-button .icon {
   transform: translateY(-2px);
 }
 
+
+.payment-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Espacio entre botones */
+}
+
+.payment-option-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* Espacio entre icono y texto */
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  background: rgba(36, 59, 83, 0.7);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  font-size: 1.1rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.payment-option-button i {
+  /* Ajusta el tamaño y color de los iconos si es necesario */
+  color: #fff;
+}
+
+.payment-option-button:hover {
+  background: #3a8dff; /* Color de fondo al pasar el ratón */
+  border-color: #1e6fd8;
+  transform: translateY(-2px);
+}
+
+.payment-option-button.selected {
+  background: #1e6fd8;
+  border-color: #0056b3;
+}
+
+/* Continuar botón */
+.continue-button-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.continue-button-container button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #3a8dff;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.continue-button-container button:hover {
+  background: #1e6fd8;
+  transform: translateY(-2px);
+}
 /* Responsividad */
 @media (max-width: 1024px) {
   .cart-content {

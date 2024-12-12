@@ -3,9 +3,12 @@ import { Injectable } from '@angular/core';
 import {OrderRequest} from "./models/order-request.model";
 import {environment} from "../environments/environment";
 import {Observable, throwError} from "rxjs";
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError} from "rxjs/operators";
 import {Order} from "./models/order.model";
+import {Transaction} from "./models/transaction.model"
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,9 +18,16 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
 
-  placeOrderAndTransactionForPaypalAndCreditCard(orderRequest: OrderRequest) : Observable<any> {
-    return this.http.post(`${this.apiUrl}/create-order-for-paypal-and-credit-card`, orderRequest)
+  placeOrderAndTransactionForPaypalAndCreditCard(orderRequest: OrderRequest): Observable<Transaction> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<any>(`${this.apiUrl}/create-order-for-paypal-and-credit-card`, orderRequest, {
+      headers
+    });
+
+
+
   }
+
 
   purchaseWithBalance(orderRequest: OrderRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/purchase-with-balance`, orderRequest);

@@ -76,6 +76,7 @@ export class CartComponent implements OnInit, OnDestroy {
   showPaypalPaymentModal: boolean = false;
   totalAmountString: string | null = '';
   private destroy$ = new Subject<void>();
+  showCardButton: boolean = false;
   showPayPalButton: boolean = false; // Nueva bandera para PayPal
 
   isEmailPromptComplete: boolean = false;
@@ -166,17 +167,17 @@ export class CartComponent implements OnInit, OnDestroy {
       console.log('Procesando la opción seleccionada:', this.selectedOption);
       this.selectedOption = null; // Reinicia la selección después de procesar
       this.showPaymentModal = true; // Mostrar modal de TIGO
-    } else if (this.selectedOption == "PayPal") {
+    } else if (this.selectedOption == "paypal") {
       console.log('Procesando la opción seleccionada:', this.selectedOption);
       this.selectedOption = null; // Reinicia la selección después de procesar
       this.showPayPalButton = true; // Mostrar botón de PayPal
-    } else {
+    } else if (this.selectedOption == "card") {
+      this.selectedOption = null;
+      this.showCardButton = true;
+    }else{
       console.log('No se ha seleccionado ninguna opción.');
     }
   }
-
-
-
 
   /**
    * Obtiene la tasa de cambio EUR a HNL.
@@ -290,7 +291,6 @@ export class CartComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    // Si no hemos completado el prompt de email, lo mostramos
     if (!this.isEmailPromptComplete) {
       this.showEmailPrompt = true;
       return null;
