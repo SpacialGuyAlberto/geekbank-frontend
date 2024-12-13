@@ -17,7 +17,7 @@ export class PayPalButtonComponent implements OnInit {
   @Input() orderDetails?: OrderRequest;
   @Output() paymentSuccess = new EventEmitter<string>();
   @Input() paymentSource: 'paypal' | 'venmo' | 'applepay' | 'itau' | 'credit' | 'paylater' | 'card' | 'ideal' | 'sepa' | 'bancontact' | 'giropay' = 'paypal';
-  @Input() onSubmitOrder!: () => Promise<any>;
+  @Input() onSubmitOrder!: () => Promise<OrderRequest>;
 
   constructor(
     private payPalService: PayPalService,
@@ -63,24 +63,21 @@ export class PayPalButtonComponent implements OnInit {
               console.log('Full capture response:', captureResponse);
               console.log('HTTP Status:', captureResponse.status);
 
-              // Validar que el status HTTP sea 200
               if (captureResponse.status !== 200) {
                 console.error('La respuesta HTTP no es 200, es:', captureResponse.status);
                 alert('Ocurrió un error durante el proceso de pago (HTTP status no 200).');
                 return;
               }
 
-              // Si llegamos hasta aquí, la captura fue exitosa
               const captureResult = captureResponse.body;
               console.log('Capture result (body):', captureResult);
 
-              // Vamos a detener aquí. No llamamos onSubmitOrder ni orderService.
-              // Sólo para verificar si el error surge antes de esto.
-              // Si el error persiste, es un problema en el captureOrder o en el propio PayPal Buttons.
-              // Si no hay error, añade la lógica de onSubmitOrder y el servicio paso a paso.
-              let orderRequest: OrderRequest;
+              const transactionId = captureResult?.purchase_units?.[0]?.payments?.captures?.[0]?.id || 'UNKNOWN';
+              console.log('Transaction ID from PayPal:', transactionId);
+
+              let orderRequest: OrderRequest | undefined;
               try {
-                orderRequest = await this.onSubmitOrder();
+                orderRequest = this.orderDetails;
                 console.log('OrderRequest obtenido:', orderRequest);
               } catch (onSubmitError) {
                 console.error('Error en onSubmitOrder:', onSubmitError);
@@ -88,7 +85,7 @@ export class PayPalButtonComponent implements OnInit {
                 return;
               }
 
-              alert('Captura de la orden exitosa. Sin errores hasta este punto.');
+              console.log('Intentando registrar la orden en el backend...');
               this.orderService.placeOrderAndTransactionForPaypalAndCreditCard(orderRequest)
                 .subscribe({
                   next: (response: any) => {
@@ -109,7 +106,6 @@ export class PayPalButtonComponent implements OnInit {
                     alert('Hubo un error al procesar la orden en el servidor.');
                   }
                 });
-
 
             } catch (error) {
               console.error('Error en onApprove/captura de orden PayPal:', error);

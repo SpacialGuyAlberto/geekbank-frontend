@@ -18,7 +18,7 @@ export class OrderService {
   constructor(private http: HttpClient) {}
 
 
-  placeOrderAndTransactionForPaypalAndCreditCard(orderRequest: OrderRequest): Observable<Transaction> {
+    placeOrderAndTransactionForPaypalAndCreditCard(orderRequest: OrderRequest | undefined): Observable<Transaction> {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<any>(`${this.apiUrl}/create-order-for-paypal-and-credit-card`, orderRequest, {
       headers
