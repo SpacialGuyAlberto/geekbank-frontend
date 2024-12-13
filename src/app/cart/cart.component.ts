@@ -532,6 +532,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.router.navigate(['/purchase-confirmation'], {
       queryParams: { transactionNumber: transactionNumber }
     });
+
+    this.cartService.removeAllCartItems();
   }
 
   protected readonly Number = Number;
