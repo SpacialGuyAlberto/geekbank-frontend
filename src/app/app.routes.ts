@@ -20,6 +20,7 @@ import { TournamentAnnouncementComponent } from "./tournament-announcement/tourn
 import { OrdersComponent } from "./user-details/settings/orders/orders.component";
 import { WishlistComponent } from "./user-details/settings/wishlist/wishlist.component";
 import { PaymentMethodsComponent } from "./user-details/settings/payment-methods/payment-methods.component";
+import {CheckoutComponent} from "./checkout/checkout.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -45,7 +46,8 @@ export const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'wish-list', component: WishlistComponent },
+  {path: 'checkout', component: CheckoutComponent },
 
   // Ruta comodín al final
-  { path: '**', redirectTo: '/register' } // Cambia a '/home' o otra ruta válida si lo prefieres
+  { path: '**', redirectTo: '/register' }
 ];

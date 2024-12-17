@@ -23,5 +23,3 @@ export enum PurchaseType {
   GIFTCARD = 'GIFTCARD',
   BALANCE = 'BALANCE'
 }
-// PURCHASE,
-//   BALANCE_PURCHASE,

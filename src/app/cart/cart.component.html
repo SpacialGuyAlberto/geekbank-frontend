@@ -34,6 +34,7 @@
         </ul>
 
         <!-- Sección de Precio Total y Opciones de Pago -->
+
         <div class="total-price-section">
           <h3>Total Price: {{ getTotalPrice() | number:'1.2-2' }} €</h3>
 
@@ -51,16 +52,30 @@
           <!-- Mostrar Total en HNL si no hay carga ni error -->
           <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate) | number:'1.2-2' }} LPS</p>
 
-          <!-- Botón para Abrir el Modal de Pago con TIGO -->
-          <button (click)="openPaymentModal()" class="payment-option-button" [disabled]="cartItems.length === 0">
-            <div class="icon">
-              <div class="tigo">TIGO</div>
-              <div class="money">MONEY</div>
-            </div>
-          </button>
-
-          <!-- Componente de Botón de PayPal -->
-          <app-paypal-button [amount]="totalAmountString"></app-paypal-button>
+          <div class="payment-options">
+            <button
+              class="payment-option-button"
+              (click)="selectOption('TIGO MONEY')"
+              [class.selected]="selectedOption === 'TIGO MONEY'">
+              <!-- Opcional: Agrega un icono para TIGO MONEY si está disponible -->
+              <i class="fas fa-mobile-alt fa-lg"></i>
+              <span>TIGO MONEY</span>
+            </button>
+            <button
+              class="payment-option-button"
+              (click)="selectOption('paypal')"
+              [class.selected]="selectedOption === 'paypal'">
+              <i class="fab fa-paypal fa-lg"></i>
+              <span>PayPal</span>
+            </button>
+            <button
+              class="payment-option-button"
+              (click)="selectOption('card')"
+              [class.selected]="selectedOption === 'card'">
+              <i class="fas fa-credit-card fa-lg"></i>
+              <span>Card</span>
+            </button>
+          </div>
         </div>
       </ng-container>
 
@@ -77,15 +92,44 @@
       <form>
         <div class="form-group">
           <label for="email">Correo Electrónico:</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" [(ngModel)]="emailForKey" required>
         </div>
-        <button type="submit" class="payment-button">Continuar con el Pago</button>
+
+        <form (ngSubmit)="continueWithOption()">
+          <button type="submit" [disabled]="!selectedOption" class="payment-button">
+            Continuar con el Pago
+          </button>
+        </form>
       </form>
       <div class="discount-section">
         <label for="discountCode">Código de Descuento:</label>
         <input type="text" id="discountCode" name="discountCode">
         <button class="discount-button">Aplicar Descuento</button>
       </div>
+
+      <ng-container>
+        <app-tigo-payment *ngIf="showPaymentModal"></app-tigo-payment>
+
+        <div *ngIf="showPayPalButton">
+          <app-paypal-button
+            [amount]="totalAmountString"
+            [onSubmitOrder]="submitOrder"
+            [orderDetails]="orderDetails"
+            [paymentSource]="'paypal'"
+            (paymentSuccess)="onPaymentSuccess($event)">
+          </app-paypal-button>
+        </div>
+        <div *ngIf="showCardButton">
+          <app-paypal-button
+            [amount]="totalAmountString"
+            [onSubmitOrder]="submitOrder"
+            [orderDetails]="orderDetails"
+            [paymentSource]="'card'"
+            (paymentSuccess)="onPaymentSuccess($event)">
+          </app-paypal-button>
+        </div>
+
+      </ng-container>
       <!-- Texto de Aceptación de Términos y Condiciones -->
       <p class="terms-text">
         Al hacer clic en "Continuar con el pago" reconozco que he leído y aceptado los
