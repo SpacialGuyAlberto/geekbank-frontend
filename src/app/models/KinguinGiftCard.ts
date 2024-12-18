@@ -15,6 +15,7 @@ export interface KinguinGiftCard {
   qty: number;
   textQty: number;
   price: number;
+  priceHNL: number;
   cheapestOfferId: string[];
   isPreorder: boolean;
   regionalLimitations: string;

@@ -125,7 +125,11 @@
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
-    <app-search-bar (searchResults)="[closeSearchModal(), handleSearchResults($event)]"></app-search-bar>
+    <app-search-bar
+      (searchResults)="[closeSearchModal(), handleSearchResults($event)]"
+      (isFreeFireSearch)="handleFreeFireSearch($event)"
+
+    ></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
   </div>
 </div>

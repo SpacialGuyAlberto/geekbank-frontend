@@ -4,8 +4,32 @@
       <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
       <div class="gift-card-content">
         <h3 class="gift-card-title">{{ card.name }}</h3>
-        <p class="gift-card-price">{{ card.price | currency }}</p>
+        <p class="gift-card-price">{{ card.priceHNL | currency: 'Lps.'}}</p>
       </div>
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

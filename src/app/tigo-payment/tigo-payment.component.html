@@ -68,6 +68,10 @@
           >
             Proceder con el numero de referencia
           </button>
+          <p class="terms-text">Haga su deposito en forma de dinero de Tigo Money al numero +50495631247.</p>
+          <p class="terms-text">Su pago sera almacenado en nuestro sistema.</p>
+          <p class="terms-text">Pidale a su vendedor el numero de referencia para verificar su pago.</p>
+
         </div>
 
         <!-- Form de verificación manual -->
@@ -95,13 +99,10 @@
         </form>
       </ng-container>
 
-      <!-- Prompt para el envío de clave por email -->
-      <!-- Prompt para el envío de clave por email y sms -->
       <div class="email-prompt-modal" *ngIf="showEmailPrompt">
         <div class="email-prompt-content">
           <h3>Opciones de entrega de la clave</h3>
 
-          <!-- Opción de envío por email -->
           <div class="form-group">
             <label>
               <input type="checkbox" [(ngModel)]="wantsEmailKey" />

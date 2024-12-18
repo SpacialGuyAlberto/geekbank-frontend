@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HomeService } from "../home.service";
@@ -16,6 +16,8 @@ import { KinguinService } from '../kinguin.service';
 import { GiftCard } from "../models/GiftCard";
 import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
+import {SearchStateService} from "../search-state.service";
+
 
 @Component({
   selector: 'app-home',
@@ -35,9 +37,10 @@ import { OffersBannerComponent } from "../offers-banner/offers-banner.component"
   ]
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+  showFreeFireComponent: boolean = false;
+
   username: string = '';
   showHighlightsAndRecommendations: boolean = true;
-  showFreeFireComponent: boolean = true;
   existingAccountsData: GiftCard[] = [];
   giftCard: GiftCard | null = null;
   newAccountsData: KinguinGiftCard[] = [];
@@ -52,11 +55,13 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   filteredGiftCards: KinguinGiftCard[] = [];
   hasFilteredResults: boolean = false;
   currentGiftCards: KinguinGiftCard[] | null = null; // Nueva propiedad
+  private searchSubscription!: Subscription;
 
   constructor(
     private uiStateService: UIStateServiceService,
     private route: ActivatedRoute,
-    private kinguinService: KinguinService
+    private kinguinService: KinguinService,
+    private searchStateService: SearchStateService
   ) { }
 
   ngOnInit() {
@@ -71,6 +76,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.uiStateService.showHighlights$.subscribe(show => {
       this.showHighlightsAndRecommendations = show;
     });
+
+    this.searchSubscription = this.searchStateService.isFreeFireSearch$
+      .subscribe(isFreeFire => {
+        this.showFreeFireComponent = isFreeFire;
+        console.log('Estado de búsqueda de Free Fire:', isFreeFire);
+      });
 
     this.route.queryParams.subscribe(params => {
       if (params['search']) {
@@ -96,6 +107,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.uiStateSubscription) {
       this.uiStateSubscription.unsubscribe();
+    }
+    if (this.searchSubscription) {
+      this.searchSubscription.unsubscribe();
     }
   }
 
@@ -135,6 +149,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('Filters reset.');
   }
 
+
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
       const queryLower = this.searchQuery.toLowerCase();
@@ -143,15 +158,11 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
         queryLower.includes('free fair') ||
         queryLower.includes('freefire')
       ) {
-        // Mostrar componente Free Fire
         this.showFreeFireComponent = true;
-        console.log('Rendering free fire component')
         this.showHighlightsAndRecommendations = false;
       } else {
-        // Búsqueda normal
         this.showFreeFireComponent = false;
-        this.kinguinService
-          .searchGiftCards(this.searchQuery)
+        this.kinguinService.searchGiftCards(this.searchQuery)
           .subscribe((data: KinguinGiftCard[]) => {
             this.searchResults = data;
             this.showHighlightsAndRecommendations = false;
@@ -159,4 +170,5 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
   }
+
 }
