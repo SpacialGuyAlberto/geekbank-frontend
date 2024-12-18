@@ -25,7 +25,7 @@
                 <span class="quantity-display">{{ item.cartItem.quantity }}</span>
                 <button (click)="incrementProductQuantity(item)" aria-label="Increase Quantity">+</button>
               </div>
-              <p class="item-price">{{ (item.giftcard.price * exchangeRate) | number:'1.2-2' }} LPS</p>
+              <p class="item-price">{{ (item.giftcard.priceHNL) | number:'1.2-2' }} LPS</p>
             </div>
             <div class="item-actions">
               <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
@@ -36,7 +36,7 @@
         <!-- Sección de Precio Total y Opciones de Pago -->
 
         <div class="total-price-section">
-          <h3>Total Price: {{ getTotalPrice() | number:'1.2-2' }} €</h3>
+          <h3>Total Price: {{ totalHNL | number:'1.2-2' }} HNL</h3>
 
           <!-- Indicador de Carga para la Tasa de Cambio -->
           <div *ngIf="isLoading">
@@ -108,7 +108,7 @@
       </div>
 
       <ng-container>
-        <app-tigo-payment *ngIf="showPaymentModal"></app-tigo-payment>
+        <app-tigo-payment *ngIf="showPaymentModal" [totalAmount]="totalHNL"></app-tigo-payment>
 
         <div *ngIf="showPayPalButton">
           <app-paypal-button

@@ -390,12 +390,12 @@ export class GiftCardDetailsComponent implements OnInit {
         this.showSnackBar('Hubo un error al eliminar el producto del carrito.');
       });
     } else {
-      this.cartService.addCartItem(giftCard.kinguinId, 1, giftCard.price).subscribe(() => {
+      this.cartService.addCartItem(giftCard.kinguinId, 1, giftCard.priceHNL).subscribe(() => {
         this.isInCart = true;
         this.quantityInCart = 1;
         this.emitCartItemCount();
         this.notifMessage = `Has agregado ${giftCard.name} al carrito.`;
-        this.showSnackBar(`Producto agregado al carrito: ${giftCard.name}`);
+        this.showSnackBar(`Producto agregado al carrito: ${giftCard.name}. Cuyo precio es: ${giftCard.priceHNL}`);
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
       }, error => {
         console.error('Error al agregar al carrito:', error);

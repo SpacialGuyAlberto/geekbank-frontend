@@ -80,7 +80,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   showCardButton: boolean = false;
   showPayPalButton: boolean = false;
-
+  totalHNL: number = 0;
   isEmailPromptComplete: boolean = false;
   showEmailPrompt: boolean = false;
   wantsEmailKey: boolean = false;
@@ -162,6 +162,7 @@ export class CartComponent implements OnInit, OnDestroy {
         console.log("Loaded cart items: ", this.cartItems);
         this.updateCartItemCount();
         this.calculateTotalPriceEUR();
+        this.calculateTotalPriceHNL()
         this.totalAmountString = this.totalPriceEUR.toString();
       });
   }
@@ -170,6 +171,11 @@ export class CartComponent implements OnInit, OnDestroy {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
     this.totalPriceEUR = parseFloat(total.toFixed(2));
     this.getExchangeRate();
+  }
+
+  calculateTotalPriceHNL(): void {
+    let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
+    this.totalHNL = parseFloat(total.toFixed(2));
   }
 
   selectOption(option: string): void {
@@ -395,7 +401,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   getTotalPrice(): number {
-    return this.totalPriceEUR;
+    return this.totalHNL;
   }
 
   updateCartItemCount(): void {
