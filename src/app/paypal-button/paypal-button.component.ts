@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { loadScript, PayPalNamespace } from '@paypal/paypal-js';
 import { PayPalService } from '../pay-pal.service';
+import {TransactionsService} from "../transactions.service";
 import { OrderService } from '../order.service';
 import { OrderRequest } from '../models/order-request.model';
-import { firstValueFrom } from 'rxjs';
+import {firstValueFrom, Subscription} from 'rxjs';
+import {WebSocketService} from "../web-socket.service";
 
 @Component({
   selector: 'app-paypal-button',
@@ -16,13 +18,24 @@ export class PayPalButtonComponent implements OnInit {
   @Input() amount: string | null = '';
   @Input() orderDetails?: OrderRequest;
   @Output() paymentSuccess = new EventEmitter<string>();
+  @Output() paymentFailureKeysNotAvailable = new EventEmitter<string>()
   @Input() paymentSource: 'paypal' | 'venmo' | 'applepay' | 'itau' | 'credit' | 'paylater' | 'card' | 'ideal' | 'sepa' | 'bancontact' | 'giropay' = 'paypal';
   @Input() onSubmitOrder!: () => Promise<OrderRequest>;
 
+  transactionStatus: string = '';
+  showSpinner: boolean = false;
+  private transactionStatusSubscription: Subscription | undefined;
+
+  @Output() transactionCancelled = new EventEmitter<void>();
+
   constructor(
+    private orderService: OrderService,
     private payPalService: PayPalService,
-    private orderService: OrderService
-  ) {}
+    private transactionService: TransactionsService,
+    private webSocketService: WebSocketService
+  ) {
+    this.webSocketService.connect();
+  }
 
   async ngOnInit() {
     const paypal: PayPalNamespace | null = await loadScript({
@@ -35,6 +48,17 @@ export class PayPalButtonComponent implements OnInit {
     }
 
     await this.renderPayPalButton(paypal);
+
+    this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
+      this.transactionStatus = parsedMessage.status;
+      this.showSpinner = !(this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING'
+        || this.transactionStatus === 'CANCELLED');
+
+      if (this.transactionStatus === 'CANCELLED') {
+        this.transactionCancelled.emit();
+      }
+
+    });
   }
 
   private async renderPayPalButton(paypal: PayPalNamespace) {

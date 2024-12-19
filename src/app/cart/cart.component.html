@@ -108,7 +108,10 @@
       </div>
 
       <ng-container>
-        <app-tigo-payment *ngIf="showPaymentModal" [totalAmount]="totalHNL"></app-tigo-payment>
+        <app-tigo-payment
+          *ngIf="showPaymentModal"
+          [totalAmount]="totalHNL"
+        ></app-tigo-payment>
 
         <div *ngIf="showPayPalButton">
           <app-paypal-button
@@ -152,6 +155,17 @@
   <div class="dialog">
     <p>No more items in the cart.</p>
     <button (click)="closeDialog()">OK</button>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showCancelledModal">
+  <div class="modal-content">
+    <span class="close" (click)="showCancelledModal = false">&times;</span>
+    <h3>El producto no está disponible ahora.</h3>
+    <p>Trata de comprarlo en unos minutos con tu número de referencia.</p>
+    <button type="button" class="retry-button" (click)="showCancelledModal = false">
+      <i class="fa-solid fa-arrows-rotate"></i> Cerrar
+    </button>
   </div>
 </div>
 

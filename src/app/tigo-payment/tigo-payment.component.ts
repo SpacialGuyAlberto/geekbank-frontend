@@ -169,11 +169,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
       this.transactionStatus = parsedMessage.status;
-      if (this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
-        this.showSpinner = false;
-      } else {
-        this.showSpinner = true;
-      }
+      this.showSpinner = !(this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING'
+        || this.transactionStatus === 'CANCELLED');
     });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
@@ -536,6 +533,11 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.submitManualVerification();
     }
   }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
+
 
   ngOnDestroy(): void {
     if (this.exchangeRateSubscription) {

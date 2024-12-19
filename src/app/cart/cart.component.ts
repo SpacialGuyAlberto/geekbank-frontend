@@ -100,6 +100,9 @@ export class CartComponent implements OnInit, OnDestroy {
   orderDetails?: OrderRequest;
   selectedOption: string | null = null;
 
+  showCancelledModal: boolean = false;
+
+
   constructor(
     private cartService: CartService,
     private guestService: GuestService,
@@ -163,7 +166,8 @@ export class CartComponent implements OnInit, OnDestroy {
         this.updateCartItemCount();
         this.calculateTotalPriceEUR();
         this.calculateTotalPriceHNL()
-        this.totalAmountString = this.totalPriceEUR.toString();
+        let totalAmountEUR = this.totalHNL * 27.5;
+        this.totalAmountString = totalAmountEUR.toString();
       });
   }
 
@@ -176,6 +180,7 @@ export class CartComponent implements OnInit, OnDestroy {
   calculateTotalPriceHNL(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
     this.totalHNL = parseFloat(total.toFixed(2));
+    console.log('TOTAL HNL:' + this.totalHNL)
   }
 
   selectOption(option: string): void {
@@ -203,10 +208,10 @@ export class CartComponent implements OnInit, OnDestroy {
         products: [{
           kinguinId: this.productId,
           qty: 1,
-          price: this.totalPrice,
+          price: this.totalHNL,
           name: 'Producto'
         }],
-        amount: this.totalPrice,
+        amount: this.totalHNL,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
         gameUserId: this.gameUserId || undefined
@@ -223,10 +228,10 @@ export class CartComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId!,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.price * item.cartItem.quantity), 0),
+          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -260,10 +265,10 @@ export class CartComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.price * item.cartItem.quantity), 0),
+          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -279,7 +284,7 @@ export class CartComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'Balance'
           }],
-          amount: this.totalPrice,
+          amount: this.totalHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -541,6 +546,12 @@ export class CartComponent implements OnInit, OnDestroy {
 
     this.cartService.removeAllCartItems();
   }
+
+  handleTransactionCancelled() {
+    // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
+    this.showCancelledModal = true;
+  }
+
 
   protected readonly Number = Number;
 }
