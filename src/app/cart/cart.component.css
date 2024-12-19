@@ -439,6 +439,103 @@ payment-option-button .icon {
   background: #1e6fd8;
   transform: translateY(-2px);
 }
+
+
+/* Estilo general para el modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente oscuro */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegura que esté encima de todo */
+}
+
+/* Contenido del modal */
+.modal-content {
+  background-color: #1a2a38; /* Fondo oscuro plano */
+  color: #A0E4FF; /* Texto azul claro */
+  padding: 2rem;
+  border-radius: 0.5rem; /* Bordes redondeados */
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra para efecto flotante */
+  text-align: center;
+  width: 90%;
+  max-width: 400px; /* Ancho máximo */
+  animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Botón de cerrar (icono 'X') */
+.modal-content .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #A0E4FF; /* Azul claro */
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.modal-content .close:hover {
+  color: #FF6666; /* Rojo suave al pasar el ratón */
+}
+
+/* Título del modal */
+.modal-content h3 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+/* Texto del mensaje */
+.modal-content p {
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Botón de acción (Cerrar) */
+.retry-button {
+  padding: 0.75rem 1.5rem;
+  background: #3a8dff; /* Azul plano */
+  color: #ffffff; /* Texto blanco */
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.retry-button:hover {
+  background: #1e6fd8; /* Azul más oscuro al hover */
+  transform: translateY(-2px);
+}
+
+/* Icono del botón */
+.retry-button i {
+  font-size: 1.2rem;
+}
+
 /* Responsividad */
 @media (max-width: 1024px) {
   .cart-content {

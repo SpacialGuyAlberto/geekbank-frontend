@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { loadScript, PayPalNamespace } from '@paypal/paypal-js';
 import { PayPalService } from '../pay-pal.service';
 import {TransactionsService} from "../transactions.service";
@@ -14,7 +14,7 @@ import {WebSocketService} from "../web-socket.service";
   `,
   standalone: true,
 })
-export class PayPalButtonComponent implements OnInit {
+export class PayPalButtonComponent implements OnInit, OnDestroy {
   @Input() amount: string | null = '';
   @Input() orderDetails?: OrderRequest;
   @Output() paymentSuccess = new EventEmitter<string>();
@@ -117,7 +117,11 @@ export class PayPalButtonComponent implements OnInit {
 
                     if (!response || !response.transactionNumber) {
                       console.error('La respuesta no contiene transactionNumber:', response);
-                      alert('Hubo un error al procesar la orden en el servidor (dato faltante).');
+                      if (this.transactionStatus === 'CANCELLED') {
+                        this.transactionCancelled.emit();
+                        alert('Hubo un error al procesar la orden en el servidor (dato faltante).');
+                      }
+
                       return;
                     }
 
@@ -126,8 +130,11 @@ export class PayPalButtonComponent implements OnInit {
                     this.paymentSuccess.emit(transactionNumber);
                   },
                   error: (err) => {
+                    if (this.transactionStatus === 'CANCELLED') {
+                      this.paymentFailureKeysNotAvailable.emit(this.transactionStatus)
+                      this.transactionCancelled.emit();
+                    }
                     console.error('Error al registrar la orden en el servidor:', err);
-                    alert('Hubo un error al procesar la orden en el servidor.');
                   }
                 });
 
@@ -145,5 +152,15 @@ export class PayPalButtonComponent implements OnInit {
     } catch (error) {
       console.error('Error al renderizar el botón de PayPal:', error);
     }
+  }
+
+
+
+  ngOnDestroy(): void {
+
+    if (this.transactionStatusSubscription){
+      this.transactionStatusSubscription.unsubscribe();
+    }
+    this.webSocketService.disconnect();
   }
 }

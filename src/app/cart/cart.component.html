@@ -119,7 +119,9 @@
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'paypal'"
-            (paymentSuccess)="onPaymentSuccess($event)">
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
+          >
           </app-paypal-button>
         </div>
         <div *ngIf="showCardButton">
@@ -128,7 +130,9 @@
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'card'"
-            (paymentSuccess)="onPaymentSuccess($event)">
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
+          >
           </app-paypal-button>
         </div>
 
