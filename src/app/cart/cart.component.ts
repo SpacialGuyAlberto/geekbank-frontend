@@ -167,7 +167,7 @@ export class CartComponent implements OnInit, OnDestroy {
         this.calculateTotalPriceEUR();
         this.calculateTotalPriceHNL()
         let totalAmountEUR = this.totalHNL * 27.5;
-        this.totalAmountString = totalAmountEUR.toString();
+        this.totalAmountString = this.totalHNL.toString();
       });
   }
 
