@@ -53,29 +53,37 @@
           <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate) | number:'1.2-2' }} LPS</p>
 
           <div class="payment-options">
+            <!-- Botón para Tigo Money -->
             <button
               class="payment-option-button"
               (click)="selectOption('TIGO MONEY')"
-              [class.selected]="selectedOption === 'TIGO MONEY'">
-              <!-- Opcional: Agrega un icono para TIGO MONEY si está disponible -->
+              [class.selected]="selectedOption === 'TIGO MONEY'"
+            >
               <i class="fas fa-mobile-alt fa-lg"></i>
               <span>TIGO MONEY</span>
             </button>
+
+            <!-- Botón para PayPal -->
             <button
               class="payment-option-button"
               (click)="selectOption('paypal')"
-              [class.selected]="selectedOption === 'paypal'">
+              [class.selected]="selectedOption === 'paypal'"
+            >
               <i class="fab fa-paypal fa-lg"></i>
               <span>PayPal</span>
             </button>
+
+            <!-- Botón para Tarjeta de Crédito -->
             <button
               class="payment-option-button"
               (click)="selectOption('card')"
-              [class.selected]="selectedOption === 'card'">
+              [class.selected]="selectedOption === 'card'"
+            >
               <i class="fas fa-credit-card fa-lg"></i>
               <span>Card</span>
             </button>
           </div>
+
         </div>
       </ng-container>
 

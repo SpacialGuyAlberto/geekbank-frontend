@@ -1,3 +1,4 @@
+/* Contenedor para la Animación de Fondo */
 .graph-container {
   position: absolute;
   top: 0;
@@ -17,6 +18,7 @@
   background: #0f2027; /* Fondo sólido para mayor profesionalismo */
 }
 
+/* Contenedor Principal del Carrito */
 .cart-container {
   width: 80%;
   margin: 10rem auto;
@@ -46,6 +48,7 @@
   flex: 2;
 }
 
+/* Sección de Información de Pago */
 .payment-info {
   flex: 1;
   background: #16212e; /* Fondo plano y consistente */
@@ -83,6 +86,28 @@
   font-size: 1rem;
 }
 
+/* ------------------ Mejoras en los Botones ------------------ */
+
+/* Estilos Globales para Botones */
+button {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: #3a8dff; /* Color plano para los botones */
+  color: #ffffff;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+button:disabled {
+  background-color: rgba(58, 141, 255, 0.5);
+  cursor: not-allowed;
+}
+
+/* Botones de Opciones de Pago */
 .payment-option-button {
   width: 100%; /* Ocupa todo el ancho del contenedor */
   display: flex; /* Utiliza flexbox para alinear los elementos internos */
@@ -96,19 +121,34 @@
   background: rgba(36, 59, 83, 0.7);
   color: #fff;
   cursor: pointer;
-  transition: background-color var(--transition-speed), border-color var(--transition-speed), transform var(--transition-speed);
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   font-size: 1.1rem;
-  font-family: var(--font-primary);
 }
 
+.payment-option-button i {
+  /* Ajusta el tamaño y color de los iconos si es necesario */
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+/* Efectos de Hover para Botones de Opciones de Pago */
 .payment-option-button:hover {
-  background: var(--button-gradient-hover);
-  border-color: var(--accent-pink);
-  transform: scale(1.05);
+  background: #3a8dff; /* Color de fondo al pasar el ratón */
+  border-color: #1e6fd8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
 }
 
+/* Estado Seleccionado para Botones de Opciones de Pago */
+.payment-option-button.selected {
+  background: #1e6fd8;
+  border-color: #0056b3;
+  box-shadow: 0 0 10px rgba(58, 141, 255, 0.7); /* Sombra brillante */
+  transform: scale(1.05); /* Efecto de ampliación */
+}
 
-payment-option-button .icon {
+/* Icono dentro del Botón de Opciones de Pago */
+.payment-option-button .icon {
   background-color: #0056b3; /* Color de fondo de Tigo Money */
   border-radius: 5px;
   display: flex;
@@ -117,11 +157,10 @@ payment-option-button .icon {
   align-items: center;
   transition: background-color 0.3s ease; /* Transición suave */
   padding: 0.5rem;
-  /* Elimina width: 100%; para que el icono no ocupe todo el ancho */
-  /* Añade margen si es necesario */
   margin-right: 1rem; /* Espacio entre el icono y el texto */
 }
 
+/* Estilos para el Texto del Icono */
 .payment-option-button .tigo,
 .payment-option-button .money {
   font-size: 16px;
@@ -130,7 +169,7 @@ payment-option-button .icon {
   transition: color 0.3s ease; /* Transición suave */
 }
 
-/* Cambiar colores al pasar el ratón */
+/* Cambiar colores al pasar el ratón en los Iconos */
 .payment-option-button:hover .icon {
   background-color: #f9c24f; /* Fondo amarillo al pasar el ratón */
 }
@@ -139,6 +178,8 @@ payment-option-button .icon {
 .payment-option-button:hover .money {
   color: #0056b3; /* Texto azul al pasar el ratón */
 }
+
+/* Botones de Acción Principales en Información de Pago y Descuento */
 .payment-info button,
 .discount-section button {
   width: 100%;
@@ -150,15 +191,65 @@ payment-option-button .icon {
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
   font-size: 1rem;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   margin-top: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
 }
 
 .payment-info button:hover,
 .discount-section button:hover {
   background: #1e6fd8; /* Color más oscuro al pasar el ratón */
   transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
 }
+
+/* Botón Continuar con el Pago */
+.continue-button-container {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.continue-button-container button {
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: #3a8dff;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.continue-button-container button:hover {
+  background: #1e6fd8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+}
+
+/* Botones de Descuento */
+.discount-button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.25rem;
+  background: #c9541c; /* Fondo azul más oscuro */
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.discount-button:hover {
+  background: #b84317; /* Un tono más oscuro para indicar interacción */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+}
+
+/* ------------------ Fin de las Mejoras en los Botones ------------------ */
 
 .related-products-title {
   color: #99ccff;
@@ -196,21 +287,11 @@ payment-option-button .icon {
   color: #fff; /* Text color white by default */
   transition: color 0.3s ease; /* Smooth transition */
 }
+
 .payment-option-button span {
   flex-grow: 1; /* Ocupa el espacio restante */
   text-align: center; /* Centra el texto */
 }
-
-/* Hover Styles for Tigo Money */
-.payment-option-button:hover .icon {
-  background-color: #f9c24f; /* Yellow background on hover */
-}
-
-.payment-option-button:hover .tigo,
-.payment-option-button:hover .money {
-  color: #0056b3; /* Blue text on hover */
-}
-
 
 .terms-text a:hover {
   text-decoration: underline;
@@ -317,7 +398,6 @@ payment-option-button .icon {
   color: #A0E4FF;
 }
 
-
 .total-price-section h3 {
   margin-bottom: 1rem;
   font-size: 1.5rem;
@@ -379,7 +459,6 @@ payment-option-button .icon {
   transform: translateY(-2px);
 }
 
-
 .payment-options {
   display: flex;
   flex-direction: column;
@@ -440,7 +519,6 @@ payment-option-button .icon {
   transform: translateY(-2px);
 }
 
-
 /* Estilo general para el modal */
 .modal {
   position: fixed;
@@ -466,6 +544,7 @@ payment-option-button .icon {
   width: 90%;
   max-width: 400px; /* Ancho máximo */
   animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+  position: relative;
 }
 
 /* Animación de entrada */
@@ -536,7 +615,12 @@ payment-option-button .icon {
   font-size: 1.2rem;
 }
 
-/* Responsividad */
+.related-products-title {
+  color: #99ccff;
+  margin-left: 10rem;
+}
+
+/* ------------------ Responsividad ------------------ */
 @media (max-width: 1024px) {
   .cart-content {
     flex-direction: column;
