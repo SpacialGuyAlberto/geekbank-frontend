@@ -1,7 +1,8 @@
 <div *ngIf="giftCards.length > 0; else noData" class="category-items-container">
   <div class="header">
     <p class="selected-category-text"><strong>{{ selectedCategory }}</strong></p>
-    <a class="show-all-link">Mostrar todos</a>
+    <!-- Navega a /filtered/:category al hacer clic -->
+    <a class="show-all-link" [routerLink]="['/filtered', selectedCategory]">Mostrar todos</a>
   </div>
 
   <div *ngIf="isLoading" class="loading-indicator">
@@ -16,13 +17,13 @@
 
   <!-- Contenedor para scroll horizontal -->
   <div class="cards-wrapper">
-    <div class="category-item" *ngFor="let card of giftCards" (click)="viewDetails(card)">
+    <div class="category-item" *ngFor="let card of displayedGiftCards" (click)="viewDetails(card)">
       <div class="category-item-image-wrapper">
         <img [src]="card.coverImage" alt="{{ card.name }}" class="category-item-image" />
       </div>
       <div class="category-item-content">
         <h3 class="category-item-title">{{ card.name }}</h3>
-        <p class="category-item-price">{{ card.price | currency }}</p>
+        <p class="category-item-price">{{ card.price | currency:'USD' }}</p>
       </div>
     </div>
   </div>

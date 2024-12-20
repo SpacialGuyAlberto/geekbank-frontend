@@ -1,0 +1,210 @@
+/* src/app/components/filtered-page/filtered-page.component.css */
+
+/* Contenedor principal con ancho 100% y fondo de gradiente */
+.filtered-page-container {
+  width: 100%;
+  min-height: 100vh; /* Asegura que el fondo cubra toda la altura */
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  box-sizing: border-box;
+}
+
+/* Header centrado con colores claros */
+.filtered-page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.filtered-page-header h1 {
+  font-size: 3rem;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Contenido de la página con espacio entre elementos */
+.filtered-page-content {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+/* Indicador de carga centrado */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.spinner {
+  border: 8px solid rgba(255, 255, 255, 0.3);
+  border-top: 8px solid #ffffff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Wrapper de tarjetas con grid centrado y margenes laterales */
+.cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); /* Reducido de 250px a 175px */
+  gap: 20px; /* Reducido de 30px a 20px para adecuarse al tamaño más pequeño */
+  justify-items: center; /* Centra las tarjetas en cada columna */
+  max-width: 1000px; /* Limita el ancho total del grid para agregar márgenes laterales */
+  margin: 0 auto; /* Centra el grid dentro del contenedor */
+  padding: 0 10px; /* Agrega un pequeño padding lateral para evitar que las tarjetas toquen los bordes */
+}
+
+/* Estilo de cada tarjeta */
+.category-item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+  width: 100%; /* Asegura que la tarjeta ocupe el ancho disponible en su columna */
+  max-width: 175px; /* Limita el ancho máximo para mantener el tamaño reducido */
+}
+
+.category-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Wrapper de la imagen con bordes redondeados */
+.category-item-image-wrapper {
+  width: 100%;
+  height: 120px; /* Reducido de 160px a 120px */
+  overflow: hidden;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.category-item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.category-item:hover .category-item-image {
+  transform: scale(1.05);
+}
+
+/* Contenido de la tarjeta con colores claros */
+.category-item-content {
+  padding: 15px; /* Reducido de 20px a 15px */
+  text-align: center;
+}
+
+.category-item-title {
+  font-size: 1.3rem; /* Reducido de 1.5rem a 1.3rem */
+  margin-bottom: 8px; /* Reducido de 10px a 8px */
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.category-item-price {
+  font-size: 1rem; /* Reducido de 1.2rem a 1rem */
+  color: #28a745;
+  font-weight: 600;
+}
+
+/* Mensajes centrados con colores suaves */
+.no-data-message,
+.error-message {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #ffffff;
+}
+
+.error-message {
+  color: #ff6b6b; /* Rojo suave para errores */
+  margin-top: 20px;
+}
+
+/* Botón "Cargar más" estilizado */
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.load-more-button {
+  padding: 12px 24px;
+  font-size: 1.1rem;
+  background-color: #007bff;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.load-more-button:hover:not([disabled]) {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.load-more-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Spinner dentro del botón */
+.button-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #ffffff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+/* Estilo responsivo para pantallas pequeñas */
+@media (max-width: 768px) {
+  .filtered-page-container {
+    padding: 20px 10px; /* Reducir padding */
+  }
+
+  .filtered-page-header h1 {
+    font-size: 2rem; /* Reducir tamaño del texto */
+  }
+
+  .cards-wrapper {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Ajustar tamaño mínimo de las tarjetas */
+    gap: 15px; /* Reducir espacio entre tarjetas */
+  }
+
+  .category-item-image-wrapper {
+    height: 100px; /* Reducir altura de la imagen */
+  }
+
+  .category-item-content {
+    padding: 10px; /* Reducir padding */
+  }
+
+  .category-item-title {
+    font-size: 1.1rem; /* Reducir tamaño de título */
+  }
+
+  .category-item-price {
+    font-size: 0.9rem; /* Reducir tamaño del precio */
+  }
+
+  .load-more-button {
+    padding: 10px 20px; /* Reducir tamaño del botón */
+    font-size: 1rem; /* Reducir tamaño del texto */
+  }
+}

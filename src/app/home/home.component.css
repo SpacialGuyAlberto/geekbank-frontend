@@ -103,7 +103,8 @@ body, html {
 }
 
 .app-banner {
-  margin-bottom: 1rem; /* Ajusta este valor según tus necesidades */
+  margin-bottom: 1rem;
+  z-index: 2/* Ajusta este valor según tus necesidades */
 }
 
 .highlights-section,

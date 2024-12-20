@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import {KinguinService} from "../kinguin.service";
 import {KinguinGiftCard} from "../models/KinguinGiftCard";
 import {CurrencyPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-banner',
@@ -22,7 +24,10 @@ export class BannerComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
 
-  constructor(private kinguinService: KinguinService) {}
+  constructor(
+    private kinguinService: KinguinService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.fetchGiftCardDetails();
@@ -44,6 +49,13 @@ export class BannerComponent implements OnInit {
       }
     });
   }
+
+  viewDetails(): void {
+
+    this.router.navigate(['/tournament']).then(success => {
+    });
+  }
+
 
   getPlatforms(): string[] {
     if (!this.giftCard || !this.giftCard.platform) return [];

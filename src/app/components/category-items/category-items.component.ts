@@ -1,18 +1,21 @@
-import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
+// src/app/components/category-items/category-items.component.ts
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { KinguinGiftCard } from '../../models/KinguinGiftCard';
 import { KinguinService } from '../../kinguin.service';
-import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import { CurrencyPipe, NgForOf, NgIf } from "@angular/common";
+import { RouterLink } from '@angular/router';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-category-items',
-  templateUrl: './category-items.component.html',
   standalone: true,
   imports: [
     NgForOf,
     NgIf,
-    CurrencyPipe
+    CurrencyPipe,
+    RouterLink
   ],
+  templateUrl: './category-items.component.html',
   styleUrls: ['./category-items.component.css']
 })
 export class CategoryItemsComponent implements OnInit, OnChanges {
@@ -31,11 +34,11 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
     language: '',
     tags: '',
     page: 1,
-    limit: 5
+    limit: 5 // Límite para mostrar una cantidad reducida
   };
 
-  constructor(private kinguinService: KinguinService) {
-  }
+  constructor(private kinguinService: KinguinService, private router: Router) {}
+
   ngOnInit(): void {
     this.loadGiftCards();
   }
@@ -47,52 +50,60 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
   }
 
   loadGiftCards(): void {
-    if (!this.giftCards || this.giftCards.length === 0) {
-      this.isLoading = false;
-      return;
-    }
-
-    // Simulación de carga de datos progresiva
-    let index = 0;
-    const interval = setInterval(() => {
-      if (index < this.giftCards.length) {
-        this.displayedGiftCards.push(this.giftCards[index]);
-        index++;
-      } else {
-        clearInterval(interval);
+    // Cargar gift cards sin filtrar o con filtros predeterminados
+    this.kinguinService.getFilteredGiftCards(this.defaultFilters).subscribe(
+      (giftCards) => {
+        this.giftCards = giftCards.map(card => ({
+          ...card,
+          coverImageOriginal: card.images.cover?.thumbnail || '',
+          coverImage: card.images.cover?.thumbnail || ''
+        }));
+        this.displayedGiftCards = this.giftCards.slice(0, this.defaultFilters.limit);
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching gift cards:', error);
+        this.giftCards = [];
+        this.displayedGiftCards = [];
         this.isLoading = false;
       }
-    }, 300); // Añade una tarjeta cada 300ms
+    );
   }
 
-
   loadGiftCardsByGenre(genre: string): void {
-    const filters = {...this.defaultFilters, genre};
+    const filters = { ...this.defaultFilters, genre };
 
+    this.isLoading = true;
     this.kinguinService.getFilteredGiftCards(filters).subscribe(
       (giftCards) => {
         if (giftCards.length === 0) {
           console.warn(`No products found for genre: ${genre}`);
         }
-        this.giftCards = giftCards.map(card => {
-          card.coverImageOriginal = card.images.cover?.thumbnail || '';
-          card.coverImage = card.images.cover?.thumbnail || '';
-          return card;
-        });
-
+        this.giftCards = giftCards.map(card => ({
+          ...card,
+          coverImageOriginal: card.images.cover?.thumbnail || '',
+          coverImage: card.images.cover?.thumbnail || ''
+        }));
+        this.displayedGiftCards = this.giftCards.slice(0, this.defaultFilters.limit);
+        this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching gift cards by genre:', error);
         this.giftCards = [];
+        this.displayedGiftCards = [];
+        this.isLoading = false;
       }
     );
   }
 
-  viewDetails(card: any): void {
-    // Lógica para ver los detalles de la tarjeta
-    console.log('Ver detalles para:', card);
-    // Puedes redirigir a otra ruta o abrir un modal con los detalles
+  viewDetails(card: KinguinGiftCard): void {
+    console.log('CARD ID: ' + card.productId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+      if (success) {
+        console.log('Navigation successful');
+      } else {
+        console.log('Navigation failed');
+      }
+    });
   }
-
-
 }

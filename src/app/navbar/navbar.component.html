@@ -181,10 +181,11 @@
           </button>
           <ul class="submenu" *ngIf="categoriesExpanded">
             <li *ngFor="let category of genres">
-              <a href="#" (click)="selectCategory(category.key); closeMenuModal()">
+              <a [routerLink]="['/filtered', category.key]" (click)="selectCategory(category.key); closeMenuModal()">
                 {{ category.label }}
               </a>
             </li>
+
           </ul>
 
         </li>
