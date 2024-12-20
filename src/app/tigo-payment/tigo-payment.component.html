@@ -39,6 +39,11 @@
             </div>
           </div>
         </div>
+
+      </ng-container>
+        <p>{{insufficientPaymentAmount}}</p>
+      <ng-container *ngIf="showInsufficientPaymentAmount">
+
       </ng-container>
 
       <!-- Si la transacción está cancelada -->

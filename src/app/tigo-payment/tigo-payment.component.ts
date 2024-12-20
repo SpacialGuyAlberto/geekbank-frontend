@@ -46,13 +46,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   gameUserId = inject(GAME_USER_ID, { optional: true });
   isManualTransaction = inject(IS_MANUAL_TRANSACTION);
 
-
-
   private postLoginAction: (() => void) | null = null;
   unmatchedPaymentResponse: UnmatchedPaymentResponseDto | null = null;
   account: Account | null = null;
   accountId: number = 0;
   paymentReferenceNumber: string = "";
+  insufficientPaymentAmount: string = "";
+  showInsufficientPaymentAmount: boolean = false;
   user: User | null = null;
   @Output() close = new EventEmitter<void>();
 
@@ -332,14 +332,34 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const expectedAmount = this.totalPrice * this.exchangeRate;
+    const expectedAmount = this.totalPrice;
 
     const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
+
+
     if (isVerified) {
       orderDetails.refNumber = refNumber;
       this.paymentReferenceNumber = refNumber;
       this.tigoPaymentService.initializePayment(orderDetails);
       this.showSpinner = true;
+      if (this.unmatchedPaymentResponse){
+
+        if (this.unmatchedPaymentResponse.difference === 0){
+          this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
+            this.currentTransaction = transaction;
+            if (this.currentTransaction?.transactionNumber) {
+              // Ir directo a la página de confirmación
+              this.router.navigate(['/purchase-confirmation'], {
+                queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
+              });
+            }
+          });
+        } else if (this.unmatchedPaymentResponse.difference < 0){
+          this.showSpinner = false;
+          this.insufficientPaymentAmount = "El pago ingresado fue insuficiente. Comunicate con nuestro servicio al cliente para efectuar la devolucion de tu pago o compensarlo con otro pago."
+          this.showInsufficientPaymentAmount = true;
+        }
+      }
     }
   }
 
