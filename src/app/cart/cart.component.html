@@ -63,6 +63,15 @@
               <span>TIGO MONEY</span>
             </button>
 
+            <button
+              class="payment-option-button"
+              (click)="selectOption('BALANCE')"
+              [class.selected]="selectedOption === 'BALANCE'"
+            >
+              <i class="fa-solid fa-dollar-sign"></i>
+              <span>Balance</span>
+            </button>
+
             <!-- Botón para PayPal -->
             <button
               class="payment-option-button"
