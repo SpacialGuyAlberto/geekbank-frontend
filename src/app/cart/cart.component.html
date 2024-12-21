@@ -49,9 +49,6 @@
             <p class="error">{{ conversionError }}</p>
           </div>
 
-          <!-- Mostrar Total en HNL si no hay carga ni error -->
-          <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate) | number:'1.2-2' }} LPS</p>
-
           <div class="payment-options">
             <!-- Botón para Tigo Money -->
             <button
