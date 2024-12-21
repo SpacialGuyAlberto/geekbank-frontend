@@ -20,14 +20,6 @@
     </div>
 
     <div class="feedback-section">
-      <button class="wishlist-button"
-              [ngClass]="{'wished': giftCard.wished}"
-              (click)="toggleWishList(giftCard, $event)"
-              aria-label="Agregar a Wishlist">
-        <span class="material-icons">
-          favorite
-        </span>
-      </button>
 
       <div class="star-rating">
         <i class="material-icons star" (click)="openFeedbackModal()">star_border</i>
@@ -68,10 +60,16 @@
     </div>
 
     <div class="button-container">
-      <button (click)="openPaymentModal()" class="btn buy-now">
-        <i class="material-icons">shopping_bag</i>
-        Comprar Ahora
+      <button
+        [ngClass]="{'wished': giftCard.wished}"
+        (click)="toggleWishList(giftCard, $event)"
+        class="btn buy-now">
+          <span class="material-icons">
+            favorite
+          </span>
+        {{ giftCard.wished ? 'Retirar de la lista de deseos' : 'Agregar a la lista de deseos' }}
       </button>
+
       <button (click)="toggleCart(giftCard)" class="btn add-to-cart">
         <i class="material-icons">{{ isInCart ? 'remove_shopping_cart' : 'add_shopping_cart' }}</i>
         {{ isInCart ? 'Eliminar del Carrito' : 'Agregar al Carrito' }}
