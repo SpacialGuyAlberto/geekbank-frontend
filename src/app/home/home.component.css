@@ -91,15 +91,14 @@ body, html {
 }
 
 /* Sección de Destacados y Recomendaciones */
+
 .highlight-recommendations {
   display: flex;
   gap: 1.5rem;
   position: relative;
-  z-index: 2; /* Asegura que esté por encima del banner */
-  margin-top: -20rem; /* Ajusta este valor para controlar la superposición */
-  margin-bottom: -20rem;
-  /* Puedes usar una unidad relativa si prefieres */
-  /* Por ejemplo: margin-top: -10vh; */
+  z-index: 2;
+  margin-top: -20rem; /* Ajusta este valor según sea necesario */
+  margin-bottom: 2rem; /* Ajusta este valor según sea necesario */
 }
 
 .app-banner {
