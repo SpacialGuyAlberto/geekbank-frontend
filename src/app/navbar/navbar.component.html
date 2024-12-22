@@ -24,7 +24,8 @@
             <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="cart-item-image" />
             <div class="cart-item-details">
               <p>{{ item.giftcard.name }}</p>
-              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.price | currency:'USD' }}</p>
+              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.priceHNL | currency:'HNL' +
+              '' }}</p>
             </div>
           </div>
           <div class="cart-modal-footer">

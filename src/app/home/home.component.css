@@ -98,7 +98,7 @@ body, html {
   position: relative;
   z-index: 2;
   margin-top: -20rem; /* Ajusta este valor según sea necesario */
-  margin-bottom: 2rem; /* Ajusta este valor según sea necesario */
+  margin-bottom: -10rem; /* Ajusta este valor según sea necesario */
 }
 
 .app-banner {
