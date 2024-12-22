@@ -25,7 +25,7 @@
                 <span class="quantity-display">{{ item.cartItem.quantity }}</span>
                 <button (click)="incrementProductQuantity(item)" aria-label="Increase Quantity">+</button>
               </div>
-              <p class="item-price">{{ (item.giftcard.price * exchangeRate) | number:'1.2-2' }} LPS</p>
+              <p class="item-price">{{ (item.giftcard.priceHNL) | number:'1.2-2' }} LPS</p>
             </div>
             <div class="item-actions">
               <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
@@ -36,7 +36,7 @@
         <!-- Sección de Precio Total y Opciones de Pago -->
 
         <div class="total-price-section">
-          <h3>Total Price: {{ getTotalPrice() | number:'1.2-2' }} €</h3>
+          <h3>Total Price: {{ totalHNL | number:'1.2-2' }} HNL</h3>
 
           <!-- Indicador de Carga para la Tasa de Cambio -->
           <div *ngIf="isLoading">
@@ -49,33 +49,47 @@
             <p class="error">{{ conversionError }}</p>
           </div>
 
-          <!-- Mostrar Total en HNL si no hay carga ni error -->
-          <p *ngIf="!isLoading && !conversionError">Total en HNL: {{ (getTotalPrice() * exchangeRate) | number:'1.2-2' }} LPS</p>
-
           <div class="payment-options">
+            <!-- Botón para Tigo Money -->
             <button
               class="payment-option-button"
               (click)="selectOption('TIGO MONEY')"
-              [class.selected]="selectedOption === 'TIGO MONEY'">
-              <!-- Opcional: Agrega un icono para TIGO MONEY si está disponible -->
+              [class.selected]="selectedOption === 'TIGO MONEY'"
+            >
               <i class="fas fa-mobile-alt fa-lg"></i>
               <span>TIGO MONEY</span>
             </button>
+
+            <button
+              class="payment-option-button"
+              (click)="selectOption('BALANCE')"
+              [class.selected]="selectedOption === 'BALANCE'"
+            >
+              <i class="fa-solid fa-dollar-sign"></i>
+              <span>Balance</span>
+            </button>
+
+            <!-- Botón para PayPal -->
             <button
               class="payment-option-button"
               (click)="selectOption('paypal')"
-              [class.selected]="selectedOption === 'paypal'">
+              [class.selected]="selectedOption === 'paypal'"
+            >
               <i class="fab fa-paypal fa-lg"></i>
               <span>PayPal</span>
             </button>
+
+            <!-- Botón para Tarjeta de Crédito -->
             <button
               class="payment-option-button"
               (click)="selectOption('card')"
-              [class.selected]="selectedOption === 'card'">
+              [class.selected]="selectedOption === 'card'"
+            >
               <i class="fas fa-credit-card fa-lg"></i>
               <span>Card</span>
             </button>
           </div>
+
         </div>
       </ng-container>
 
@@ -108,7 +122,10 @@
       </div>
 
       <ng-container>
-        <app-tigo-payment *ngIf="showPaymentModal"></app-tigo-payment>
+        <app-tigo-payment
+          *ngIf="showPaymentModal"
+          [totalAmount]="totalHNL"
+        ></app-tigo-payment>
 
         <div *ngIf="showPayPalButton">
           <app-paypal-button
@@ -116,7 +133,9 @@
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'paypal'"
-            (paymentSuccess)="onPaymentSuccess($event)">
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
+          >
           </app-paypal-button>
         </div>
         <div *ngIf="showCardButton">
@@ -125,7 +144,9 @@
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'card'"
-            (paymentSuccess)="onPaymentSuccess($event)">
+            (paymentSuccess)="onPaymentSuccess($event)"
+            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
+          >
           </app-paypal-button>
         </div>
 
@@ -152,6 +173,17 @@
   <div class="dialog">
     <p>No more items in the cart.</p>
     <button (click)="closeDialog()">OK</button>
+  </div>
+</div>
+
+<div class="modal" *ngIf="showCancelledModal">
+  <div class="modal-content">
+    <span class="close" (click)="showCancelledModal = false">&times;</span>
+    <h3>El producto no está disponible ahora.</h3>
+    <p>Trata de comprarlo en unos minutos con tu número de referencia.</p>
+    <button type="button" class="retry-button" (click)="showCancelledModal = false">
+      <i class="fa-solid fa-arrows-rotate"></i> Cerrar
+    </button>
   </div>
 </div>
 

@@ -57,6 +57,7 @@ export class WishlistComponent implements OnInit {
   }
 
   removeFromWishlist(itemId: number): void {
+    console.log(itemId)
     let element = this.wishedItems.find( item => item.wishedItem.id === itemId);
 
     this.wishListService.removeWishItem(itemId).subscribe(() => {

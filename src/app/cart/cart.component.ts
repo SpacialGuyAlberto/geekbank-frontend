@@ -80,7 +80,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   showCardButton: boolean = false;
   showPayPalButton: boolean = false;
-
+  totalHNL: number = 0;
   isEmailPromptComplete: boolean = false;
   showEmailPrompt: boolean = false;
   wantsEmailKey: boolean = false;
@@ -99,6 +99,9 @@ export class CartComponent implements OnInit, OnDestroy {
   private productId: number | null = null;
   orderDetails?: OrderRequest;
   selectedOption: string | null = null;
+
+  showCancelledModal: boolean = false;
+
 
   constructor(
     private cartService: CartService,
@@ -162,7 +165,9 @@ export class CartComponent implements OnInit, OnDestroy {
         console.log("Loaded cart items: ", this.cartItems);
         this.updateCartItemCount();
         this.calculateTotalPriceEUR();
-        this.totalAmountString = this.totalPriceEUR.toString();
+        this.calculateTotalPriceHNL()
+        let totalAmountEUR = this.totalHNL * 27.5;
+        this.totalAmountString = this.totalHNL.toString();
       });
   }
 
@@ -170,6 +175,12 @@ export class CartComponent implements OnInit, OnDestroy {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
     this.totalPriceEUR = parseFloat(total.toFixed(2));
     this.getExchangeRate();
+  }
+
+  calculateTotalPriceHNL(): void {
+    let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
+    this.totalHNL = parseFloat(total.toFixed(2));
+    console.log('TOTAL HNL:' + this.totalHNL)
   }
 
   selectOption(option: string): void {
@@ -197,10 +208,10 @@ export class CartComponent implements OnInit, OnDestroy {
         products: [{
           kinguinId: this.productId,
           qty: 1,
-          price: this.totalPrice,
+          price: this.totalHNL,
           name: 'Producto'
         }],
-        amount: this.totalPrice,
+        amount: this.totalHNL,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
         gameUserId: this.gameUserId || undefined
@@ -217,10 +228,10 @@ export class CartComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId!,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.price * item.cartItem.quantity), 0),
+          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -254,10 +265,10 @@ export class CartComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.price * item.cartItem.quantity), 0),
+          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -273,7 +284,7 @@ export class CartComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'Balance'
           }],
-          amount: this.totalPrice,
+          amount: this.totalHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           gameUserId: this.gameUserId || undefined
@@ -395,7 +406,7 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   getTotalPrice(): number {
-    return this.totalPriceEUR;
+    return this.totalHNL;
   }
 
   updateCartItemCount(): void {
@@ -535,6 +546,12 @@ export class CartComponent implements OnInit, OnDestroy {
 
     this.cartService.removeAllCartItems();
   }
+
+  handleTransactionCancelled() {
+    // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
+    this.showCancelledModal = true;
+  }
+
 
   protected readonly Number = Number;
 }

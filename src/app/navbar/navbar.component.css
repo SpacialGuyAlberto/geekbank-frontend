@@ -388,6 +388,26 @@ html {
   flex-direction: column; /* Apila el botón y el submenú verticalmente */
   align-items: flex-start; /* Alinea el submenú a la izquierda */
   width: 100%;
+
+  /* Hacerlo scrolleable */
+  max-height: 300px; /* Altura máxima antes de que aparezca el scroll */
+  overflow-y: auto; /* Activa el scroll vertical si es necesario */
+  scrollbar-width: thin; /* Estiliza el scroll en navegadores compatibles */
+  scrollbar-color: #a0e4ff transparent; /* Colores para el scroll */
+}
+
+/* Estilos para el scrollbar en navegadores basados en WebKit */
+.sub-menu::-webkit-scrollbar {
+  width: 8px; /* Ancho del scroll */
+}
+
+.sub-menu::-webkit-scrollbar-thumb {
+  background-color: #a0e4ff; /* Color del "pulgar" del scroll */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+.sub-menu::-webkit-scrollbar-track {
+  background-color: transparent; /* Fondo del track del scroll */
 }
 .menu-link:hover {
   color: #99ccff;

@@ -1,467 +1,355 @@
-/* =======================================
-   Reset Básico y Configuración de Variables CSS
-   ======================================= */
+/* Reset básico y configuración de box-sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* =======================================
-   Variables CSS
-   ======================================= */
-:root {
-  /* Tipografías */
-  --font-primary: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-secondary: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-  /* Colores */
-  --primary-bg-color: #1a2a38; /* Fondo principal oscuro */
-  --secondary-bg-color: #16212e; /* Fondo secundario */
-  --overlay-bg: rgba(0, 0, 0, 0.7); /* Fondo semitransparente oscuro */
-  --text-color: #ffffff; /* Texto claro */
-  --subtext-color: #B0C4DE; /* Texto secundario gris suave */
-  --border-color: #4CAF50; /* Verde para bordes */
-  --accent-blue: #1E90FF; /* Azul brillante */
-  --button-bg: #1E90FF; /* Azul para botones */
-  --button-hover-bg: #1C86EE; /* Azul más oscuro al hover */
-  --success-color: #28a745;
-  --error-color: #ff0000;
-
-  /* Transiciones */
-  --transition-speed: 0.3s;
-
-  /* Otros */
-  --modal-width: 25rem;
-  --modal-max-width: 90%;
+/* Tipografía global */
+body {
+  font-family: 'Roboto', sans-serif; /* Fuente más moderna */
+  background-color: #1e1e1e; /* Fondo ligeramente más claro para mejor contraste */
+  color: #e0e0e0;
+  line-height: 1.6;
 }
 
-/* =======================================
-   Global Styles
-   ======================================= */
-body, html {
-  font-family: var(--font-primary);
-  background-color: var(--primary-bg-color); /* Fondo oscuro */
-  color: var(--text-color); /* Texto claro */
-  overflow-x: hidden;
-  position: relative;
-  height: 100%;
-  width: 100%;
-}
-
-/* Efecto Estrellado de Fondo */
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://www.transparenttextures.com/patterns/stardust.png') repeat;
-  opacity: 0.05;
-  z-index: 0;
-}
-
-/* =======================================
-   Modal Component
-   ======================================= */
+/* Modal Overlay */
 .modal {
   position: fixed;
-  z-index: 1000;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: var(--overlay-bg); /* Fondo semitransparente oscuro */
+  background-color: rgba(18, 18, 18, 0.85); /* Fondo semitransparente más sutil */
   display: flex;
+  align-items: center;
   justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #2b2b2b; /* Fondo más suave */
+  border-radius: 8px; /* Bordes redondeados */
+  width: 90%;
+  max-width: 600px; /* Aumentado para mayor espacio */
+  padding: 30px 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  text-align: left;
+  position: relative;
+  animation: slideIn 0.3s ease;
+}
+
+/* Animación de contenido */
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Botón de cierre */
+.modal-content .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.modal-content .close:hover {
+  color: #f9c74f;
+}
+
+/* Título del modal */
+.modal-content h2 {
+  color: #f9c74f;
+  font-size: 24px;
+  margin-bottom: 25px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Etiquetas */
+.modal-content label {
+  display: block;
+  font-size: 16px;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+  font-weight: 500;
+  text-align: center; /* Opcional: centrar el texto del label */
+}
+
+/* Centrar los elementos dentro de form-group */
+.modal-content .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+  margin-bottom: 20px; /* Espaciado entre grupos */
+}
+
+/* Opcional: Centrar el label */
+.modal-content .form-group label {
+  text-align: center;
+  width: 100%; /* Asegura que el label ocupe todo el ancho */
+  margin-bottom: 10px;
+}
+
+/* Estilo para el input de Número de Referencia */
+.modal-content .form-group .retro-input {
+  width: 80%; /* Aumenta el ancho del input */
+  max-width: 400px; /* Limita el ancho máximo */
+  padding: 14px 18px;
+  background-color: #1c1c1c;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.modal-content .form-group .retro-input:focus {
+  border-color: #f9c74f;
+  box-shadow: 0 0 8px rgba(249, 199, 79, 0.5);
+}
+
+/* Centrar el formulario */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
-.modal-content {
-  background-color: var(--secondary-bg-color); /* Fondo oscuro plano */
-  padding: 2rem;
-  border: 1px solid var(--border-color); /* Borde verde sutil */
-  color: var(--text-color); /* Texto claro */
-  width: var(--modal-width); /* Ancho fijo */
-  max-width: var(--modal-max-width); /* Para pantallas pequeñas */
-  position: relative;
-  border-radius: 0.5rem; /* Bordes redondeados */
-  text-align: center;
-  animation: fadeIn 0.5s ease-in-out;
-  font-family: var(--font-primary);
+/* Estrellas para calificación */
+.modal-content .stars {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
 }
 
-/* Animación Fade In */
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Icono de cerrar */
-.close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  color: var(--text-color); /* Color del icono de cierre */
-  font-size: 1.5rem;
+.modal-content .stars i {
+  font-size: 28px;
+  color: #f9c74f;
   cursor: pointer;
-  transition: color var(--transition-speed) ease;
-  font-family: var(--font-secondary);
+  transition: transform 0.2s, color 0.2s;
 }
 
-.close:hover {
-  color: var(--accent-blue); /* Cambio a azul claro al pasar el cursor */
+.modal-content .stars i:hover,
+.modal-content .stars i.active {
+  transform: scale(1.2);
+  color: #ffc107;
 }
 
-/* Título */
-.modal-content h2 {
-  margin-bottom: 1.5rem;
-  color: var(--accent-blue);
-  font-size: 1.8rem;
-  font-family: var(--font-primary); /* Fuente neutral para el título */
-}
-
-/* Formularios */
-.form-group {
-  margin-bottom: 1.5rem;
-  text-align: left;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: var(--text-color);
-  font-weight: 500;
-  font-family: var(--font-secondary);
-}
-
-.retro-input {
+/* Área de texto profesional */
+.modal-content textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid var(--border-color); /* Borde verde */
-  background-color: rgba(26, 42, 56, 0.8); /* Fondo oscuro translúcido */
-  color: var(--text-color); /* Texto claro */
-  font-size: 1rem;
-  border-radius: 0.25rem;
-  transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-  font-family: var(--font-secondary);
-}
-
-.retro-input:focus {
-  border-color: var(--accent-blue); /* Borde azul claro al enfocar */
-  box-shadow: 0 0 0.5rem var(--accent-blue); /* Sombra azul al enfocar */
+  padding: 14px 18px;
+  background-color: #1c1c1c;
+  color: #e0e0e0;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  resize: vertical;
+  min-height: 120px;
   outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Total Amount */
-.total-amount {
-  font-size: 1.5rem; /* Tamaño ajustado */
-  color: var(--text-color);
-  margin-top: 0.5rem;
-  text-align: center;
-  font-weight: bold;
-  font-family: var(--font-secondary);
+.modal-content textarea:focus {
+  border-color: #f9c74f;
+  box-shadow: 0 0 8px rgba(249, 199, 79, 0.5);
 }
 
-/* =======================================
-   Botones Primarios
-   ======================================= */
-.primary-button {
-  padding: 0.75rem 1.5rem;
+/* Botones */
+.modal-content .button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.modal-content .primary-button,
+.modal-content .cancel-button,
+.modal-content .retry-button,
+.modal-content .option-button {
+  padding: 12px 24px;
+  font-size: 14px;
   border: none;
-  border-radius: 0.25rem;
-  background: #3a8dff;
-  color: #ffffff;
+  border-radius: 4px;
+  text-transform: uppercase;
   cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
-  font-size: 1rem;
-  transition: background 0.3s ease, transform 0.3s ease;
+  transition: background-color 0.3s, transform 0.2s;
+  min-width: 120px;
 }
 
-.dialog button:hover {
-  background: #1e6fd8;
+.modal-content .primary-button {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.modal-content .primary-button:hover {
+  background-color: #218838;
   transform: translateY(-2px);
 }
 
-/* Botones específicos */
-.cancel-button {
-  background: #ff4d4d; /* Rojo para cancelación */
+.modal-content .cancel-button {
+  background-color: #dc3545;
+  color: #fff;
 }
 
-.cancel-button:hover {
-  background: #e60000; /* Rojo más oscuro al hover */
+.modal-content .cancel-button:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
 }
 
-/* Mensajes de Estado */
-.success-message {
-  color: var(--success-color);
-  margin-top: 1rem;
-  font-weight: 500;
-  font-family: var(--font-secondary);
+.modal-content .retry-button {
+  background-color: #17a2b8;
+  color: #fff;
 }
 
+.modal-content .retry-button:hover {
+  background-color: #138496;
+  transform: translateY(-2px);
+}
+
+.modal-content .option-button {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.modal-content .option-button:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Placeholder estilizado */
+.modal-content textarea::placeholder,
+.modal-content .form-group .retro-input::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Mensajes de error y éxito */
 .error-message {
-  color: var(--error-color);
-  margin-top: 1rem;
-  font-weight: 500;
-  font-family: var(--font-secondary);
+  color: #dc3545;
+  font-size: 13px;
+  margin-top: 8px;
 }
-
-/* Confirmación */
-.confirmation {
-  margin-top: 1.5rem;
-  background: rgba(18, 97, 160, 0.4); /* Fondo azul translúcido */
-  padding: 1rem;
-  border-radius: 0.75rem;
-  color: var(--text-color);
-  text-align: center;
-  transition: background var(--transition-speed) ease;
-  font-family: var(--font-secondary);
-}
-
-.confirmation p {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-
-/* src/app/tigo-payment/tigo-payment.component.css */
 
 .success-message {
-  color: green;
-  margin-top: 10px;
-}
-
-.error-message {
-  color: red;
-  margin-top: 10px;
-}
-
-.secondary-button {
-  background-color: #f0ad4e; /* Color de ejemplo */
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-
-.secondary-button:hover {
-  background-color: #ec971f;
-}
-
-/* Otros estilos existentes... */
-
-/* PIN Display */
-.pin-display {
-  background: rgba(76, 175, 80, 0.2); /* Fondo verde translúcido */
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid var(--success-color);
-}
-
-.pin-display p {
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: var(--success-color);
-  font-family: var(--font-secondary);
-}
-
-.pin-display h3 {
-  font-size: 2rem;
-  color: var(--success-color); /* Verde para resaltar el PIN */
-  font-family: var(--font-primary);
+  color: #28a745;
+  font-size: 13px;
+  margin-top: 8px;
 }
 
 /* Spinner */
 .spinner-container {
-  text-align: center;
-  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .spinner {
-  border: 0.25rem solid rgba(255, 255, 255, 0.1);
-  border-left-color: var(--accent-blue);
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #f9c74f;
   border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 50px;
+  height: 50px;
   animation: spin 1s linear infinite;
-  margin: 0 auto 1rem auto;
+  margin-bottom: 15px;
 }
 
-/* Animación de Spinner */
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Estilos para la notificación */
-.notification {
-  padding: 1rem;
-  margin-top: 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  font-family: var(--font-secondary);
+/* Opciones de entrega de clave */
+.email-prompt-modal {
+  padding: 20px;
+}
+
+.email-prompt-content {
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  padding: 25px 30px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+.email-prompt-content h3 {
+  color: #f9c74f;
+  font-size: 20px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
-/* Notificación de éxito */
-.notification.success {
-  background-color: var(--success-color); /* Verde */
-  color: #ffffff; /* Texto blanco */
-  border: 1px solid var(--success-color);
+.email-prompt-content .form-group {
+  margin-bottom: 15px;
 }
 
-/* Notificación de error */
-.notification.error {
-  background-color: var(--error-color); /* Rojo */
-  color: #ffffff; /* Texto blanco */
-  border: 1px solid var(--error-color);
+.email-prompt-content input[type="checkbox"] {
+  margin-right: 10px;
 }
 
-/* Estilos para el párrafo dentro de la notificación */
-.notification p {
-  margin: 0;
-  font-size: 1rem;
-}
-
-/* tigo-payment.component.css */
-
-.option-button {
-  margin: 8px 0;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  border-radius: 4px;
-}
-
-.option-button:hover {
-  background-color: #0056b3;
-}
-
-
-/* =======================================
-   Iconos Material
-   ======================================= */
-.material-symbols-outlined, mat-icon {
-  cursor: pointer;
-  font-size: 1.5rem; /* Tamaño del ícono */
-  color: #FF6666; /* Color rojo suave */
-  transition: color var(--transition-speed) ease, transform var(--transition-speed) ease; /* Transición para color y transformación */
-}
-
-.material-symbols-outlined:hover, mat-icon:hover {
-  color: #FF3333; /* Cambio a un rojo más fuerte en hover */
-  transform: scale(1.1); /* Ligera ampliación al hacer hover */
-}
-
-/* =======================================
-   Responsividad Mejorada
-   ======================================= */
-@media (max-width: 1024px) {
-  .modal-content {
-    width: 80%; /* Reducir el tamaño para pantallas medianas */
-    padding: 1.5rem;
-  }
-
-  .modal-content h2 {
-    font-size: 1.6rem;
-  }
-
-  .primary-button {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-  }
-
-  .confirmation {
-    padding: 0.75rem;
-  }
-
-  .spinner {
-    width: 2rem;
-    height: 2rem;
-    border-width: 0.2rem;
-  }
-
-  .pin-display h3 {
-    font-size: 1.5rem;
-  }
-
-  .pin-display p {
-    font-size: 1rem;
-  }
-}
-
+/* Responsividad */
 @media (max-width: 768px) {
   .modal-content {
-    width: 90%; /* Ajuste adicional para pantallas pequeñas */
-    padding: 1.5rem;
+    padding: 25px 20px;
   }
 
   .modal-content h2 {
-    font-size: 1.6rem;
+    font-size: 20px;
   }
 
-  .primary-button {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
+  .modal-content label,
+  .modal-content textarea,
+  .modal-content input {
+    font-size: 14px;
   }
 
-  .confirmation {
-    padding: 0.75rem;
+  .modal-content .stars i {
+    font-size: 22px;
   }
 
-  .spinner {
-    width: 2rem;
-    height: 2rem;
-    border-width: 0.2rem;
+  .modal-content .button-group {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .pin-display h3 {
-    font-size: 1.5rem;
+  .modal-content .primary-button,
+  .modal-content .cancel-button,
+  .modal-content .retry-button,
+  .modal-content .option-button {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
   }
 
-  .pin-display p {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal-content {
-    width: 95%; /* Ancho adaptado para pantallas muy pequeñas */
-    padding: 1rem;
-  }
-
-  .modal-content h2 {
-    font-size: 1.4rem;
-  }
-
-  .primary-button {
-    font-size: 0.8rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .confirmation {
-    padding: 0.5rem;
-  }
-
-  .spinner {
-    width: 1.8rem;
-    height: 1.8rem;
-    border-width: 0.2rem;
-  }
-
-  .pin-display h3 {
-    font-size: 1.2rem;
-  }
-
-  .pin-display p {
-    font-size: 0.9rem;
+  /* Ajuste para centrar el input en dispositivos móviles */
+  .modal-content .form-group .retro-input {
+    width: 100%;
+    max-width: none;
   }
 }

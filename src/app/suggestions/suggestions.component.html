@@ -17,7 +17,7 @@
         <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image" loading="lazy">
         <div class="gift-card-content">
           <h3 class="gift-card-title">{{ card.name }}</h3>
-          <p class="gift-card-price">{{ card.price | currency:'HNL':'symbol':'1.2-2' }}</p>
+          <p class="gift-card-price">{{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}</p>
         </div>
       </div>
     </div>

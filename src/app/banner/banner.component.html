@@ -3,11 +3,11 @@
   <div class="banner-background" [ngStyle]="{ 'background-image': 'url(' + giftCard.coverImageOriginal + ')' }"></div>
   <div class="banner-content">
     <div class="banner-text">
-      <h1>WHEN DUTY CALLS, LEGENDS ANSWER</h1>
-      <p class="subtext">The combat zone awaits your command</p>
+      <h1>Cuando el deber llama, las leyendas responden.</h1>
+      <p class="subtext">La zona de combate espera por vos</p>
       <p class="game-title">{{ giftCard.name }}</p>
     </div>
-    <button class="call-to-action-button">ANSWER THE CALL</button>
+    <button (click)="viewDetails()" class="call-to-action-button">Responde el llamado.</button>
     <div class="platform-icons">
       <i class="fa-brands fa-steam"></i>
       <i class="fa-brands fa-xbox"></i>

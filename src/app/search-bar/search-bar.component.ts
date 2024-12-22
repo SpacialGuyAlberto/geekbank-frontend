@@ -18,6 +18,8 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() searchResults = new EventEmitter<KinguinGiftCard[]>();
+  @Output() isFreeFireSearch = new EventEmitter<boolean>();
+
   searchQuery: string = '';
 
   private searchSubject = new Subject<string>();
@@ -31,7 +33,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(5000), // Espera 1000ms después del último evento
+      debounceTime(5000), // Espera 5000ms después del último evento
       distinctUntilChanged(),
       switchMap(query => {
         if (query.trim() === '') {
@@ -45,7 +47,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         );
       })
     ).subscribe((data: KinguinGiftCard[]) => {
-      console.log('Resultados de búsqueda:', data);
+      console.log('Resultados de búsqueda (debounced):', data);
 
       const giftCards = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
@@ -70,23 +72,26 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   onSearchEnter(): void {
-    const query = this.searchQuery.trim();
+    const query = this.searchQuery.trim().toLowerCase();
+    const isFreeFire = query.includes('free fire') || query.includes('freefair') || query.includes('free fair');
+    this.isFreeFireSearch.emit(isFreeFire);
+
     if (query === '') {
-      // Emitir resultados vacíos si la consulta está vacía
+      // Si la consulta está vacía, emitir resultados vacíos
       this.searchResults.emit([]);
       this.uiStateService.setShowHighlights(false);
       this.cd.detectChanges();
       return;
     }
 
-    // Cancelar cualquier búsqueda pendiente
+    // Cancelar cualquier búsqueda pendiente y reiniciar la suscripción
     this.searchSubject.complete();
     this.searchSubscription.unsubscribe();
 
-    // Realizar la búsqueda inmediatamente
+    // Realizar la búsqueda inmediata al presionar Enter
     this.kinguinService.searchGiftCards(query).pipe(
       catchError(err => {
-        console.error('Error en la búsqueda de tarjetas:', err);
+        console.error('Error en la búsqueda de tarjetas (Enter):', err);
         return of([] as KinguinGiftCard[]);
       })
     ).subscribe((data: KinguinGiftCard[]) => {
@@ -102,7 +107,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.uiStateService.setShowHighlights(false);
       this.cd.detectChanges();
 
-      // Reiniciar el Subject y la suscripción para futuras búsquedas
+      // Reiniciar el Subject y la suscripción para futuras búsquedas "on the fly"
       this.searchSubject = new Subject<string>();
       this.searchSubscription = this.searchSubject.pipe(
         debounceTime(3000),
@@ -119,7 +124,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
           );
         })
       ).subscribe((res: KinguinGiftCard[]) => {
-        console.log('Resultados de búsqueda:', res);
+        console.log('Resultados de búsqueda (re-subscribed):', res);
 
         const gc = res.map(card => {
           card.coverImageOriginal = card.images.cover?.thumbnail || '';

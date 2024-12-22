@@ -25,6 +25,9 @@ import {user} from "@angular/fire/auth";
 import {loadUser} from "../state/user/user.actions";
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";
 import {CartItemWithGiftcard} from "../models/CartItem";
+import {SearchStateService} from "../search-state.service";
+
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -113,6 +116,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   hideDropdownTimeout: any;
   showCartModal = false;
   cartItems: CartItemWithGiftcard[] = [];
+  isFreeFireSearchActive: boolean = false;
+
 
   private subscriptions: Subscription = new Subscription();
 
@@ -124,7 +129,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public translate: TranslateService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private searchStateService: SearchStateService
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
@@ -351,6 +357,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   onCartLeave(): void {
     this.showCartModal = false;
+  }
+
+  handleFreeFireSearch(isFreeFire: boolean): void {
+    this.searchStateService.setFreeFireSearchState(isFreeFire);
   }
 
   protected readonly user = user;

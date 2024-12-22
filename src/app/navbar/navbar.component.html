@@ -24,7 +24,8 @@
             <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="cart-item-image" />
             <div class="cart-item-details">
               <p>{{ item.giftcard.name }}</p>
-              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.price | currency:'USD' }}</p>
+              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.priceHNL | currency:'HNL' +
+              '' }}</p>
             </div>
           </div>
           <div class="cart-modal-footer">
@@ -125,7 +126,11 @@
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
-    <app-search-bar (searchResults)="[closeSearchModal(), handleSearchResults($event)]"></app-search-bar>
+    <app-search-bar
+      (searchResults)="[closeSearchModal(), handleSearchResults($event)]"
+      (isFreeFireSearch)="handleFreeFireSearch($event)"
+
+    ></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
   </div>
 </div>
@@ -177,10 +182,11 @@
           </button>
           <ul class="submenu" *ngIf="categoriesExpanded">
             <li *ngFor="let category of genres">
-              <a href="#" (click)="selectCategory(category.key); closeMenuModal()">
+              <a [routerLink]="['/filtered', category.key]" (click)="selectCategory(category.key); closeMenuModal()">
                 {{ category.label }}
               </a>
             </li>
+
           </ul>
 
         </li>

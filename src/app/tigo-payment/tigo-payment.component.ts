@@ -39,6 +39,7 @@ import { switchMap } from "rxjs/operators";
   styleUrls: ['./tigo-payment.component.css']
 })
 export class TigoPaymentComponent implements OnInit, OnDestroy {
+
   cartItems = inject(CART_ITEMS, { optional: true }) || [];
   totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
   productId = inject(PRODUCT_ID, { optional: true });
@@ -50,6 +51,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   account: Account | null = null;
   accountId: number = 0;
   paymentReferenceNumber: string = "";
+  insufficientPaymentAmount: string = "";
+  showInsufficientPaymentAmount: boolean = false;
   user: User | null = null;
   @Output() close = new EventEmitter<void>();
 
@@ -112,6 +115,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   showEmailPrompt: boolean = false;
   emailForKey: string = '';
   isEmailPromptComplete: boolean = false;
+  @Input() totalAmount!: number;
 
   constructor(
     private accountService: AccountService,
@@ -165,11 +169,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
       this.transactionStatus = parsedMessage.status;
-      if (this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING') {
-        this.showSpinner = false;
-      } else {
-        this.showSpinner = true;
-      }
+      this.showSpinner = !(this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING'
+        || this.transactionStatus === 'CANCELLED');
     });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
@@ -232,10 +233,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         products: [{
           kinguinId: this.productId,
           qty: 1,
-          price: this.totalPrice,
+          price: this.totalAmount,
           name: 'Producto'
         }],
-        amount: this.totalPrice,
+        amount: this.totalAmount,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey
       };
@@ -253,10 +254,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -294,10 +295,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.price,
+            price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
+          amount: this.cartItems.reduce((total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -318,7 +319,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'Balance'
           }],
-          amount: this.totalPrice,
+          amount: this.totalAmount,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -331,21 +332,41 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const expectedAmount = this.totalPrice * this.exchangeRate;
+    const expectedAmount = this.totalPrice;
 
-    const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
+    const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
+
+
     if (isVerified) {
       orderDetails.refNumber = refNumber;
       this.paymentReferenceNumber = refNumber;
       this.tigoPaymentService.initializePayment(orderDetails);
       this.showSpinner = true;
+      if (this.unmatchedPaymentResponse){
+
+        if (this.unmatchedPaymentResponse.difference === 0){
+          this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
+            this.currentTransaction = transaction;
+            if (this.currentTransaction?.transactionNumber) {
+              // Ir directo a la página de confirmación
+              this.router.navigate(['/purchase-confirmation'], {
+                queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
+              });
+            }
+          });
+        } else if (this.unmatchedPaymentResponse.difference < 0){
+          this.showSpinner = false;
+          this.insufficientPaymentAmount = "El pago ingresado fue insuficiente. Comunicate con nuestro servicio al cliente para efectuar la devolucion de tu pago o compensarlo con otro pago."
+          this.showInsufficientPaymentAmount = true;
+        }
+      }
     }
   }
 
-  async verifyUnmatchedPayment(referenceNumber: string, phoneNumber: string, expectedAmount: number): Promise<boolean> {
+  async verifyUnmatchedPayment(referenceNumber: string, expectedAmount: number): Promise<boolean> {
     try {
       const response = await firstValueFrom(
-        this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, phoneNumber, expectedAmount)
+        this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, expectedAmount)
       );
       this.unmatchedPaymentResponse = response;
       return true;
@@ -532,6 +553,11 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.submitManualVerification();
     }
   }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
+
 
   ngOnDestroy(): void {
     if (this.exchangeRateSubscription) {

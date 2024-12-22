@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from "../environments/environment";
 import { BehaviorSubject, map, Observable } from "rxjs";
 import { KinguinGiftCard } from "./models/KinguinGiftCard";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { WishItemWithGiftcard } from "./models/WishItem";
 
 @Injectable({
@@ -16,40 +16,46 @@ export class WishListService {
 
   constructor(private http: HttpClient) {}
 
-  getWishItem(id: string): Observable<WishItemWithGiftcard>{
+  /**
+   * Obtiene un ítem de la lista de deseos por su ID.
+   */
+  getWishItem(id: string): Observable<WishItemWithGiftcard> {
     return this.http.get<WishItemWithGiftcard>(`${this.baseUrl}/${id}`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
-    })
+      withCredentials: true // Envía cookies de sesión automáticamente
+    });
   }
 
+  /**
+   * Obtiene todos los ítems de la lista de deseos.
+   */
   getWishItems(): Observable<WishItemWithGiftcard[]> {
     return this.http.get<WishItemWithGiftcard[]>(this.baseUrl, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
+      withCredentials: true
     });
   }
 
+  /**
+   * Agrega un ítem a la lista de deseos.
+   */
   addWishItem(productId: number, price: number): Observable<KinguinGiftCard> {
     return this.http.post<KinguinGiftCard>(this.baseUrl, { productId, price }, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
+      withCredentials: true
     });
   }
 
-  removeWishItem(wishItemId: number): Observable<any> {
+  /**
+   * Elimina un ítem de la lista de deseos.
+   */
+  removeWishItem(wishItemId: number | undefined): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${wishItemId}`, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
+      withCredentials: true
     });
   }
 
+  /**
+   * Verifica si un ítem está en la lista de deseos.
+   */
   isItemInWishList(kinguinId: number): Observable<boolean> {
-    console.log('ID IN wishlist SERVICE: ' + kinguinId);
     return this.getWishItems().pipe(
       map(wishItems => {
         return wishItems.some(item => parseInt(String(item.wishedItem.productId)) === kinguinId);
@@ -57,11 +63,12 @@ export class WishListService {
     );
   }
 
+  /**
+   * Elimina todos los ítems de la lista de deseos.
+   */
   removeAllWishItems(): Observable<any> {
     return this.http.delete(this.baseUrl, {
-      headers: new HttpHeaders({
-        'Authorization': `Bearer ${sessionStorage.getItem('token')}`
-      })
+      withCredentials: true
     });
   }
 }
