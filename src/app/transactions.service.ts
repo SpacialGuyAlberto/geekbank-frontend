@@ -118,9 +118,9 @@ export class TransactionsService {
     return this.pendingForApprovalTransactionSubject.asObservable();
   }
 
-  verifyUnmatchedPaymentAmount(referenceNumber: string, phoneNumber: string, expectedAmount: number): Observable<UnmatchedPaymentResponseDto> {
+  verifyUnmatchedPaymentAmount(referenceNumber: string, expectedAmount: number): Observable<UnmatchedPaymentResponseDto> {
     const url = `${this.apiUrl}/verify-unmatched-payment`;
-    const params = { referenceNumber, phoneNumber, expectedAmount: expectedAmount.toString() };
+    const params = { referenceNumber,  expectedAmount: expectedAmount.toString() };
 
     return this.http.get<UnmatchedPaymentResponseDto>(url, { params }).pipe(
       catchError(this.handleError)

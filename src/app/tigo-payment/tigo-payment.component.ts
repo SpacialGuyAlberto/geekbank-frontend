@@ -334,7 +334,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     const expectedAmount = this.totalPrice;
 
-    const isVerified = await this.verifyUnmatchedPayment(refNumber, phoneNumber, expectedAmount);
+    const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
 
 
     if (isVerified) {
@@ -363,10 +363,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  async verifyUnmatchedPayment(referenceNumber: string, phoneNumber: string, expectedAmount: number): Promise<boolean> {
+  async verifyUnmatchedPayment(referenceNumber: string, expectedAmount: number): Promise<boolean> {
     try {
       const response = await firstValueFrom(
-        this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, phoneNumber, expectedAmount)
+        this.transactionService.verifyUnmatchedPaymentAmount(referenceNumber, expectedAmount)
       );
       this.unmatchedPaymentResponse = response;
       return true;
