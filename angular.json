@@ -125,7 +125,6 @@
       }
     }
   },
-  "defaultProject": "geekbank-frontend",
   "cli": {
     "analytics": false
   }
