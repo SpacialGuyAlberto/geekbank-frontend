@@ -1,13 +1,14 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 3,
+  "version": 1,
+  "newProjectRoot": "projects",
   "projects": {
     "geekbank-frontend": {
       "projectType": "application",
+      "schematics": {},
+      "root": "",
       "sourceRoot": "src",
       "prefix": "app",
-       "root": "",
-       "newProjectRoot": "projects",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -31,6 +32,7 @@
               "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [],
+            "serviceWorker": false,
             "inlineStyleLanguage": "scss"
           },
           "configurations": {
@@ -55,7 +57,8 @@
                   "maximumWarning": "2kb",
                   "maximumError": "50kb"
                 }
-              ]
+              ],
+              "outputHashing": "all"
             },
             "development": {
               "optimization": false,
@@ -64,7 +67,6 @@
               "namedChunks": true
             }
           },
-          // The "defaultConfiguration" can be set to "production" or "development".
           "defaultConfiguration": "production"
         },
         "serve": {
@@ -105,6 +107,19 @@
             ],
             "scripts": [],
             "webWorkerTsConfig": "tsconfig.worker.json"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
           }
         }
       }
