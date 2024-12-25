@@ -7,8 +7,8 @@
 
 /* Tipografía global */
 body {
-  font-family: 'Roboto', sans-serif; /* Fuente más moderna */
-  background-color: #1e1e1e; /* Fondo ligeramente más claro para mejor contraste */
+  font-family: 'Roboto', sans-serif;
+  background-color: #1e1e1e;
   color: #e0e0e0;
   line-height: 1.6;
 }
@@ -17,16 +17,17 @@ body {
 .modal {
   position: fixed;
   top: 0;
-  margin-top: 5rem;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(18, 18, 18, 0.85); /* Fondo semitransparente más sutil */
+  background-color: rgba(18, 18, 18, 0.85); /* Fondo semitransparente */
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   animation: fadeIn 0.3s ease;
+  padding: 1rem; /* Espacio adicional alrededor del contenido */
+  overflow: hidden; /* Evita el scroll en todo el modal */
 }
 
 /* Animación de entrada */
@@ -41,15 +42,19 @@ body {
 
 /* Modal Content */
 .modal-content {
-  background-color: #2b2b2b; /* Fondo más suave */
-  border-radius: 8px; /* Bordes redondeados */
+  background-color: #2b2b2b;
+  border-radius: 8px;
   width: 90%;
-  max-width: 600px; /* Aumentado para mayor espacio */
-  padding: 30px 40px;
+  max-width: 600px;
+  padding: 2rem;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
   text-align: left;
   position: relative;
   animation: slideIn 0.3s ease;
+  max-height: 80vh; /* Limitar la altura máxima */
+  overflow-y: auto; /* Hacer el contenido desplazable */
+  display: flex;
+  flex-direction: column;
 }
 
 /* Animación de contenido */
@@ -64,12 +69,38 @@ body {
   }
 }
 
+/* Scrollbar personalizado para modal-content */
+.modal-content::-webkit-scrollbar {
+  width: 0.75rem; /* Ancho de la barra */
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Fondo de la pista */
+  border-radius: 0.625rem; /* Bordes redondeados */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #f9c74f; /* Color del pulgar */
+  border-radius: 0.625rem;
+  border: 0.1875rem solid #1e1e1e; /* Espacio entre pulgar y pista */
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #ffc107; /* Cambio de color al pasar el mouse */
+}
+
+/* Compatibilidad con Firefox */
+.modal-content {
+  scrollbar-width: thin; /* Scrollbar delgada */
+  scrollbar-color: #f9c74f #1e1e1e; /* Pulgar y pista */
+}
+
 /* Botón de cierre */
 .modal-content .close {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  font-size: 24px;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
   color: #e0e0e0;
   cursor: pointer;
   transition: color 0.2s;
@@ -82,60 +113,39 @@ body {
 /* Título del modal */
 .modal-content h2 {
   color: #f9c74f;
-  font-size: 24px;
-  margin-bottom: 25px;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
   text-align: center;
   font-weight: 500;
+}
+
+/* Formulario */
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Etiquetas */
 .modal-content label {
   display: block;
-  font-size: 16px;
+  font-size: 1rem;
   color: #e0e0e0;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
   font-weight: 500;
-  text-align: center; /* Opcional: centrar el texto del label */
-}
-
-/* Centrar los elementos dentro de form-group */
-.modal-content .form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra horizontalmente */
-  margin-bottom: 20px; /* Espaciado entre grupos */
-}
-
-/* Opcional: Centrar el label */
-.modal-content .form-group label {
   text-align: center;
-  width: 100%; /* Asegura que el label ocupe todo el ancho */
-  margin-bottom: 10px;
-}
-.instructions {
-  margin-top: 15px;
-  font-size: 0.9rem;
-  color: #acb1b1;
-  background-color: #1e1e1e;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
 }
 
-.instructions strong {
-  color: #c7eded;
-}
-
-/* Estilo para el input de Número de Referencia */
+/* Inputs */
 .modal-content .form-group .retro-input {
-  width: 80%; /* Aumenta el ancho del input */
-  max-width: 400px; /* Limita el ancho máximo */
-  padding: 14px 18px;
+  width: 80%;
+  max-width: 25rem;
+  padding: 0.875rem;
   background-color: #1c1c1c;
   color: #e0e0e0;
   border: 1px solid #555;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   font-family: 'Roboto', sans-serif;
   outline: none;
   transition: border-color 0.3s, box-shadow 0.3s;
@@ -143,77 +153,27 @@ body {
 
 .modal-content .form-group .retro-input:focus {
   border-color: #f9c74f;
-  box-shadow: 0 0 8px rgba(249, 199, 79, 0.5);
-}
-
-/* Centrar el formulario */
-.modal-content form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-/* Estrellas para calificación */
-.modal-content .stars {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
-}
-
-.modal-content .stars i {
-  font-size: 28px;
-  color: #f9c74f;
-  cursor: pointer;
-  transition: transform 0.2s, color 0.2s;
-}
-
-.modal-content .stars i:hover,
-.modal-content .stars i.active {
-  transform: scale(1.2);
-  color: #ffc107;
-}
-
-/* Área de texto profesional */
-.modal-content textarea {
-  width: 100%;
-  padding: 14px 18px;
-  background-color: #1c1c1c;
-  color: #e0e0e0;
-  border: 1px solid #555;
-  border-radius: 4px;
-  font-size: 16px;
-  font-family: 'Roboto', sans-serif;
-  resize: vertical;
-  min-height: 120px;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.modal-content textarea:focus {
-  border-color: #f9c74f;
-  box-shadow: 0 0 8px rgba(249, 199, 79, 0.5);
+  box-shadow: 0 0 0.5rem rgba(249, 199, 79, 0.5);
 }
 
 /* Botones */
 .modal-content .button-group {
   display: flex;
   justify-content: flex-end;
-  gap: 15px;
-  margin-top: 25px;
+  gap: 1rem;
+  margin-top: 1.5rem;
 }
 
 .modal-content .primary-button,
-.modal-content .cancel-button,
-.modal-content .retry-button,
-.modal-content .option-button {
-  padding: 12px 24px;
-  font-size: 14px;
+.modal-content .cancel-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
   border: none;
   border-radius: 4px;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
-  min-width: 120px;
+  min-width: 7.5rem;
 }
 
 .modal-content .primary-button {
@@ -223,7 +183,7 @@ body {
 
 .modal-content .primary-button:hover {
   background-color: #218838;
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 .modal-content .cancel-button {
@@ -233,27 +193,7 @@ body {
 
 .modal-content .cancel-button:hover {
   background-color: #c82333;
-  transform: translateY(-2px);
-}
-
-.modal-content .retry-button {
-  background-color: #17a2b8;
-  color: #fff;
-}
-
-.modal-content .retry-button:hover {
-  background-color: #138496;
-  transform: translateY(-2px);
-}
-
-.modal-content .option-button {
-  background-color: #6c757d;
-  color: #fff;
-}
-
-.modal-content .option-button:hover {
-  background-color: #5a6268;
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 /* Placeholder estilizado */
@@ -266,85 +206,30 @@ body {
 /* Mensajes de error y éxito */
 .error-message {
   color: #dc3545;
-  font-size: 13px;
-  margin-top: 8px;
+  font-size: 0.8125rem;
+  margin-top: 0.5rem;
 }
 
 .success-message {
   color: #28a745;
-  font-size: 13px;
-  margin-top: 8px;
-}
-
-/* Spinner */
-.spinner-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.spinner {
-  border: 6px solid #f3f3f3;
-  border-top: 6px solid #f9c74f;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 15px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Opciones de entrega de clave */
-.email-prompt-modal {
-  padding: 20px;
-}
-
-.email-prompt-content {
-  background-color: #2b2b2b;
-  border-radius: 8px;
-  padding: 25px 30px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
-}
-
-.email-prompt-content h3 {
-  color: #f9c74f;
-  font-size: 20px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.email-prompt-content .form-group {
-  margin-bottom: 15px;
-}
-
-.email-prompt-content input[type="checkbox"] {
-  margin-right: 10px;
+  font-size: 0.8125rem;
+  margin-top: 0.5rem;
 }
 
 /* Responsividad */
 @media (max-width: 768px) {
   .modal-content {
-    padding: 25px 20px;
+    padding: 1.5rem;
   }
 
   .modal-content h2 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   .modal-content label,
   .modal-content textarea,
   .modal-content input {
-    font-size: 14px;
-  }
-
-  .modal-content .stars i {
-    font-size: 22px;
+    font-size: 0.875rem;
   }
 
   .modal-content .button-group {
@@ -353,17 +238,14 @@ body {
   }
 
   .modal-content .primary-button,
-  .modal-content .cancel-button,
-  .modal-content .retry-button,
-  .modal-content .option-button {
+  .modal-content .cancel-button {
     width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
 
-  /* Ajuste para centrar el input en dispositivos móviles */
   .modal-content .form-group .retro-input {
     width: 100%;
     max-width: none;
   }
 }
+
