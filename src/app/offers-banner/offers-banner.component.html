@@ -6,9 +6,8 @@
       <div class="offer-image-container">
         <img [src]="offer.imageUrl" [alt]="offer.title" loading="lazy">
       </div>
-      <button class="offer-button">Ver ofertas</button>
+      <button class="offer-button" (click)="navigateTo(offer.link)">Ver ofertas</button>
     </div>
-
   </div>
 </div>
 

@@ -1,6 +1,7 @@
 // src/app/offers-banner/offers-banner.component.ts
 import { Component, OnInit } from '@angular/core';
 import {NgForOf} from "@angular/common";
+import {Router} from "@angular/router";
 
 interface Offer {
   imageUrl: string;
@@ -23,7 +24,7 @@ export class OffersBannerComponent implements OnInit {
     {
       imageUrl: 'https://images.g2a.com/300x400/1x1x1/garena-free-fire-100-10-diamond-key-global-i10000218624005/5f6090f97e696c046b0ffe22',
       title: 'Garena Free Fire',
-      link: '#'
+      link: '/free-fire-details'
     },
     {
       imageUrl: 'https://i.pinimg.com/474x/87/91/63/879163b9179cee01973ff32fb6906c66.jpg',
@@ -42,9 +43,15 @@ export class OffersBannerComponent implements OnInit {
     }
   ];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  navigateTo(link: string): void {
+    if (link && link !== '#') {
+      this.router.navigateByUrl(link);
+    }
   }
 
 }
