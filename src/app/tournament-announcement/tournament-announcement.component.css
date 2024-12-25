@@ -386,8 +386,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
-    width: 100%;
+    width: 110%;
     justify-items: center;
+    margin-left: 5rem;
   }
 
   .offer img {
@@ -421,7 +422,6 @@
     font-size: 1rem;
     margin-bottom: -5rem;
     margin-left: 5rem;
-    margin-right: 5rem;
   }
 
   .main-offer {
