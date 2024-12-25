@@ -36,7 +36,7 @@
           [class.selected]="selectedOption?.productId === product.productId"
           (click)="selectOption(product)"
         >
-          {{ extractDiamonds(product.name) }} - {{ product.price | currency: 'HNL. ' }}
+          {{ extractDiamonds(product.name) }} - {{ product.price + (product.price * 0.10) | currency: 'HNL. ' }}
         </button>
       </div>
     </div>
