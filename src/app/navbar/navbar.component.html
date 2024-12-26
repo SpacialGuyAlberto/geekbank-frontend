@@ -63,7 +63,6 @@
       (click)="openSearchModal()"
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
-    <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
     <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
     <div class="navbar-hamburger" *ngIf="isSmallScreen">
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
@@ -145,6 +144,9 @@
             <i class="fa-solid fa-user clickable-icon"></i>
             User Details
           </a>
+        </li>
+        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
+          <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
         </li>
         <li [ngClass]="userMenu" *ngIf="isSmallScreen && inUserDetailsRoute">
           <button (click)="toggleUserTabs()" [attr.aria-expanded]="tabsExpanded">
