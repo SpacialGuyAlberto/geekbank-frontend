@@ -20,6 +20,7 @@ import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTIO
 import { OrderRequest } from "../models/order-request.model";
 import {GuestService} from "../guest.service";
 import {User} from "../models/User";
+import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
 
 
 @Component({
@@ -555,6 +556,13 @@ export class CartComponent implements OnInit, OnDestroy {
   handleTransactionCancelled() {
     // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
     this.showCancelledModal = true;
+  }
+
+  openTerms(): void {
+    this.dialog.open(TermsAndConditionsComponent, {
+      width: '600px', // Puedes ajustar el tamaño según tus necesidades
+      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+    });
   }
 
 

@@ -1,0 +1,13 @@
+.terms-container {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+mat-dialog-content {
+  padding: 0;
+}
+
