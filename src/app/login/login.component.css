@@ -179,6 +179,7 @@ button:focus {
   justify-content: center;
   align-items: center;
   transition: all 0.3s ease;
+  z-index: 3;
 }
 
 #google-signin-button:hover {

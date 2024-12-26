@@ -1,14 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
-import {NgClass} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
+import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
+import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
   selector: 'app-footer',
   standalone: true,
   imports: [
-    NgClass
+    NgClass,
+    NgIf,
+    TermsAndConditionsComponent
   ],
   templateUrl: './footer.component.html',
   styleUrl: './footer.component.css'
@@ -22,9 +26,9 @@ export class FooterComponent implements OnInit, OnDestroy{
   paymentClass: string = '';
   newsletter: string = '';
   routerSubscription!: Subscription;
+  termsAndConditions: boolean = false;
 
-
-  constructor(private router: Router){}
+  constructor(private router: Router, private dialog: MatDialog){}
 
   ngOnInit(): void {
     this.routerSubscription = this.router.events.subscribe( event => {
@@ -68,10 +72,19 @@ export class FooterComponent implements OnInit, OnDestroy{
     }
   }
 
+  openTerms(): void {
+    this.dialog.open(TermsAndConditionsComponent, {
+      width: '600px', // Puedes ajustar el tamaño según tus necesidades
+      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+    });
+  }
+
+
   ngOnDestroy(): void {
     // Desuscribirse para evitar fugas de memoria
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
   }
+
 }

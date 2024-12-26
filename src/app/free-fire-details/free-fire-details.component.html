@@ -36,7 +36,7 @@
           [class.selected]="selectedOption?.productId === product.productId"
           (click)="selectOption(product)"
         >
-          {{ extractDiamonds(product.name) }} - {{ product.price | currency: 'HNL. ' }}
+          {{ extractDiamonds(product.name) }} - {{ product.price + (product.price * 0.10) | currency: 'HNL. ' }}
         </button>
       </div>
     </div>
@@ -64,9 +64,6 @@
     </div>
 
     <div class="button-container">
-      <button class="btn add-to-cart">
-        <i class="material-icons">add_shopping_cart</i> Añadir al Carrito
-      </button>
       <button class="btn buy-now" (click)="openPaymentModal()" [disabled]="gamerUserIdError">
         <i class="material-icons">shopping_bag</i> Comprar Ahora
       </button>

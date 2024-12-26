@@ -69,6 +69,7 @@ export class AuthService {
         this.userId = response.userId;
         this.loggedIn.next(true);
         sessionStorage.setItem('userId', this.userId);
+        localStorage.setItem('userId', this.userId);
       })
     );
   }
@@ -131,9 +132,11 @@ export class AuthService {
       this.loggedIn.next(false);
       this.authenticated = false;
       sessionStorage.clear();
+      localStorage.clear();
           if (this.isBrowser()) {
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('userId');
+            localStorage.removeItem('userId');
           }
       this.router.navigate(['/login']);
     });
@@ -163,8 +166,6 @@ export class AuthService {
       );
     }
   }
-
-
 
   isBrowser(): boolean {
     return typeof window !== 'undefined';
@@ -222,7 +223,13 @@ export class AuthService {
     const token = response.credential;
     this.googleLogin(token).subscribe(
       (data: any) => {
-        sessionStorage.setItem('token', data.token);
+        // Ya no es necesario almacenar el token en sessionStorage
+        // La cookie 'jwtToken' ya está establecida por el backend
+
+        // Opcional: Almacenar el userId en sessionStorage o localStorage si es necesario
+        sessionStorage.setItem('userId', data.userId);
+
+        this.loggedIn.next(true);
         this.router.navigate(['/home']).then(() => {
           window.location.reload();  // Recargar la página después de la navegación
         });
@@ -233,10 +240,10 @@ export class AuthService {
     );
   }
 
-  googleLogin(token: string): Observable<any> {
-    return this.http.post<{ token: string }>(`${this.baseUrl}/google-login`, { token });
-  }
 
+  googleLogin(token: string): Observable<any> {
+    return this.http.post<{ userId: string }>(`${this.baseUrl}/google-login`, { token }, { withCredentials: true });
+  }
 
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${this.baseUrl2}/${userId}`, {

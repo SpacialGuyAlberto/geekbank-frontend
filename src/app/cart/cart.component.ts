@@ -20,6 +20,7 @@ import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTIO
 import { OrderRequest } from "../models/order-request.model";
 import {GuestService} from "../guest.service";
 import {User} from "../models/User";
+import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
 
 
 @Component({
@@ -77,6 +78,8 @@ export class CartComponent implements OnInit, OnDestroy {
   user: User | null = null;
   showPaypalPaymentModal: boolean = false;
   totalAmountString: string | null = '';
+  totalAmountUSD: number | null = 0;
+  totalAmountUSDString: string | null = '';
   private destroy$ = new Subject<void>();
   showCardButton: boolean = false;
   showPayPalButton: boolean = false;
@@ -167,6 +170,9 @@ export class CartComponent implements OnInit, OnDestroy {
         this.calculateTotalPriceEUR();
         this.calculateTotalPriceHNL()
         let totalAmountEUR = this.totalHNL * 27.5;
+        this.totalAmountUSD = parseFloat((this.totalHNL / 26).toFixed(2));
+        this.totalAmountUSDString = this.totalAmountUSD.toString();
+        console.log('TOTAL AMOUNT STRING: ' + this.totalAmountUSDString)
         this.totalAmountString = this.totalHNL.toString();
       });
   }
@@ -550,6 +556,13 @@ export class CartComponent implements OnInit, OnDestroy {
   handleTransactionCancelled() {
     // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
     this.showCancelledModal = true;
+  }
+
+  openTerms(): void {
+    this.dialog.open(TermsAndConditionsComponent, {
+      width: '600px', // Puedes ajustar el tamaño según tus necesidades
+      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+    });
   }
 
 

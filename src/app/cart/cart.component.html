@@ -129,7 +129,7 @@
 
         <div *ngIf="showPayPalButton">
           <app-paypal-button
-            [amount]="totalAmountString"
+            [amount]="totalAmountUSDString"
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'paypal'"
@@ -140,7 +140,7 @@
         </div>
         <div *ngIf="showCardButton">
           <app-paypal-button
-            [amount]="totalAmountString"
+            [amount]="totalAmountUSDString"
             [onSubmitOrder]="submitOrder"
             [orderDetails]="orderDetails"
             [paymentSource]="'card'"
@@ -154,9 +154,7 @@
       <!-- Texto de Aceptación de Términos y Condiciones -->
       <p class="terms-text">
         Al hacer clic en "Continuar con el pago" reconozco que he leído y aceptado los
-        <a href="https://astralis.com/terminos-y-condiciones" target="_blank">Términos y Condiciones</a>
-        de Astralis.com y la
-        <a href="https://astralis.com/politica-de-privacidad" target="_blank">Política de Privacidad</a> de Astralis.com.
+        <li (click)="openTerms()" sytel="cursor: pointer;"><a target="_blank">Terminos y condiciones de Astralisbank.com</a></li>
       </p>
     </div>
   </div>

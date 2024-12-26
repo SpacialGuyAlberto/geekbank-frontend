@@ -12,7 +12,10 @@
         <h2>Useful Links</h2>
         <ul>
           <li><a href="/acerca-de">About us</a></li>
-          <li><a href="/terminos">Terms and conditions</a></li>
+          <li (click)="openTerms()" sytel="cursor: pointer;"><a >Terms and conditions</a></li>
+          <div *ngIf="termsAndConditions">
+            <app-terms-and-conditions *ngIf="termsAndConditions"></app-terms-and-conditions>
+          </div>
           <li><a href="/privacidad">Privacy Policy</a></li>
           <li><a href="/faq">FAQ</a></li>
         </ul>

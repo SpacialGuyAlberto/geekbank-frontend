@@ -1,48 +1,54 @@
 /* Importación de fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Variables de Color */
+/* Variables de Color Actualizadas */
 :root {
-  --primary-bg-color: #0f2027; /* Azul oscuro espacial */
-  --secondary-bg-color: #203a43; /* Azul medio oscuro */
-  --tertiary-bg-color: #2c5364; /* Azul grisáceo */
+  --dark-bg: #1a1a1a; /* Fondo oscuro principal */
+  --medium-dark-bg: #333333; /* Fondo medio oscuro */
+  --lighter-bg-color: #444444; /* Fondo más claro */
   --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */
-  --text-color: #f7f7f7; /* Color de texto claro */
-  --accent-pink: #FF6EC7; /* Rosa psicodélico */
-  --accent-green: #A7F432; /* Verde neón */
-  --accent-red: #FF4C4C; /* Rojo para eliminar */
-  --accent-yellow: #F4D35E; /* Amarillo vibrante */
-  --accent-blue: #7873f5; /* Azul vibrante */
-  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado para botones */
-  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
+  --text-color: #ffffff; /* Texto blanco */
+  --accent-color: #FF8C00; /* Naranja de acento */
+  --success-color: #28a745; /* Verde de éxito */
+  --accent-hover: #FFA500; /* Naranja más claro para hover */
+
+  /* Reemplazos específicos */
+  --accent-green: var(--success-color); /* Usar el verde de éxito */
+  --accent-pink: var(--accent-color); /* Usar el naranja de acento en lugar de rosa */
+  --accent-red: #FF4500; /* Rojo de acento más consistente */
+  --accent-yellow: #FFD700; /* Amarillo vibrante ajustado */
+  --accent-blue: #1E90FF; /* Azul vibrante ajustado */
+
+  /* Actualización de gradientes para botones */
+  --button-gradient: linear-gradient(45deg, var(--accent-color), #555555); /* Naranja y gris */
+  --button-gradient-hover: linear-gradient(45deg, #555555, var(--accent-color)); /* Invertido */
 }
 
 /* Estilos Generales del Contenedor */
 .payment-methods-container {
   padding: 2rem;
-  /* Degradado oscuro espacial */
   background-size: cover;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: var(--text-color); /* Texto claro para buen contraste */
+  background: linear-gradient(135deg, var(--dark-bg), var(--medium-dark-bg), var(--lighter-bg-color));
+  color: var(--text-color);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height: 100vh;
-  overflow-y: auto; /* Hacer el contenedor scrollable */
+  overflow-y: auto;
 }
 
 /* Títulos */
 .payment-methods-container h2 {
-  color: var(--accent-yellow); /* Amarillo para el título principal */
+  color: var(--accent-color);
   text-align: center;
   margin-bottom: 2rem;
   font-size: 2.5rem;
-  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5); /* Sombra en el texto */
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
 }
 
 .payment-methods-container h3 {
-  color: var(--accent-pink); /* Rosa para subtítulos */
+  color: var(--accent-color);
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4); /* Sombra en el texto */
+  text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Métodos de Pago Actuales y Añadir Nuevo Método */
@@ -53,56 +59,56 @@
 
 /* Elemento Individual de Método de Pago */
 .payment-method-item {
-  background: var(--glass-bg-color); /* Fondo translúcido */
+  background: var(--glass-bg-color);
   padding: 1.5rem;
   border-radius: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.18);
   margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  backdrop-filter: blur(10px);
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
 
 .payment-method-item:hover {
-  transform: scale(1.02); /* Efecto de agrandamiento */
-  background: rgba(255, 255, 255, 0.05); /* Cambio sutil de fondo al hacer hover */
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6); /* Aumento de sombra */
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Icono del Método de Pago */
 .payment-method-item i.payment-icon {
   font-size: 2.5rem;
   margin-right: 1.5rem;
-  color: var(--accent-pink); /* Color icónico */
+  color: var(--accent-color);
 }
 
 /* Detalles del Método de Pago */
 .payment-details p {
   margin: 5px 0;
-  flex-grow: 1; /* Ocupa el máximo espacio disponible */
+  flex-grow: 1;
   font-size: 1.1rem;
-  color: #fff;
+  color: var(--text-color);
 }
 
 /* Botones de Acción */
 .action-buttons {
   display: flex;
   gap: 0.5rem;
-  margin-left: auto; /* Empuja los botones al final */
+  margin-left: auto;
 }
 
 /* Estilos para los botones de iconos */
 .action-buttons button {
-  background: var(--button-gradient); /* Degradado psicodélico */
+  background: var(--button-gradient);
   border: none;
   color: #fff;
-  padding: 0.4rem; /* Reducido para iconos más pequeños */
+  padding: 0.4rem;
   border-radius: 50%;
-  backdrop-filter: blur(5px); /* Efecto vidrioso */
-  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
-  font-size: 0.9rem; /* Más pequeño */
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+  font-size: 0.9rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
   display: flex;
@@ -111,30 +117,30 @@
 }
 
 .action-buttons button:hover {
-  background: var(--button-gradient-hover); /* Degradado invertido en hover */
-  transform: scale(1.1); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  background: var(--button-gradient-hover);
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
 }
 
 .action-buttons button i {
-  font-size: 1rem; /* Iconos más pequeños */
+  font-size: 1rem;
 }
 
 /* Diferenciación de botones de Editar y Eliminar */
 .action-buttons .edit-btn {
-  background: var(--accent-green); /* Verde para editar */
+  background: var(--accent-green);
 }
 
 .action-buttons .edit-btn:hover {
-  background: #A7F432; /* Verde neón más claro en hover */
+  background: var(--success-color);
 }
 
 .action-buttons .delete-btn {
-  background: var(--accent-red); /* Rojo para eliminar */
+  background: var(--accent-red);
 }
 
 .action-buttons .delete-btn:hover {
-  background: #FF6C6C; /* Rojo más claro en hover */
+  background: #FF6347; /* Rojo más claro en hover */
 }
 
 /* Añadir Nuevo Método de Pago */
@@ -148,7 +154,7 @@
 }
 
 .add-payment-method label {
-  color: var(--accent-pink);
+  color: var(--accent-color);
   margin-bottom: 0.5rem;
   font-weight: bold;
   display: block;
@@ -161,8 +167,8 @@
   padding: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.5); /* Fondo de input translúcido */
-  color: #fff;
+  background: rgba(52, 52, 52, 0.5); /* Ajustado para un fondo translúcido más oscuro */
+  color: var(--text-color);
   transition: background-color 0.3s ease, border-color 0.3s ease;
   font-size: 1rem;
 }
@@ -170,28 +176,28 @@
 .add-payment-method input[type="text"]:focus,
 .add-payment-method input[type="email"]:focus,
 .add-payment-method select:focus {
-  background: rgba(36, 59, 83, 0.7); /* Fondo más oscuro al enfocar */
-  border-color: var(--accent-pink); /* Borde cambia a rosa al enfocar */
+  background: rgba(52, 52, 52, 0.7);
+  border-color: var(--accent-color);
   outline: none;
 }
 
 .btn-submit {
-  background: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado psicodélico */
+  background: var(--button-gradient);
   border: none;
   color: #fff;
   padding: 0.75rem 1.5rem;
   border-radius: 2rem;
-  backdrop-filter: blur(5px); /* Efecto vidrioso */
-  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
   font-size: 1.1rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
 .btn-submit:hover {
-  background: var(--button-gradient-hover); /* Degradado invertido en hover */
-  transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  background: var(--button-gradient-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6);
 }
 
 /* Estilos Específicos para los Íconos de los Métodos de Pago */
@@ -242,7 +248,7 @@
 
   .action-buttons {
     margin-top: 1rem;
-    margin-left: 0; /* Eliminar margin-left: auto; */
+    margin-left: 0;
   }
 
   .payment-details p {
@@ -312,4 +318,19 @@
   .payment-details p {
     font-size: 0.95rem;
   }
+}
+
+/* Íconos (Material Icons) */
+.material-symbols-outlined,
+mat-icon {
+  cursor: pointer;
+  font-size: 1.5rem;
+  color: var(--accent-color);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.material-symbols-outlined:hover,
+mat-icon:hover {
+  color: var(--accent-hover);
+  transform: scale(1.1);
 }
