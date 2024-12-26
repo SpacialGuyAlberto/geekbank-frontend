@@ -69,6 +69,7 @@ export class AuthService {
         this.userId = response.userId;
         this.loggedIn.next(true);
         sessionStorage.setItem('userId', this.userId);
+        localStorage.setItem('userId', this.userId);
       })
     );
   }
@@ -131,9 +132,11 @@ export class AuthService {
       this.loggedIn.next(false);
       this.authenticated = false;
       sessionStorage.clear();
+      localStorage.clear();
           if (this.isBrowser()) {
             sessionStorage.removeItem('token');
             sessionStorage.removeItem('userId');
+            localStorage.removeItem('userId');
           }
       this.router.navigate(['/login']);
     });
@@ -163,8 +166,6 @@ export class AuthService {
       );
     }
   }
-
-
 
   isBrowser(): boolean {
     return typeof window !== 'undefined';

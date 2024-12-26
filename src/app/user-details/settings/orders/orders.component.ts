@@ -43,7 +43,7 @@ export class OrdersComponent implements OnInit {
     email: '',
     name: '',
     phoneNumber: '',
-    id: parseInt(<string>sessionStorage.getItem("userId")),
+    id: parseInt(<string>sessionStorage.getItem("userId")) | parseInt(<string>localStorage.getItem("userId")),
     role: ''
   };
 
@@ -69,6 +69,7 @@ export class OrdersComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     try {
+      console.log('USER ID IN TRANSACTIONS  : ' + this.user.id)
       const data = await firstValueFrom(this.transactionService.getTransactionsById(this.user.id));
 
       if (!data || !Array.isArray(data)) {
