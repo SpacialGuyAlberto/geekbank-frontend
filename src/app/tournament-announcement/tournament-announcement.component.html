@@ -1,6 +1,19 @@
 <div class="tournament-container">
   <div class="banner">
-    <img src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg" alt="Tournament Banner" class="banner-img">
+<!--    <img src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg" alt="Tournament Banner" class="banner-img">-->
+    <picture>
+      <!-- Para pantallas hasta 768px, usa la imagen vertical -->
+      <source
+        media="(max-width: 768px)"
+        srcset="assets/colliseum-vertical.webp"
+      />
+      <!-- Imagen por defecto (pantallas grandes) -->
+      <img
+        src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg" alt="Tournament Banner" class="banner-img"
+        alt="Tournament Banner"
+        class="banner-img"
+      />
+    </picture>
     <div class="offers-over-banner">
       <!-- Sección de Ofertas Pequeñas y Textos -->
       <div class="other-offers-container">
@@ -55,10 +68,9 @@
           <h2 class="tournament-title">Gran Torneo de Call of Duty: Mobile</h2>
           <!-- Información de stock -->
           <p class="stock-info">Quedan {{ itemsLeft }} - Vendido {{ totalSold }}</p>
-          <!-- Barra de progreso -->
-<!--          <div class="progress-bar-container">-->
-<!--            <div class="progress-bar" [ngStyle]="{'width': (totalSold / totalStock * 100) + '%'}"></div>-->
-<!--          </div>-->
+          <div class="progress-bar-container">
+            <div class="progress-bar" [ngStyle]="{'width': (totalSold / totalStock * 100) + '%'}"></div>
+          </div>
           <!-- Botones de acción -->
           <div class="buttons-container">
             <button class="buy-button">Únete</button>
