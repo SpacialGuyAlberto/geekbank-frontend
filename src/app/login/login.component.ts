@@ -15,6 +15,8 @@ import { AppState } from '../app.state';
 import { login } from '../state/auth/auth.actions';
 import { selectIsAuthenticated } from '../state/auth/auth.selectors';
 import {FormsModule} from "@angular/forms";
+import {AuthService} from "../auth.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-login',
@@ -49,7 +51,10 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('emailInput') emailInput!: ElementRef;
   @ViewChild('passwordInput') passwordInput!: ElementRef;
 
-  constructor(private router: Router, private store: Store<AppState>) {
+  constructor(private router: Router,
+              private store: Store<AppState>,
+              private authService: AuthService
+              ) {
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
     // this.authError$ = this.store.select(selectAuthError);
   }
@@ -64,15 +69,13 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
-    // Suscribirse a errores de autenticación
-    // this.subscriptions.add(
-    //   this.authError$.subscribe((error) => {
-    //     if (error) {
-    //       this.message = 'Login failed. Please check your credentials.';
-    //       this.messageClass = 'error-message';
-    //     }
-    //   })
-    // );
+    this.authService.loadGoogleScript()
+      .then(() => {
+        this.authService.initializeGoogleSignIn();
+      })
+      .catch((error) => {
+        console.error("Error cargando el script de google", error)
+      })
   }
 
   ngAfterViewInit(): void {
@@ -166,4 +169,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     this.passwordValid = this.password.length >= 6;
     return this.passwordValid;
   }
+
+
 }
