@@ -113,4 +113,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --highlight-color-3: #5dade2; /* Azul neón */
   --highlight-color-4: #f4d03f; /* Amarillo neón */
 
+  --dark-bg: #1f1f1f;         /* Fondo principal oscuro */
+  --medium-dark-bg: #262626;  /* Fondo secundario (lateral, secciones) */
+  --lighter-bg-color: #2d2d2d;/* Para inputs u otras áreas más claras */
+
+  /* Texto */
+  --text-color: #ffffff;      /* Texto principal en blanco */
+  --text-subtle: #bcbcbc;     /* Texto secundario/placeholder */
+
+  /* Acentos */
+  --accent-color: #ff8c00;    /* Naranja de acento */
+  --accent-hover: #ff9800;    /* Naranja más claro para hover */
+
+  /* Estados */
+  --error-color: #ff4545;     /* Rojo para errores */
+  --success-color: #4caf50;   /* Verde para éxitos */
+
+  /* Bordes Inputs */
+  --input-border-color: #3a3a3a;
+  --input-border-focus: #ff8c00;
+
 }

@@ -3,56 +3,57 @@
 /* Importación de fuentes */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
-/* Variables de Color */
-:root {
-  --primary-bg-color: #0f2027; /* Azul oscuro espacial */
-  --secondary-bg-color: #203a43; /* Azul medio oscuro */
-  --tertiary-bg-color: #2c5364; /* Azul grisáceo */
-  --glass-bg-color: rgba(255, 255, 255, 0.1); /* Fondo vidrioso */
-  --text-color: #E1E6F1; /* Color de texto claro */
-  --accent-pink: #FF6EC7; /* Rosa psicodélico */
-  --accent-green: #A7F432; /* Verde neón */
-  --accent-red: #FF4C4C; /* Rojo para eliminar */
-  --accent-yellow: #F4D35E; /* Amarillo vibrante */
-  --accent-blue: #7873f5; /* Azul vibrante */
-  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado para botones */
-  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido para hover */
-}
+/*
+   =============================================
+   1. ESTILOS GENERALES / CONTENEDOR PRINCIPAL
+   =============================================
+*/
 
-/* Estilos Generales del Dashboard de Transacciones */
 .transactions-container {
   padding: 1rem;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  /* Sustituimos el degradado azul por uno oscuro o un color fijo */
+  background: linear-gradient(135deg, var(--dark-bg) 0%, var(--medium-dark-bg) 100%);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  color: var(--text-color); /* Texto claro para buen contraste */
+  color: var(--text-color);
   font-family: 'Roboto', sans-serif;
   min-height: 100vh;
-  overflow-y: auto; /* Permitir desplazamiento */
+  overflow-y: auto; /* Permitir desplazamiento vertical */
 }
 
-/* Títulos */
+/*
+   =============================================
+   2. TÍTULOS
+   =============================================
+*/
 .section-title {
   font-size: 2.4rem;
   margin-bottom: 2rem;
   text-align: center;
-  color: var(--accent-yellow); /* Amarillo vibrante */
-  text-shadow: 0 0 10px rgba(255, 211, 94, 0.7); /* Sombra de texto brillante */
+  /* Sustituimos el “amarillo vibrante” por el naranja de acento */
+  color: var(--accent-color);
+  /* Sombra suave en naranja (opcional) */
+  text-shadow: 0 0 8px rgba(255, 140, 0, 0.7);
 }
 
-/* Filtros */
+/*
+   =============================================
+   3. FILTROS / FORMULARIO DE BÚSQUEDA
+   =============================================
+*/
 .filters {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 2rem;
   justify-content: center;
-  background: var(--glass-bg-color); /* Fondo translúcido */
+  /* Fondo oscuro translúcido en vez de “glass” azul */
+  background: rgba(0, 0, 0, 0.3);
   padding: 1rem;
   border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37); /* Sombra profunda */
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
 .filters input,
@@ -61,21 +62,22 @@
   padding: 0.75rem 1rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.5); /* Fondo de inputs translúcido */
-  color: #fff;
+  background: var(--lighter-bg-color);
+  color: var(--text-color);
   font-size: 1rem;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .filters input:focus,
 .filters select:focus {
-  background: rgba(36, 59, 83, 0.7);
-  border-color: var(--accent-pink);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--accent-color);
   outline: none;
 }
 
+/* Botón de filtros: usamos nuestro color de acento */
 .filters button {
-  background: var(--button-gradient); /* Degradado psicodélico */
+  background: var(--accent-color);
   border: none;
   cursor: pointer;
   color: #fff;
@@ -86,16 +88,20 @@
 }
 
 .filters button:hover {
-  background: var(--button-gradient-hover); /* Degradado invertido en hover */
-  transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
 }
 
 .filters button i {
   font-size: 1.2rem;
 }
 
-/* Tabla de Transacciones */
+/*
+   =============================================
+   4. TABLA DE TRANSACCIONES
+   =============================================
+*/
 .transaction-table {
   display: flex;
   flex-direction: column;
@@ -109,35 +115,44 @@
   align-items: center;
   padding: 1rem;
   border-radius: 0.5rem;
-  background: var(--glass-bg-color); /* Fondo translúcido */
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Sombra */
+  /* Fondo oscuro translúcido */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   color: #fff;
   transition: background-color 0.3s ease;
 }
 
 .transaction-header {
   font-weight: bold;
-  color: var(--accent-yellow); /* Amarillo vibrante */
+  /* Se podría usar el color de acento o uno diferente
+     Si prefieres diferenciar encabezados en naranja:
+     color: var(--accent-color);
+  */
+  color: var(--accent-hover);
   border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .transaction-row {
-  background: var(--glass-bg-color);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .transaction-row:hover {
-  background: rgba(255, 255, 255, 0.05); /* Cambio sutil de fondo al hacer hover */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Aumento de sombra */
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .transaction-row span {
-  flex: 1 1 100px; /* Flexibilidad para adaptarse a diferentes tamaños */
+  flex: 1 1 100px;
   padding: 0.5rem;
   word-break: break-word;
 }
 
-/* Contenedor de Productos */
+/*
+   =============================================
+   5. PRODUCTOS DENTRO DE UNA TRANSACCIÓN
+   =============================================
+*/
 .products-container {
   display: flex;
   flex-wrap: wrap;
@@ -149,7 +164,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px; /* Mantener medida actual */
+  width: 80px;
 }
 
 .product-image {
@@ -163,24 +178,29 @@
 .product-name {
   font-size: 0.8rem;
   text-align: center;
-  color: #555;
+  color: #ccc;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 80px;
 }
 
-/* Estado de la Transacción */
+/*
+   =============================================
+   6. ESTADO DE LA TRANSACCIÓN
+   (Mantenemos los colores para PENDING, COMPLETED, etc.)
+   =============================================
+*/
 .transaction-status {
-  padding: 0.4rem 1rem; /* Reducir padding para tamaños móviles */
-  border-radius: 0.5rem; /* Reducir border-radius para un aspecto menos redondo */
+  padding: 0.4rem 1rem;
+  border-radius: 0.5rem;
   border: 0.1rem solid;
   text-align: center;
   font-weight: bold;
   display: inline-block;
-  min-width: 6rem; /* Reducir min-width */
+  min-width: 6rem;
   color: #fff;
-  font-size: 0.9rem; /* Reducir tamaño de fuente */
+  font-size: 0.9rem;
 }
 
 .transaction-status.PENDING {
@@ -207,7 +227,11 @@
   border-color: #f44336;
 }
 
-/* Paginación */
+/*
+   =============================================
+   7. PAGINACIÓN
+   =============================================
+*/
 .pagination {
   display: flex;
   justify-content: center;
@@ -216,13 +240,13 @@
 }
 
 .pagination button {
-  background: var(--button-gradient); /* Degradado psicodélico */
+  /* Sustituimos el “degradado psicodélico” por el naranja */
+  background: var(--accent-color);
   border: none;
   color: #fff;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem; /* Reducir border-radius */
-  backdrop-filter: blur(5px); /* Efecto vidrioso */
-  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
@@ -232,9 +256,9 @@
 }
 
 .pagination button:hover:not(:disabled) {
-  background: var(--button-gradient-hover); /* Degradado invertido en hover */
-  transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
 }
 
 .pagination button:disabled {
@@ -246,24 +270,25 @@
   font-size: 1rem;
 }
 
+/*
+   =============================================
+   8. MEDIAS / RESPONSIVIDAD
+   =============================================
+*/
 @media (max-width: 1024px) {
   .transaction-card {
     flex-direction: row;
   }
-
   .transaction-image {
     flex: 1 1 150px;
     max-width: 150px;
   }
-
   .transaction-info {
     flex: 2 1 250px;
   }
-
   .transaction-name {
     font-size: 1.1rem;
   }
-
   .transaction-status {
     min-width: 5rem;
     font-size: 0.85rem;
@@ -275,30 +300,24 @@
     flex-direction: column;
     align-items: stretch;
   }
-
   .transaction-card {
     flex-direction: column;
   }
-
   .transaction-image {
     max-width: 100%;
     height: 150px;
   }
-
   .transaction-info {
     padding: 0.75rem;
   }
-
   .transaction-status {
     margin-top: 0.5rem;
     width: auto;
   }
-
   .pagination button {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
   }
-
   .section-title {
     font-size: 2rem;
   }
@@ -308,37 +327,30 @@
   .transaction-info {
     padding: 0.5rem;
   }
-
   .transaction-status {
     width: 100%;
     text-align: center;
   }
-
   .filters input,
   .filters select,
   .filters button {
     width: 100%;
   }
-
   .pagination button {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
-
   .transaction-image img {
     height: 200px;
   }
-
   .transaction-name {
     font-size: 1rem;
   }
-
   .transaction-id,
   .transaction-date,
   .transaction-amount {
     font-size: 0.9rem;
   }
-
   .transaction-status {
     font-size: 0.8rem;
   }
@@ -348,24 +360,20 @@
   .section-title {
     font-size: 1.8rem;
   }
-
   .filters input,
   .filters select,
   .filters button {
     padding: 0.5rem;
     font-size: 0.85rem;
   }
-
   .pagination button {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
   }
-
   .product-name {
     font-size: 0.7rem;
     max-width: 70px;
   }
-
   .product-image {
     width: 50px;
     height: 50px;

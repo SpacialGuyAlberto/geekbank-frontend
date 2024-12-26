@@ -1,48 +1,73 @@
-/*!* Estilos Generales del Dashboard de Información de Cuenta *!*/
-/*:root {*/
-/*  --primary-bg-color: #0f2027; !* Azul oscuro espacial *!*/
-/*  --secondary-bg-color: #203a43; !* Azul medio oscuro *!*/
-/*  --tertiary-bg-color: #2c5364; !* Azul grisáceo *!*/
-/*  --glass-bg-color: rgba(255, 255, 255, 0.1); !* Fondo vidrioso *!*/
-/*  --text-color: #E1E6F1; !* Color de texto claro *!*/
-/*  --accent-pink: #FF6EC7; !* Rosa psicodélico *!*/
-/*  --accent-green: #A7F432; !* Verde neón *!*/
-/*  --accent-yellow: #F4D35E; !* Amarillo vibrante *!*/
-/*  --accent-blue: #7873f5; !* Azul vibrante *!*/
-/*  --button-gradient: linear-gradient(45deg, #ff6ec4, #7873f5); !* Degradado para botones *!*/
-/*  --button-gradient-hover: linear-gradient(45deg, #7873f5, #ff6ec4); !* Degradado invertido para hover *!*/
-/*}*/
+/***************************************
+ *  account-info.component.css (Completo)
+ ***************************************/
 
-.account-info-dashboard {
-  padding: 2rem;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Degradado oscuro espacial */
-  /*background-image: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'); !* Imagen de fondo espacial válida *!*/
-  background-size: cover;
-  background-repeat: no-repeat;
-  margin-top: 4rem;
-  background-attachment: fixed;
-  color: #E1E6F1; /* Texto claro para buen contraste */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  min-height: 100vh;
+/* ========================
+   VARIABLES DE COLOR
+   ======================== */
+:root {
+  /* Fondo y grises */
+  --dark-bg: #1f1f1f;         /* Fondo principal oscuro */
+  --medium-dark-bg: #262626;  /* Fondo secundario (lateral, secciones) */
+  --lighter-bg-color: #2d2d2d;/* Para inputs u otras áreas más claras */
+
+  /* Texto */
+  --text-color: #ffffff;      /* Texto principal en blanco */
+  --text-subtle: #bcbcbc;     /* Texto secundario/placeholder */
+
+  /* Acentos */
+  --accent-color: #ff8c00;    /* Naranja de acento */
+  --accent-hover: #ff9800;    /* Naranja más claro para hover */
+
+  /* Estados */
+  --error-color: #ff4545;     /* Rojo para errores */
+  --success-color: #4caf50;   /* Verde para éxitos */
+
+  /* Bordes Inputs */
+  --input-border-color: #3a3a3a;
+  --input-border-focus: #ff8c00;
 }
 
-/* Menú de Pestañas */
+
+/* ========================
+   LAYOUT GENERAL
+   ======================== */
+.account-info-dashboard {
+  padding: 2rem;
+  background-color: var(--dark-bg);
+  color: var(--text-color);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  margin-top: 4rem; /* Ajusta si tienes un header fijo */
+}
+
+/* Mantenemos un contenedor para la cuadrícula de contenido */
+.content-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+/* =========================
+   MENÚ DE PESTAÑAS (SIDEBAR)
+   ========================= */
 .tabs-menu {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 2rem;
   margin-top: 4rem;
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  background: var(--medium-dark-bg); /* Fondo oscuro secundario */
   border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .tab-button {
   flex: 1;
   background: transparent;
-  color: #E1E6F1; /* Color de texto claro */
+  color: var(--text-color);
   padding: 1rem 1.5rem;
   text-align: center;
   cursor: pointer;
@@ -58,17 +83,18 @@
 .tab-button i {
   font-size: 1.2rem;
   margin-right: 0.5rem;
-  color: #F4D35E; /* Iconos con color amarillo */
+  color: var(--accent-color);
 }
 
+/* Efecto "barra" animada debajo de la pestaña activa */
 .tab-button::after {
   content: '';
   position: absolute;
   bottom: 0;
   left: 50%;
   width: 0;
-  height: 3px;
-  background: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado psicodélico */
+  height: 2px;
+  background: var(--accent-color);
   transition: width 0.3s ease, left 0.3s ease;
 }
 
@@ -78,16 +104,17 @@
 }
 
 .tab-button:hover {
-  background: rgba(255, 255, 255, 0.2); /* Hover translúcido */
-  color: #FFD700; /* Texto dorado en hover */
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--accent-color);
   border-radius: 1rem;
 }
 
+/* Para el botón "hamburguesa" en pantallas pequeñas */
 .hamburger-button {
-  display: none; /* Oculto por defecto */
+  display: none;
   background: transparent;
   border: none;
-  color: #E1E6F1;
+  color: var(--text-color);
   font-size: 1.5rem;
   cursor: pointer;
   position: absolute;
@@ -96,13 +123,16 @@
 }
 
 
+/* ========================
+   MODAL
+   ======================== */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,11 +140,10 @@
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  background: var(--medium-dark-bg);
   padding: 2rem;
   border-radius: 1rem;
-  backdrop-filter: blur(20px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   width: 90%;
   max-width: 400px;
   position: relative;
@@ -125,15 +154,14 @@
   top: 1rem;
   right: 1rem;
   font-size: 1.5rem;
-  color: #FFD700;
+  color: var(--accent-color);
   cursor: pointer;
 }
 
 .modal-content h2 {
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #FF6EC7; /* Títulos en rosa psicodélico */
-  text-shadow: 0 0 10px rgba(255, 110, 199, 0.7); /* Sombra de texto brillante */
+  color: var(--accent-color);
 }
 
 .modal-content ul {
@@ -144,13 +172,13 @@
 
 .modal-content ul li {
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
 }
 
 .modal-content ul li a {
-  color: #E1E6F1;
+  color: var(--text-color);
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -159,44 +187,40 @@
 }
 
 .modal-content ul li a:hover {
-  color: #FFD700;
+  color: var(--accent-color);
 }
 
 .modal-content ul li a i {
   margin-right: 0.5rem;
-  color: #F4D35E; /* Iconos con color amarillo */
+  color: var(--accent-color);
 }
 
-/* Contenedor de Contenido */
-.content-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-/* Sección de Contenido */
+/* ========================
+   SECCIONES DE CONTENIDO
+   ======================== */
 .content-section {
   width: 100%;
   max-width: 800px;
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
+  background-color: var(--medium-dark-bg);
   padding: 2rem;
   border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   margin-bottom: 2rem;
-  color: #E1E6F1;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Títulos de Sección */
 .content-section h2 {
-  color: #FF6EC7; /* Títulos en rosa psicodélico */
+  color: var(--accent-color);
   text-align: center;
   margin-bottom: 1.5rem;
-  text-shadow: 0 0 10px rgba(255, 110, 199, 0.7); /* Sombra de texto brillante */
 }
 
-/* Campos de Formulario */
+
+/* ========================
+   FORMULARIOS / CAMPOS
+   ======================== */
 .field {
   display: flex;
   justify-content: space-between;
@@ -206,69 +230,72 @@
 }
 
 .field label {
-
   font-weight: bold;
   margin-right: 1rem;
-  color: #A7F432; /* Etiquetas en verde neón */
+  color: var(--accent-color);
   flex: 1;
 }
 
 .field span {
   flex: 2;
-  color: #fff;
+  color: var(--text-color);
 }
 
 .field input {
   width: 100%;
   max-width: 300px;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--input-border-color);
   border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.5); /* Fondo de input translúcido */
-  color: #FFF;
+  background: var(--lighter-bg-color);
+  color: var(--text-color);
   flex: 2;
-  backdrop-filter: blur(5px); /* Efecto vidrioso en inputs */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 .field input:focus {
-  border-color: #FF6EC7; /* Borde cambia a rosa al enfocar */
+  border-color: var(--input-border-focus);
   outline: none;
-  box-shadow: 0 0 10px #FF6EC7; /* Brillo al enfocar */
+  box-shadow: 0 0 0.2rem var(--accent-color);
 }
 
 .field i.fa-pencil-alt {
   margin-left: 0.5rem;
-  color: #A7F432; /* Iconos de editar en verde neón */
+  color: var(--accent-color);
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .field i.fa-pencil-alt:hover {
-  color: #FFD700; /* Iconos de editar en dorado al hacer hover */
+  color: #ffd700; /* Dorado */
 }
 
-/* Botones Principales */
-button[type="submit"], .content-section button {
-  background: linear-gradient(45deg, #ff6ec4, #7873f5); /* Degradado psicodélico */
-  border: none;
-  color: #fff;
-  padding: 0.75rem 1.5rem;
-  border-radius: 2rem;
-  backdrop-filter: blur(5px); /* Efecto vidrioso */
-  box-shadow: 0 4px 15px rgba(255, 110, 196, 0.4);
-  font-size: 1.1rem;
-  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
+/* ===== Mensajes de error y éxito en los inputs ===== */
+.error-message {
+  color: var(--error-color);
+  font-size: 0.875em;
+  margin-top: 4px;
 }
 
-button[type="submit"]:hover, .content-section button:hover {
-  background: linear-gradient(45deg, #7873f5, #ff6ec4); /* Degradado invertido en hover */
-  transform: scale(1.05); /* Aumento de tamaño en hover */
-  box-shadow: 0 6px 20px rgba(120, 115, 245, 0.6);
+.success-message {
+  color: var(--text-color);
+  background-color: var(--success-color);
+  font-size: 1em;
+  margin-top: 10px;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  text-align: center;
 }
 
-/* Listas de Direcciones y Métodos de Pago */
+/* Estilo opcional para campos con errores */
+input.ng-invalid.ng-touched {
+  border-color: var(--error-color);
+}
+
+
+/* ========================
+   LISTAS (EJ. DIRECCIONES)
+   ======================== */
 .content-section ul {
   list-style: none;
   padding: 0;
@@ -276,8 +303,7 @@ button[type="submit"]:hover, .content-section button:hover {
 
 .content-section li {
   padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  color: #E1E6F1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -291,19 +317,53 @@ button[type="submit"]:hover, .content-section button:hover {
 .content-section li i {
   cursor: pointer;
   margin-left: 0.5rem;
-  color: #A7F432; /* Iconos en verde neón */
+  color: var(--accent-color);
   transition: color 0.3s ease;
 }
 
 .content-section li i:hover {
-  color: #FFD700; /* Iconos en dorado al hacer hover */
+  color: #ffd700;
 }
 
-/* Preferencias de Comunicación */
+
+/* ==============================
+   BOTONES PRINCIPALES
+   ============================== */
+button[type="submit"],
+.content-section button {
+  background-color: var(--accent-color);
+  border: none;
+  color: var(--text-color);
+  padding: 0.75rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 1.1rem;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+}
+
+/* Botón de Cancelar con un color gris */
+button.cancel-button {
+  background-color: #8c8c8c;
+  color: #fff;
+  margin-right: 1rem;
+}
+
+button[type="submit"]:hover,
+.content-section button:hover {
+  background-color: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+}
+
+
+/* ==============================
+   PREFERENCIAS DE COMUNICACIÓN
+   ============================== */
 .content-section form label {
   display: block;
   margin-bottom: 0.5rem;
-  color: #E1E1E1;
+  color: var(--text-subtle);
   font-size: 1rem;
 }
 
@@ -311,38 +371,27 @@ button[type="submit"]:hover, .content-section button:hover {
   margin-right: 0.5rem;
   transform: scale(1.2);
   cursor: pointer;
-  accent-color: #FF6EC7; /* Color psicodélico para checkboxes */
+  accent-color: var(--accent-color);
 }
 
-/* Mensajes de Éxito */
-.success-message {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  background: rgba(40, 167, 69, 0.8); /* Fondo verde translúcido */
-  color: #fff;
-  border-radius: 0.5rem;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
 
-/* Responsividad */
+/* ========================
+   RESPONSIVIDAD
+   ======================== */
 @media (max-width: 768px) {
   .tabs-menu {
     flex-direction: column;
+    margin-top: 2rem;
   }
-
   .tab-button {
     padding: 1rem;
   }
-
   .hamburger-button {
-    display: block; /* Mostrar botón de hamburguesa */
+    display: block; /* Mostrar la hamburguesa para menús colapsables */
   }
-
   .content-grid {
     padding: 0;
   }
-
   .content-section {
     padding: 1.5rem;
   }
@@ -352,25 +401,20 @@ button[type="submit"]:hover, .content-section button:hover {
   .account-info-dashboard {
     padding: 1rem;
   }
-
   .content-section {
     padding: 1rem;
   }
-
   .field {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .field input {
     max-width: 100%;
   }
-
   button[type="submit"], .content-section button {
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
   }
-
   .content-section h2 {
     font-size: 1.6rem;
   }
@@ -381,61 +425,15 @@ button[type="submit"]:hover, .content-section button:hover {
     margin: 1rem;
     padding: 1rem;
   }
-
   .field input {
     width: 100%;
     padding: 0.5rem;
   }
-
   button[type="submit"], .content-section button {
     font-size: 0.85rem;
     padding: 0.5rem 1rem;
   }
-
   .content-section h2 {
     font-size: 1.4rem;
   }
-}
-
-
-
-@keyframes starGlow {
-  0% {
-    color: #00d4ff;
-  }
-  100% {
-    color: #1E90FF;
-  }
-}
-
-/* Animación de la Línea Divisoria */
-@keyframes dividerMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
-
-/* account-info.component.css */
-
-/* Estilo para mensajes de error */
-.error-message {
-  color: red;
-  font-size: 0.875em;
-  margin-top: 4px;
-}
-
-/* Estilo para mensajes de éxito */
-.success-message {
-  color: green;
-  font-size: 1em;
-  margin-top: 10px;
-}
-
-/* Estilo opcional para campos con errores */
-input.ng-invalid.ng-touched {
-  border-color: red;
 }
