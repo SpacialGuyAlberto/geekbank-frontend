@@ -22,6 +22,7 @@ export interface KinguinGiftCard {
   regionId: number;
   activationDetails: string;
   kinguinId: number;
+  randomDiscount?: number;
   productId: string;
   originalName: string;
   screenshots: Screenshot[];
