@@ -129,9 +129,42 @@
   max-height: calc(5rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
 }
 .gift-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos horizontalmente */
   font-size: calc(1.1rem * var(--scale-factor));
   color: #88D66C;
   font-weight: bold;
+  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
+}
+
+/* Precio original tachado */
+.original-price {
+  text-decoration: line-through;
+  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
+  margin-bottom: 4px; /* Espacio inferior */
+  font-size: calc(0.9rem * var(--scale-factor));
+}
+
+/* Precio con descuento */
+.discounted-price {
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: calc(1.4rem * var(--scale-factor));
+  margin-bottom: 4px; /* Espacio inferior */
+}
+.discount-percentage {
+  position: absolute;
+  top: 10px; /* Ajusta según tus necesidades */
+  left: 10px; /* Ajusta según tus necesidades */
+  background-color: var(--discount-color);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: calc(0.75rem * var(--scale-factor));
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1; /* Por encima de otros elementos */
 }
 
 /* Ajustes para móviles */

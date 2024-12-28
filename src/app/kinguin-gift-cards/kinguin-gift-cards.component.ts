@@ -113,6 +113,9 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       data.map( card => {
         card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
         card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
+        if (card.giftcard.randomDiscount){
+          card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
+        }
         this.giftCards.push(card.giftcard)
         console.log(this.giftCards)
         this.displayGiftCards();
@@ -204,6 +207,19 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
+  }
+
+  generatePersistentDiscount(cardName: string): number {
+    // Crea un "hash" simple basado en el nombre de la tarjeta
+    let hash = 0;
+    for (let i = 0; i < cardName.length; i++) {
+      hash = (hash << 5) - hash + cardName.charCodeAt(i);
+      hash = hash & hash; // Convertir a 32 bits
+    }
+
+    // Genera un número aleatorio consistente entre 15 y 40 basado en el hash
+    const random = Math.abs(hash % 26) + 15; // Rango: [15, 40]
+    return random;
   }
 
   ngAfterViewInit(): void {

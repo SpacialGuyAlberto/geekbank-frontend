@@ -116,7 +116,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --dark-bg: #1f1f1f;         /* Fondo principal oscuro */
   --medium-dark-bg: #262626;  /* Fondo secundario (lateral, secciones) */
   --lighter-bg-color: #2d2d2d;/* Para inputs u otras áreas más claras */
-
+  --discount-color: #ff1e00;
   /* Texto */
   --text-color: #ffffff;      /* Texto principal en blanco */
   --text-subtle: #bcbcbc;     /* Texto secundario/placeholder */
