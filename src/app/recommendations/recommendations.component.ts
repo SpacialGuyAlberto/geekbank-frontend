@@ -52,6 +52,7 @@ export class RecommendationsComponent implements OnInit {
           this.giftCards = data.map(card => {
             card.coverImageOriginal = card.images.cover?.thumbnail || '';
             card.coverImage = card.images.cover?.thumbnail || '';
+            card.randomDiscount = this.generatePersistentDiscount(card.name);
             return card;
           });
           this.startCarousel();
@@ -65,6 +66,7 @@ export class RecommendationsComponent implements OnInit {
         this.giftCards = data.map(card => {
           card.coverImageOriginal = card.images.cover?.thumbnail || '';
           card.coverImage = card.images.cover?.thumbnail || '';
+          card.randomDiscount = this.generatePersistentDiscount(card.name);
           return card;
         });
         this.startCarousel();
@@ -128,6 +130,19 @@ export class RecommendationsComponent implements OnInit {
         console.log('Navigation failed');
       }
     });
+  }
+
+  generatePersistentDiscount(cardName: string): number {
+    // Crea un "hash" simple basado en el nombre de la tarjeta
+    let hash = 0;
+    for (let i = 0; i < cardName.length; i++) {
+      hash = (hash << 5) - hash + cardName.charCodeAt(i);
+      hash = hash & hash; // Convertir a 32 bits
+    }
+
+    // Genera un número aleatorio consistente entre 15 y 40 basado en el hash
+    const random = Math.abs(hash % 26) + 15; // Rango: [15, 40]
+    return random;
   }
 }
 

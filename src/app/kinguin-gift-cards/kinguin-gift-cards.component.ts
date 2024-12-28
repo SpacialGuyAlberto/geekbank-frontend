@@ -113,9 +113,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       data.map( card => {
         card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
         card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
-        if (card.giftcard.randomDiscount){
-          card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
-        }
+        card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
         this.giftCards.push(card.giftcard)
         console.log(this.giftCards)
         this.displayGiftCards();
@@ -133,7 +131,11 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
   fetchGiftCards(): void {
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
-      this.giftCards = data;
+      this.giftCards = data.map(card => {
+        // Asignar un descuento persistente a cada tarjeta
+        card.randomDiscount = this.generatePersistentDiscount(card.name);
+        return card;
+      });
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
       this.cd.detectChanges();

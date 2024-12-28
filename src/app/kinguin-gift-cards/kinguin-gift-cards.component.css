@@ -99,16 +99,20 @@
 }
 
 .gift-card-title {
-  font-size: calc(0.9rem * var(--scale-factor));
+  font-size: calc(0.9rem * var(--scale-factor)); /* Mantén el tamaño ajustable */
   color: var(--text-color);
   margin-bottom: calc(0.625rem * var(--scale-factor));
+  margin-top: -1rem;
   text-transform: uppercase;
-  white-space: normal; /* Permite que el texto ajuste automáticamente */
-  overflow: visible; /* Evita recortar el texto */
-  text-overflow: clip; /* Deshabilita los puntos suspensivos */
-  max-width: 100%;
-  line-height: 1.2; /* Opcional: ajusta la separación entre líneas */
+  word-wrap: break-word; /* Ajusta palabras largas */
+  word-break: break-word; /* Divide palabras largas */
+  white-space: normal; /* Permite ajuste de líneas */
+  max-height: calc(3rem * var(--scale-factor)); /* Limita la altura máxima */
+  overflow: hidden; /* Evita desbordamiento visual */
+  text-overflow: ellipsis; /* Muestra "..." si el texto excede */
+  line-height: 1.2; /* Ajusta la separación entre líneas */
 }
+
 
 .load-more-container {
   display: flex;
@@ -195,6 +199,24 @@
   margin-bottom: 4px; /* Espacio inferior */
 }
 
+.platform {
+  display: inline-block; /* Asegura que sea un bloque dentro del contenido */
+  background-color: #021526; /* Fondo oscuro para contraste */
+  color: #ffffff; /* Texto blanco para visibilidad */
+  font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño de texto ajustable */
+  font-weight: bold; /* Resalta el texto */
+  padding: 4px 6px; /* Espaciado interno */
+  border-radius: 12px; /* Bordes redondeados */
+  margin-top: 4px; /* Espaciado superior para separación del título */
+  text-align: center; /* Centra el texto */
+  text-transform: uppercase; /* Todo en mayúsculas */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra para efecto de elevación */
+  width: fit-content; /* Se ajusta al tamaño del texto */
+  align-self: center; /* Centra horizontalmente dentro del contenedor */
+}
+
+
+
 /* Animaciones */
 @keyframes animatedBorder {
   0% {
@@ -216,7 +238,8 @@
   }
 
   .gift-card-title {
-    font-size: calc(1rem * var(--scale-factor));
+    font-size: calc(0.8rem * var(--scale-factor));
+    margin-top: -1.5rem;
   }
 
   .gift-card-price {
@@ -229,6 +252,9 @@
     border-top-left-radius: calc(0.5rem * var(--scale-factor));
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
     margin-bottom: calc(0.625rem * var(--scale-factor));
+  }
+  .platform {
+    font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño más compacto */
   }
 
   .load-more-button {
@@ -283,5 +309,9 @@
     left: 5px;
     padding: 2px 5px;
     font-size: calc(0.6rem * var(--scale-factor));
+  }
+  .platform {
+    font-size: calc(0.6rem * var(--scale-factor));
+    padding: 2px 4px;
   }
 }
