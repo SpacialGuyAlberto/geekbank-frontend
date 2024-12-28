@@ -313,5 +313,6 @@
   .platform {
     font-size: calc(0.6rem * var(--scale-factor));
     padding: 2px 4px;
+    margin-top: 2rem;
   }
 }
