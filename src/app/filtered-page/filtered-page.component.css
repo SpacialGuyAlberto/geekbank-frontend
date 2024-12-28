@@ -59,6 +59,7 @@
   margin: 0 auto; /* Centra el grid dentro del contenedor */
   padding: 0 10px; /* Agrega un pequeño padding lateral para evitar que las tarjetas toquen los bordes */
 }
+
 :root {
   --scale-factor: 0.75; /* 75% del tamaño original */
   --primary-color: #0B0D19;
@@ -72,15 +73,10 @@
 }
 
 /* Contenedor de Gift Cards */
-.gift-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
-  grid-auto-rows: 350px;
-  gap: calc(2rem * var(--scale-factor)); /* Aumenta el gap para evitar solapamientos al escalar */
-  width: 75%;
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-  overflow: visible; /* Permite que las tarjetas escaladas no se recorten */
-}
+/* Eliminado si no se usa */
+/* .gift-cards-container { */
+/*   ... */
+/* } */
 
 .gift-card {
   display: flex;
@@ -173,7 +169,6 @@
   text-overflow: ellipsis; /* Muestra "..." si el texto excede */
   line-height: 1.2; /* Ajusta la separación entre líneas */
 }
-
 
 .load-more-container {
   display: flex;
@@ -276,8 +271,6 @@
   align-self: center; /* Centra horizontalmente dentro del contenedor */
 }
 
-
-
 /* Animaciones */
 @keyframes animatedBorder {
   0% {
@@ -293,54 +286,53 @@
 
 /* Media Queries */
 @media (max-width: 768px) {
-  .gift-cards-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: calc(1.5rem * var(--scale-factor));
+  .filtered-page-container {
+    padding: 20px 10px; /* Reducir padding */
   }
 
-  .gift-card-title {
-    font-size: calc(0.8rem * var(--scale-factor));
-    margin-top: -1.5rem;
+  .filtered-page-header h1 {
+    font-size: 2rem; /* Reducir tamaño del texto */
   }
 
-  .gift-card-price {
-    font-size: calc(0.9rem * var(--scale-factor));
+  .cards-wrapper {
+    grid-template-columns: repeat(2, 1fr); /* Establece dos columnas */
+    gap: 15px; /* Reducir espacio entre tarjetas */
+    max-width: 100%; /* Asegura que el contenedor no exceda el ancho de la pantalla */
+    padding: 0 10px; /* Agrega padding lateral si es necesario */
   }
 
-  .gift-card-image {
-    height: calc(15rem * var(--scale-factor));
-    object-fit: cover;
-    border-top-left-radius: calc(0.5rem * var(--scale-factor));
-    border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: calc(0.625rem * var(--scale-factor));
+  .category-item-image-wrapper {
+    height: 100px; /* Reducir altura de la imagen */
   }
-  .platform {
-    font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño más compacto */
+
+  .category-item-content {
+    padding: 10px; /* Reducir padding */
+  }
+
+  .category-item-title {
+    font-size: 1.1rem; /* Reducir tamaño de título */
+  }
+
+  .category-item-price {
+    font-size: 0.9rem; /* Reducir tamaño del precio */
   }
 
   .load-more-button {
-    padding: calc(0.6rem * var(--scale-factor));
-  }
-
-  /* Ajustes para el badge de descuento en pantallas pequeñas */
-  .discount-percentage {
-    top: 8px;
-    left: 8px;
-    padding: 3px 6px;
-    font-size: calc(0.7rem * var(--scale-factor));
+    padding: 10px 20px; /* Reducir tamaño del botón */
+    font-size: 1rem; /* Reducir tamaño del texto */
   }
 }
 
 @media (max-width: 480px) {
-  .gift-cards-container {
-    grid-template-rows: repeat(2, 1fr);
-    grid-gap: calc(3rem * var(--scale-factor));
-    justify-content: center;
-    margin-right: 4rem;
+  .cards-wrapper {
+    grid-template-columns: repeat(2, 1fr); /* Mantener dos columnas */
+    gap: 10px; /* Ajustar el espacio entre tarjetas si es necesario */
+    margin-right: 0; /* Eliminar márgenes que puedan romper el diseño */
+    padding: 0 5px; /* Ajustar padding lateral */
   }
 
   .gift-card {
-    width: 120%;
+    width: 100%; /* Asegurar que las tarjetas ocupen el 100% del contenedor */
   }
 
   .gift-card-title {
@@ -371,12 +363,13 @@
     padding: 2px 5px;
     font-size: calc(0.6rem * var(--scale-factor));
   }
+
   .platform {
     font-size: calc(0.6rem * var(--scale-factor));
     padding: 2px 4px;
+    margin-top: 2rem;
   }
 }
-
 
 /* Mensajes centrados con colores suaves */
 .no-data-message,
@@ -433,40 +426,4 @@
   display: inline-block;
   margin-right: 8px;
   vertical-align: middle;
-}
-/* Estilo responsivo para pantallas pequeñas */
-@media (max-width: 768px) {
-  .filtered-page-container {
-    padding: 20px 10px; /* Reducir padding */
-  }
-
-  .filtered-page-header h1 {
-    font-size: 2rem; /* Reducir tamaño del texto */
-  }
-
-  .cards-wrapper {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); /* Ajustar tamaño mínimo de las tarjetas */
-    gap: 15px; /* Reducir espacio entre tarjetas */
-  }
-
-  .category-item-image-wrapper {
-    height: 100px; /* Reducir altura de la imagen */
-  }
-
-  .category-item-content {
-    padding: 10px; /* Reducir padding */
-  }
-
-  .category-item-title {
-    font-size: 1.1rem; /* Reducir tamaño de título */
-  }
-
-  .category-item-price {
-    font-size: 0.9rem; /* Reducir tamaño del precio */
-  }
-
-  .load-more-button {
-    padding: 10px 20px; /* Reducir tamaño del botón */
-    font-size: 1rem; /* Reducir tamaño del texto */
-  }
 }
