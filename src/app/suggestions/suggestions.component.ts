@@ -53,7 +53,8 @@ export class SuggestionsComponent implements OnInit {
             this.giftCards = giftCards.map(card => ({
               ...card,
               coverImageOriginal: card.images.cover?.thumbnail || '',
-              coverImage: card.images.cover?.thumbnail || ''
+              coverImage: card.images.cover?.thumbnail || '',
+              randomDiscount: this.generatePersistentDiscount(card.name)
             }));
             this.isLoading = false;
 
@@ -95,6 +96,16 @@ export class SuggestionsComponent implements OnInit {
       }
     });
     window.location.href = `/gift-card-details/${card.kinguinId}`;
+  }
+
+
+  generatePersistentDiscount(cardName: string): number {
+    let hash = 0;
+    for (let i = 0; i < cardName.length; i++) {
+      hash = (hash << 5) - hash + cardName.charCodeAt(i);
+      hash = hash & hash; // Convertir a 32 bits
+    }
+    return Math.abs(hash % 26) + 15; // Generar un valor entre 15 y 40
   }
 
 
