@@ -8,7 +8,7 @@
       </div>
       <div class="card-content">
         <h3>Ventas Totales</h3>
-        <p>{{ totalSales | currency }}</p>
+        <p>{{ salesMetrics?.totalSalesCount }}</p>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
       </div>
       <div class="card-content">
         <h3>Ganancias</h3>
-        <p>{{ totalProfit | currency }}</p>
+        <p>{{ salesMetrics?.totalProfit | currency }}</p>
       </div>
     </div>
 
@@ -59,11 +59,11 @@
     <!-- Productos en Inventario -->
     <div class="summary-card">
       <div class="card-icon">
-        <i class="fas fa-boxes"></i>
+        <i class="fa-solid fa-eye"></i>
       </div>
       <div class="card-content">
-        <h3>Productos en Inventario</h3>
-        <p>{{ totalProducts }}</p>
+        <h3>Visitas</h3>
+        <p>{{ visitCount }}</p>
       </div>
     </div>
   </div>

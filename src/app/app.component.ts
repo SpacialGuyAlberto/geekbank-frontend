@@ -23,6 +23,7 @@ import {selectUser} from "./state/user/user.selector";
 import {selectIsAuthenticated} from "./state/auth/auth.selectors";
 import {CookieConsentComponent} from "./cookie-consent/cookie-consent.component";
 import {loadUserFromSession} from "./state/auth/auth.actions";
+import {VisitService} from "./visit.service";
 
 @Component({
   standalone: true,
@@ -44,16 +45,21 @@ import {loadUserFromSession} from "./state/auth/auth.actions";
 })
 
 export class AppComponent implements OnInit {
+
   title = 'geekbank-frontend';
   isLoggedIn$: Observable<boolean | null>;
   user$: Observable<User | null>;
-  // constructor(private authService: SocialAuthService, private telegramListenerService: TelegramListenerService) {
-  //   this.authService.authState.subscribe((user) => {
-  //     // handle user state
-  //   });
-  // }
+  visitCount: number = 0;
+  sessionId: string = '';
 
-  constructor(private translate: TranslateService, private authService: AuthService, private cartService: CartService, private store: Store<AuthState>) {
+
+  constructor(
+    private translate: TranslateService,
+    private authService: AuthService,
+    private cartService: CartService,
+    private store: Store<AuthState>,
+    private visitService: VisitService
+    ) {
     // Establece el idioma predeterminado
     this.translate.setDefaultLang('en');
     this.isLoggedIn$ = this.store.select(selectIsAuthenticated);
@@ -62,6 +68,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadUserFromSession());
+    this.initializeSession();
+    this.registerVisit();
+    this.getVisitCount();
     // this.authService.loggedIn$.subscribe(isLoggedIn => {
     //   if (isLoggedIn) {
     //     this.syncCart();
@@ -84,5 +93,40 @@ export class AppComponent implements OnInit {
       this.cartService.updateCartItemCount();
     }
   }
+
+  initializeSession() {
+    const storedSessionId = sessionStorage.getItem('sessionId');
+    if (storedSessionId) {
+      this.sessionId = storedSessionId;
+    } else {
+      this.sessionId = this.generateSessionId();
+      sessionStorage.setItem('sessionId', this.sessionId);
+    }
+  }
+
+  generateSessionId(): string {
+    // Genera un ID único, por ejemplo, usando UUID
+    return 'xxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  registerVisit() {
+    this.visitService.registerVisit(this.sessionId).subscribe(() => {
+      console.log('Visita registrada');
+    }, error => {
+      console.error('Error al registrar la visita', error);
+    });
+  }
+
+  getVisitCount() {
+    this.visitService.getVisitCount().subscribe(count => {
+      this.visitCount = count;
+    }, error => {
+      console.error('Error al obtener el conteo de visitas', error);
+    });
+  }
+
 
 }

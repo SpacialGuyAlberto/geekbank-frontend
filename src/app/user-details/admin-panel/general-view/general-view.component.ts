@@ -6,6 +6,9 @@ import { TransactionsService} from "../../../transactions.service";
 import {UserService} from "../../../user.service";
 import {User} from "../../../models/User";
 import {Transaction} from "../../../models/transaction.model";
+import {VisitService} from "../../../visit.service";
+import {SalesMetrics} from "../../../models/salesMetrics.model";
+import {SalesMetricsService} from "../../../sales-metrics.service";
 
 @Component({
   selector: 'app-general-view',
@@ -19,19 +22,28 @@ import {Transaction} from "../../../models/transaction.model";
 export class GeneralViewComponent implements OnInit, AfterViewInit {
   @Input() totalCustomers: number = 0;
   // Datos ficticios que deberían venir de tu API o backend.
-  totalSales = 50000; // Monto de ventas totales
-  totalProfit = 15000; // Ganancias después de los costos
+  totalSales = 0; // Monto de ventas totales
+  totalProfit = 0; // Ganancias después de los costos
   totalClients = 200; // Número de clientes
   totalTransactions: number = 0;
   completedTransactions = 1200; // Transacciones completadas
   pendingOrders = 50; // Pedidos pendientes
   totalProducts = 3000; // Inventario total de productos
+  salesMetrics: SalesMetrics | undefined = undefined;
+  protected visitCount: number = 0;
 
-  constructor(private transactionService: TransactionsService, private userService: UserService){}
+  constructor(
+    private salesMetricService: SalesMetricsService,
+    private transactionService: TransactionsService,
+    private userService: UserService,
+    private visitService: VisitService
+  ){}
 
   ngOnInit(): void {
     this.fetchCompletedTTransactions();
     this.fetchCustomers();
+    this.getVisitCount();
+    this.getSalesMetrics();
   }
 
   ngAfterViewInit() {
@@ -143,6 +155,19 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
     });
   }
 
+  getVisitCount() {
+    this.visitService.getVisitCount().subscribe(count => {
+      this.visitCount = count;
+    }, error => {
+      console.error('Error al obtener el conteo de visitas', error);
+    });
+  }
 
-
+  getSalesMetrics(){
+    this.salesMetricService.getCurrentMetrics().subscribe(data => {
+      this.salesMetrics = data;
+      console.log('SALES COUNT ' + data.totalSalesCount);
+      console.log('TOTAL PROFIT ' + data.totalProfit);
+    })
+  }
 }

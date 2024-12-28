@@ -1,4 +1,3 @@
-<!-- src/app/components/filtered-page/filtered-page.component.html -->
 <div class="filtered-page-container">
   <header class="filtered-page-header">
     <h1>Gift Cards - {{ selectedCategory }}</h1>
@@ -18,25 +17,42 @@
 
     <!-- Tarjetas de gift cards -->
     <div *ngIf="!isLoading && giftCards.length > 0" class="cards-wrapper">
-      <div class="category-item" *ngFor="let card of giftCards" (click)="viewDetails(card)">
+      <div
+        class="category-item"
+        *ngFor="let card of giftCards"
+        (click)="viewDetails(card)"
+      >
         <div class="category-item-image-wrapper">
-          <img [src]="card.coverImage" alt="{{ card.name }}" class="category-item-image" />
+          <img
+            [src]="card.coverImage"
+            alt="{{ card.name }}"
+            class="category-item-image"
+          />
         </div>
         <div class="category-item-content">
           <h3 class="category-item-title">{{ card.name }}</h3>
-          <p class="category-item-price">{{ card.priceHNL | currency:'HNL' }}</p>
+          <p class="category-item-price">
+            {{ card.priceHNL | currency: 'HNL' }}
+          </p>
         </div>
       </div>
     </div>
 
     <!-- Mensaje cuando no hay gift cards -->
-    <div *ngIf="!isLoading && giftCards.length === 0 && !errorMessage" class="no-data-message">
+    <div
+      *ngIf="!isLoading && giftCards.length === 0 && !errorMessage"
+      class="no-data-message"
+    >
       <p>No hay gift cards disponibles para esta categoría.</p>
     </div>
 
     <!-- Botón para cargar más gift cards -->
     <div *ngIf="hasMore && !isLoading && giftCards.length > 0" class="load-more-container">
-      <button class="load-more-button" (click)="loadMore()" [disabled]="isLoadingMore">
+      <button
+        class="load-more-button"
+        (click)="loadMore()"
+        [disabled]="isLoadingMore"
+      >
         <ng-container *ngIf="!isLoadingMore">
           Cargar más
         </ng-container>
