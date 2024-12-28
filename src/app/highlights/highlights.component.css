@@ -121,44 +121,42 @@
   .highlights-carousel {
     display: flex;
     justify-content: center;
-    height: 100%;
-    border-radius: 0.9375rem; /* 15px */
+    align-items: center; /* Centra verticalmente las imágenes */
+    width: 100%; /* Tamaño completo del contenedor */
+    height: 400px; /* Altura fija para el carrusel */
+    border-radius: 0.9375rem; /* Bordes redondeados */
     overflow: hidden;
-    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px */
-    margin-left: 5.5rem;
-    margin-top: -5rem;
-    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px */
-    transition: transform 0.5s ease, border-color 0.5s ease;
+    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombra */
+    margin-bottom: 5rem;
+    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Borde del carrusel */
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%; /* Ancho completo del track */
+    height: 100%; /* Igual altura que el carrusel */
   }
 
   .highlight-card {
-    min-width: 100%;
-    border-radius: 0.9375rem; /* 15px */
-    overflow: hidden;
-    box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5); /* 8px y 20px */
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    position: relative;
+    flex: 0 0 100%; /* Cada tarjeta ocupa todo el carrusel */
+    height: 100%; /* Altura completa */
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    border: 0.125rem solid rgba(136, 214, 108, 0.4); /* 2px */
-  }
-
-  .highlight-card-title {
-    font-size: 1.2rem;
-  }
-
-  .highlight-card-price {
-    font-size: 1rem;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 0.9375rem; /* Bordes redondeados */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
 
   .highlight-card-image {
     width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 0.625rem; /* 10px */
-    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px */
-    transition: box-shadow 0.4s ease;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra completamente el espacio */
+    transition: transform 0.4s ease;
   }
+
 }
 
 /* Adaptación adicional para pantallas muy pequeñas */
@@ -166,34 +164,41 @@
   .highlights-carousel {
     display: flex;
     justify-content: center;
-    height: 100%;
-    border-radius: 0.9375rem; /* 15px */
+    align-items: center; /* Centra verticalmente las imágenes */
+    width: 100%; /* Tamaño completo del contenedor */
+    height: 400px; /* Altura fija para el carrusel */
+    border-radius: 0.9375rem; /* Bordes redondeados */
     overflow: hidden;
-    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px */
-    margin-left: 5rem;
+    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombra */
+    margin-bottom: 1rem;
     margin-top: -5rem;
-    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px */
-    transition: transform 0.5s ease, border-color 0.5s ease;
+    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Borde del carrusel */
+  }
+
+  .carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%; /* Ancho completo del track */
+    height: 100%; /* Igual altura que el carrusel */
   }
 
   .highlight-card {
-    min-width: 100%;
-  }
-
-  .highlight-card-title {
-    font-size: 1rem;
-  }
-
-  .highlight-card-price {
-    font-size: 0.9rem;
+    position: relative;
+    flex: 0 0 100%; /* Cada tarjeta ocupa todo el carrusel */
+    height: 100%; /* Altura completa */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 0.9375rem; /* Bordes redondeados */
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
   }
 
   .highlight-card-image {
     width: 100%;
-    height: auto;
-    object-fit: cover;
-    border-radius: 0.625rem; /* 10px */
-    box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px */
-    transition: box-shadow 0.4s ease;
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen cubra completamente el espacio */
+    transition: transform 0.4s ease;
   }
+
 }
