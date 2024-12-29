@@ -102,7 +102,7 @@ body, html {
 }
 
 .app-banner {
-  margin-top: 5rem;
+  margin-top: 8rem;
   margin-bottom: 1rem;
   margin-left: -1.5rem;
   z-index: 2/* Ajusta este valor según tus necesidades */
@@ -204,6 +204,7 @@ body, html {
   .app-banner {
     width: 120vw; /* 1200px */
     /*max-height: 40rem;*/
+
   }
 
   app-offers-banner {
