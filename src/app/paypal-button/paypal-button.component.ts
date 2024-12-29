@@ -39,7 +39,7 @@ export class PayPalButtonComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     const paypal: PayPalNamespace | null = await loadScript({
-      clientId: 'AWN0lCMoVrecKkOjVsrTCX6zG6Yjs2fE8RYupZMqND-pjJeEEbU0sNXS8l43DHSH2Q8omYqSnZ4RL9qC',
+      clientId: 'AdTjtZ-V2NYAQV_Xawwc88KApMle-hqRKFJ16xGN-RdyDr4tcr5J8JVZgN7p99P8NwrcC84ZAPk8Z8po',
     });
 
     if (!paypal) {
