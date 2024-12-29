@@ -64,6 +64,12 @@
       class="fa-solid fa-magnifying-glass clickable-icon"
     ></i>
     <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
+    <li class="cart-icon-container" (mouseenter)="onCartHover()">
+      <a routerLink="/cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+      </a>
+    </li>
     <div class="navbar-hamburger" *ngIf="isSmallScreen">
       <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
     </div>

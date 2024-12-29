@@ -867,4 +867,22 @@ app-category-items .card p {
     font-size: 1rem;
     margin-right: 0.25rem;
   }
+  .cart-icon-container {
+    position: relative;
+    list-style: none;
+    font-size: 1.3rem;
+  }
+
+  .fa-magnifying-glass {
+    font-size: 1.3rem;
+
+    background: #99ccff;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+    display: flex;
+    margin-bottom: 0.2rem;
+    align-items: center;
+    transition: transform 0.3s ease, bakground 1s ease;
+  }
 }

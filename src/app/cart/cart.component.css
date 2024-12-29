@@ -107,6 +107,17 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.payment-button:enabled {
+  background-color: #28901a !important;
+  animation: vibrate 0.5s ease 10; /* 10 iteraciones de 0.5s = 5 segundos */
+  animation-fill-mode: forwards; /* Detiene la animación al completarse */
+}
+
+
+.payment-button:enabled:hover {
+  background-color: #1e6fd8; /* color cuando pasas el mouse */
+  transform: translateY(-2px);
+}
 /* Botones de Opciones de Pago */
 .payment-option-button {
   width: 100%; /* Ocupa todo el ancho del contenedor */
@@ -136,15 +147,18 @@ button:disabled {
   background: #3a8dff; /* Color de fondo al pasar el ratón */
   border-color: #1e6fd8;
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
 }
 
-/* Estado Seleccionado para Botones de Opciones de Pago */
+/*
+   Unificamos la regla .selected para que se aplique correctamente
+   y destaque el botón con un color totalmente distinto (amarillo).
+*/
 .payment-option-button.selected {
-  background: #1e6fd8;
-  border-color: #0056b3;
-  box-shadow: 0 0 10px rgba(58, 141, 255, 0.7); /* Sombra brillante */
-  transform: scale(1.05); /* Efecto de ampliación */
+  background: #fdd835 !important;    /* Color amarillo brillante */
+  border-color: #f9c24f !important;  /* Borde amarillo */
+  color: #000 !important;            /* Texto negro para contraste */
+  box-shadow: 0 0 10px rgba(249, 194, 79, 0.7) !important; /* Resplandor amarillo */
+  transform: scale(1.05) !important; /* Efecto de ampliación */
 }
 
 /* Icono dentro del Botón de Opciones de Pago */
@@ -203,6 +217,29 @@ button:disabled {
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
 }
 
+/* ===================== ANIMACIÓN DE VIBRACIÓN ===================== */
+@keyframes vibrate {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 0);
+  }
+  40% {
+    transform: translate(2px, 0);
+  }
+  60% {
+    transform: translate(-2px, 0);
+  }
+  80% {
+    transform: translate(2px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+/* ================================================================ */
+
 /* Botón Continuar con el Pago */
 .continue-button-container {
   margin-top: 1.5rem;
@@ -219,13 +256,29 @@ button:disabled {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Hover normal cuando está habilitado */
 .continue-button-container button:hover {
   background: #1e6fd8;
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Cuando el botón está habilitado (se seleccionó un método de pago),
+   le agregamos la animación de vibración (infinita) */
+.continue-button-container button:enabled {
+  background: #28901a; /* Verde para indicar que está listo */
+  box-shadow: 0 0 10px rgba(58, 141, 255, 0.7);
+  animation: vibrate 0.5s infinite; /* <-- ¡VIBRACIÓN INFINITA! */
+}
+
+/* Cuando se hace hover estando habilitado, sumamos el cambio de color + vibración */
+.continue-button-container button:enabled:hover {
+  background: #1e6fd8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15), 0 0 15px rgba(58, 141, 255, 0.7);
 }
 
 /* Botones de Descuento */
@@ -234,19 +287,19 @@ button:disabled {
   padding: 0.75rem;
   border: none;
   border-radius: 0.25rem;
-  background: #c9541c; /* Fondo azul más oscuro */
+  background: #c9541c;
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .discount-button:hover {
-  background: #b84317; /* Un tono más oscuro para indicar interacción */
+  background: #b84317;
   transform: translateY(-2px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Sombra más prominente */
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* ------------------ Fin de las Mejoras en los Botones ------------------ */
@@ -268,35 +321,30 @@ button:disabled {
   text-decoration: none;
 }
 
+.terms-text a:hover {
+  text-decoration: underline;
+}
+
 .icon {
-  width: 100%; /* Adjust width as needed */
-  height: 50px; /* Adjust height as needed */
-  background-color: #0056b3; /* Tigo Money background color */
+  width: 100%;
+  height: 50px;
+  background-color: #0056b3;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.3s ease;
 }
 
-/* Text Styles for Tigo Money */
 .tigo, .money {
   font-size: 16px;
   font-weight: bold;
-  color: #fff; /* Text color white by default */
-  transition: color 0.3s ease; /* Smooth transition */
+  color: #fff;
+  transition: color 0.3s ease;
 }
 
-.payment-option-button span {
-  flex-grow: 1; /* Ocupa el espacio restante */
-  text-align: center; /* Centra el texto */
-}
-
-.terms-text a:hover {
-  text-decoration: underline;
-}
-
+/* Items del carrito */
 .cart-items ul {
   list-style: none;
   padding: 0;
@@ -309,21 +357,21 @@ button:disabled {
   justify-content: space-between;
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: #1a2a38; /* Fondo plano */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil */
+  background: #1a2a38;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   transition: background 0.3s ease;
 }
 
 .cart-item:hover {
-  background: #243048; /* Cambio de fondo al pasar el ratón */
+  background: #243048;
 }
 
 .gift-card-image {
-  width: 8rem; /* Imagen más grande */
+  width: 8rem;
   height: auto;
-  margin-right: 1.5rem; /* Espacio a la derecha */
-  border-radius: 0.25rem; /* Bordes ligeramente redondeados */
+  margin-right: 1.5rem;
+  border-radius: 0.25rem;
 }
 
 .item-info {
@@ -390,10 +438,11 @@ button:disabled {
   transform: scale(1.1);
 }
 
+/* Sección de Precio Total */
 .total-price-section {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espacio entre botones */
+  gap: 1rem;
   margin-top: 2rem;
   color: #A0E4FF;
 }
@@ -410,7 +459,7 @@ button:disabled {
   background: #3a8dff;
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -420,22 +469,23 @@ button:disabled {
   transform: translateY(-2px);
 }
 
+/* Dialog Overlay */
 .dialog-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente oscuro */
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 4; /* Encima de todo */
+  z-index: 4;
 }
 
 .dialog {
-  background: #16212e; /* Fondo oscuro plano */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil */
+  background: #16212e;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.5rem;
   padding: 2rem;
   text-align: center;
@@ -449,7 +499,7 @@ button:disabled {
   background: #3a8dff;
   color: #ffffff;
   cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 1rem;
   transition: background 0.3s ease, transform 0.3s ease;
 }
@@ -459,95 +509,40 @@ button:disabled {
   transform: translateY(-2px);
 }
 
+/* Opciones de Pago (contenedor) */
 .payment-options {
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Espacio entre botones */
+  gap: 1rem;
 }
 
-.payment-option-button {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem; /* Espacio entre icono y texto */
-  padding: 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.5rem;
-  background: rgba(36, 59, 83, 0.7);
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
-  font-size: 1.1rem;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
-.payment-option-button i {
-  /* Ajusta el tamaño y color de los iconos si es necesario */
-  color: #fff;
-}
-
-.payment-option-button:hover {
-  background: #3a8dff; /* Color de fondo al pasar el ratón */
-  border-color: #1e6fd8;
-  transform: translateY(-2px);
-}
-
-.payment-option-button.selected {
-  background: #1e6fd8;
-  border-color: #0056b3;
-}
-
-/* Continuar botón */
-.continue-button-container {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
-.continue-button-container button {
-  padding: 0.75rem 2rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #3a8dff;
-  color: #ffffff;
-  cursor: pointer;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.continue-button-container button:hover {
-  background: #1e6fd8;
-  transform: translateY(-2px);
-}
-
-/* Estilo general para el modal */
+/* Modal */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente oscuro */
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* Asegura que esté encima de todo */
+  z-index: 9999;
 }
 
-/* Contenido del modal */
 .modal-content {
-  background-color: #1a2a38; /* Fondo oscuro plano */
-  color: #A0E4FF; /* Texto azul claro */
+  background-color: #1a2a38;
+  color: #A0E4FF;
   padding: 2rem;
-  border-radius: 0.5rem; /* Bordes redondeados */
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra para efecto flotante */
+  border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
   text-align: center;
   width: 90%;
-  max-width: 400px; /* Ancho máximo */
-  animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+  max-width: 400px;
+  animation: fadeIn 0.3s ease-in-out;
   position: relative;
 }
 
-/* Animación de entrada */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -559,40 +554,36 @@ button:disabled {
   }
 }
 
-/* Botón de cerrar (icono 'X') */
 .modal-content .close {
   position: absolute;
   top: 1rem;
   right: 1rem;
   font-size: 1.5rem;
-  color: #A0E4FF; /* Azul claro */
+  color: #A0E4FF;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .modal-content .close:hover {
-  color: #FF6666; /* Rojo suave al pasar el ratón */
+  color: #FF6666;
 }
 
-/* Título del modal */
 .modal-content h3 {
   margin-bottom: 1rem;
   font-size: 1.8rem;
   font-weight: bold;
 }
 
-/* Texto del mensaje */
 .modal-content p {
   margin-bottom: 1.5rem;
   font-size: 1rem;
   line-height: 1.5;
 }
 
-/* Botón de acción (Cerrar) */
 .retry-button {
   padding: 0.75rem 1.5rem;
-  background: #3a8dff; /* Azul plano */
-  color: #ffffff; /* Texto blanco */
+  background: #3a8dff;
+  color: #ffffff;
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -606,15 +597,15 @@ button:disabled {
 }
 
 .retry-button:hover {
-  background: #1e6fd8; /* Azul más oscuro al hover */
+  background: #1e6fd8;
   transform: translateY(-2px);
 }
 
-/* Icono del botón */
 .retry-button i {
   font-size: 1.2rem;
 }
 
+/* Sección de Productos Relacionados */
 .related-products-title {
   color: #99ccff;
   margin-left: 10rem;
@@ -686,6 +677,13 @@ button:disabled {
     align-items: flex-start;
   }
 
+  .continue-button-container button:enabled {
+    background: #28901a; /* Verde para indicar que está listo */
+    box-shadow: 0 0 10px rgba(58, 141, 255, 0.7);
+    animation: vibrate 0.5s infinite; /* <-- ¡VIBRACIÓN INFINITA! */
+  }
+
+
   .gift-card-image {
     width: 6rem;
   }
@@ -699,9 +697,20 @@ button:disabled {
     margin-top: 0.625rem;
   }
 
+  .payment-option-button {
+    gap: 0.3rem; /* Reducir aún más el espacio en móviles pequeños */
+  }
+
   .payment-info button,
   .discount-section button {
     font-size: 0.8rem;
+  }
+
+  /* Misma regla de seleccionado para móviles */
+  .payment-option-button.selected {
+    background-color: #28901a !important;
+    color: #fefefe !important;
+    transform: scale(1.05) !important;
   }
 
   .terms-text {
