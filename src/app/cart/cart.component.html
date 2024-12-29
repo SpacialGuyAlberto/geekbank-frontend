@@ -60,6 +60,7 @@
               <span>TIGO MONEY</span>
             </button>
 
+
             <button
               class="payment-option-button"
               (click)="selectOption('BALANCE')"
@@ -110,7 +111,7 @@
         </div>
 
         <form (ngSubmit)="continueWithOption()">
-          <button type="submit" [disabled]="!selectedOption" class="payment-button">
+          <button type="submit" class="payment-button" [disabled]="!selectedOption">
             Continuar con el Pago
           </button>
         </form>
