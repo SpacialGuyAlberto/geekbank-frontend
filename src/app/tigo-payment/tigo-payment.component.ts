@@ -535,10 +535,31 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   confirmEmailPrompt() {
-    // Realizar la verificación después de ingresar el email
-    this.showEmailPrompt = false;
-    this.confirmVerification();
+    if (this.emailForKey || this.wantsSMSKey) {
+      // Lógica para procesar el email o SMS
+      this.showEmailPrompt = false;
+      this.confirmVerification();
+    } else {
+      // Opcional: Mostrar un mensaje de error si no se ha ingresado email ni seleccionado SMS
+      this.errorMessage = 'Debe proporcionar un correo electrónico o seleccionar enviar por SMS.';
+    }
   }
+
+
+  hideEmailPrompt(): void {
+    // Establece la propiedad showEmailPrompt en false para ocultar el modal
+    this.showEmailPrompt = false;
+
+    // Limpia los campos relacionados al prompt de email (opcional)
+    this.emailForKey = '';
+    this.wantsSMSKey = false;
+
+    // Limpia mensajes de éxito o error relacionados (opcional)
+    this.successMessage = '';
+    this.errorMessage = '';
+  }
+
+
 
   reloadPage(): void {
     window.location.reload();

@@ -115,39 +115,57 @@
       </ng-container>
 
       <!-- Prompt de entrega de clave por email o SMS -->
+      <!-- Prompt de entrega de clave por email o SMS -->
       <div class="email-prompt-modal" *ngIf="showEmailPrompt">
         <div class="email-prompt-content">
           <h3>Opciones de entrega de la clave</h3>
 
-          <!-- Campo de Email Directo -->
-          <div class="form-group">
-            <label for="emailForKey">Email</label>
-            <input
-              type="email"
-              id="emailForKey"
-              [(ngModel)]="emailForKey"
-              name="emailForKey"
-              required
-              email
-              class="retro-input"
-            />
-          </div>
+          <!-- Formulario para Email y SMS -->
+          <form #emailPromptForm="ngForm">
+            <!-- Campo de Email Directo -->
+            <div class="form-group">
+              <label for="emailForKey">Email</label>
+              <input
+                type="email"
+                id="emailForKey"
+                [(ngModel)]="emailForKey"
+                name="emailForKey"
+                required
+                email
+                #emailForKeyModel="ngModel"
+                class="retro-input"
+              />
+              <!-- Mensaje de error si el email no es válido -->
+              <div *ngIf="emailForKeyModel.invalid && (emailForKeyModel.dirty || emailForKeyModel.touched)" class="error-message">
+                <small *ngIf="emailForKeyModel.errors?.['required']">El correo electrónico es requerido.</small>
+                <small *ngIf="emailForKeyModel.errors?.['email']">Por favor, introduce un correo electrónico válido.</small>
+              </div>
+            </div>
 
-          <!-- Opción de envío por SMS -->
-          <div class="form-group">
-            <label class="custom-checkbox">
-              <input type="checkbox" [(ngModel)]="wantsSMSKey" name="wantsSMSKey" />
-              <span class="checkmark"></span>
-              Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} <span class="sms-cost">(Costo extra: 1 Lps)</span>
-            </label>
-          </div>
+            <!-- Opción de envío por SMS -->
+            <div class="form-group">
+              <label class="custom-checkbox">
+                <input type="checkbox" [(ngModel)]="wantsSMSKey" name="wantsSMSKey" />
+                <span class="checkmark"></span>
+                Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} <span class="sms-cost">(Costo extra: 1 Lps)</span>
+              </label>
+            </div>
 
-          <!-- Botones -->
-          <div class="button-group">
-            <button class="primary-button" (click)="confirmEmailPrompt()">Continuar</button>
-          </div>
+            <!-- Botones -->
+            <div class="button-group">
+              <button
+                type="button"
+                class="primary-button"
+                (click)="confirmEmailPrompt()"
+                [disabled]="!emailPromptForm.form.valid"
+              >
+                Continuar
+              </button>
+            </div>
+          </form>
         </div>
       </div>
+
 
       <!-- Mensajes de éxito/error generales -->
       <div *ngIf="successMessage" class="success-message">
