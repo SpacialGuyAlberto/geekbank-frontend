@@ -1,11 +1,20 @@
+<!-- tigo-payment.component.html -->
+
+<!-- Modal Principal -->
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="handleClose()">&times;</span>
     <h2>Express Tigo Checkout</h2>
 
-    <!-- Spinner de carga -->
-    <div *ngIf="showSpinner" class="spinner-container">
-      <div class="spinner"></div>
+    <!-- Spinner de carga personalizado -->
+    <div *ngIf="showSpinner" class="loading-indicator">
+      <div class="bars">
+        <div class="bar bar1"></div>
+        <div class="bar bar2"></div>
+        <div class="bar bar3"></div>
+        <div class="bar bar4"></div>
+        <div class="bar bar5"></div>
+      </div>
       <p>Cargando, por favor espere...</p>
     </div>
 
@@ -51,7 +60,7 @@
         <div class="cancelled-message">
           <h3>Producto no disponible</h3>
           <p>El producto que intentas comprar no está disponible por el momento. Por favor, intenta nuevamente más tarde con el número de referencia de tu pago.</p>
-          <button type="button" class="retry-button" (click)="reloadPage()">
+          <button type="button" class="primary-button" (click)="reloadPage()">
             <i class="fa-solid fa-arrows-rotate"></i> Reintentar
           </button>
         </div>
@@ -59,7 +68,7 @@
 
       <!-- Formulario de verificación manual -->
       <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== 'CANCELLED'">
-        <form *ngIf="!paymentReferenceNumber" (ngSubmit)="submitManualVerification()">
+        <form *ngIf="!paymentReferenceNumber" (ngSubmit)="submitManualVerification()" #verificationForm="ngForm">
           <h3>Verificar Pago</h3>
           <div class="form-group">
             <label for="refNumber">Número de Referencia</label>
@@ -72,17 +81,31 @@
               class="retro-input"
             />
           </div>
+
+          <!-- Mensaje de verificación -->
+          <div *ngIf="isPaymentVerified || manualVerificationError" class="verification-message">
+            <p *ngIf="isPaymentVerified" class="success-message">
+              Su pago ha sido verificado. Haga clic en el botón Continuar.
+            </p>
+            <p *ngIf="!isPaymentVerified && manualVerificationError" class="error-message">
+              {{ manualVerificationError }}
+            </p>
+          </div>
+
+          <!-- Botones -->
           <div class="button-group">
-            <button type="submit" class="primary-button">Verificar Pago</button>
+            <button type="submit" class="primary-button" [disabled]="!verificationForm.form.valid || isPaymentVerified">
+              Verificar Pago
+            </button>
             <button type="button" class="cancel-button" (click)="hideManualVerification()">Cancelar</button>
           </div>
-          <div *ngIf="manualVerificationError" class="error-message">
-            {{ manualVerificationError }}
-          </div>
-          <div *ngIf="manualVerificationSuccess" class="success-message">
+
+          <!-- Mensajes de éxito adicional -->
+          <div *ngIf="manualVerificationSuccess && isPaymentVerified" class="success-message">
             {{ manualVerificationSuccess }}
           </div>
 
+          <!-- Instrucciones -->
           <div class="instructions">
             <p><strong>Asegúrate, por favor, de que tu pago haya sido enviado al número:</strong> <strong>+504 9663 1493</strong>.</p>
             <p>Una vez que el pago se haya realizado, copia el número de referencia y colócalo en este campo.</p>
@@ -96,51 +119,30 @@
         <div class="email-prompt-content">
           <h3>Opciones de entrega de la clave</h3>
 
+          <!-- Campo de Email Directo -->
           <div class="form-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="wantsEmailKey" />
-              Enviar la clave por correo electrónico.
-            </label>
-          </div>
-
-          <div *ngIf="wantsEmailKey">
-            <ng-container *ngIf="authService.isLoggedIn()">
-              <p>Se utilizará el email: {{ userEmail }}</p>
-              <p *ngIf="!userEmail">No se encontró email en su cuenta, por favor ingrese uno:</p>
-              <div *ngIf="!userEmail" class="form-group">
-                <label for="emailForKey">Email</label>
-                <input
-                  type="email"
-                  id="emailForKey"
-                  [(ngModel)]="emailForKey"
-                  required
-                  class="retro-input"
-                />
-              </div>
-            </ng-container>
-            <ng-container *ngIf="!authService.isLoggedIn()">
-              <p>Por favor ingrese su email:</p>
-              <div class="form-group">
-                <label for="emailForKey">Email</label>
-                <input
-                  type="email"
-                  id="emailForKey"
-                  [(ngModel)]="emailForKey"
-                  required
-                  class="retro-input"
-                />
-              </div>
-            </ng-container>
+            <label for="emailForKey">Email</label>
+            <input
+              type="email"
+              id="emailForKey"
+              [(ngModel)]="emailForKey"
+              name="emailForKey"
+              required
+              email
+              class="retro-input"
+            />
           </div>
 
           <!-- Opción de envío por SMS -->
           <div class="form-group">
-            <label>
-              <input type="checkbox" [(ngModel)]="wantsSMSKey" />
-              Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} (Costo extra: 1 Lps)
+            <label class="custom-checkbox">
+              <input type="checkbox" [(ngModel)]="wantsSMSKey" name="wantsSMSKey" />
+              <span class="checkmark"></span>
+              Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} <span class="sms-cost">(Costo extra: 1 Lps)</span>
             </label>
           </div>
 
+          <!-- Botones -->
           <div class="button-group">
             <button class="primary-button" (click)="confirmEmailPrompt()">Continuar</button>
           </div>

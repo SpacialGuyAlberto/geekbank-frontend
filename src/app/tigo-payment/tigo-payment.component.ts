@@ -110,12 +110,15 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   conversionError: string = '';
 
   // Variables para el prompt de envío de clave por email
-  wantsEmailKey: boolean = false;
+  // Eliminamos wantsEmailKey y mostramos el campo de email directamente
   wantsSMSKey: boolean = false;
   showEmailPrompt: boolean = false;
   emailForKey: string = '';
   isEmailPromptComplete: boolean = false;
   @Input() totalAmount!: number;
+
+  // Nueva variable para rastrear la verificación del pago
+  isPaymentVerified: boolean = false;
 
   constructor(
     private accountService: AccountService,
@@ -186,6 +189,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.manualVerificationError = '';
     this.manualVerificationSuccess = '';
     this.unmatchedPaymentResponse = null;
+    this.isPaymentVerified = false;
   }
 
   loadExchangeRate(): void {
@@ -213,22 +217,21 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Si no hemos completado el prompt de email, lo mostramos
-    if (!this.isEmailPromptComplete) {
-      this.showEmailPrompt = true;
-      return;
-    }
+    // Mostrar el prompt de email directamente
+    this.showEmailPrompt = true;
+  }
 
+  async confirmVerification(): Promise<void> {
+    // Realizar la verificación del pago
     const refNumber = this.manualVerificationData.refNumber;
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest;
+
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId,
         guestId: this.guestId,
-        email: this.wantsEmailKey
-          ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
-          : '',
+        email: this.userEmail || this.emailForKey,
         phoneNumber: phoneNumber,
         products: [{
           kinguinId: this.productId,
@@ -248,9 +251,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           userId: this.userId,
           phoneNumber: phoneNumber,
-          email: this.wantsEmailKey
-            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
-            : '',
+          email: this.userEmail || this.emailForKey,
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -268,10 +269,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           userId: this.userId,
           phoneNumber: phoneNumber,
-          email: this.wantsEmailKey
-            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
-            : '',
-
+          email: this.userEmail || this.emailForKey,
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -291,7 +289,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: phoneNumber,
-          email: this.wantsEmailKey ? this.emailForKey : undefined,
+          email: this.emailForKey,
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
@@ -309,10 +307,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: phoneNumber,
-          email: this.wantsEmailKey
-            ? (this.userEmail ? this.userEmail : (this.emailForKey || ''))
-            : '',
-
+          email: this.emailForKey,
           products: [{
             kinguinId: -1,
             qty: 1,
@@ -334,32 +329,45 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
     const expectedAmount = this.totalPrice;
 
-    const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
+    try {
+      const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
+      if (isVerified) {
+        orderDetails.refNumber = refNumber;
+        this.paymentReferenceNumber = refNumber;
+        this.tigoPaymentService.initializePayment(orderDetails);
+        // No mostrar el spinner aquí
+        this.showSpinner = true;
+        this.isPaymentVerified = true; // Marca como verificado
+        this.manualVerificationSuccess = 'Su pago ha sido verificado. Haga clic en el botón Continuar.';
+        this.manualVerificationError = '';
 
-
-    if (isVerified) {
-      orderDetails.refNumber = refNumber;
-      this.paymentReferenceNumber = refNumber;
-      this.tigoPaymentService.initializePayment(orderDetails);
-      this.showSpinner = true;
-      if (this.unmatchedPaymentResponse){
-
-        if (this.unmatchedPaymentResponse.difference === 0){
-          this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
+        if (this.unmatchedPaymentResponse) {
+          if (this.unmatchedPaymentResponse.difference === 0) {
+            // Preparar para la navegación
+            // Esperar a que el usuario haga clic en Continuar
+            this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
             this.currentTransaction = transaction;
-            if (this.currentTransaction?.transactionNumber) {
-              // Ir directo a la página de confirmación
-              this.router.navigate(['/purchase-confirmation'], {
-                queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
-              });
-            }
+          if (this.currentTransaction?.transactionNumber) {
+            // Ir directo a la página de confirmación
+            this.router.navigate(['/purchase-confirmation'], {
+              queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
+            });
+          }
           });
-        } else if (this.unmatchedPaymentResponse.difference < 0){
-          this.showSpinner = false;
-          this.insufficientPaymentAmount = "El pago ingresado fue insuficiente. Comunicate con nuestro servicio al cliente para efectuar la devolucion de tu pago o compensarlo con otro pago."
-          this.showInsufficientPaymentAmount = true;
+          } else if (this.unmatchedPaymentResponse.difference < 0) {
+            this.insufficientPaymentAmount = "El pago ingresado fue insuficiente. Comunícate con nuestro servicio al cliente para efectuar la devolución de tu pago o compensarlo con otro pago.";
+            this.showInsufficientPaymentAmount = true;
+          }
         }
+      } else {
+        this.isPaymentVerified = false;
+        this.manualVerificationError = 'Su código de referencia parece ser incorrecto, recargue la pagina e intente de nuevo por favor.';
+        this.manualVerificationSuccess = '';
       }
+    } catch (error) {
+      this.isPaymentVerified = false;
+      this.manualVerificationError = 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+      this.manualVerificationSuccess = '';
     }
   }
 
@@ -526,38 +534,21 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleApplyDifferenceAsBalance(){
-    const loggedIn = this.authService.isLoggedIn()
-  }
-
   confirmEmailPrompt() {
-    if (this.wantsEmailKey) {
-      if (this.authService.isLoggedIn()) {
-        // Usuario loggeado, ya tenemos this.userEmail
-        this.isEmailPromptComplete = true;
-        this.showEmailPrompt = false;
-        this.submitManualVerification();
-      } else {
-        // Usuario no loggeado, debe ingresar email
-        if (!this.emailForKey) {
-          return; // No hace nada si no hay email
-        }
-        this.isEmailPromptComplete = true;
-        this.showEmailPrompt = false;
-        this.submitManualVerification();
-      }
-    } else {
-      // No quiere email
-      this.isEmailPromptComplete = true;
-      this.showEmailPrompt = false;
-      this.submitManualVerification();
-    }
+    // Realizar la verificación después de ingresar el email
+    this.showEmailPrompt = false;
+    this.confirmVerification();
   }
 
   reloadPage(): void {
     window.location.reload();
   }
 
+  isEmailValid(): boolean {
+    // Validación simple de email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(this.emailForKey);
+  }
 
   ngOnDestroy(): void {
     if (this.exchangeRateSubscription) {
