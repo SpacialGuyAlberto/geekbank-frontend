@@ -15,13 +15,6 @@
 
     <!-- Tabla de Transacciones -->
     <div class="transaction-table" *ngIf="!isLoading && !errorMessage">
-      <div class="transaction-header">
-        <span class="header-name">Nombre</span>
-        <span class="header-id">ID de Transacción</span>
-        <span class="header-date">Fecha</span>
-        <span class="header-status">Estado</span>
-        <span class="header-amount">Monto</span>
-      </div>
 
       <!-- Fila por cada producto de la transacción reciente -->
       <div *ngIf="recentTransaction">
@@ -59,12 +52,12 @@
 
     <!-- Botón para revelar keys si existen -->
     <div *ngIf="(recentTransaction?.keys?.length ?? 0) > 0" class="keys-button-container">
-      <button (click)="openKeysModal()">Revelar keys</button>
+      <button (click)="openKeysModal()">Revelar claves</button>
     </div>
     <!-- Modal para mostrar las keys -->
     <div class="modal-overlay" *ngIf="showKeysModal">
       <div class="modal-content">
-        <h3 class="modal-title">Keys obtenidas</h3>
+        <h3 class="modal-title">Claves obtenidas</h3>
         <ul>
           <li *ngFor="let key of recentTransaction?.keys!">
             {{ key }}
@@ -105,7 +98,7 @@
             <div class="gift-card-content">
               <h3 class="gift-card-title">{{ card.name }}</h3>
               <div class="gift-card-price">
-                <span>{{ card.price | currency }}</span>
+                <span>{{ card.priceHNL | currency: "HNL " }}</span>
               </div>
             </div>
           </div>
