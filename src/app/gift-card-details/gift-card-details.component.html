@@ -118,7 +118,24 @@
   </div>
 </div>
 
+
 <div class="suggestions-container" style="position: relative;">
+  <!-- Encabezado de Sugerencias con Texto Animado -->
+  <div class="suggestions-header">
+    <ng-container *ngIf="isLoading; else suggestionsText">
+      <div class="loading-text">
+        <span class="loading-spinner"></span>
+        Cargando sugerencias personalizadas
+      </div>
+    </ng-container>
+    <ng-template #suggestionsText>
+      <div class="suggestions-text">
+        También te podría interesar
+      </div>
+    </ng-template>
+  </div>
+
+  <!-- Indicador de Carga Existente -->
   <div *ngIf="isLoading" class="loading-indicator">
     <div class="bars">
       <div class="bar bar1"></div>
@@ -172,10 +189,3 @@
   </div>
 </div>
 
-<app-payment
-  *ngIf="isPaymentModalOpen"
-  (closeModal)="closePaymentModal()"
-  [productId]="kinguinId"
-  [totalPrice]="getTotalPrice()"
-  [isManualTransaction]="isManualTransaction"
-></app-payment>

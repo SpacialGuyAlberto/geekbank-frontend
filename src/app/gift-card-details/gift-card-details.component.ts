@@ -1,9 +1,9 @@
 // src/app/gift-card-details/gift-card-details.component.ts
-import { ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { KinguinService } from "../kinguin.service";
 import { KinguinGiftCard, Screenshot, SystemRequirement } from "../models/KinguinGiftCard";
-import { CurrencyPipe } from "@angular/common";
+import {CurrencyPipe, ViewportScroller} from "@angular/common";
 import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
 import { CartService } from '../cart.service';
@@ -53,7 +53,7 @@ interface Language {
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
 })
-export class GiftCardDetailsComponent implements OnInit {
+export class GiftCardDetailsComponent implements OnInit, AfterViewInit{
 
   suggestionLoading: boolean = false;
   giftCard: KinguinGiftCard | undefined;
@@ -118,7 +118,8 @@ export class GiftCardDetailsComponent implements OnInit {
     private currencyService: CurrencyService,
     private feedbackService: FeedbackService,
     private wishListService: WishListService,
-    private http: HttpClient
+    private http: HttpClient,
+    private viewPortScroller: ViewportScroller
   ) { }
 
   @HostListener('window:load', ['$event'])
@@ -172,6 +173,13 @@ export class GiftCardDetailsComponent implements OnInit {
       this.cartItemCount = count;
       this.cartItemCountChange.emit(this.cartItemCount);
     });
+  }
+
+
+  ngAfterViewInit(): void {
+    this.viewPortScroller.scrollToPosition([0, 0]);
+    // O, si prefieres usar window.scrollTo:
+    // window.scrollTo(0, 0);
   }
 
   private checkIfInWishlist(kinguinId: number): void {

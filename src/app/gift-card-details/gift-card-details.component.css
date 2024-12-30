@@ -377,6 +377,54 @@ body, html {
 .suggestions-container{
   margin-top: -7rem;
 }
+
+/* Estilos para el Encabezado de Sugerencias */
+.suggestions-header {
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 2;
+}
+
+.loading-text, .suggestions-text {
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-family: var(--font-primary);
+  color: var(--highlight-color);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Animación de Fade In */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilos para el Spinner de Carga */
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid var(--highlight-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Animación de Rotación para el Spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Opcional: Estilos para "También te podría interesar" */
+.suggestions-text {
+  font-weight: bold;
+  color: var(--accent-color);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
 /* =======================================
    Responsividad
    ======================================= */

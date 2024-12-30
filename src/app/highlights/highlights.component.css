@@ -1,22 +1,21 @@
-/* highlights-carousel.css */
-
 /* Contenedor del Carousel */
 .highlights-carousel {
+  position: relative; /* Para posicionar las flechas y la barra de progreso */
   display: flex;
   max-width: 75%;
   height: 64%;
-  border-radius: 0.9375rem; /* 15px */
+  border-radius: 0.9375rem;
   overflow: hidden;
-  box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* 8px y 5px */
+  box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7);
   margin-left: auto;
-  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px */
+  border: 0.125rem solid rgba(255, 255, 255, 0.3);
   transition: transform 0.5s ease, border-color 0.5s ease;
 }
 
 .highlights-carousel:hover {
   transform: scale(1.02);
   border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.3); /* 12px y 30px */
+  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.3);
 }
 
 /* Track del Carousel */
@@ -31,40 +30,20 @@
   position: relative;
   min-width: 100%;
   background: none;
-  border-radius: 0.9375rem; /* 15px */
+  border-radius: 0.9375rem;
   overflow: hidden;
-  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5); /* 8px y 20px */
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.5);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border: 0.125rem solid rgba(136, 214, 108, 0.4); /* 2px */
-}
-
-.highlight-card::before {
-  content: '';
-  position: absolute;
-  top: -0.125rem; /* 2px */
-  left: -0.125rem;
-  right: -0.125rem;
-  bottom: -0.125rem;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(255, 69, 0, 0.8), rgba(255, 215, 0, 0.8), rgba(50, 205, 50, 0.8), rgba(30, 144, 255, 0.8), rgba(138, 43, 226, 0.8));
-  background-size: 200% 200%;
-  opacity: 0; /* Invisible por defecto */
-  transition: opacity 0.4s ease, background-position 0.5s ease;
-  z-index: -1; /* Detrás del contenido */
+  border: 0.125rem solid rgba(136, 214, 108, 0.4);
 }
 
 .highlight-card:hover {
-  transform: translateY(-0.625rem) scale(1.05); /* -10px y escala */
-  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.5); /* 12px y 30px */
-  border-color: transparent; /* Sin interferencia con el gradiente del ::before */
-}
-
-.highlight-card:hover::before {
-  opacity: 1; /* Mostrar gradiente */
-  background-position: 100% 100%; /* Movimiento del gradiente */
+  transform: translateY(-0.625rem) scale(1.05);
+  box-shadow: 0 0.75rem 1.875rem rgba(255, 255, 255, 0.5);
+  border-color: transparent;
 }
 
 /* Imagen del Carousel */
@@ -72,133 +51,90 @@
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 0.625rem; /* 10px */
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6); /* 4px y 10px */
+  border-radius: 0.625rem;
+  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.6);
   transition: box-shadow 0.4s ease;
 }
 
-.highlight-card-content {
-  padding: 1.25rem; /* 20px */
-  text-align: center;
-}
-
-.highlight-card-title {
-  font-family: var(--font-secondary);
-  font-size: 1rem;
-  margin: 0.625rem 0 0.3125rem; /* 10px y 5px */
-  color: #00d4ff;
-  text-transform: uppercase;
-  letter-spacing: 0.0625rem; /* 1px */
-}
-
-.highlight-card-price {
-  font-size: 1.2rem;
-  color: var(--accent-color);
-  font-weight: bold;
-  margin-bottom: 0.625rem; /* 10px */
-}
-
-/* Hover Effects */
 .highlight-card:hover .highlight-card-image {
-  box-shadow: 0 0.5rem 1.875rem rgba(0, 255, 255, 0.7); /* 8px y 30px */
+  box-shadow: 0 0.5rem 1.875rem rgba(0, 255, 255, 0.7);
 }
 
-.highlight-card:hover .highlight-card-title {
-  text-shadow: 0 0 0.9375rem rgba(0, 255, 255, 0.8); /* 15px */
+/* FLECHAS DELICADAS */
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+  padding: 0.5rem;
+  user-select: none; /* Evita selección de texto */
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+  /* Sin fondo ni borde para que no sea “elipsoide” */
+  background: none;
+  border: none;
 }
 
-/* Adaptación para pantallas medianas (tablets, por ejemplo) */
-@media (max-width: 1024px) {
-  .highlights-carousel {
-    max-width: 60%;
-    justify-content: center;
-    margin: auto;
-  }
+.carousel-arrow:hover {
+  opacity: 1;
 }
 
-/* Adaptación para pantallas pequeñas (smartphones) */
+.carousel-arrow.left {
+  left: 1rem;
+}
+
+.carousel-arrow.right {
+  right: 1rem;
+}
+
+/* BARRA DE PROGRESO (línea de tiempo) */
+.progress-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #fff;
+  width: 0;
+  transition: width 0.1s linear;
+}
+
+/* Adaptación para pantallas pequeñas, etc. */
 @media (max-width: 768px) {
   .highlights-carousel {
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centra verticalmente las imágenes */
-    width: 100%; /* Tamaño completo del contenedor */
-    height: 400px; /* Altura fija para el carrusel */
-    border-radius: 0.9375rem; /* Bordes redondeados */
-    overflow: hidden;
-    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombra */
+    max-width: 100%;
+    height: 400px;
     margin-bottom: 5rem;
-    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Borde del carrusel */
   }
 
   .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%; /* Ancho completo del track */
-    height: 100%; /* Igual altura que el carrusel */
+    width: 100%;
+    height: 100%;
   }
 
   .highlight-card {
-    position: relative;
-    flex: 0 0 100%; /* Cada tarjeta ocupa todo el carrusel */
-    height: 100%; /* Altura completa */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 0.9375rem; /* Bordes redondeados */
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    flex: 0 0 100%;
+    height: 100%;
   }
 
   .highlight-card-image {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Asegura que la imagen cubra completamente el espacio */
-    transition: transform 0.4s ease;
+    object-fit: cover;
   }
-
 }
 
-/* Adaptación adicional para pantallas muy pequeñas */
 @media (max-width: 480px) {
-  .highlights-carousel {
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centra verticalmente las imágenes */
-    width: 100%; /* Tamaño completo del contenedor */
-    height: 400px; /* Altura fija para el carrusel */
-    border-radius: 0.9375rem; /* Bordes redondeados */
-    overflow: hidden;
-    box-shadow: 0 0.5rem 0.3125rem rgba(0, 0, 0, 0.7); /* Sombra */
-    margin-bottom: 1rem;
-    margin-top: -5rem;
-    border: 0.125rem solid rgba(255, 255, 255, 0.3); /* Borde del carrusel */
+  .carousel-arrow {
+    font-size: 1.5rem;
   }
-
-  .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    width: 100%; /* Ancho completo del track */
-    height: 100%; /* Igual altura que el carrusel */
-  }
-
-  .highlight-card {
-    position: relative;
-    flex: 0 0 100%; /* Cada tarjeta ocupa todo el carrusel */
-    height: 100%; /* Altura completa */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 0.9375rem; /* Bordes redondeados */
-    transition: transform 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  .highlight-card-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* Asegura que la imagen cubra completamente el espacio */
-    transition: transform 0.4s ease;
-  }
-
 }
