@@ -1,7 +1,14 @@
-
 <div class="highlights-carousel">
-  <div class="carousel-track" id="carouselTrack">
-    <div *ngFor="let product of highlights" class="highlight-card" (click)="viewDetails(product)">
+  <!-- Flecha para ir al slide anterior -->
+  <div class="carousel-arrow left" (click)="moveToPrevSlide()">
+    &#10094;
+  </div>
+
+  <div class="carousel-track">
+    <div
+      *ngFor="let product of highlights"
+      class="highlight-card"
+      (click)="viewDetails(product)">
       <img
         [src]="product.selectedImage"
         [alt]="product.name"
@@ -9,5 +16,15 @@
         loading="lazy"
       >
     </div>
+  </div>
+
+  <!-- Flecha para ir al siguiente slide -->
+  <div class="carousel-arrow right" (click)="moveToNextSlide()">
+    &#10095;
+  </div>
+
+  <!-- Barra de progreso (indicador de tiempo) -->
+  <div class="progress-container">
+    <div class="progress-bar" [style.width.%]="progress"></div>
   </div>
 </div>

@@ -1,3 +1,5 @@
+/* tigo-payment.component.css */
+
 /* Reset básico y configuración de box-sizing */
 * {
   margin: 0;
@@ -113,9 +115,17 @@ body {
 /* Título del modal */
 .modal-content h2 {
   color: #f9c74f;
-  font-size: 1.5rem;
+  font-size: 1.8rem; /* Aumentar tamaño de fuente */
   margin-bottom: 1.5rem;
   text-align: center;
+  font-weight: 500;
+}
+
+/* Subtítulos */
+.modal-content h3, .modal-content h4 {
+  color: #f9c74f;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
   font-weight: 500;
 }
 
@@ -123,23 +133,22 @@ body {
 .modal-content form {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Alinear a la izquierda */
 }
 
 /* Etiquetas */
 .modal-content label {
-  display: block;
-  font-size: 1rem;
+  display: flex;
+  align-items: center; /* Alinear verticalmente */
+  font-size: 1.1rem; /* Aumentar tamaño de fuente */
   color: #e0e0e0;
   margin-bottom: 0.625rem;
   font-weight: 500;
-  text-align: center;
 }
 
 /* Inputs */
 .modal-content .form-group .retro-input {
-  width: 80%;
-  max-width: 25rem;
+  width: 100%; /* Ajustar al 100% del contenedor */
   padding: 0.875rem;
   background-color: #1c1c1c;
   color: #e0e0e0;
@@ -167,7 +176,7 @@ body {
 .modal-content .primary-button,
 .modal-content .cancel-button {
   padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
+  font-size: 1rem; /* Aumentar tamaño de fuente */
   border: none;
   border-radius: 4px;
   text-transform: uppercase;
@@ -196,6 +205,57 @@ body {
   transform: translateY(-0.125rem);
 }
 
+/* Checkbox personalizado */
+.custom-checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.custom-checkbox input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-checkbox .checkmark {
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+  background-color: #1c1c1c;
+  border: 2px solid #555;
+  border-radius: 4px;
+  transition: background-color 0.3s, border-color 0.3s;
+  margin-right: 0.5rem;
+}
+
+.custom-checkbox input:checked + .checkmark {
+  background-color: #f9c74f;
+  border-color: #f9c74f;
+}
+
+.custom-checkbox .checkmark::after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+}
+
+.custom-checkbox .checkmark::after {
+  left: 0.5rem;
+  top: 0.2rem;
+  width: 0.3rem;
+  height: 0.75rem;
+  border: solid white;
+  border-width: 0 0.2rem 0.2rem 0;
+  transform: rotate(45deg);
+}
+
 /* Placeholder estilizado */
 .modal-content textarea::placeholder,
 .modal-content .form-group .retro-input::placeholder {
@@ -206,14 +266,158 @@ body {
 /* Mensajes de error y éxito */
 .error-message {
   color: #dc3545;
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   margin-top: 0.5rem;
 }
 
 .success-message {
   color: #28a745;
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   margin-top: 0.5rem;
+}
+
+/* Mensaje de verificación */
+.verification-message {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Instrucciones */
+.instructions {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+/* Prompts */
+.email-prompt-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.95); /* Fondo semitransparente más oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100; /* Superior al modal principal */
+  padding: 1rem;
+}
+
+.email-prompt-content {
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.email-prompt-content h3 {
+  color: #f9c74f;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.email-prompt-content .form-group {
+  margin-bottom: 1rem;
+}
+
+.email-prompt-content label {
+  font-size: 1.1rem;
+}
+
+/* Costo SMS */
+.sms-cost {
+  font-size: 0.9rem;
+  color: #f9c74f;
+  margin-left: 0.5rem;
+}
+
+/* Spinner personalizado */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(4px * var(--scale-factor, 1));
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor, 1));
+  height: calc(20px * var(--scale-factor, 1));
+  background-color: var(--highlight-color, #f9c74f);
+  border-radius: calc(4px * var(--scale-factor, 1));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor));
+  height: calc(20px * var(--scale-factor));
+  background-color: var(--highlight-color);
+  border-radius: calc(4px * var(--scale-factor));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar1 {
+  background-color: var(--highlight-color-1);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
+  animation-delay: -0.4s;
+}
+
+.bar2 {
+  background-color: var(--highlight-color-2);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
+  animation-delay: -0.2s;
+}
+
+.bar3 {
+  background-color: var(--highlight-color-3);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
+  animation-delay: 0s;
+}
+
+.bar4 {
+  background-color: var(--highlight-color-4);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
+  animation-delay: 0.2s;
+}
+
+.bar5 {
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse-bars {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
 }
 
 /* Responsividad */
@@ -223,13 +427,17 @@ body {
   }
 
   .modal-content h2 {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .modal-content h3, .modal-content h4 {
+    font-size: 1.2rem;
   }
 
   .modal-content label,
   .modal-content textarea,
   .modal-content input {
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
 
   .modal-content .button-group {
@@ -247,5 +455,13 @@ body {
     width: 100%;
     max-width: none;
   }
-}
 
+  /* Ajustes para prompts */
+  .email-prompt-content {
+    padding: 1rem;
+  }
+
+  .email-prompt-content h3 {
+    font-size: 1.4rem;
+  }
+}
