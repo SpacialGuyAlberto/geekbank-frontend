@@ -50,8 +50,14 @@ export class RecommendationsComponent implements OnInit {
       this.recommendationsService.getRecommendationsByUser(userId).subscribe(
         (data: KinguinGiftCard[]) => {
           this.giftCards = data.map(card => {
-            card.coverImageOriginal = card.images.cover?.thumbnail || '';
-            card.coverImage = card.images.cover?.thumbnail || '';
+            if (card.coverImageOriginal == ''){
+              card.coverImageOriginal = card.images.cover.thumbnail;
+              if (card.images.cover.thumbnail == ''){
+                card.coverImageOriginal = card.coverImage
+              }
+            }
+            // card.coverImageOriginal = card.images.cover?.thumbnail || '';
+            // card.coverImage = card.images.cover?.thumbnail || '';
             card.randomDiscount = this.generatePersistentDiscount(card.name);
             return card;
           });
@@ -64,8 +70,16 @@ export class RecommendationsComponent implements OnInit {
     } else {
       this.recommendationsService.getMostPopular(4).subscribe( (data => {
         this.giftCards = data.map(card => {
-          card.coverImageOriginal = card.images.cover?.thumbnail || '';
-          card.coverImage = card.images.cover?.thumbnail || '';
+          if (card.coverImageOriginal == ''){
+            card.coverImageOriginal = card.images.cover.thumbnail;
+            if (card.images.cover.thumbnail == ''){
+              card.coverImageOriginal = card.coverImage
+            }
+          }
+
+
+          // card.coverImageOriginal = card.images.cover?.thumbnail || '';
+          // card.coverImage = card.images.cover?.thumbnail || '';
           card.randomDiscount = this.generatePersistentDiscount(card.name);
           return card;
         });

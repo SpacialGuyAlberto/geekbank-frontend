@@ -52,8 +52,12 @@ export class SuggestionsComponent implements OnInit {
           this.ngZone.run(() => { // Volver a la zona de Angular para actualizar el estado
             this.giftCards = giftCards.map(card => ({
               ...card,
-              coverImageOriginal: card.images.cover?.thumbnail || '',
-              coverImage: card.images.cover?.thumbnail || '',
+              coverImageOriginal:
+                card.coverImageOriginal ||
+                card.images.cover?.thumbnail ||
+                card.coverImage,
+              coverImage:
+                card.images.cover?.thumbnail || '',
               randomDiscount: this.generatePersistentDiscount(card.name)
             }));
             this.isLoading = false;

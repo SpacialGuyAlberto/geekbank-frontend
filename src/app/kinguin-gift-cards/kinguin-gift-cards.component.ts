@@ -111,8 +111,15 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   fetchMainGiftCard(): void {
     this.mainGiftCards.getMainScreenGiftCardItems().subscribe( (data) => {
       data.map( card => {
-        card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
-        card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
+
+        card.giftcard.coverImageOriginal =
+          card.giftcard.coverImageOriginal ||
+          card.giftcard.images.cover?.thumbnail ||
+          card.giftcard.coverImage,
+            card.giftcard.coverImage =
+        card.giftcard.images.cover?.thumbnail || '',
+
+        // card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
         card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
         this.giftCards.push(card.giftcard)
         console.log(this.giftCards)
@@ -132,6 +139,10 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   fetchGiftCards(): void {
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data.map(card => {
+
+        card.coverImageOriginal = card.coverImageOriginal ||
+          card.images.cover?.thumbnail ||
+          card.coverImage
         // Asignar un descuento persistente a cada tarjeta
         card.randomDiscount = this.generatePersistentDiscount(card.name);
         return card;
@@ -149,8 +160,17 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   loadGiftCards(page: number): void {
     this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
       this.giftCards = data.map(card => {
-        card.coverImageOriginal = card.images.cover?.thumbnail || '';
-        card.coverImage = card.images.cover?.thumbnail || '';
+        // if (card.coverImageOriginal == ''){
+        //   card.coverImageOriginal = card.images.cover.thumbnail;
+        //   if (card.images.cover.thumbnail == ''){
+        //     card.coverImageOriginal = card.coverImage
+        //   }
+        // }
+        card.coverImageOriginal = card.coverImageOriginal ||
+        card.images.cover?.thumbnail ||
+        card.coverImage
+        // card.coverImageOriginal = card.images.cover?.thumbnail || '';
+        // card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
 
