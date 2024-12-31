@@ -71,6 +71,70 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.searchSubject.next(query);
   }
 
+  async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
+    // 1. Recolecta todas las URLs de posibles imágenes
+    const imageUrls: string[] = [];
+
+    // coverImageOriginal
+    if (card.coverImageOriginal) {
+      imageUrls.push(card.coverImageOriginal);
+    }
+
+    // thumbnail
+    if (card.images.cover?.thumbnail) {
+      imageUrls.push(card.images.cover.thumbnail);
+    }
+
+    // coverImage
+    if (card.coverImage) {
+      imageUrls.push(card.coverImage);
+    }
+
+    if (card.images.screenshots && card.images.screenshots.length > 0){
+      imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
+    }
+
+    // screenshots
+    if (card.screenshots && card.screenshots.length > 0) {
+      imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
+    }
+
+    // 2. Eliminar duplicados
+    const uniqueImageUrls = Array.from(new Set(imageUrls));
+
+    // 3. Obtener resolución de cada URL
+    const promises = uniqueImageUrls.map(url =>
+      this.getImageResolution(url)
+        .then(res => ({
+          url,
+          resolution: res.width * res.height,
+        }))
+        .catch(err => {
+          console.error(`Error al cargar la imagen ${url}:`, err);
+          return { url, resolution: 0 }; // Considera 0 si falla
+        })
+    );
+
+    const results = await Promise.all(promises);
+
+    // 4. Filtrar imágenes válidas y ordenar por resolución descendente
+    const validImages = results
+      .filter(img => img.resolution > 0)
+      .sort((a, b) => b.resolution - a.resolution);
+
+    // 5. Retornar la mejor imagen o vacío
+    return validImages.length > 0 ? validImages[0].url : '';
+  }
+
+// Método para obtener dimensiones de una imagen (reutilizado de loadHighlights)
+  getImageResolution(url: string): Promise<{ width: number; height: number }> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve({ width: img.width, height: img.height });
+      img.onerror = reject;
+    });
+  }
   onSearchEnter(): void {
     const query = this.searchQuery.trim().toLowerCase();
     const isFreeFire = query.includes('free fire') || query.includes('freefair') || query.includes('free fair');
@@ -94,14 +158,21 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         console.error('Error en la búsqueda de tarjetas (Enter):', err);
         return of([] as KinguinGiftCard[]);
       })
-    ).subscribe((data: KinguinGiftCard[]) => {
+    ).subscribe(async (data: KinguinGiftCard[]) => {
       console.log('Resultados de búsqueda (Enter):', data);
 
-      const giftCards = data.map(card => {
-        card.coverImageOriginal = card.images.cover?.thumbnail || '';
+      // Procesar las tarjetas de forma asíncrona
+      const giftCardsPromises = data.map(async card => {
+        card.coverImageOriginal =
+          card.coverImageOriginal ||
+          card.images.cover?.thumbnail ||
+          card.coverImage ||
+          await this.getBestImageUrl(card); // Llama a la función asíncrona si no hay imagen disponible
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
+
+      const giftCards = await Promise.all(giftCardsPromises);
 
       this.searchResults.emit(giftCards);
       this.uiStateService.setShowHighlights(false);
@@ -123,14 +194,20 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             })
           );
         })
-      ).subscribe((res: KinguinGiftCard[]) => {
+      ).subscribe(async (res: KinguinGiftCard[]) => {
         console.log('Resultados de búsqueda (re-subscribed):', res);
 
-        const gc = res.map(card => {
-          card.coverImageOriginal = card.images.cover?.thumbnail || '';
+        const gcPromises = res.map(async card => {
+          card.coverImageOriginal =
+            card.coverImageOriginal ||
+            card.images.cover?.thumbnail ||
+            card.coverImage ||
+            await this.getBestImageUrl(card); // Llama a la función asíncrona si no hay imagen disponible
           card.coverImage = card.images.cover?.thumbnail || '';
           return card;
         });
+
+        const gc = await Promise.all(gcPromises);
 
         this.searchResults.emit(gc);
         this.uiStateService.setShowHighlights(false);
@@ -138,4 +215,5 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       });
     });
   }
+
 }
