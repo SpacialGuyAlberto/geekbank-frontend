@@ -81,45 +81,6 @@
   animation-delay: 0.4s;
 }
 
-
-.gift-card-price {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
-  font-size: calc(1.1rem * var(--scale-factor));
-  color: #88D66C;
-  font-weight: bold;
-  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
-}
-
-/* Precio original tachado */
-.original-price {
-  text-decoration: line-through;
-  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
-  margin-bottom: 4px; /* Espacio inferior */
-  font-size: calc(0.9rem * var(--scale-factor));
-}
-
-/* Precio con descuento */
-.discounted-price {
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: calc(1.4rem * var(--scale-factor));
-  margin-bottom: 4px; /* Espacio inferior */
-}
-.discount-percentage {
-  position: absolute;
-  top: 10px; /* Ajusta según tus necesidades */
-  left: 10px; /* Ajusta según tus necesidades */
-  background-color: var(--discount-color);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: calc(0.75rem * var(--scale-factor));
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1; /* Por encima de otros elementos */
-}
 @keyframes pulse-bars {
   0%, 100% {
     transform: scaleY(1);
@@ -204,7 +165,7 @@
 
 .gift-card-image {
   width: 100%;
-  height: calc(15rem * var(--scale-factor));
+  height: calc(22rem * var(--scale-factor)); /* Aumentado de 18rem a 22rem */
   object-fit: cover;
   border-top-left-radius: calc(0.5rem * var(--scale-factor));
   border-top-right-radius: calc(0.5rem * var(--scale-factor));
@@ -220,30 +181,78 @@
   flex-grow: 1;
   margin-top: calc(1rem * var(--scale-factor));
   padding: calc(1rem * var(--scale-factor));
+
+  /* Asegura que el contenido no se desborde */
+  max-width: 100%;
+}
+
+.discount-percentage {
+  position: absolute;
+  top: 10px; /* Ajusta según tus necesidades */
+  left: 10px; /* Ajusta según tus necesidades */
+  background-color: var(--discount-color);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: calc(0.75rem * var(--scale-factor));
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1; /* Por encima de otros elementos */
 }
 
 .gift-card-title {
   font-size: calc(1rem * var(--scale-factor));
   color: #dcd0d0;
-  margin-bottom: calc(0.625rem * var(--scale-factor));
+  margin-bottom: calc(0.3rem * var(--scale-factor)); /* Reducido de 0.4rem a 0.3rem */
   text-transform: uppercase;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-  max-height: calc(1.5rem * var(--scale-factor)); /* Altura inicial para mostrar solo una línea */
-  transition: max-height 0.5s ease; /* Transición para una expansión fluida */
+
+  /* Permitir múltiples líneas y mostrar el título completo */
+  white-space: normal;
+  word-wrap: break-word; /* Opcional: para manejar palabras largas */
+
+  /* Eliminar la restricción de altura */
+  max-height: none;
+
+  /* Eliminar la transición si ya no es necesaria */
+  transition: none;
+
+  /* Asegurar que el texto se alinee correctamente */
+  text-align: center;
+
+  /* Reducir el espacio entre líneas */
+  line-height: 1.1; /* Ajustado de 1.2 a 1.1 */
 }
 
-.gift-card:hover .gift-card-title {
-  white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-  max-height: calc(5rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
+.platform {
+  font-size: calc(0.9rem * var(--scale-factor));
+  color: #a0a0a0; /* Color secundario para la plataforma */
+  margin-bottom: calc(0.5rem * var(--scale-factor));
 }
 
 .gift-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos horizontalmente */
   font-size: calc(1.1rem * var(--scale-factor));
   color: #88D66C;
   font-weight: bold;
+  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
+}
+
+/* Precio original tachado */
+.original-price {
+  text-decoration: line-through;
+  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
+  margin-bottom: 4px; /* Espacio inferior */
+  font-size: calc(0.9rem * var(--scale-factor));
+}
+
+/* Precio con descuento */
+.discounted-price {
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: calc(1.4rem * var(--scale-factor));
+  margin-bottom: 4px; /* Espacio inferior */
 }
 
 /* Ajustes para móviles */
@@ -261,7 +270,7 @@
   }
 
   .gift-card-image {
-    height: calc(15rem * var(--scale-factor));
+    height: calc(20rem * var(--scale-factor)); /* Aumentado de 18rem a 20rem */
     object-fit: cover;
     border-top-left-radius: calc(0.5rem * var(--scale-factor));
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
@@ -270,6 +279,8 @@
 
   .gift-card-title {
     font-size: calc(1rem * var(--scale-factor));
+    margin-bottom: calc(0.3rem * var(--scale-factor)); /* Consistente con versión de escritorio */
+    line-height: 1.1; /* Consistente con versión de escritorio */
   }
 
   .gift-card-price {
@@ -290,7 +301,17 @@
   }
 
   .gift-card-image {
-    height: calc(7.5rem * var(--scale-factor));
+    height: calc(10rem * var(--scale-factor)); /* Aumentado de 7.5rem a 10rem */
+  }
+
+  .gift-card-title {
+    font-size: calc(0.9rem * var(--scale-factor));
+    margin-bottom: calc(0.2rem * var(--scale-factor)); /* Ajuste adicional para pantallas pequeñas */
+    line-height: 1.1;
+  }
+
+  .gift-card-price {
+    font-size: calc(1.1rem * var(--scale-factor));
   }
 }
 
