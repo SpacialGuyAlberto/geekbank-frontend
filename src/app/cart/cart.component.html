@@ -17,7 +17,7 @@
       <ng-container *ngIf="cartItems.length > 0; else emptyCart">
         <ul>
           <li *ngFor="let item of cartItems" class="cart-item">
-            <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="gift-card-image">
+            <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
             <div class="item-info">
               <h3 class="item-title">{{ item.giftcard.name }}</h3>
               <div class="item-quantity">

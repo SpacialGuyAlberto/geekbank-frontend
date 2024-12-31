@@ -31,7 +31,7 @@ export const routes: Routes = [
   { path: 'activate', component: ActivationComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
-  { path: '', redirectTo: '/register', pathMatch: 'full' }, // Solo una ruta vacía
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Solo una ruta vacía
   { path: 'user-details', component: AccountInfoComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
   { path: 'tigo-payment', component: TigoPaymentComponent },
@@ -52,5 +52,5 @@ export const routes: Routes = [
   { path: 'filtered/:category', component: FilteredPageComponent },
   { path: 'terms', component: TermsAndConditionsComponent},
   // Ruta comodín al final
-  { path: '**', redirectTo: '/register' }
+  { path: '**', redirectTo: '/home' }
 ];

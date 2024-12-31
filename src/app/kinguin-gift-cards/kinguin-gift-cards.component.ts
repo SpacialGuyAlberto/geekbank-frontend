@@ -10,7 +10,7 @@ import { HighlightsComponent } from "../highlights/highlights.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
 import { CurrencyService } from "../currency.service";
-import {Observable, Subscription} from "rxjs";
+import {firstValueFrom, Observable, Subscription} from "rxjs";
 import { UIStateServiceService } from "../uistate-service.service";
 import { AuthService } from "../auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
@@ -108,18 +108,79 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  fetchMainGiftCard(): void {
-    this.mainGiftCards.getMainScreenGiftCardItems().subscribe( (data) => {
-      data.map( card => {
-        card.giftcard.coverImageOriginal = card.giftcard.images.cover?.thumbnail || '';
-        card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
-        card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
-        this.giftCards.push(card.giftcard)
-        console.log(this.giftCards)
-        this.displayGiftCards();
-        // this.displayedGiftCards.push(card.giftcard);
-        return card;
-      })
+  async fetchMainGiftCard(): Promise<void> {
+    const data = await firstValueFrom(this.mainGiftCards.getMainScreenGiftCardItems());
+
+    for (const card of data) {
+      const bestImage = await this.getBestImageUrl(card.giftcard); // Usar la mejor imagen
+      card.giftcard.coverImageOriginal = bestImage;
+      card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
+
+      this.giftCards.push(card.giftcard);
+    }
+
+    this.displayGiftCards();
+    console.log(this.giftCards);
+  }
+
+
+  async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
+    // 1. Recolecta todas las URLs de posibles imágenes
+    const imageUrls: string[] = [];
+
+    // coverImageOriginal
+    if (card.coverImageOriginal) {
+      imageUrls.push(card.coverImageOriginal);
+    }
+
+    // thumbnail
+    if (card.images.cover?.thumbnail) {
+      imageUrls.push(card.images.cover.thumbnail);
+    }
+
+
+    // coverImage
+    if (card.coverImage) {
+      imageUrls.push(card.coverImage);
+    }
+
+    // screenshots
+    if (card.screenshots && card.screenshots.length > 0) {
+      imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
+    }
+
+    //images screenshots
+    // if (card.images.screenshots && card.images.screenshots.length > 0){
+    //   imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
+    // }
+
+
+    const uniqueImageUrls = Array.from(new Set(imageUrls));
+    const promises = uniqueImageUrls.map(url =>
+      this.getImageResolution(url)
+        .then(res => ({
+          url,
+          resolution: res.width * res.height,
+        }))
+        .catch(err => {
+          console.error(`Error al cargar la imagen ${url}:`, err);
+          return { url, resolution: 0 }; // Considera 0 si falla
+        })
+    );
+
+    const results = await Promise.all(promises);
+    const validImages = results
+      .filter(img => img.resolution > 0)
+      .sort((a, b) => b.resolution - a.resolution);
+    return validImages.length > 0 ? validImages[0].url : '';
+  }
+
+  getImageResolution(url: string): Promise<{ width: number; height: number }> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve({ width: img.width, height: img.height });
+      img.onerror = reject;
     });
   }
 
@@ -129,34 +190,38 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     this.currentIndex = this.itemsPerPage;
   }
 
-  fetchGiftCards(): void {
-    this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
-      this.giftCards = data.map(card => {
-        // Asignar un descuento persistente a cada tarjeta
-        card.randomDiscount = this.generatePersistentDiscount(card.name);
-        return card;
-      });
-      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
-      this.currentIndex = this.itemsPerPage;
-      this.cd.detectChanges();
-    });
+  async fetchGiftCards(): Promise<void> {
+    const data = await firstValueFrom(this.kinguinService.getGiftCardsModel());
+
+    for (const card of data) {
+      const bestImage = await this.getBestImageUrl(card); // Usar la mejor imagen
+      card.coverImageOriginal = bestImage;
+      card.randomDiscount = this.generatePersistentDiscount(card.name);
+
+      this.giftCards.push(card);
+    }
+
+    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+    this.currentIndex = this.itemsPerPage;
+    this.cd.detectChanges();
   }
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
-  loadGiftCards(page: number): void {
-    this.kinguinService.getKinguinGiftCards(page).subscribe((data: KinguinGiftCard[]) => {
-      this.giftCards = data.map(card => {
-        card.coverImageOriginal = card.images.cover?.thumbnail || '';
-        card.coverImage = card.images.cover?.thumbnail || '';
-        return card;
-      });
+  async loadGiftCards(page: number): Promise<void> {
+    const data = await firstValueFrom(this.kinguinService.getKinguinGiftCards(page));
 
-      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
-      this.currentIndex = this.itemsPerPage;
-    });
+    for (const card of data) {
+      const bestImage = await this.getBestImageUrl(card); // Usar la mejor imagen
+      card.coverImageOriginal = bestImage;
+
+      this.giftCards.push(card);
+    }
+
+    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+    this.currentIndex = this.itemsPerPage;
   }
 
   loadMore(): void {
