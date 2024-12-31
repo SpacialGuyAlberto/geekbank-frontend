@@ -44,49 +44,117 @@ export class RecommendationsComponent implements OnInit {
     this.fetchRecommendations(userId)
   }
 
-  fetchRecommendations(userId : number) : void {
+  fetchRecommendations(userId: number): void {
     const isLogged = this.isLoggedIn();
-    if (isLogged){
-      this.recommendationsService.getRecommendationsByUser(userId).subscribe(
-        (data: KinguinGiftCard[]) => {
-          this.giftCards = data.map(card => {
-            if (card.coverImageOriginal == ''){
-              card.coverImageOriginal = card.images.cover.thumbnail;
-              if (card.images.cover.thumbnail == ''){
-                card.coverImageOriginal = card.coverImage
+    if (isLogged) {
+      this.recommendationsService.getRecommendationsByUser(userId)
+        // Hacemos que el callback sea asíncrono
+        .subscribe(async (data: KinguinGiftCard[]) => {
+
+            for (const card of data) {
+              // Si coverImageOriginal está vacío, calculamos la mejor imagen
+              if (!card.coverImageOriginal) {
+                card.coverImageOriginal = await this.getBestImageUrl(card);
               }
+
+              // Generar descuento y continuar con tu lógica
+              card.randomDiscount = this.generatePersistentDiscount(card.name);
             }
-            // card.coverImageOriginal = card.images.cover?.thumbnail || '';
-            // card.coverImage = card.images.cover?.thumbnail || '';
-            card.randomDiscount = this.generatePersistentDiscount(card.name);
-            return card;
-          });
-          this.startCarousel();
-        },
-        error => {
-          console.error('Error al obtener las recomendaciones:', error);
-        }
-      );
-    } else {
-      this.recommendationsService.getMostPopular(4).subscribe( (data => {
-        this.giftCards = data.map(card => {
-          if (card.coverImageOriginal == ''){
-            card.coverImageOriginal = card.images.cover.thumbnail;
-            if (card.images.cover.thumbnail == ''){
-              card.coverImageOriginal = card.coverImage
-            }
+
+            this.giftCards = data; // Ya con coverImageOriginal actualizado
+            this.startCarousel();
+          },
+          error => {
+            console.error('Error al obtener las recomendaciones:', error);
           }
+        );
+    } else {
+      this.recommendationsService.getMostPopular(4)
+        .subscribe(async (data: KinguinGiftCard[]) => {
 
+            for (const card of data) {
+              if (!card.coverImageOriginal) {
+                card.coverImageOriginal = await this.getBestImageUrl(card);
+              }
 
-          // card.coverImageOriginal = card.images.cover?.thumbnail || '';
-          // card.coverImage = card.images.cover?.thumbnail || '';
-          card.randomDiscount = this.generatePersistentDiscount(card.name);
-          return card;
-        });
-        this.startCarousel();
-      }))
+              card.randomDiscount = this.generatePersistentDiscount(card.name);
+            }
+
+            this.giftCards = data;
+            this.startCarousel();
+          },
+          error => {
+            console.error('Error al obtener las más populares:', error);
+          }
+        );
     }
   }
+
+  async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
+    // 1. Recolecta todas las URLs de posibles imágenes
+    const imageUrls: string[] = [];
+
+    // coverImageOriginal
+    if (card.coverImageOriginal) {
+      imageUrls.push(card.coverImageOriginal);
+    }
+
+    // thumbnail
+    if (card.images.cover?.thumbnail) {
+      imageUrls.push(card.images.cover.thumbnail);
+    }
+
+    // coverImage
+    if (card.coverImage) {
+      imageUrls.push(card.coverImage);
+    }
+
+    if (card.images.screenshots && card.images.screenshots.length > 0){
+      imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
+    }
+
+    // screenshots
+    if (card.screenshots && card.screenshots.length > 0) {
+      imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
+    }
+
+    // 2. Eliminar duplicados
+    const uniqueImageUrls = Array.from(new Set(imageUrls));
+
+    // 3. Obtener resolución de cada URL
+    const promises = uniqueImageUrls.map(url =>
+      this.getImageResolution(url)
+        .then(res => ({
+          url,
+          resolution: res.width * res.height,
+        }))
+        .catch(err => {
+          console.error(`Error al cargar la imagen ${url}:`, err);
+          return { url, resolution: 0 }; // Considera 0 si falla
+        })
+    );
+
+    const results = await Promise.all(promises);
+
+    // 4. Filtrar imágenes válidas y ordenar por resolución descendente
+    const validImages = results
+      .filter(img => img.resolution > 0)
+      .sort((a, b) => b.resolution - a.resolution);
+
+    // 5. Retornar la mejor imagen o vacío
+    return validImages.length > 0 ? validImages[0].url : '';
+  }
+
+// Método para obtener dimensiones de una imagen (reutilizado de loadHighlights)
+  getImageResolution(url: string): Promise<{ width: number; height: number }> {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => resolve({ width: img.width, height: img.height });
+      img.onerror = reject;
+    });
+  }
+
 
   setRouteClass(url: string): void {
     if (url.startsWith('/home')) {

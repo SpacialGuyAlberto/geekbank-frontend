@@ -19,7 +19,7 @@
     <div *ngIf="!isLoading && giftCards.length > 0" class="cards-wrapper">
       <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
         <div class="image-container">
-          <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">
+          <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
         </div>
         <div class="gift-card-content">
           <!-- Mostrar el descuento dinámico -->
