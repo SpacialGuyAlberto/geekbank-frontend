@@ -10,7 +10,7 @@ import { HighlightsComponent } from "../highlights/highlights.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
 import { CurrencyService } from "../currency.service";
-import {firstValueFrom, Observable, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import { UIStateServiceService } from "../uistate-service.service";
 import { AuthService } from "../auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
@@ -108,21 +108,27 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  async fetchMainGiftCard(): Promise<void> {
-    const data = await firstValueFrom(this.mainGiftCards.getMainScreenGiftCardItems());
+  fetchMainGiftCard(): void {
+    this.mainGiftCards.getMainScreenGiftCardItems().subscribe( (data) => {
+      data.map( card => {
 
-    for (const card of data) {
-      const bestImage = await this.getBestImageUrl(card.giftcard); // Usar la mejor imagen
-      card.giftcard.coverImageOriginal = bestImage;
-      card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
+        card.giftcard.coverImageOriginal =
+          card.giftcard.coverImageOriginal ||
+          card.giftcard.images.cover?.thumbnail ||
+          card.giftcard.coverImage,
+            card.giftcard.coverImage=
+        card.giftcard.images.cover?.thumbnail || '',
 
-      this.giftCards.push(card.giftcard);
-    }
-
-    this.displayGiftCards();
-    console.log(this.giftCards);
+        // card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
+        card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
+        this.giftCards.push(card.giftcard)
+        console.log(this.giftCards)
+        this.displayGiftCards();
+        // this.displayedGiftCards.push(card.giftcard);
+        return card;
+      })
+    });
   }
-
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
     // 1. Recolecta todas las URLs de posibles imágenes
@@ -138,10 +144,13 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       imageUrls.push(card.images.cover.thumbnail);
     }
 
-
     // coverImage
     if (card.coverImage) {
       imageUrls.push(card.coverImage);
+    }
+
+    if (card.images.screenshots && card.images.screenshots.length > 0){
+      imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
     }
 
     // screenshots
@@ -149,13 +158,10 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
     }
 
-    //images screenshots
-    // if (card.images.screenshots && card.images.screenshots.length > 0){
-    //   imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
-    // }
-
-
+    // 2. Eliminar duplicados
     const uniqueImageUrls = Array.from(new Set(imageUrls));
+
+    // 3. Obtener resolución de cada URL
     const promises = uniqueImageUrls.map(url =>
       this.getImageResolution(url)
         .then(res => ({
@@ -169,12 +175,17 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     );
 
     const results = await Promise.all(promises);
+
+    // 4. Filtrar imágenes válidas y ordenar por resolución descendente
     const validImages = results
       .filter(img => img.resolution > 0)
       .sort((a, b) => b.resolution - a.resolution);
+
+    // 5. Retornar la mejor imagen o vacío
     return validImages.length > 0 ? validImages[0].url : '';
   }
 
+// Método para obtener dimensiones de una imagen (reutilizado de loadHighlights)
   getImageResolution(url: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -184,6 +195,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     });
   }
 
+
   displayGiftCards(): void {
     this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
     console.log(this.displayedGiftCards);
@@ -191,38 +203,58 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   async fetchGiftCards(): Promise<void> {
-    const data = await firstValueFrom(this.kinguinService.getGiftCardsModel());
+    this.kinguinService.getGiftCardsModel().subscribe(async (data: KinguinGiftCard[]) => {
+      // 1. Mapeas cada tarjeta de forma asíncrona
+      const updatedCardsPromises = data.map(async card => {
+        if (!card.coverImageOriginal) {
+          card.coverImageOriginal = await this.getBestImageUrl(card);
+        }
+        card.randomDiscount = this.generatePersistentDiscount(card.name);
+        return card;
+      });
 
-    for (const card of data) {
-      const bestImage = await this.getBestImageUrl(card); // Usar la mejor imagen
-      card.coverImageOriginal = bestImage;
-      card.randomDiscount = this.generatePersistentDiscount(card.name);
+      // 2. Esperas a que se resuelvan todas las promesas
+      this.giftCards = await Promise.all(updatedCardsPromises);
 
-      this.giftCards.push(card);
-    }
-
-    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
-    this.currentIndex = this.itemsPerPage;
-    this.cd.detectChanges();
+      // El resto de la lógica
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+      this.cd.detectChanges();
+    });
   }
+
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
   }
 
   async loadGiftCards(page: number): Promise<void> {
-    const data = await firstValueFrom(this.kinguinService.getKinguinGiftCards(page));
+    this.kinguinService.getKinguinGiftCards(page).subscribe(async (data: KinguinGiftCard[]) => {
+      // 1. Procesar cada tarjeta de forma asíncrona
+      const updatedCardsPromises = data.map(async card => {
+        // Lógica para seleccionar la mejor imagen
+        card.coverImageOriginal =
+          card.coverImageOriginal ||
+          card.images.cover?.thumbnail ||
+          card.coverImage ||
+          await this.getBestImageUrl(card); // Llama a la función asíncrona si no hay imagen disponible
 
-    for (const card of data) {
-      const bestImage = await this.getBestImageUrl(card); // Usar la mejor imagen
-      card.coverImageOriginal = bestImage;
+        return card;
+      });
 
-      this.giftCards.push(card);
-    }
+      // 2. Esperar a que todas las promesas se completen
+      this.giftCards = await Promise.all(updatedCardsPromises);
 
-    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
-    this.currentIndex = this.itemsPerPage;
+      // 3. Dividir en páginas para la visualización
+      this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+      this.currentIndex = this.itemsPerPage;
+
+      // 4. Detectar cambios si es necesario
+      this.cd.detectChanges();
+    });
   }
+
+
 
   loadMore(): void {
     const nextItems = this.giftCards.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);

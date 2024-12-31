@@ -160,14 +160,20 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       ) {
         this.showFreeFireComponent = true;
         this.showHighlightsAndRecommendations = false;
+        // En caso de Free Fire, dejamos currentGiftCards vacío (o null),
+        // ya que mostrarás <app-free-fire-gift-card>
+        this.currentGiftCards = [];
       } else {
         this.showFreeFireComponent = false;
         this.kinguinService.searchGiftCards(this.searchQuery)
           .subscribe((data: KinguinGiftCard[]) => {
             this.searchResults = data;
+            // Para que se muestren en <app-kinguin-gift-cards>
+            this.currentGiftCards = data;
             this.showHighlightsAndRecommendations = false;
           });
       }
     }
   }
+
 }
