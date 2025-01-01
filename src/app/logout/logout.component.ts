@@ -16,6 +16,6 @@ export class LogoutComponent {
   }
 
   logout() {
-    this.authService.logout(this.router);
+    this.authService.logout();
   }
 }

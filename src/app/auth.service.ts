@@ -126,22 +126,29 @@ export class AuthService {
     return this.isBrowser() ? sessionStorage.getItem('token') || '' : '';
   }
 
-  logout(router: Router): void {
-    this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe(() => {
-      this.cookieService.delete('jwtToken', '/');
-      this.loggedIn.next(false);
-      this.authenticated = false;
-      sessionStorage.clear();
-      localStorage.clear();
-          if (this.isBrowser()) {
-            sessionStorage.removeItem('token');
-            sessionStorage.removeItem('userId');
-            localStorage.removeItem('userId');
-          }
-      this.router.navigate(['/login']);
+  logout(): void {
+    this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe({
+      next: () => {
+        // Eliminar todas las cookies y almacenamiento
+        this.cookieService.delete('jwtToken', '/');
+        this.loggedIn.next(false);
+        this.authenticated = false;
+        sessionStorage.clear();
+        localStorage.clear();
+        if (this.isBrowser()) {
+          sessionStorage.removeItem('token');
+          sessionStorage.removeItem('userId');
+          localStorage.removeItem('userId');
+        }
+        // Forzar una recarga completa de la página y redirigir a /login
+        window.location.href = '/login';
+      },
+      error: (error) => {
+        console.error('Error during logout:', error);
+        // Opcional: Mostrar una notificación de error al usuario
+      }
     });
   }
-
 
   isAuthenticated(): boolean {
     return this.authenticated;
