@@ -136,7 +136,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.translate.addLangs(['en', 'es', 'de']);
     this.translate.setDefaultLang(this.selectedLanguage);
-   this.user$ = this.store.select(selectUser);
+    this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 
@@ -231,8 +231,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   // }
 
   logout() {
-    this.authService.logout(this.router);
+    this.authService.logout();
   }
+
   openSearchModal() {
     this.showSearchModal = true;
     this.searchResultsMessage = '';
