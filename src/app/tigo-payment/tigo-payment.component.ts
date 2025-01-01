@@ -173,7 +173,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
       this.transactionStatus = parsedMessage.status;
       this.showSpinner = !(this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING'
-        || this.transactionStatus === 'CANCELLED');
+        || this.transactionStatus === 'CANCELLED' || this.transactionStatus === 'PROCESSING');
     });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));

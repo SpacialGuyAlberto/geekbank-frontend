@@ -10,7 +10,7 @@
   </div>
 
   <div class="main-content">
-    <div class="products-list" [ngClass]="{'full-grid': !selectedProduct}">
+    <div class="products-list" #productsList [ngClass]="{'full-grid': !selectedProduct}">
       <h2>Productos</h2>
       <div class="product-cards-list">
         <div *ngFor="let product of filteredProducts"
@@ -36,7 +36,11 @@
           <i class="fas fa-angle-left"></i>
         </button>
         <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
-          <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+          <button *ngIf="page > 0 && page <= totalPages"
+                  (click)="goToPage(page)"
+                  [class.active]="page === currentPage">
+            {{ page }}
+          </button>
         </span>
         <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
           <i class="fas fa-angle-right"></i>
@@ -46,6 +50,9 @@
         </button>
       </div>
     </div>
+
+    <!-- Resizer entre la lista de productos y los detalles -->
+    <div class="resizer" #resizer></div>
 
     <div class="product-details" *ngIf="selectedProduct" [ngClass]="{'visible': selectedProduct}">
       <button class="close-btn" (click)="closeProductDetails()">
@@ -84,7 +91,6 @@
 
         <!-- Imagen principal del producto -->
         <div class="product-image-large">
-          <!-- Reemplaza 'selectedProduct.imageUrl' por la propiedad correcta de tu producto -->
           <img [src]="selectedProduct?.imageUrl || 'assets/default-product.png'" alt="Imagen del producto">
         </div>
 
@@ -133,15 +139,47 @@
         <div *ngIf="selectedProduct?.videos?.length">
           <h3>Videos:</h3>
           <div class="video-gallery">
-            <iframe *ngFor="let video of selectedProduct?.videos" width="560" height="315" [src]="'https://www.youtube.com/embed/' + video.videoId" frameborder="0" allowfullscreen></iframe>
+            <iframe *ngFor="let video of selectedProduct?.videos"
+                    width="560"
+                    height="315"
+                    [src]="'https://www.youtube.com/embed/' + video.videoId"
+                    frameborder="0"
+                    allowfullscreen>
+            </iframe>
           </div>
         </div>
+
+        <!-- ======================================== -->
+        <!-- Sección: Detalles de Activación (EDITAR) -->
+        <!-- ======================================== -->
+        <div class="details-activation-container">
+          <h3>Detalles de Activación</h3>
+
+          <div class="detail-item full-width">
+            <dt>Video URL:</dt>
+            <dd>
+              <input type="text" [(ngModel)]="activationVideoUrl" />
+            </dd>
+          </div>
+
+          <div class="detail-item full-width">
+            <dt>Instrucciones:</dt>
+            <dd>
+              <textarea [(ngModel)]="activationTextDetails" rows="4"></textarea>
+            </dd>
+          </div>
+
+          <div class="activation-details-actions">
+            <button (click)="saveActivationDetails()">Guardar Detalles</button>
+            <button (click)="deleteActivationDetails()">Eliminar Detalles</button>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <div class="product-creation" *ngIf="createNewProduct">
       <!-- Aquí puedes incluir tu componente para crear nuevos productos -->
-      <!-- <app-create-product></app-create-product> -->
     </div>
   </div>
 </div>

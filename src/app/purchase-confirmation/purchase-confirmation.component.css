@@ -686,6 +686,18 @@
   font-weight: bold;
 }
 
+.error-message {
+  color: var(--accent-error); /* Color rojo profesional */
+  text-align: center;
+  margin: 2rem 0;
+  font-size: 1.25rem; /* Tamaño más grande */
+  font-weight: bold;
+  background: rgba(231, 76, 60, 0.1); /* Fondo translúcido */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
 /* Responsividad para la Sección de Recomendaciones */
 @media (max-width: 64rem) { /* 1024px */
   .recommendations-section {
@@ -714,5 +726,66 @@
 
   .recommendations .gift-card {
     width: 7.5rem; /* 120px / 16 = 7.5rem */
+  }
+}
+
+/* Tamaño actualizado para imágenes de productos */
+.product-image {
+  width: 12.5rem; /* Antes: 6.25rem */
+  height: 12.5rem; /* Antes: 6.25rem */
+  object-fit: cover;
+  border-radius: 0.5rem; /* Mantener bordes redondeados */
+  margin-bottom: 0.0156rem;
+}
+
+.transaction-input-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.transaction-input {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--accent-primary);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 20rem;
+  margin-bottom: 1rem;
+}
+
+.transaction-button {
+  background: var(--button-gradient);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.transaction-button:hover {
+  background: var(--button-gradient-hover);
+}
+
+
+/* Estilos responsivos */
+@media (max-width: 64rem) { /* 1024px */
+  .product-image {
+    width: 9.375rem; /* Antes: 3.125rem */
+    height: 9.375rem; /* Antes: 3.125rem */
+  }
+}
+
+@media (max-width: 37.5rem) { /* 600px */
+  .product-image {
+    width: 7.5rem; /* Antes: 2.5rem */
+    height: 7.5rem; /* Antes: 2.5rem */
+  }
+}
+
+@media (max-width: 25rem) { /* 400px */
+  .product-image {
+    width: 6.25rem; /* Antes: 1.875rem */
+    height: 6.25rem; /* Antes: 1.875rem */
   }
 }

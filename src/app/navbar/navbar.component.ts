@@ -26,6 +26,7 @@ import {loadUser} from "../state/user/user.actions";
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";
 import {CartItemWithGiftcard} from "../models/CartItem";
 import {SearchStateService} from "../search-state.service";
+import {Transaction} from "../models/transaction.model";
 
 
 @Component({
@@ -120,6 +121,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
 
   private subscriptions: Subscription = new Subscription();
+  private currentTransaction: Transaction | undefined = undefined;
 
   constructor(
     private authService: AuthService,
@@ -252,6 +254,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   goToHome() {
     this.uiStateService.setShowHighlights(true);
     this.router.navigate(['/home']);
+  }
+
+  navigateToPurchaseConfirmation(): void {
+    const transactionNumber = this.currentTransaction?.transactionNumber || ''; // Asegúrate de tener acceso a `currentTransaction`
+    this.router.navigate(['/purchase-confirmation'], {
+      queryParams: { transactionNumber }
+    });
   }
 
   goToLogin() {
