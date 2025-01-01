@@ -171,8 +171,18 @@
     <p>{{giftCard?.description}}.</p>
   </div>
   <div *ngIf="activeTab === 'activation'">
-    <p>{{giftCard?.activationDetails}}</p>
+    <!-- Mostrar detalles predeterminados si existen y son suficientes -->
+    <p *ngIf="displayedActivationDetails.length > 4">{{ displayedActivationDetails }}</p>
+
+    <!-- Mostrar detalles adicionales si se han obtenido -->
+    <div *ngIf="displayedActivationDetails.length <= 4">
+      <p>{{ displayedActivationDetails }}</p>
+
+      <!-- Mostrar video si está disponible -->
+      <video *ngIf="activationVideoUrl" [src]="activationVideoUrl" controls></video>
+    </div>
   </div>
+
   <div *ngIf="activeTab === 'requirements'">
     <div *ngFor="let requirement of giftCard?.systemRequirements">
       <h3>{{requirement.system}}</h3>

@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormsModule} from "@angular/forms";
+import { Component, ElementRef, OnInit, Renderer2, ViewChild, HostListener } from '@angular/core';
+import { FormGroup, FormsModule } from "@angular/forms";
 import { KinguinService } from "../../../kinguin.service";
 import { KinguinGiftCard } from "../../../models/KinguinGiftCard";
-import {ActivationDetails, ActivationDetailsService} from "../../../activation-details.service";
-import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import { ActivationDetails, ActivationDetailsService } from "../../../activation-details.service";
+import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+
 @Component({
   selector: 'app-products',
-  // standalone, imports, template, etc. como en tu código original...
   templateUrl: './products.component.html',
   standalone: true,
   imports: [
@@ -14,6 +15,7 @@ import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
     CurrencyPipe,
     DatePipe,
     FormsModule,
+    MatSnackBarModule,
     NgForOf,
     NgIf
   ],
@@ -24,26 +26,71 @@ export class ProductsComponent implements OnInit {
   productForm: FormGroup | undefined;
   products: KinguinGiftCard[] = [];
   private _id: any;
-  searchQuery: any = '';
-  createNewProduct: any;
+  searchQuery: string = '';
+  createNewProduct: boolean = false;
   allProducts: KinguinGiftCard[] = [];
   selectedProduct: KinguinGiftCard | undefined;
   itemsPerPage: number = 20;
   currentPage: number = 1;
   totalPages: number = 3309;
 
-  // Campos para editar los Activation Details (puedes usar un FormGroup si gustas)
-  activationVideoUrl = '';
-  activationTextDetails = '';
+  // Campos para editar los Activation Details
+  activationVideoUrl: string = '';
+  activationTextDetails: string = '';
 
-  // Inyectamos nuestro nuevo servicio
+  // Referencias a elementos del DOM
+  @ViewChild('resizer', { static: true }) resizer!: ElementRef;
+  @ViewChild('productsList', { static: true }) productsList!: ElementRef;
+
+  private dragging: boolean = false;
+  private startX: number = 0;
+  private startWidth: number = 0;
+
   constructor(
     private kinguinService: KinguinService,
-    private activationDetailsService: ActivationDetailsService
+    private activationDetailsService: ActivationDetailsService,
+    private snackBar: MatSnackBar,
+    private renderer: Renderer2
   ) {}
 
   ngOnInit(): void {
     this.getProducts();
+
+    // Escuchar el evento mousedown en el resizer
+    const resizer = this.resizer.nativeElement;
+    this.renderer.listen(resizer, 'mousedown', (event: MouseEvent) => {
+      this.dragging = true;
+      this.startX = event.clientX;
+      this.startWidth = this.productsList.nativeElement.offsetWidth;
+      // Cambiar el cursor globalmente
+      this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
+    });
+  }
+
+  // Escuchar eventos de mousemove y mouseup en el documento
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove(event: MouseEvent) {
+    if (this.dragging) {
+      const dx = event.clientX - this.startX;
+      const newWidth = this.startWidth + dx;
+
+      // Establecer límites de ancho
+      const minWidth = 200; // mínimo en píxeles
+      const maxWidth = 600; // máximo en píxeles
+
+      if (newWidth > minWidth && newWidth < maxWidth) {
+        this.renderer.setStyle(this.productsList.nativeElement, 'flex', `0 0 ${newWidth}px`);
+      }
+    }
+  }
+
+  @HostListener('document:mouseup')
+  onMouseUp() {
+    if (this.dragging) {
+      this.dragging = false;
+      // Restaurar el cursor
+      this.renderer.setStyle(document.body, 'cursor', 'default');
+    }
   }
 
   getProducts(): void {
@@ -82,7 +129,8 @@ export class ProductsComponent implements OnInit {
   }
 
   addProduct() {
-    // Lógica para añadir un nuevo producto (si fuera necesario).
+    this.createNewProduct = true;
+    // Implementa la lógica para añadir un nuevo producto si es necesario.
   }
 
   // -------------------------------------------------------------------
@@ -99,10 +147,9 @@ export class ProductsComponent implements OnInit {
       this.selectedProduct = undefined;
     } else {
       // Cargamos detalles de activación para este kinguinId (product.id, product.productId, etc.).
-      // Asegúrate de usar el kinguinId correcto (en tu modelo, revisa la propiedad que identifique al producto).
       this.selectedProduct = product;
 
-      // Ejemplo: asumiendo que product.id === kinguinId. Ajusta si tu modelo difiere.
+      // Cargar los detalles de activación
       this.activationDetailsService.getDetails(product.kinguinId).subscribe({
         next: (details: ActivationDetails) => {
           // Guardamos los valores para mostrarlos en inputs
@@ -110,8 +157,7 @@ export class ProductsComponent implements OnInit {
           this.activationTextDetails = details.textDetails || '';
         },
         error: (err) => {
-          // 404 o no existe => no pasa nada, quizás dejamos vacíos los campos
-          // console.error(err);
+          // 404 o no existe => no pasa nada, dejamos vacíos los campos
           this.activationVideoUrl = '';
           this.activationTextDetails = '';
         }
@@ -133,11 +179,15 @@ export class ProductsComponent implements OnInit {
 
     this.activationDetailsService.createOrUpdate(details).subscribe({
       next: (updated: ActivationDetails) => {
-        alert('Detalles de activación guardados con éxito.');
-        // Opcional: en caso de querer mostrarlo en pantalla
+        this.snackBar.open('Detalles de activacion guardados con exito.', 'Cerrar', {
+          duration: 3000,
+        });
+        // Opcional: actualizar los detalles mostrados si es necesario
       },
       error: (err) => {
-        alert('Ocurrió un error al guardar los detalles. Verifique permisos o datos.');
+        this.snackBar.open('Ocurrio un error al guardar los detalles de activacion.', 'Cerrar', {
+          duration: 3000,
+        });
         console.error(err);
       }
     });

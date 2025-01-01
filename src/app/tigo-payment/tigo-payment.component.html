@@ -21,10 +21,10 @@
     <!-- Contenido principal -->
     <ng-container *ngIf="!showSpinner">
       <!-- Estados de la transacción -->
-      <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING'">
-        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING'" class="thank-you-message">
-          <h3>¡Gracias por verificar su transacción!</h3>
-          <p>Su transacción está siendo procesada. En breve recibirá su acreditación en su cuenta.</p>
+      <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'">
+        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'" class="thank-you-message">
+          <h3>¡Gracias por verificar tu pago!</h3>
+          <p>Su transacción está siendo procesada. En breve recibirás tu codigo en tu email.</p>
           <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
         </div>
 
@@ -67,7 +67,7 @@
       </ng-container>
 
       <!-- Formulario de verificación manual -->
-      <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== 'CANCELLED'">
+      <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'PROCESSING'">
         <form *ngIf="!paymentReferenceNumber" (ngSubmit)="submitManualVerification()" #verificationForm="ngForm">
           <h3>Verificar Pago</h3>
           <div class="form-group">

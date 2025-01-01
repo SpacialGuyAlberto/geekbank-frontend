@@ -10,7 +10,7 @@
   </div>
 
   <div class="main-content">
-    <div class="products-list" [ngClass]="{'full-grid': !selectedProduct}">
+    <div class="products-list" #productsList [ngClass]="{'full-grid': !selectedProduct}">
       <h2>Productos</h2>
       <div class="product-cards-list">
         <div *ngFor="let product of filteredProducts"
@@ -50,6 +50,9 @@
         </button>
       </div>
     </div>
+
+    <!-- Resizer entre la lista de productos y los detalles -->
+    <div class="resizer" #resizer></div>
 
     <div class="product-details" *ngIf="selectedProduct" [ngClass]="{'visible': selectedProduct}">
       <button class="close-btn" (click)="closeProductDetails()">
@@ -149,34 +152,34 @@
         <!-- ======================================== -->
         <!-- Sección: Detalles de Activación (EDITAR) -->
         <!-- ======================================== -->
-        <div>
+        <div class="details-activation-container">
           <h3>Detalles de Activación</h3>
 
-          <div class="detail-item">
+          <div class="detail-item full-width">
             <dt>Video URL:</dt>
             <dd>
               <input type="text" [(ngModel)]="activationVideoUrl" />
             </dd>
           </div>
 
-          <div class="detail-item">
+          <div class="detail-item full-width">
             <dt>Instrucciones:</dt>
             <dd>
               <textarea [(ngModel)]="activationTextDetails" rows="4"></textarea>
             </dd>
           </div>
 
-          <div class="activation-details-actions" style="margin-top: 1rem;">
+          <div class="activation-details-actions">
             <button (click)="saveActivationDetails()">Guardar Detalles</button>
             <button (click)="deleteActivationDetails()">Eliminar Detalles</button>
           </div>
         </div>
+
       </div>
     </div>
 
     <div class="product-creation" *ngIf="createNewProduct">
       <!-- Aquí puedes incluir tu componente para crear nuevos productos -->
-      <!-- <app-create-product></app-create-product> -->
     </div>
   </div>
 </div>

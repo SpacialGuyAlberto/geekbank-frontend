@@ -1,7 +1,25 @@
+<!-- src/app/purchase-confirmation/purchase-confirmation.component.html -->
 <div class="main-container">
   <div class="transactions-container">
+
+    <!-- Formulario de Búsqueda Siempre Visible -->
+    <div class="transaction-input-container">
+      <h2 class="section-title">Buscar Transacción</h2>
+      <form (ngSubmit)="handleTransactionSearch()" class="search-form">
+        <input
+          type="text"
+          [(ngModel)]="transactionNumber"
+          name="transactionNumber"
+          placeholder="Número de transacción"
+          required
+          class="transaction-input"
+        />
+        <button type="submit" class="transaction-button">Buscar</button>
+      </form>
+    </div>
+
     <!-- Mensaje de Agradecimiento -->
-    <h1 class="thank-you-message">¡Gracias por tu compra!</h1>
+    <h1 class="thank-you-message" *ngIf="recentTransaction">¡Gracias por tu compra!</h1>
 
     <!-- Indicador de Carga -->
     <div *ngIf="isLoading" class="loading-indicator">
@@ -14,39 +32,50 @@
     </div>
 
     <!-- Tabla de Transacciones -->
-    <div class="transaction-table" *ngIf="!isLoading && !errorMessage">
+    <div class="transaction-table" *ngIf="recentTransaction && !isLoading && !errorMessage">
+      <!-- Encabezado de la Tabla -->
+      <div class="transaction-header">
+        <span class="header-image">Imagen</span>
+        <span class="header-name">Producto</span>
+        <span class="header-id">ID Transacción</span>
+        <span class="header-date">Fecha</span>
+        <span class="header-status">Estado</span>
+        <span class="header-amount">Monto</span>
+      </div>
 
-      <!-- Fila por cada producto de la transacción reciente -->
-      <div *ngIf="recentTransaction">
-        <div *ngFor="let product of recentTransaction?.products" class="transaction-row">
-          <!-- Columna de Imagen -->
-          <span class="image-column">
-            <img
-              *ngIf="product.image"
-              [src]="product.image"
-              [alt]="product.name || 'Producto'"
-              class="product-image"
-              loading="lazy"
-            >
-          </span>
+      <!-- Filas de Transacción -->
+      <div *ngFor="let product of recentTransaction?.products" class="transaction-row">
+        <!-- Columna de Imagen -->
+        <span class="image-column">
+          <img
+            *ngIf="product.image"
+            [src]="product.image"
+            [alt]="product.name || 'Producto'"
+            class="product-image"
+            loading="lazy"
+          >
+        </span>
 
-          <!-- Nombre del Producto -->
-          <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
+        <!-- Nombre del Producto -->
+        <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
 
-          <!-- ID de Transacción -->
-          <span class="id-column">{{ recentTransaction.transactionNumber }}</span>
+        <!-- ID de Transacción -->
+        <span class="id-column">{{ recentTransaction.transactionNumber }}</span>
 
-          <!-- Fecha -->
-          <span class="date-column">{{ recentTransaction.timestamp | date:'dd-MM-yyyy HH:mm' }}</span>
+        <!-- Fecha -->
+        <span class="date-column">
+          {{ recentTransaction.timestamp | date:'dd-MM-yyyy HH:mm' }}
+        </span>
 
-          <!-- Estado -->
-          <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">
-            {{ recentTransaction.status }}
-          </span>
+        <!-- Estado -->
+        <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">
+          {{ recentTransaction.status }}
+        </span>
 
-          <!-- Monto -->
-          <span class="amount-column">{{ recentTransaction.amount | currency: "Lps. " }}</span>
-        </div>
+        <!-- Monto -->
+        <span class="amount-column">
+          {{ recentTransaction.amount | currency: "Lps. " }}
+        </span>
       </div>
     </div>
 
@@ -54,6 +83,7 @@
     <div *ngIf="(recentTransaction?.keys?.length ?? 0) > 0" class="keys-button-container">
       <button (click)="openKeysModal()">Revelar claves</button>
     </div>
+
     <!-- Modal para mostrar las keys -->
     <div class="modal-overlay" *ngIf="showKeysModal">
       <div class="modal-content">
@@ -88,7 +118,7 @@
       </button>
     </div>
 
-    <!-- Sección de Recomendaciones en una Sola Fila -->
+    <!-- Sección de Recomendaciones en una sola fila -->
     <div class="recommendations-section" *ngIf="!isLoading && !errorMessage && recommendedGiftCards.length > 0">
       <h2 class="recommendations-title">También te podría interesar</h2>
       <div class="recommendations">
@@ -105,5 +135,6 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>

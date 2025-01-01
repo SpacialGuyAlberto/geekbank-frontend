@@ -110,6 +110,14 @@
     </button>
     <button
       class="tab-button"
+      (click)="navigateToPurchaseConfirmation()"
+    >
+      <i class="fa-solid fa-bag-shopping"></i>
+      Mis compras
+    </button>
+
+    <button
+      class="tab-button"
       [ngClass]="{'active': selectedCategory === 'software'}"
       (click)="selectCategory('software')"
       aria-label="Software"
@@ -182,6 +190,13 @@
             Carrito
           </a>
         </li>
+        <li>
+          <a class="menu-link" (click)="[navigateToPurchaseConfirmation(), closeMenuModal()]">
+            <i class="fa-solid fa-bag-shopping"></i>
+            Mis compras
+          </a>
+        </li>
+
         <!-- Categorías en el menu-modal para pantallas pequeñas -->
         <li class="sub-menu" *ngIf="isSmallScreen">
           <button (click)="toggleCategories()" [attr.aria-expanded]="categoriesExpanded">
@@ -204,7 +219,7 @@
           </a>
         </li>
         <li>
-          <a class="menu-link">
+          <a class="menu-link" >
             <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
           </a>
         </li>

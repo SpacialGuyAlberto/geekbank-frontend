@@ -1,134 +1,133 @@
+// src/app/purchase-confirmation/purchase-confirmation.component.ts
 import { Component, OnInit } from '@angular/core';
-import { TransactionsService } from '../transactions.service';
-import { Transaction, TransactionProduct } from '../models/transaction.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
+import { NgIf, NgForOf, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
+
+import { Transaction, TransactionProduct } from '../models/transaction.model';
+import { KinguinGiftCard } from '../models/KinguinGiftCard';
+
+import { TransactionsService } from '../transactions.service';
+import { RecommendationsService } from '../services/recommendations.service';
+import { AuthService } from '../auth.service';
+import { KinguinService } from '../kinguin.service';
 import { FormsModule } from "@angular/forms";
-import { RecommendationsService } from "../services/recommendations.service";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { AuthService } from "../auth.service";
-import { KinguinService } from "../kinguin.service";
-import { firstValueFrom } from "rxjs";
 
 @Component({
   selector: 'app-purchase-confirmation',
   standalone: true,
-  imports: [NgForOf, NgIf, FormsModule, DatePipe, CurrencyPipe, NgClass],
+  imports: [NgIf, NgForOf, FormsModule, CurrencyPipe, DatePipe, NgClass],
   templateUrl: './purchase-confirmation.component.html',
   styleUrls: ['./purchase-confirmation.component.css']
 })
 export class PurchaseConfirmationComponent implements OnInit {
-  transactions: Transaction[] = [];
-  paginatedTransactions: Transaction[] = [];
-  isLoading: boolean = false;
-  errorMessage: string = '';
-  transactionProducts: TransactionProduct[] = [];
+  // Estados de carga y errores
+  isLoading = false;
+  errorMessage = '';
 
-  // Filtros
-  searchQuery: string = '';
-  // Paginación
-  currentPage: number = 1;
-  pageSize: number = 10;
-  totalPages: number = 1;
+  // Número de transacción ingresado o recibido
+  transactionNumber = '';
 
   // Transacción reciente
   recentTransaction: Transaction | null = null;
-  private productDetailsCache: Map<number, KinguinGiftCard> = new Map();
 
-  // Mostrar/ocultar modal de keys
-  showKeysModal: boolean = false;
+  // Paginación
+  currentPage = 1;
+  pageSize = 10;
+  totalPages = 1;
 
+  // Recomendaciones
   recommendedGiftCards: KinguinGiftCard[] = [];
 
+  // Modal de keys
+  showKeysModal = false;
+
   constructor(
-    private transactionsService: TransactionsService,
     private route: ActivatedRoute,
     private router: Router,
+    private transactionsService: TransactionsService,
     private recommendationsService: RecommendationsService,
     private authService: AuthService,
     private kinguinService: KinguinService
   ) {}
 
   ngOnInit(): void {
+    // Verificar si hay transactionNumber en queryParams
     this.route.queryParams.subscribe(params => {
-      const transactionNumber = params['transactionNumber'];
-      if (transactionNumber) {
-        this.fetchTransactionByNumber(transactionNumber);
-      } else {
-        this.errorMessage = "Transaccion no encontradda";
+      const qParam = params['transactionNumber'];
+      if (qParam) {
+        this.transactionNumber = qParam;
+        this.fetchTransactionByNumber(qParam);
       }
     });
 
-    const userId = this.getCurrentUserId(); // Implementa este método
+    // Cargar recomendaciones
+    const userId = this.getCurrentUserId();
     this.fetchRecommendations(userId);
   }
 
-  getCurrentUserId(): number {
-    const userIdStr = sessionStorage.getItem('userId');
-    if (userIdStr !== null) {
-      const userId = parseInt(userIdStr);
-      if (!isNaN(userId)) {
-        return userId;
-      }
+  // Método para manejar la búsqueda de transacción
+  handleTransactionSearch(): void {
+    if (this.transactionNumber.trim()) {
+      this.fetchTransactionByNumber(this.transactionNumber);
     }
-    return 1; // Valor por defecto si no se puede obtener el userId
   }
 
-  /**
-   * Obtiene una transacción específica por su transactionNumber
-   */
+  // Obtener la transacción por número
   fetchTransactionByNumber(transactionNumber: string): void {
     this.isLoading = true;
     this.errorMessage = '';
+    this.recentTransaction = null;
 
-    this.transactionsService.getTransactionByNumber(transactionNumber).subscribe(
-      async (transaction: Transaction) => {
-        for (const product of transaction.products) {
-          product.image = await this.fetchProductPicture(product.productId);
-          product.name = this.productDetailsCache.get(product.productId)?.name;
-          product.price = this.productDetailsCache.get(product.productId)?.price;
-          this.transactionProducts.push(product);
+    this.transactionsService.getTransactionByNumber(transactionNumber).subscribe({
+      next: async (transaction: Transaction) => {
+        if (!transaction) {
+          this.errorMessage = 'No se encontró la transacción con ese número.';
+          this.isLoading = false;
+          return;
         }
+
+        // Procesar la transacción
         this.recentTransaction = transaction;
-        this.totalPages = 1;
+
+        // Cargar imágenes de productos
+        for (const product of this.recentTransaction.products) {
+          product.image = await this.fetchProductPicture(product.productId);
+        }
+
         this.isLoading = false;
-        console.log(transaction);
+        // Ajustar la paginación si es necesario
+        this.totalPages = 1;
       },
-      (error) => {
-        console.error('Error al obtener la transacción:', error);
+      error: (err) => {
+        console.error('Error al obtener la transacción:', err);
         this.errorMessage = 'Error al cargar la transacción.';
         this.isLoading = false;
       }
-    );
+    });
   }
 
+  // Obtener la imagen del producto
   async fetchProductPicture(productId: number): Promise<string> {
     try {
       const card = await firstValueFrom(this.kinguinService.getGiftCardDetails(productId.toString()));
-      const imageUrl = card.images.cover?.thumbnail || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU";
-      // Cachear los detalles del producto
-      this.productDetailsCache.set(productId, card);
+      const imageUrl = card.images.cover?.thumbnail || "https://via.placeholder.com/150";
       return imageUrl;
     } catch (error) {
       console.error(`Error al obtener detalles del producto ID ${productId}:`, error);
-      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDaMqKyDwBijFd-y-JsluVcSaQ2dYR5DEM4qUkuiTvnq8mNtI6oyI5JZdgWGqMYb7xfQ&usqp=CAU"; // URL de imagen por defecto
+      return "https://via.placeholder.com/150"; // Imagen por defecto
     }
   }
 
+  // Paginación
   getPageNumbers(): number[] {
-    const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    const start = (page - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.paginatedTransactions = this.transactions.slice(start, end);
+    // Adaptar si tuvieras un arreglo de múltiples transacciones
   }
 
   previousPage(): void {
@@ -143,74 +142,65 @@ export class PurchaseConfirmationComponent implements OnInit {
     }
   }
 
-  /**
-   * Obtener recomendaciones de compras
-   */
+  // Recomendaciones
   fetchRecommendations(userId: number): void {
-    const isLogged = this.isLoggedIn();
-    if (isLogged) {
-      this.recommendationsService.getRecommendationsByUser(userId).subscribe(
-        (data: KinguinGiftCard[]) => {
-          this.recommendedGiftCards = data.map(card => {
-            card.coverImageOriginal = card.images.cover?.thumbnail || '';
+    if (this.authService.isLoggedIn()) {
+      this.recommendationsService.getRecommendationsByUser(userId).subscribe({
+        next: (cards) => {
+          this.recommendedGiftCards = cards.map(card => {
             card.coverImage = card.images.cover?.thumbnail || '';
+            card.coverImageOriginal = card.coverImage;
             return card;
           });
         },
-        error => {
-          console.error('Error al obtener las recomendaciones:', error);
-          // Opcional: Manejar el error, por ejemplo, cargar recomendaciones populares
-          this.loadPopularRecommendations();
+        error: (err) => {
+          console.error('Error al obtener recomendaciones:', err);
+          this.loadPopularRecommendations(); // Fallback
         }
-      );
+      });
     } else {
       this.loadPopularRecommendations();
     }
   }
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
-
-  /**
-   * Cargar recomendaciones populares si el usuario no está autenticado o hay un error
-   */
   loadPopularRecommendations(): void {
-    this.recommendationsService.getMostPopular(4).subscribe(
-      (data: KinguinGiftCard[]) => {
-        this.recommendedGiftCards = data.map(card => {
-          card.coverImageOriginal = card.images.cover?.thumbnail || '';
+    this.recommendationsService.getMostPopular(4).subscribe({
+      next: (cards) => {
+        this.recommendedGiftCards = cards.map(card => {
           card.coverImage = card.images.cover?.thumbnail || '';
+          card.coverImageOriginal = card.coverImage;
           return card;
         });
       },
-      (error) => {
-        console.error('Error al cargar recomendaciones populares:', error);
-      }
-    );
-  }
-
-  /**
-   * Navegar al detalle del producto
-   */
-  viewDetails(card: KinguinGiftCard): void {
-    console.log('CARD ID: ' + card.productId);
-    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
-      if (success) {
-        console.log('Navigation successful');
-      } else {
-        console.log('Navigation failed');
+      error: (err) => {
+        console.error('Error al cargar recomendaciones populares:', err);
       }
     });
   }
 
-  // Método para abrir el modal de keys
+  viewDetails(card: KinguinGiftCard): void {
+    console.log('Navegar a detalle de la gift card ID: ', card.productId);
+    this.router.navigate(['/gift-card-details', card.kinguinId]);
+  }
+
+  // Abrir/Cerrar Modal de Keys
   openKeysModal(): void {
     this.showKeysModal = true;
   }
 
-  // Método para cerrar el modal de keys
   closeKeysModal(): void {
     this.showKeysModal = false;
+  }
+
+  // Obtener userId (ejemplo)
+  getCurrentUserId(): number {
+    const userIdStr = sessionStorage.getItem('userId');
+    if (userIdStr) {
+      const userId = parseInt(userIdStr, 10);
+      if (!isNaN(userId)) {
+        return userId;
+      }
+    }
+    return 1; // Valor por defecto
   }
 }
