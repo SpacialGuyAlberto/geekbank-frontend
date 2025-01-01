@@ -36,7 +36,11 @@
           <i class="fas fa-angle-left"></i>
         </button>
         <span *ngFor="let page of [currentPage-2, currentPage-1, currentPage, currentPage+1, currentPage+2]">
-          <button *ngIf="page > 0 && page <= totalPages" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
+          <button *ngIf="page > 0 && page <= totalPages"
+                  (click)="goToPage(page)"
+                  [class.active]="page === currentPage">
+            {{ page }}
+          </button>
         </span>
         <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">
           <i class="fas fa-angle-right"></i>
@@ -84,7 +88,6 @@
 
         <!-- Imagen principal del producto -->
         <div class="product-image-large">
-          <!-- Reemplaza 'selectedProduct.imageUrl' por la propiedad correcta de tu producto -->
           <img [src]="selectedProduct?.imageUrl || 'assets/default-product.png'" alt="Imagen del producto">
         </div>
 
@@ -133,7 +136,39 @@
         <div *ngIf="selectedProduct?.videos?.length">
           <h3>Videos:</h3>
           <div class="video-gallery">
-            <iframe *ngFor="let video of selectedProduct?.videos" width="560" height="315" [src]="'https://www.youtube.com/embed/' + video.videoId" frameborder="0" allowfullscreen></iframe>
+            <iframe *ngFor="let video of selectedProduct?.videos"
+                    width="560"
+                    height="315"
+                    [src]="'https://www.youtube.com/embed/' + video.videoId"
+                    frameborder="0"
+                    allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+
+        <!-- ======================================== -->
+        <!-- Sección: Detalles de Activación (EDITAR) -->
+        <!-- ======================================== -->
+        <div>
+          <h3>Detalles de Activación</h3>
+
+          <div class="detail-item">
+            <dt>Video URL:</dt>
+            <dd>
+              <input type="text" [(ngModel)]="activationVideoUrl" />
+            </dd>
+          </div>
+
+          <div class="detail-item">
+            <dt>Instrucciones:</dt>
+            <dd>
+              <textarea [(ngModel)]="activationTextDetails" rows="4"></textarea>
+            </dd>
+          </div>
+
+          <div class="activation-details-actions" style="margin-top: 1rem;">
+            <button (click)="saveActivationDetails()">Guardar Detalles</button>
+            <button (click)="deleteActivationDetails()">Eliminar Detalles</button>
           </div>
         </div>
       </div>
