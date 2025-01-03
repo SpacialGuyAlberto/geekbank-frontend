@@ -21,7 +21,7 @@ export class FooterComponent implements OnInit, OnDestroy{
   footerClass: string = '';
   footerDivider: string = '';
   footerSection: string = '';
-  contactClass: string = '';
+  contactClass: string = '50494347052';
   socialClass: string = '';
   paymentClass: string = '';
   newsletter: string = '';

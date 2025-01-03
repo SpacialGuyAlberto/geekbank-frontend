@@ -14,6 +14,8 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {Transaction} from "../../../models/transaction.model";
+import {MatTab, MatTabGroup} from "@angular/material/tabs";
+import {TigoPaymentAdminComponent} from "../tigo-payment-admin/tigo-payment-admin.component";
 
 @Component({
   selector: 'app-transactions',
@@ -43,6 +45,9 @@ import {Transaction} from "../../../models/transaction.model";
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
+    MatTab,
+    TigoPaymentAdminComponent,
+    MatTabGroup,
   ],
   templateUrl: './transactions.component.html',
   styleUrls: ['./transactions.component.css'],
@@ -63,7 +68,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
   itemsPerPage: number = 10;
   totalPages: number = 0;
   blockDropDown: boolean = false;
-
+  selectedTabIndex = 0;
   constructor(private transactionService: TransactionsService, private userService: UserService) {}
 
   ngOnInit() {
