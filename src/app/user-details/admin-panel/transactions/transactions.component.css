@@ -17,6 +17,28 @@
   color: #ff7a00;
 }
 
+/* Grupo de Pestañas (Angular Material) */
+.mat-tab-group {
+  background-color: #1c1c1c; /* Fondo oscuro */
+  color: #fff;              /* Texto blanco */
+}
+
+/* Etiquetas de las pestañas */
+.mat-tab-label {
+  color: #fff; /* Texto blanco para las pestañas inactivas */
+}
+
+.mat-tab-label-active {
+  color: #ffcc00 !important; /* Texto amarillo para la pestaña activa */
+}
+
+/* Contenido de las pestañas */
+.mat-tab-body {
+  padding: 1rem;
+  background-color: #2e2e2e; /* Fondo ligeramente más claro */
+}
+
+/* ===================== FILTROS ===================== */
 .filters {
   display: flex;
   flex-wrap: wrap;
@@ -35,6 +57,7 @@
   color: #fff;
 }
 
+/* Apariencia de los mat-form-field con 'fill' */
 .mat-form-field-appearance-fill .mat-form-field-flex {
   background-color: #333;
 }
@@ -57,12 +80,14 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  justify-content: center;
 }
 
 .filters button:hover {
   background-color: #e68a00;
 }
 
+/* ===================== TABLA DE TRANSACCIONES ===================== */
 .transaction-table {
   margin-top: 2rem;
 }
@@ -90,6 +115,7 @@
   background-color: #444;
 }
 
+/* Estados de transacción */
 .transaction-status {
   padding: 0.5rem 1.5rem;
   border-radius: 2.5rem;
@@ -121,6 +147,7 @@
   border-color: #f44336;
 }
 
+/* ===================== PAGINACIÓN ===================== */
 .pagination {
   display: flex;
   justify-content: center;
@@ -150,6 +177,7 @@
   vertical-align: middle;
 }
 
+/* ===================== RESPONSIVIDAD ===================== */
 @media (max-width: 768px) {
   .transactions-container {
     max-width: 100%;
