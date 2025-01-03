@@ -26,7 +26,7 @@ export interface UnmatchedPayment {
 })
 export class UnmatchedPaymentService {
 
-  private baseUrl = `${environment.apiUrl}/admin/payments`
+  protected baseUrl = `${environment.apiUrl}/admin/payments`
 
   constructor(private http: HttpClient) { }
 
@@ -80,4 +80,15 @@ export class UnmatchedPaymentService {
     }
     return throwError(errorMessage);
   }
+
+  uploadPayment(formData: FormData): Observable<any> {
+    // No recreamos el FormData, usamos el que llega.
+    // Tampoco seteamos manualmente 'Content-Type',
+    // dejamos que el browser lo maneje solo para multipart/form-data.
+    return this.http.post(`${this.baseUrl}`, formData);
+  }
+
+
+
+
 }

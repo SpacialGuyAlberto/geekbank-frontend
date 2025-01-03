@@ -1,10 +1,11 @@
 /* Estilos Generales del Contenedor */
 .manual-sales-container {
   padding: 2rem;
-  background-color: #1c1c1c;
+  background-color: #202020; /* Tonalidad más oscura */
   color: #fff;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   border-radius: 0.5rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3); /* Sombra más destacada */
 }
 
 /* Título Principal */
@@ -13,6 +14,31 @@
   margin-bottom: 2rem;
   color: #ffcc00; /* Color distintivo */
   font-size: 1.8rem;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Pequeño efecto de sombra */
+}
+
+/* Contenedor de Búsqueda */
+.search-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-container label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #ffcc00;
+}
+
+.search-container input {
+  margin-top: 0.5rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
 }
 
 /* Mensajes de Estado */
@@ -37,6 +63,7 @@
   background-color: #2e2e2e;
   border-radius: 0.5rem;
   overflow: hidden;
+  border: 1px solid #444; /* Borde externo */
 }
 
 .sales-table thead {
@@ -47,22 +74,21 @@
 .sales-table td {
   padding: 1rem;
   text-align: left;
+  border-bottom: 1px solid #444;
 }
 
 .sales-table th {
   color: #ffcc00;
   font-weight: bold;
-  border-bottom: 2px solid #555;
   font-size: 1rem;
 }
 
 .sales-table tbody tr {
-  border-bottom: 1px solid #555;
   transition: background-color 0.3s ease;
 }
 
 .sales-table tbody tr:hover {
-  background-color: #3a3a3a;
+  background-color: #424242;
 }
 
 .sales-table td {
@@ -74,7 +100,7 @@
   border-radius: 0.25rem;
 }
 
-/* Botón (Crear Nuevo Pago, Editar, Eliminar) */
+/* Botones (Crear Nuevo Pago, Editar, Eliminar) */
 .complete-sale-btn {
   background-color: #28a745;
   color: #fff;
@@ -96,6 +122,14 @@
 /* Hover del Botón */
 .complete-sale-btn:hover {
   background-color: #218838;
+}
+
+/* Botón Eliminar con color diferenciado */
+.delete-btn {
+  background-color: #dc3545;
+}
+.delete-btn:hover {
+  background-color: #c82333;
 }
 
 /* Modal */
@@ -120,6 +154,7 @@
   max-width: 500px;
   position: relative;
   color: #000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .close-btn {
@@ -136,6 +171,7 @@
   text-align: center;
   margin-bottom: 1rem;
   color: #333;
+  font-size: 1.4rem;
 }
 
 /* Campos del Formulario en el Modal */
@@ -148,7 +184,7 @@
 .modal-content label {
   margin-bottom: 0.25rem;
   font-weight: 600;
-  color: #000;
+  color: #333;
 }
 
 .modal-content input[type="text"],
@@ -179,7 +215,6 @@
   font-size: 1rem;
   margin: 0 auto;
 }
-
 .modal-content .complete-sale-btn:hover {
   background-color: #e68a00;
 }
