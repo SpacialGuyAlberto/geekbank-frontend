@@ -27,20 +27,20 @@ export class OffersBannerComponent implements OnInit {
       link: '/free-fire-details'
     },
     {
-      imageUrl: 'https://i.pinimg.com/474x/87/91/63/879163b9179cee01973ff32fb6906c66.jpg',
-      title: 'Call of Duty Mobile',
+      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzpFwx2_B4AmweuLUjGiYnENPtRMP9siWsOxjNIoRzjI-WVlcdzXDDz0LSu8bUsZYRIAI&usqp=CAU',
+      title: 'Pub G',
       link: '#'
     },
     {
-      imageUrl: 'https://wallpapercave.com/wp/wp7663569.jpg',
+      imageUrl: 'https://static.kinguin.net/media/images/products/_genshimpblessing1.jpg',
       title: 'Juego 3',
       link: '#'
     },
     {
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFCHbLP_12inRbkyBEl745mpPBNO9RsSc3tw&s',
+      imageUrl: 'https://storage.googleapis.com/api-ecommerce/ea-sports-fc-25_cover_original.jpg',
       title: 'Juego 4',
       link: '#'
-    }
+    },
   ];
 
   constructor(private router: Router) { }

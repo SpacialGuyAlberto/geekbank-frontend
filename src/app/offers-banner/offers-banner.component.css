@@ -88,7 +88,7 @@
   left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
-  background-color: rgba(255, 106, 0, 0.9); /* Transparente para destacar sobre la imagen */
+  background-color: rgba(15, 208, 145, 0.9); /* Transparente para destacar sobre la imagen */
   color: #140706;
   border: none;
   padding: 0.625rem 1.25rem; /* 10px 20px */
@@ -99,7 +99,7 @@
 }
 
 .offer-button:hover {
-  background-color: rgba(230, 92, 0, 0.8); /* Cambio de color al pasar el cursor */
+  background-color: rgba(23, 102, 28, 0.8); /* Cambio de color al pasar el cursor */
   transform: translateX(-50%) scale(1.05); /* Aumenta ligeramente el tamaño al pasar el cursor */
 }
 
@@ -112,7 +112,7 @@
 }
 
 .offers-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(255,106,0,0.8);
+  background: rgba(76, 255, 0, 0.8);
   border-radius: 0.25rem;
 }
 
@@ -188,7 +188,7 @@
   }
 
   .offers-wrapper::-webkit-scrollbar-thumb {
-    background: rgba(255,106,0,0.8);
+    background: rgba(25, 178, 83, 0.8);
     border-radius: 0.25rem;
   }
 }
