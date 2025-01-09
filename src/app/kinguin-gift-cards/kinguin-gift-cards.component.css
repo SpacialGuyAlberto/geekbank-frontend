@@ -115,7 +115,7 @@
 
 h2 {
   font-family: var(--font-primary);
-  font-size: calc(2.5rem * var(--scale-factor));
+  font-size: calc(1.5rem * var(--scale-factor));
   color: #FFFFFF; /* Blanco puro */
   text-align: center;
   text-transform: uppercase;

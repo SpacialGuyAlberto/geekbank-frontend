@@ -23,6 +23,7 @@ import { PaymentMethodsComponent } from "./user-details/settings/payment-methods
 import {CheckoutComponent} from "./checkout/checkout.component";
 import {FilteredPageComponent} from "./filtered-page/filtered-page.component";
 import {TermsAndConditionsComponent} from "./terms-and-conditions/terms-and-conditions.component";
+import {OfferComponent} from "./offer/offer.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -51,6 +52,11 @@ export const routes: Routes = [
   {path: 'checkout', component: CheckoutComponent },
   { path: 'filtered/:category', component: FilteredPageComponent },
   { path: 'terms', component: TermsAndConditionsComponent},
+  {
+    path: 'offer/:title',
+    component: OfferComponent
+  },
+
   // Ruta comodín al final
   { path: '**', redirectTo: '/home' }
 ];

@@ -79,7 +79,7 @@
 
 h2 {
   font-family: var(--font-primary);
-  font-size: calc(2.5rem * var(--scale-factor));
+  font-size: calc(1.5rem * var(--scale-factor));
   color: #FFFFFF; /* Blanco puro */
   text-align: center;
   text-transform: uppercase;
@@ -168,7 +168,7 @@ h2:hover {
 
   h2 {
     font-size: calc(1.8rem * var(--scale-factor));
-    letter-spacing: calc(0.08rem * var(--scale-factor));
+    letter-spacing: calc(1rem * var(--scale-factor));
     margin-top: 1rem; /* Espacio adicional en móviles */
   }
   .highlights-carousel {
