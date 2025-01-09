@@ -1,0 +1,39 @@
+<!-- src/app/components/offer/offer.component.html -->
+<div class="offer-details-container">
+  <!-- Banner de fondo superior -->
+  <div
+    class="banner-background top-banner"
+    *ngIf="bannerImageUrl"
+    [ngStyle]="{'background-image': 'url(' + bannerImageUrl + ')'}">
+  </div>
+
+  <!-- Banner de fondo inferior -->
+  <div
+    class="banner-background bottom-banner"
+    *ngIf="bannerImageUrlBottom"
+    [ngStyle]="{'background-image': 'url(' + bannerImageUrlBottom + ')'}">
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Cargando resultados...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="!isLoading && !errorMessage && searchResults.length === 0" class="no-results">
+    No se encontraron resultados para "{{ offerTitle }}".
+  </div>
+
+  <div *ngIf="searchResults.length > 0" class="results-container">
+    <div class="result-item" *ngFor="let card of searchResults" (click)="viewDetails(card)">
+      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="card-image">
+      <div class="card-content">
+        <span class="discount-percentage">{{ card.randomDiscount }}% OFF</span>
+        <h3 class="gift-card-title">{{ card.name }}</h3>
+        <span class="platform">{{card.platform}}</span>
+        <div class="card-price">
+          <span class="original-price">
+            {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency: 'HNL':'symbol':'1.2-2' }}
+          </span>
+          <span class="discounted-price">{{ card.priceHNL | currency: 'HNL':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

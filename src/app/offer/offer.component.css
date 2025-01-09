@@ -1,0 +1,173 @@
+/* src/app/components/offer/offer.component.css */
+
+:root {
+  --scale-factor: 0.80;
+  --primary-color: #0B0D19;
+  --secondary-color: #4f5252;
+  --text-color: #FFFFFF;
+  --highlight-color: #00d4ff;
+  --accent-color: #88D66C;
+  --transition-speed: 0.3s;
+}
+
+.offer-details-container {
+  position: relative; /* Para posicionar los banners correctamente */
+  margin-top: 3rem;
+  padding: calc(40px * var(--scale-factor));
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  overflow: hidden; /* Para ocultar el blur fuera del contenedor */
+  z-index: 0; /* Asegúrate de que este contenedor esté encima de los banners */
+}
+
+.banner-background {
+  position: absolute;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  margin-left: -2rem;
+  z-index: -2; /* Ahora está detrás del contenedor principal */
+  opacity: 0.7;
+}
+
+.top-banner {
+  top: 0;
+  height: 30%; /* Ajusta la altura según tus necesidades */
+}
+
+.bottom-banner {
+  bottom: 0;
+  height: 30%; /* Ajusta la altura según tus necesidades */
+}
+
+/* Asegúrate de que ambos banners no se superpongan de manera problemática */
+@media (max-height: 800px) {
+  .top-banner, .bottom-banner {
+    height: 25%;
+  }
+}
+
+.offer-details h2 {
+  text-align: center;
+  color: var(--text-color);
+  margin-bottom: calc(30px * var(--scale-factor));
+  font-size: calc(2em * var(--scale-factor));
+  position: relative; /* Para asegurarse de que el texto esté por encima de los banners */
+  z-index: 1;
+}
+
+.loading, .error, .no-results {
+  text-align: center;
+  color: #CCC;
+  margin: calc(20px * var(--scale-factor)) auto;
+  position: relative;
+  z-index: 1;
+}
+
+.results-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 4rem;
+  padding: 0 10px;
+  cursor: pointer;
+  position: relative; /* Asegúrate de que los elementos interactivos estén posicionados correctamente */
+  z-index: 1; /* Los resultados ahora estarán sobre los banners */
+}
+
+.result-item {
+  background-color: var(--primary-color);
+  border: 2px solid rgba(173, 216, 230, 0.2);
+  border-radius: 8px;
+  padding: 0;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  position: relative; /* Asegura que el z-index funcione correctamente */
+  z-index: 1; /* Elementos clickeables encima de los banners */
+}
+
+.result-item:hover {
+  transform: translateY(calc(-5px * var(--scale-factor)));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+.card-image {
+  width: 100%;
+  height: calc(15rem * var(--scale-factor));
+  object-fit: cover;
+  border-top-left-radius: calc(0.5rem * var(--scale-factor));
+  border-top-right-radius: calc(0.5rem * var(--scale-factor));
+  display: block;
+  transition: transform var(--transition-speed) ease;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: calc(1rem * var(--scale-factor));
+  padding: calc(1rem * var(--scale-factor));
+}
+
+.discount-percentage {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: var(--highlight-color);
+  color: var(--text-color);
+  padding: calc(5px * var(--scale-factor));
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.card-price {
+  margin-top: calc(10px * var(--scale-factor));
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #AAA;
+}
+
+.gift-card-title {
+  font-size: calc(0.9rem * var(--scale-factor));
+  color: var(--text-color);
+  margin-bottom: calc(0.625rem * var(--scale-factor));
+  margin-top: -1rem;
+  text-transform: uppercase;
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  max-height: calc(3rem * var(--scale-factor));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.discounted-price {
+  font-size: calc(1.2em * var(--scale-factor));
+  color: var(--accent-color);
+}
+
+.platform {
+  display: inline-block;
+  background-color: #021526;
+  color: #ffffff;
+  font-size: calc(0.6rem * var(--scale-factor));
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 12px;
+  margin-top: 4px;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  align-self: center;
+}

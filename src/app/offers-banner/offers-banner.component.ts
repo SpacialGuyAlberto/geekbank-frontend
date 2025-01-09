@@ -1,5 +1,7 @@
+// src/app/components/offers-banner/offers-banner.component.ts
 import { Component, OnInit } from '@angular/core';
-import {NgForOf, NgIf} from "@angular/common";
+import { Router } from '@angular/router'; // Importar Router
+import { NgForOf, NgIf } from '@angular/common';
 
 interface Offer {
   imageUrl: string;
@@ -21,30 +23,30 @@ export class OffersBannerComponent implements OnInit {
 
   offers: Offer[] = [
     {
-      imageUrl: 'https://images.g2a.com/300x400/1x1x1/garena-free-fire-100-10-diamond-key-global-i10000218624005/5f6090f97e696c046b0ffe22',
-      title: 'Garena Free Fire',
+      imageUrl: 'https://storage.googleapis.com/api-ecommerce/minecraft_cover_original.jpg',
+      title: 'Minecraft',
       link: '/free-fire-details'
     },
     {
-      imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzpFwx2_B4AmweuLUjGiYnENPtRMP9siWsOxjNIoRzjI-WVlcdzXDDz0LSu8bUsZYRIAI&usqp=CAU',
-      title: 'Pub G',
+      imageUrl: 'https://m.media-amazon.com/images/M/MV5BZmQwMjQ2ZTUtZmM5MC00MTdkLWIxYzgtODU1NzQ4Zjg4NmMxXkEyXkFqcGc@._V1_.jpg',
+      title: 'Valorant',
       link: '#'
     },
     {
-      imageUrl: 'https://static.kinguin.net/media/images/products/_genshimpblessing1.jpg',
-      title: 'Juego 3',
+      imageUrl: 'https://static.kinguin.net/media/images/products/_dragonballsparkingzeroUltimate-173.jpeg',
+      title: 'Dragon ball: Sparking',
       link: '#'
     },
     {
       imageUrl: 'https://storage.googleapis.com/api-ecommerce/ea-sports-fc-25_cover_original.jpg',
-      title: 'Juego 4',
+      title: 'FC 25',
       link: '#'
     },
   ];
 
   isModalOpen: boolean = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -55,6 +57,11 @@ export class OffersBannerComponent implements OnInit {
 
   closeModal(): void {
     this.isModalOpen = false;
+  }
+
+  goToOfferDetails(offer: Offer): void {
+    // Navegar a la ruta '/offer/{title}'
+    this.router.navigate(['/offer', encodeURIComponent(offer.title)]);
   }
 
 }

@@ -5,10 +5,11 @@
       <div class="offer-image-container">
         <img [src]="offer.imageUrl" [alt]="offer.title" loading="lazy">
       </div>
-      <button class="offer-button" (click)="openModal()">Ver ofertas</button>
+      <button class="offer-button" (click)="goToOfferDetails(offer)">Ver ofertas</button>
     </div>
   </div>
 </div>
+
 
 <!-- Modal -->
 <div class="modal" *ngIf="isModalOpen">
