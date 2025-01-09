@@ -73,6 +73,37 @@
   filter: blur(calc(0px * var(--scale-factor)));
 }
 
+h2 {
+  font-family: var(--font-primary);
+  font-size: calc(2.5rem * var(--scale-factor));
+  color: #F8F9FA; /* Blanco ligeramente suave */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: calc(0.2rem * var(--scale-factor));
+  margin-bottom: calc(2rem * var(--scale-factor));
+  position: relative;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+h2::before,
+h2::after {
+  position: absolute;
+  width: calc(4rem * var(--scale-factor));
+  height: calc(0.2rem * var(--scale-factor));
+  background: #F8F9FA; /* Blanco ligeramente suave */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+h2::before {
+  left: calc(-5rem * var(--scale-factor));
+}
+
+h2::after {
+  right: calc(-5rem * var(--scale-factor));
+}
+
+
 @keyframes animatedBorder {
   0% {
     background-position: 0% 50%;
@@ -196,10 +227,34 @@
   .gift-card-price {
     font-size: calc(1.2rem * var(--scale-factor));
   }
+
+  .h2 {
+    font-family: var(--font-primary);
+    font-size: calc(2.5rem * var(--scale-factor));
+    color: #F8F9FA; /* Blanco ligeramente suave */
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: calc(0.2rem * var(--scale-factor));
+    margin-bottom: calc(2rem * var(--scale-factor));
+    position: relative;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+  }
 }
 
 /* Ajustes adicionales para pantallas muy pequeñas */
 @media (max-width: 480px) {
+  .h2 {
+    font-family: var(--font-primary);
+    font-size: calc(2.5rem * var(--scale-factor));
+    color: #F8F9FA; /* Blanco ligeramente suave */
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: calc(0.2rem * var(--scale-factor));
+    margin-bottom: calc(2rem * var(--scale-factor));
+    position: relative;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+  }
+
   .recommendations {
     grid-template-rows: repeat(2, 1fr);
     grid-gap: calc(0.5rem * var(--scale-factor));

@@ -113,6 +113,25 @@
   line-height: 1.2; /* Ajusta la separación entre líneas */
 }
 
+h2 {
+  font-family: var(--font-primary);
+  font-size: calc(2.5rem * var(--scale-factor));
+  color: #FFFFFF; /* Blanco puro */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: calc(0.15rem * var(--scale-factor));
+  margin-bottom: calc(1.5rem * var(--scale-factor));
+  margin-top: calc(2rem * var(--scale-factor)); /* Espaciado superior adicional */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.6);
+  position: relative; /* Para posicionar bien en el layout */
+}
+
+/* Hover para destacar el título */
+h2:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.8);
+  color: #00d4ff; /* Cambia a color destacado al pasar el mouse */
+}
+
 
 .load-more-container {
   display: flex;
@@ -256,6 +275,13 @@
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
     margin-bottom: calc(0.625rem * var(--scale-factor));
   }
+
+  h2 {
+    font-size: calc(2rem * var(--scale-factor));
+    margin-top: calc(1rem * var(--scale-factor));
+    letter-spacing: calc(0.1rem * var(--scale-factor));
+  }
+
   .platform {
     font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño más compacto */
   }
@@ -306,6 +332,12 @@
     padding: calc(0.5rem * var(--scale-factor));
     height: 4rem;
     font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: calc(1.8rem * var(--scale-factor));
+    margin-top: calc(0.8rem * var(--scale-factor));
+    letter-spacing: calc(0.08rem * var(--scale-factor));
   }
 
   /* Ajustes para el badge de descuento en pantallas muy pequeñas */
