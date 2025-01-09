@@ -1,7 +1,5 @@
-// src/app/offers-banner/offers-banner.component.ts
 import { Component, OnInit } from '@angular/core';
-import {NgForOf} from "@angular/common";
-import {Router} from "@angular/router";
+import {NgForOf, NgIf} from "@angular/common";
 
 interface Offer {
   imageUrl: string;
@@ -14,7 +12,8 @@ interface Offer {
   templateUrl: './offers-banner.component.html',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    NgIf
   ],
   styleUrls: ['./offers-banner.component.css']
 })
@@ -43,15 +42,19 @@ export class OffersBannerComponent implements OnInit {
     },
   ];
 
-  constructor(private router: Router) { }
+  isModalOpen: boolean = false;
+
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  navigateTo(link: string): void {
-    if (link && link !== '#') {
-      this.router.navigateByUrl(link);
-    }
+  openModal(): void {
+    this.isModalOpen = true;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
   }
 
 }

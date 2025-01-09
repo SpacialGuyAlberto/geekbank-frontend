@@ -1,7 +1,14 @@
+<!-- Banner dinámico en el background (blur y z-index negativo) -->
+<div
+  class="genre-banner"
+  *ngIf="bannerImage"
+  [ngStyle]="{'background-image': 'url(' + bannerImage + ')'}">
+</div>
+
 <div class="filtered-page-container">
   <header class="filtered-page-header">
-    <h1>Gift Cards - {{ selectedCategory }}</h1>
-    <!-- Puedes agregar filtros adicionales aquí si es necesario -->
+    <!-- Muestra el género en pantalla -->
+    <h1>{{ selectedCategory }}</h1>
   </header>
 
   <section class="filtered-page-content">
@@ -17,33 +24,44 @@
 
     <!-- Tarjetas de gift cards -->
     <div *ngIf="!isLoading && giftCards.length > 0" class="cards-wrapper">
-      <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+      <div
+        *ngFor="let card of giftCards"
+        class="gift-card"
+        (click)="viewDetails(card)"
+      >
         <div class="image-container">
-          <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
+          <img
+            [src]="card.coverImageOriginal"
+            alt="{{ card.name }}"
+            class="gift-card-image"
+          />
         </div>
+
         <div class="gift-card-content">
           <!-- Mostrar el descuento dinámico -->
-          <span class="discount-percentage">{{ card.randomDiscount }}% OFF</span>
+          <span class="discount-percentage">
+            {{ card.randomDiscount }}% OFF
+          </span>
+
           <h3 class="gift-card-title">{{ card.name }}</h3>
-          <span class="platform">{{card.platform}}</span>
+          <span class="platform">{{ card.platform }}</span>
+
           <div class="gift-card-price">
             <!-- Precio original calculado -->
             <span class="original-price">
-          {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
+              {{
+                (card.priceHNL * (1 + (card.randomDiscount || 0) / 100))
+                  | currency: 'HNL':'symbol':'1.2-2'
+              }}
+            </span>
             <!-- Precio con descuento -->
             <span class="discounted-price">
-          {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
+              {{ card.priceHNL | currency: 'HNL':'symbol':'1.2-2' }}
+            </span>
           </div>
         </div>
       </div>
-
     </div>
-
-
-
-
 
     <!-- Mensaje cuando no hay gift cards -->
     <div
@@ -54,7 +72,10 @@
     </div>
 
     <!-- Botón para cargar más gift cards -->
-    <div *ngIf="hasMore && !isLoading && giftCards.length > 0" class="load-more-container">
+    <div
+      *ngIf="hasMore && !isLoading && giftCards.length > 0"
+      class="load-more-container"
+    >
       <button
         class="load-more-button"
         (click)="loadMore()"
@@ -64,7 +85,8 @@
           Cargar más
         </ng-container>
         <ng-container *ngIf="isLoadingMore">
-          <div class="button-spinner"></div> Cargando...
+          <div class="button-spinner"></div>
+          Cargando...
         </ng-container>
       </button>
     </div>
