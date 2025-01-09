@@ -42,6 +42,17 @@ export class OffersBannerComponent implements OnInit {
       title: 'FC 25',
       link: '#'
     },
+    {
+      imageUrl: 'https://storage.googleapis.com/api-ecommerce/the-witcher-2-assassins-of-kings-enhanced-edition_cover_original.jpg',
+      title: 'The witcher',
+      link: '#'
+    },
+    {
+      imageUrl: 'https://storage.googleapis.com/api-ecommerce/dmc-devil-may-cry_cover_original.jpg',
+      title: 'devil may cry',
+      link: '#'
+    },
+
   ];
 
   isModalOpen: boolean = false;
