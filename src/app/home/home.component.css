@@ -186,7 +186,8 @@ body, html {
   .banner {
     width: 100vw; /* Abarca todo el ancho de la ventana */
     height: 250px;
-    margin: 0; /* Elimina cualquier margen */
+    margin: 0; /* El
+    imina cualquier margen */
     padding: 0; /* Elimina cualquier padding */
     left: 50%;
     right: 50%;

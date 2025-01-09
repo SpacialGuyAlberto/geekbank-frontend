@@ -73,9 +73,25 @@
   user-select: none; /* Evita selección de texto */
   transition: opacity 0.3s ease;
   opacity: 0.7;
-  /* Sin fondo ni borde para que no sea “elipsoide” */
   background: none;
   border: none;
+}
+
+h2 {
+  font-family: var(--font-primary);
+  font-size: calc(2.5rem * var(--scale-factor));
+  color: #FFFFFF; /* Blanco puro */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: calc(0.15rem * var(--scale-factor));
+  margin-bottom: calc(1.5rem * var(--scale-factor));
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+
+/* Efecto hover del título */
+h2:hover {
+  text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.8);
 }
 
 .carousel-arrow:hover {
@@ -108,9 +124,15 @@
   transition: width 0.1s linear;
 }
 
-/* Adaptación para pantallas pequeñas, etc. */
+/* Adaptación para pantallas pequeñas */
 @media (max-width: 768px) {
+  h2 {
+    font-size: calc(2rem * var(--scale-factor));
+    letter-spacing: calc(0.1rem * var(--scale-factor));
+    margin-top: 1rem; /* Espacio adicional en móviles */
+  }
   .highlights-carousel {
+    margin-top: 2rem; /* Separar el carrusel del título */
     max-width: 100%;
     height: 400px;
     margin-bottom: 5rem;
@@ -142,5 +164,14 @@
   }
   .carousel-arrow {
     font-size: 1.5rem;
+  }
+
+  h2 {
+    font-size: calc(1.8rem * var(--scale-factor));
+    letter-spacing: calc(0.08rem * var(--scale-factor));
+    margin-top: 1rem; /* Espacio adicional en móviles */
+  }
+  .highlights-carousel {
+    margin-top: 2rem; /* Separar el carrusel del título */
   }
 }
