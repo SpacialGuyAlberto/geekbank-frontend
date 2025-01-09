@@ -1,13 +1,47 @@
-/* src/app/components/filtered-page/filtered-page.component.css */
-
-/* Contenedor principal con ancho 100% y fondo de gradiente */
-.filtered-page-container {
+/* Banner con blur y z-index negativo */
+/* Banner con blur y z-index negativo */
+.genre-banner {
   width: 100%;
-  min-height: 100vh; /* Asegura que el fondo cubra toda la altura */
+  height: 600px; /* Ajusta la altura según tus necesidades */
+  background-image: url('/assets/adventure2.webp');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  text-align: center;
+  position: relative;
+  filter: blur(2px);
+}
+
+
+.genre-banner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
+}
+/* Contenedor principal con margen ajustado */
+.filtered-page-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  /*
+    Le damos un margin-top que sume:
+    la altura del banner (50vh) + la altura top (6rem).
+    Así, el contenido comienza por debajo del banner.
+  */
+
   padding: 40px 20px;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   box-sizing: border-box;
 }
+
 
 /* Header centrado con colores claros */
 .filtered-page-header {
@@ -46,43 +80,44 @@
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Wrapper de tarjetas con grid centrado y margenes laterales */
+/* Wrapper de tarjetas con grid centrado */
 .cards-wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); /* Reducido de 250px a 175px */
-  gap: 20px; /* Reducido de 30px a 20px para adecuarse al tamaño más pequeño */
-  justify-items: center; /* Centra las tarjetas en cada columna */
-  max-width: 1000px; /* Limita el ancho total del grid para agregar márgenes laterales */
-  margin: 0 auto; /* Centra el grid dentro del contenedor */
-  padding: 0 10px; /* Agrega un pequeño padding lateral para evitar que las tarjetas toquen los bordes */
+  grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
 :root {
-  --scale-factor: 0.75; /* 75% del tamaño original */
-  --primary-color: #0B0D19;
+  --scale-factor: 0.75;
+  --primary-color: #0b0d19;
   --secondary-color: #021526;
-  --text-color: #B5CDE2FF;
+  --text-color: #b5cde2ff;
   --highlight-color: #00d4ff;
-  --accent-color: #88D66C;
-  --font-primary: 'Roboto', sans-serif;
-  --font-secondary: 'VT323', monospace;
+  --accent-color: #88d66c;
+  --font-primary: "Roboto", sans-serif;
+  --font-secondary: "VT323", monospace;
   --transition-speed: 0.3s;
 }
 
-/* Contenedor de Gift Cards */
-/* Eliminado si no se usa */
-/* .gift-cards-container { */
-/*   ... */
-/* } */
-
+/* Tarjeta */
 .gift-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(39, 39, 57, 0.4), rgba(8, 64, 180, 0.4));
+  background: linear-gradient(
+    135deg,
+    rgba(39, 39, 57, 0.4),
+    rgba(8, 64, 180, 0.4)
+  );
   border: 2px solid rgba(173, 216, 230, 0.2);
   border-radius: 8px;
   padding: 0;
@@ -90,50 +125,67 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   cursor: pointer;
-  position: relative; /* Base para posicionamiento absoluto */
+  position: relative;
   overflow: hidden;
-  z-index: 0; /* Base z-index */
+  z-index: 0;
 }
 
-/* Span de descuento en la esquina superior izquierda */
+/* Span de descuento */
 .discount-percentage {
   position: absolute;
-  top: 10px; /* Ajusta según tus necesidades */
-  left: 10px; /* Ajusta según tus necesidades */
-  background-color: var(--discount-color);
+  top: 10px;
+  left: 10px;
+  background-color: var(--highlight-color);
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
   font-size: calc(0.75rem * var(--scale-factor));
   font-weight: bold;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1; /* Por encima de otros elementos */
+  z-index: 1;
 }
 
 /* Efecto de borde animado */
 .gift-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: calc(-2px * var(--scale-factor));
   left: calc(-2px * var(--scale-factor));
   right: calc(-2px * var(--scale-factor));
   bottom: calc(-2px * var(--scale-factor));
   border-radius: calc(15px * var(--scale-factor));
-  background: linear-gradient(45deg, rgba(28, 29, 50, 0.4), rgba(74, 35, 90, 0.4), rgb(33, 9, 9), rgba(173, 216, 230, 1));
+  background: linear-gradient(
+    45deg,
+    rgba(28, 29, 50, 0.4),
+    rgba(74, 35, 90, 0.4),
+    rgb(33, 9, 9),
+    rgba(173, 216, 230, 1)
+  );
   background-size: 300% 300%;
   z-index: -1;
   animation: animatedBorder 5s ease infinite;
 }
 
-/* Efecto al hacer hover sobre una tarjeta */
-.gift-card:hover {
-  transform: scale(1.05); /* Escala al 105% */
-  box-shadow: 0 8px 30px rgba(173, 216, 230, 0.5);
-  border-color: rgba(173, 216, 230, 0.4);
-  z-index: 1; /* Superpone sobre las demás tarjetas */
+@keyframes animatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-/* Imagen de la Gift Card */
+/* Hover en la tarjeta */
+.gift-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(173, 216, 230, 0.5);
+  border-color: rgba(173, 216, 230, 0.4);
+  z-index: 1;
+}
+
 .gift-card-image {
   width: 100%;
   height: calc(15rem * var(--scale-factor));
@@ -144,30 +196,27 @@
   transition: transform var(--transition-speed) ease;
 }
 
-/* Contenido de la Gift Card */
 .gift-card-content {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   flex: 1;
-  flex-grow: 1;
   margin-top: calc(1rem * var(--scale-factor));
   padding: calc(1rem * var(--scale-factor));
 }
 
 .gift-card-title {
-  font-size: calc(0.9rem * var(--scale-factor)); /* Mantén el tamaño ajustable */
+  font-size: calc(0.9rem * var(--scale-factor));
   color: var(--text-color);
   margin-bottom: calc(0.625rem * var(--scale-factor));
   margin-top: -1rem;
   text-transform: uppercase;
-  word-wrap: break-word; /* Ajusta palabras largas */
-  word-break: break-word; /* Divide palabras largas */
-  white-space: normal; /* Permite ajuste de líneas */
-  max-height: calc(3rem * var(--scale-factor)); /* Limita la altura máxima */
-  overflow: hidden; /* Evita desbordamiento visual */
-  text-overflow: ellipsis; /* Muestra "..." si el texto excede */
-  line-height: 1.2; /* Ajusta la separación entre líneas */
+  word-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  max-height: calc(3rem * var(--scale-factor));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
 }
 
 .load-more-container {
@@ -177,7 +226,7 @@
 }
 
 .load-more-button {
-  background:  rgba(28, 29, 50, 0.4);
+  background: rgba(28, 29, 50, 0.4);
   border: none;
   border-radius: 50px;
   padding: 10px 20px;
@@ -193,7 +242,7 @@
 }
 
 .load-more-button:hover {
-  background-color:   rgba(28, 29, 50, 0.4);
+  background-color: rgba(28, 29, 50, 0.4);
   transform: translateY(-2px);
 }
 
@@ -201,138 +250,119 @@
   transform: translateY(0);
 }
 
-.arrow {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-left: 2px solid #B5CDE2FF;
-  border-bottom: 2px solid #B5CDE2FF;
-  transform: rotate(-45deg);
-  margin-top: 2px;
-  transition: transform 0.2s;
+.button-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #ffffff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
-.load-more-button:hover .arrow {
-  transform: rotate(135deg);
+.platform {
+  display: inline-block;
+  background-color: #021526;
+  color: #ffffff;
+  font-size: calc(0.6rem * var(--scale-factor));
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 12px;
+  margin-top: 4px;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  align-self: center;
 }
 
-.text {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--text-color)
-}
-
-/* Expande el título al hacer hover */
-.gift-card:hover .gift-card-title {
-  white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-  max-height: calc(3rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
-}
-
-/* Precio de la Gift Card */
 .gift-card-price {
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
+  align-items: center;
   font-size: calc(1.1rem * var(--scale-factor));
-  color: #88D66C;
+  color: #88d66c;
   font-weight: bold;
-  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
+  margin-top: calc(1rem * var(--scale-factor));
 }
 
-/* Precio original tachado */
 .original-price {
   text-decoration: line-through;
-  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
-  margin-bottom: 4px; /* Espacio inferior */
+  color: #b5cde2ff;
+  margin-bottom: 4px;
   font-size: calc(0.9rem * var(--scale-factor));
 }
 
-/* Precio con descuento */
 .discounted-price {
   color: var(--text-color);
   font-weight: bold;
   font-size: calc(1.4rem * var(--scale-factor));
-  margin-bottom: 4px; /* Espacio inferior */
+  margin-bottom: 4px;
 }
 
-.platform {
-  display: inline-block; /* Asegura que sea un bloque dentro del contenido */
-  background-color: #021526; /* Fondo oscuro para contraste */
-  color: #ffffff; /* Texto blanco para visibilidad */
-  font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño de texto ajustable */
-  font-weight: bold; /* Resalta el texto */
-  padding: 4px 6px; /* Espaciado interno */
-  border-radius: 12px; /* Bordes redondeados */
-  margin-top: 4px; /* Espaciado superior para separación del título */
-  text-align: center; /* Centra el texto */
-  text-transform: uppercase; /* Todo en mayúsculas */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra para efecto de elevación */
-  width: fit-content; /* Se ajusta al tamaño del texto */
-  align-self: center; /* Centra horizontalmente dentro del contenedor */
+/* Mensajes centrados */
+.no-data-message,
+.error-message {
+  text-align: center;
+  font-size: 1.3rem;
+  color: #ffffff;
 }
 
-/* Animaciones */
-@keyframes animatedBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+.error-message {
+  color: #ff6b6b;
+  margin-top: 20px;
 }
 
-/* Media Queries */
+/* Media queries */
 @media (max-width: 768px) {
+  .genre-banner {
+    width: 100vw; /* Abarca todo el ancho de la ventana */
+    height: 250px;
+    margin: 0; /* Elimina cualquier margen */
+    padding: 0; /* Elimina cualquier padding */
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%); /* Centra el banner */
+  }
+
   .filtered-page-container {
-    padding: 20px 10px; /* Reducir padding */
+    /* Ajustamos el margin-top para que quede justo bajo el nuevo banner */
+
+    /* También puedes reducir el padding si deseas */
+    padding: 20px 10px;
   }
 
   .filtered-page-header h1 {
-    font-size: 2rem; /* Reducir tamaño del texto */
+    font-size: 2rem;
   }
 
   .cards-wrapper {
-    grid-template-columns: repeat(2, 1fr); /* Establece dos columnas */
-    gap: 15px; /* Reducir espacio entre tarjetas */
-    max-width: 100%; /* Asegura que el contenedor no exceda el ancho de la pantalla */
-    padding: 0 10px; /* Agrega padding lateral si es necesario */
-  }
-
-  .category-item-image-wrapper {
-    height: 100px; /* Reducir altura de la imagen */
-  }
-
-  .category-item-content {
-    padding: 10px; /* Reducir padding */
-  }
-
-  .category-item-title {
-    font-size: 1.1rem; /* Reducir tamaño de título */
-  }
-
-  .category-item-price {
-    font-size: 0.9rem; /* Reducir tamaño del precio */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    max-width: 100%;
+    padding: 0 10px;
   }
 
   .load-more-button {
-    padding: 10px 20px; /* Reducir tamaño del botón */
-    font-size: 1rem; /* Reducir tamaño del texto */
+    padding: 10px 20px;
+    font-size: 1rem;
   }
+
+
 }
 
 @media (max-width: 480px) {
   .cards-wrapper {
-    grid-template-columns: repeat(2, 1fr); /* Mantener dos columnas */
-    gap: 10px; /* Ajustar el espacio entre tarjetas si es necesario */
-    margin-right: 0; /* Eliminar márgenes que puedan romper el diseño */
-    padding: 0 5px; /* Ajustar padding lateral */
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-right: 0;
+    padding: 0 5px;
   }
 
   .gift-card {
-    width: 100%; /* Asegurar que las tarjetas ocupen el 100% del contenedor */
+    width: 100%;
   }
 
   .gift-card-title {
@@ -352,11 +382,11 @@
     margin-bottom: calc(0.625rem * var(--scale-factor));
   }
 
+
   .load-more-button {
     padding: calc(0.5rem * var(--scale-factor));
   }
 
-  /* Ajustes para el badge de descuento en pantallas muy pequeñas */
   .discount-percentage {
     top: 5px;
     left: 5px;
@@ -369,61 +399,14 @@
     padding: 2px 4px;
     margin-top: 2rem;
   }
-}
 
-/* Mensajes centrados con colores suaves */
-.no-data-message,
-.error-message {
-  text-align: center;
-  font-size: 1.3rem;
-  color: #ffffff;
-}
-
-.error-message {
-  color: #ff6b6b; /* Rojo suave para errores */
-  margin-top: 20px;
-}
-
-/* Botón "Cargar más" estilizado */
-.load-more-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-}
-
-.load-more-button {
-  padding: 12px 24px;
-  font-size: 1.1rem;
-  background-color: #007bff;
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  display: flex;
-  align-items: center;
-  font-weight: 500;
-}
-
-.load-more-button:hover:not([disabled]) {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-
-.load-more-button:disabled {
-  background-color: #6c757d;
-  cursor: not-allowed;
-}
-
-/* Spinner dentro del botón */
-.button-spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid #ffffff;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  animation: spin 1s linear infinite;
-  display: inline-block;
-  margin-right: 8px;
-  vertical-align: middle;
+  .genre-banner {
+    width: 100vw; /* Abarca todo el ancho de la ventana */
+    height: 250px;
+    margin: 0; /* Elimina cualquier margen */
+    padding: 0; /* Elimina cualquier padding */
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%); /* Centra el banner */
+  }
 }

@@ -119,19 +119,20 @@
     <button
       class="tab-button"
       [ngClass]="{'active': selectedCategory === 'software'}"
+      [routerLink]="['/filtered/Software']"
       (click)="selectCategory('software')"
       aria-label="Software"
     >
       <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
     </button>
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'sensacion'}"
-      (click)="selectCategory('sensacion')"
-      aria-label="Sensación"
-    >
-      <i class="fas fa-music" aria-hidden="true"></i> Sensación
-    </button>
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'sensacion'}"-->
+<!--      (click)="selectCategory('sensacion')"-->
+<!--      aria-label="Sensación"-->
+<!--    >-->
+<!--      <i class="fas fa-music" aria-hidden="true"></i> Sensación-->
+<!--    </button>-->
   </div>
 </div>
 
@@ -219,7 +220,7 @@
           </a>
         </li>
         <li>
-          <a class="menu-link" >
+          <a class="menu-link"[routerLink]="['/filtered/Software']">
             <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
           </a>
         </li>
