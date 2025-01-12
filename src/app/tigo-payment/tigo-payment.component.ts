@@ -1,4 +1,5 @@
 // tigo-payment.component.ts
+
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
@@ -40,16 +41,20 @@ import { switchMap } from "rxjs/operators";
 })
 export class TigoPaymentComponent implements OnInit, OnDestroy {
 
+  // Inyecciones de valores
   cartItems = inject(CART_ITEMS, { optional: true }) || [];
   totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
   productId = inject(PRODUCT_ID, { optional: true });
   gameUserId = inject(GAME_USER_ID, { optional: true });
   isManualTransaction = inject(IS_MANUAL_TRANSACTION);
 
+  // Variables internas
   private postLoginAction: (() => void) | null = null;
   unmatchedPaymentResponse: UnmatchedPaymentResponseDto | null = null;
   account: Account | null = null;
   accountId: number = 0;
+
+  // Manejo de transacciones y verificación
   paymentReferenceNumber: string = "";
   insufficientPaymentAmount: string = "";
   showInsufficientPaymentAmount: boolean = false;
@@ -82,6 +87,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   private errorMessageSubscription: Subscription | undefined;
   private orderRequestIdSubscription: Subscription | undefined;
 
+  // Control de formularios de verificación
   showVerificationForm: boolean = false;
   verificationMessage: string = '';
   verificationData = {
@@ -96,29 +102,43 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   manualVerificationError: string = '';
   manualVerificationSuccess: string = '';
 
+  // Datos de pago / detalles del usuario
   paymentDetails = {
     name: '',
     address: '',
     phoneNumber: '',
     total: 0
   };
+
   userId: number | null = null;
   guestId: string | null = null;
+
+  // Manejo de Exchange Rate
   private exchangeRateSubscription: Subscription | null = null;
-  exchangeRate: number = 24.5; // Valor inicial fijo
+  exchangeRate: number = 24.5; // Valor inicial
   isLoading: boolean = false;
   conversionError: string = '';
 
-  // Variables para el prompt de envío de clave por email
-  // Eliminamos wantsEmailKey y mostramos el campo de email directamente
+  // Manejo de envío de clave
   wantsSMSKey: boolean = false;
   showEmailPrompt: boolean = false;
   emailForKey: string = '';
   isEmailPromptComplete: boolean = false;
-  @Input() totalAmount!: number;
 
   // Nueva variable para rastrear la verificación del pago
   isPaymentVerified: boolean = false;
+
+  // Recibimos un totalAmount si fuera necesario
+  @Input() totalAmount!: number;
+
+  // ─────────────────────────────────────────────────────
+  //        Manejo de "steps" para el workflow
+  // Step 1: Ingresar Ref
+  // Step 2: Email / SMS
+  // Step 3: Resumen
+  // Step 4: Procesamiento / resultado final
+  // ─────────────────────────────────────────────────────
+  step: number = 1; // Comienza en 1 => ingresar referencia
 
   constructor(
     private accountService: AccountService,
@@ -133,18 +153,21 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     private guestService: GuestService,
     private router: Router
   ) {
+    // Conexión websocket
     this.webSocketService.connect();
   }
 
   ngOnInit(): void {
     this.loadExchangeRate();
+    // Guardar total en paymentDetails
     this.paymentDetails.total = this.totalPrice;
 
+    // Ver si el usuario está logueado
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
       this.authService.getUserDetails().subscribe(data => {
         this.user = data;
-        this.userEmail = data.email;
+        this.userEmail = data.email; // guardamos el correo
       });
       if (storedUserId) {
         this.userId = parseInt(storedUserId, 10);
@@ -155,78 +178,106 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         this.userId = null;
       }
     } else {
+      // Si es invitado
       this.guestId = this.guestService.getGuestId();
     }
 
+    // Suscripción a mensajes de error
     this.errorMessageSubscription = this.tigoPaymentService.errorMessage$.subscribe(message => {
       this.errorMessage = message;
     });
 
+    // Suscripción a verificación
     this.verifyTransactionSubscription = this.tigoPaymentService.verificationRequest$.subscribe(message => {
       this.verificationMessage = message;
     });
 
+    // Suscripción a transacciones
     this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(message => {
       this.currentTransaction = message;
     });
 
+    // Suscripción al estado de transacción vía WebSocket
     this.transactionStatusSubscription = this.webSocketService.subscribeToTransactionStatus().subscribe(parsedMessage => {
       this.transactionStatus = parsedMessage.status;
-      this.showSpinner = !(this.transactionStatus === 'COMPLETED' || this.transactionStatus === 'AWAITING_MANUAL_PROCESSING'
-        || this.transactionStatus === 'CANCELLED' || this.transactionStatus === 'PROCESSING');
+      this.showSpinner = !(
+        this.transactionStatus === 'COMPLETED' ||
+        this.transactionStatus === 'AWAITING_MANUAL_PROCESSING' ||
+        this.transactionStatus === 'CANCELLED' ||
+        this.transactionStatus === 'PROCESSING'
+      );
     });
 
     window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 
-  showManualVerification(): void {
-    this.showManualVerificationForm = true;
+  // ─────────────────────────────────────────────────────
+  //                Desuscripción en OnDestroy
+  // ─────────────────────────────────────────────────────
+  ngOnDestroy(): void {
+    if (this.exchangeRateSubscription) {
+      this.exchangeRateSubscription.unsubscribe();
+    }
+    if (this.transactionSubscription) {
+      this.transactionSubscription.unsubscribe();
+    }
+    if (this.transactionNumberSubscription) {
+      this.transactionNumberSubscription.unsubscribe();
+    }
+    if (this.verifyTransactionSubscription) {
+      this.verifyTransactionSubscription.unsubscribe();
+    }
+    if (this.transactionStatusSubscription) {
+      this.transactionStatusSubscription.unsubscribe();
+    }
+    this.webSocketService.disconnect();
+    window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 
-  hideManualVerification(): void {
-    this.showManualVerificationForm = false;
-    this.manualVerificationData.refNumber = '';
-    this.manualVerificationError = '';
-    this.manualVerificationSuccess = '';
-    this.unmatchedPaymentResponse = null;
-    this.isPaymentVerified = false;
-  }
+  // ─────────────────────────────────────────────────────
+  //            Workflow por Steps (1,2,3,4)
+  // ─────────────────────────────────────────────────────
 
-  loadExchangeRate(): void {
-    this.isLoading = true;
-    this.exchangeRateSubscription = this.currencyService.getExchangeRateEURtoHNL(1).subscribe({
-      next: (rate) => {
-        this.exchangeRate = rate;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.conversionError = 'No se pudo cargar la tasa de cambio. Inténtelo más tarde.';
-        this.isLoading = false;
-      }
-    });
-  }
-
-  closeModal(): void {
-    this.showModal = false;
-    this.close.emit();
-  }
-
-  async submitManualVerification(): Promise<void> {
+  // Paso 1: El usuario ingresa la referencia
+  goToStep2AfterRef(): void {
     if (!this.manualVerificationData.refNumber) {
       this.manualVerificationError = 'Por favor, ingrese el número de referencia.';
       return;
     }
-
-    // Mostrar el prompt de email directamente
-    this.showEmailPrompt = true;
+    this.manualVerificationError = '';
+    this.step = 2;
   }
 
+  // Paso 2: El usuario elige Email y/o SMS
+  goToStep3AfterEmailSms(): void {
+    if (!this.emailForKey && !this.wantsSMSKey) {
+      this.errorMessage = 'Debe proporcionar un correo electrónico o seleccionar enviar por SMS.';
+      return;
+    }
+    this.errorMessage = '';
+    this.step = 3;
+  }
+
+  // Paso 3: Muestra Resumen (productos, cantidad, precios) y Email/SMS
+  // Al hacer clic en "Continuar" => confirmVerification => Paso 4
+  goToStep4ConfirmVerification(): void {
+    // En lugar de showEmailPrompt = false, pasamos a step = 4
+    this.step = 4;
+    this.confirmVerification();
+  }
+
+  // ─────────────────────────────────────────────────────
+  //    Funciones de verificación y envío al servidor
+  // ─────────────────────────────────────────────────────
+
+  // Mantenemos la lógica original de confirmVerification
+  // pero la llamamos en step=4.
   async confirmVerification(): Promise<void> {
-    // Realizar la verificación del pago
     const refNumber = this.manualVerificationData.refNumber;
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest;
 
+    // Si existe productId => un solo producto
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId,
@@ -236,17 +287,19 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         products: [{
           kinguinId: this.productId,
           qty: 1,
-          price: this.totalAmount,
+          price: this.totalAmount ? this.totalAmount : this.totalPrice,
           name: 'Producto'
         }],
-        amount: this.totalAmount,
+        amount: this.totalAmount ? this.totalAmount : this.totalPrice,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
       }
-    } else if (this.authService.isAuthenticated() && this.userId !== null) {
+    }
+    else if (this.authService.isAuthenticated() && this.userId !== null) {
+      // Usuario logueado con cartItems o sin cartItems
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           userId: this.userId,
@@ -258,7 +311,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity, 0),
+          amount: this.cartItems.reduce(
+            (total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity,
+            0
+          ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -266,6 +322,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           orderDetails.gameUserId = this.gameUserId;
         }
       } else {
+        // Sin cartItems => recarga Balance
         orderDetails = {
           userId: this.userId,
           phoneNumber: phoneNumber,
@@ -284,7 +341,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
       }
-    } else if (this.guestId) {
+    }
+    else if (this.guestId) {
+      // Invitado
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           guestId: this.guestId,
@@ -296,7 +355,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: item.giftcard.priceHNL,
             name: 'Producto'
           })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity, 0),
+          amount: this.cartItems.reduce(
+            (total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity,
+            0
+          ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -304,6 +366,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           orderDetails.gameUserId = this.gameUserId;
         }
       } else {
+        // Invitado sin cartItems => Balance
         orderDetails = {
           guestId: this.guestId,
           phoneNumber: phoneNumber,
@@ -314,7 +377,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             price: this.totalPrice,
             name: 'Balance'
           }],
-          amount: this.totalAmount,
+          amount: this.totalAmount ? this.totalAmount : this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey
         };
@@ -322,7 +385,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           orderDetails.gameUserId = this.gameUserId;
         }
       }
-    } else {
+    }
+    else {
       this.showSpinner = false;
       return;
     }
@@ -330,47 +394,52 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const expectedAmount = this.totalPrice;
 
     try {
+      // Verificamos el pago no asociado
       const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
       if (isVerified) {
         orderDetails.refNumber = refNumber;
         this.paymentReferenceNumber = refNumber;
+        // Iniciamos el pago
         this.tigoPaymentService.initializePayment(orderDetails);
-        // No mostrar el spinner aquí
         this.showSpinner = true;
-        this.isPaymentVerified = true; // Marca como verificado
-        this.manualVerificationSuccess = 'Su pago ha sido verificado. Haga clic en el botón Continuar.';
-        this.manualVerificationError = '';
+        this.isPaymentVerified = true;
+        this.manualVerificationSuccess = 'Su pago ha sido verificado.';
 
+        // Manejo de diferencias
         if (this.unmatchedPaymentResponse) {
           if (this.unmatchedPaymentResponse.difference === 0) {
-            // Preparar para la navegación
-            // Esperar a que el usuario haga clic en Continuar
+            // Esperamos a la transacción
             this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
-            this.currentTransaction = transaction;
-          if (this.currentTransaction?.transactionNumber) {
-            // Ir directo a la página de confirmación
-            this.router.navigate(['/purchase-confirmation'], {
-              queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
+              this.currentTransaction = transaction;
+              if (this.currentTransaction?.transactionNumber) {
+                this.router.navigate(['/purchase-confirmation'], {
+                  queryParams: { transactionNumber: this.currentTransaction.transactionNumber }
+                });
+              }
             });
-          }
-          });
           } else if (this.unmatchedPaymentResponse.difference < 0) {
-            this.insufficientPaymentAmount = "El pago ingresado fue insuficiente. Comunícate con nuestro servicio al cliente para efectuar la devolución de tu pago o compensarlo con otro pago.";
+            this.insufficientPaymentAmount =
+              "El pago ingresado fue insuficiente. Comunícate con nuestro servicio al cliente para efectuar la devolución o compensarlo con otro pago.";
             this.showInsufficientPaymentAmount = true;
           }
         }
       } else {
         this.isPaymentVerified = false;
-        this.manualVerificationError = 'Su código de referencia parece ser incorrecto, recargue la pagina e intente de nuevo por favor.';
+        this.manualVerificationError =
+          'Su código de referencia parece ser incorrecto, recargue la página e intente de nuevo.';
         this.manualVerificationSuccess = '';
       }
     } catch (error) {
       this.isPaymentVerified = false;
-      this.manualVerificationError = 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+      this.manualVerificationError =
+        'Error al verificar el pago. Por favor, inténtelo nuevamente.';
       this.manualVerificationSuccess = '';
     }
   }
 
+  // ─────────────────────────────────────────────────────
+  //                Verificación Unmatched
+  // ─────────────────────────────────────────────────────
   async verifyUnmatchedPayment(referenceNumber: string, expectedAmount: number): Promise<boolean> {
     try {
       const response = await firstValueFrom(
@@ -380,7 +449,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       return true;
     } catch (error: any) {
       if (error && typeof error === 'object' && 'error' in error) {
-        this.manualVerificationError = (error as any).error?.message || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
+        this.manualVerificationError =
+          (error as any).error?.message || 'Error al verificar el pago. Por favor, inténtelo nuevamente.';
       } else {
         this.manualVerificationError = 'Error desconocido al verificar el pago.';
       }
@@ -388,36 +458,34 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
-    this.isCancelling = true;
-    this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
-      .pipe(take(1))
-      .subscribe({
-        next: (updatedTransaction: Transaction) => {
-          this.transaction = updatedTransaction;
-          this.transactionStatus = 'CANCELLED';
-          this.notifMessage = 'Tu pago fue cancelado.';
-          this.isCancelling = false;
-          this.showSpinner = false;
-        },
-        error: (error: any) => {
-          this.errorMessage = 'Error al cancelar la transacción.';
-          this.isCancelling = false;
-          this.showSpinner = false;
-        }
-      });
+  // ─────────────────────────────────────────────────────
+  // Manejo de Exchange Rate
+  // ─────────────────────────────────────────────────────
+  loadExchangeRate(): void {
+    this.isLoading = true;
+    this.exchangeRateSubscription = this.currencyService.getExchangeRateEURtoHNL(1).subscribe({
+      next: (rate) => {
+        this.exchangeRate = rate;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.conversionError = 'No se pudo cargar la tasa de cambio. Inténtelo más tarde.';
+        this.isLoading = false;
+      }
+    });
   }
 
+  // ─────────────────────────────────────────────────────
+  //     Opciones si se detecta un pago no coincidente
+  // ─────────────────────────────────────────────────────
   async handleOptionSelection(option: string): Promise<void> {
     switch (option) {
       case 'Quiero mi dinero de nuevo':
         this.requestRefund();
         break;
-
       case 'Combinar este pago con otro nuevo pago':
         this.combineWithNewPayment();
         break;
-
       case 'Apply the difference as a balance':
         try {
           await this.applyBalance();
@@ -432,17 +500,14 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           );
         }
         break;
-
       case 'Return the difference':
         this.returnDifference();
         break;
-
       case 'Pay Anyways':
         this.router.navigate(['/purchase-confirmation'], {
           queryParams: { transactionNumber: this.currentTransaction?.transactionNumber }
         });
         break;
-
       default:
         console.warn('Opción no reconocida:', option);
     }
@@ -465,8 +530,6 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       }
 
       const balanceToApply = this.unmatchedPaymentResponse.difference;
-      const refNumber = this.manualVerificationData.refNumber;
-
       if (balanceToApply <= 0) {
         this.errorMessage = 'El balance debe ser mayor que 0 para aplicar.';
         reject('Balance inválido');
@@ -508,6 +571,70 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     console.log('Reintentando el pago...');
   }
 
+  // ─────────────────────────────────────────────────────
+  //    Manejo de Verificación Manual (show/hide)
+  // ─────────────────────────────────────────────────────
+  showManualVerification(): void {
+    this.showManualVerificationForm = true;
+  }
+
+  hideManualVerification(): void {
+    this.showManualVerificationForm = false;
+    this.manualVerificationData.refNumber = '';
+    this.manualVerificationError = '';
+    this.manualVerificationSuccess = '';
+    this.unmatchedPaymentResponse = null;
+    this.isPaymentVerified = false;
+  }
+
+  // ─────────────────────────────────────────────────────
+  //   Manejo del prompt de email (opcional, heredado)
+  // ─────────────────────────────────────────────────────
+  submitManualVerification(): void {
+    // Lo usabas para mostrar el prompt de email directamente
+    if (!this.manualVerificationData.refNumber) {
+      this.manualVerificationError = 'Por favor, ingrese el número de referencia.';
+      return;
+    }
+    // En un flujo alternativo, mostrabas showEmailPrompt
+    this.showEmailPrompt = true;
+  }
+
+  confirmEmailPrompt() {
+    // Lógica para procesar el email o SMS
+    if (this.emailForKey || this.wantsSMSKey) {
+      this.showEmailPrompt = false;
+      // llamamos confirmVerification, o pasamos a step=3 / step=4
+      // Aquí se eligió directamente confirmVerification
+      this.confirmVerification();
+    } else {
+      this.errorMessage = 'Debe proporcionar un correo electrónico o seleccionar enviar por SMS.';
+    }
+  }
+
+  hideEmailPrompt(): void {
+    this.showEmailPrompt = false;
+    this.emailForKey = '';
+    this.wantsSMSKey = false;
+    this.successMessage = '';
+    this.errorMessage = '';
+  }
+
+  isEmailValid(): boolean {
+    // Validación simple
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(this.emailForKey);
+  }
+
+  // ─────────────────────────────────────────────────────
+  //            Cancelar Transacción, Cerrar Modal
+  // ─────────────────────────────────────────────────────
+  handleBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.transactionStatus === 'PENDING') {
+      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
+    }
+  }
+
   handleClose(): void {
     this.closeModal();
     if (this.transactionStatus === 'PENDING') {
@@ -515,12 +642,38 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleBeforeUnload(event: BeforeUnloadEvent): void {
-    if (this.transactionStatus === 'PENDING') {
-      this.cancelTransaction(this.transactionNumber, this.orderRequestNumber);
-    }
+  closeModal(): void {
+    this.showModal = false;
+    this.close.emit();
   }
 
+  cancelTransaction(transactionNumber: string | null, orderRequestId: string): void {
+    this.isCancelling = true;
+    this.transactionService.cancelTransaction(transactionNumber, orderRequestId)
+      .pipe(take(1))
+      .subscribe({
+        next: (updatedTransaction: Transaction) => {
+          this.transaction = updatedTransaction;
+          this.transactionStatus = 'CANCELLED';
+          this.notifMessage = 'Tu pago fue cancelado.';
+          this.isCancelling = false;
+          this.showSpinner = false;
+        },
+        error: (error: any) => {
+          this.errorMessage = 'Error al cancelar la transacción.';
+          this.isCancelling = false;
+          this.showSpinner = false;
+        }
+      });
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
+
+  // ─────────────────────────────────────────────────────
+  //           Manejo de AuthModal (opcional)
+  // ─────────────────────────────────────────────────────
   handleAuthModalClose(): void {
     this.showAuthModal = false;
     this.postLoginAction = null;
@@ -532,62 +685,5 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
       this.postLoginAction();
       this.postLoginAction = null;
     }
-  }
-
-  confirmEmailPrompt() {
-    if (this.emailForKey || this.wantsSMSKey) {
-      // Lógica para procesar el email o SMS
-      this.showEmailPrompt = false;
-      this.confirmVerification();
-    } else {
-      // Opcional: Mostrar un mensaje de error si no se ha ingresado email ni seleccionado SMS
-      this.errorMessage = 'Debe proporcionar un correo electrónico o seleccionar enviar por SMS.';
-    }
-  }
-
-
-  hideEmailPrompt(): void {
-    // Establece la propiedad showEmailPrompt en false para ocultar el modal
-    this.showEmailPrompt = false;
-
-    // Limpia los campos relacionados al prompt de email (opcional)
-    this.emailForKey = '';
-    this.wantsSMSKey = false;
-
-    // Limpia mensajes de éxito o error relacionados (opcional)
-    this.successMessage = '';
-    this.errorMessage = '';
-  }
-
-
-
-  reloadPage(): void {
-    window.location.reload();
-  }
-
-  isEmailValid(): boolean {
-    // Validación simple de email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(this.emailForKey);
-  }
-
-  ngOnDestroy(): void {
-    if (this.exchangeRateSubscription) {
-      this.exchangeRateSubscription.unsubscribe();
-    }
-    if (this.transactionSubscription) {
-      this.transactionSubscription.unsubscribe();
-    }
-    if (this.transactionNumberSubscription) {
-      this.transactionNumberSubscription.unsubscribe();
-    }
-    if (this.verifyTransactionSubscription) {
-      this.verifyTransactionSubscription.unsubscribe();
-    }
-    if (this.transactionStatusSubscription){
-      this.transactionStatusSubscription.unsubscribe();
-    }
-    this.webSocketService.disconnect();
-    window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
   }
 }
