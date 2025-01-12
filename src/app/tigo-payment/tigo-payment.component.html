@@ -1,6 +1,5 @@
 <!-- tigo-payment.component.html -->
 
-<!-- Modal Principal -->
 <div class="modal" *ngIf="showModal">
   <div class="modal-content">
     <span class="close" (click)="handleClose()">&times;</span>
@@ -18,17 +17,167 @@
       <p>Cargando, por favor espere...</p>
     </div>
 
-    <!-- Contenido principal -->
-    <ng-container *ngIf="!showSpinner">
-      <!-- Estados de la transacción -->
-      <ng-container *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'">
-        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'" class="thank-you-message">
+    <!-- Paso 1: Ingresar Número de Referencia -->
+    <ng-container *ngIf="step === 1 && !showSpinner">
+      <h3>1. Ingresa tu número de referencia</h3>
+      <div class="form-group">
+        <label for="refNumber">Número de Referencia</label>
+        <input
+          type="text"
+          id="refNumber"
+          [(ngModel)]="manualVerificationData.refNumber"
+          name="refNumber"
+          class="retro-input"
+        />
+      </div>
+      <p class="error-message" *ngIf="manualVerificationError">
+        {{ manualVerificationError }}
+      </p>
+      <div class="button-group">
+        <button class="primary-button" (click)="goToStep2AfterRef()">Continuar</button>
+        <button class="cancel-button" (click)="closeModal()">Cancelar</button>
+      </div>
+    </ng-container>
+
+    <!-- Paso 2: Email, SMS y Teléfono -->
+    <ng-container *ngIf="step === 2 && !showSpinner">
+      <h3>2. Opciones de envío de la clave</h3>
+
+      <!-- Input de Email -->
+      <div class="form-group">
+        <label for="emailForKey">Correo Electrónico</label>
+        <input
+          type="email"
+          id="emailForKey"
+          [(ngModel)]="emailForKey"
+          name="emailForKey"
+          class="retro-input"
+        />
+      </div>
+
+      <!-- Input de Teléfono -->
+      <div class="form-group">
+        <label for="phoneNumber">Teléfono</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          [(ngModel)]="paymentDetails.phoneNumber"
+          name="phoneNumber"
+          class="retro-input"
+        />
+      </div>
+
+      <!-- Checkbox de SMS -->
+      <div class="form-group">
+        <label class="custom-checkbox">
+          <input
+            type="checkbox"
+            [(ngModel)]="wantsSMSKey"
+            name="wantsSMSKey"
+          />
+          <span class="checkmark"></span>
+          Mandar código por SMS
+          <span class="sms-cost">(Costo extra: 1 Lps)</span>
+        </label>
+      </div>
+
+      <p class="error-message" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <div class="button-group">
+        <button class="primary-button" (click)="goToStep3AfterEmailSms()">
+          Continuar
+        </button>
+        <button class="cancel-button" (click)="closeModal()">Cancelar</button>
+      </div>
+    </ng-container>
+
+    <!-- Paso 3: Resumen de la orden (productos, precio, email, sms, teléfono) -->
+    <ng-container *ngIf="step === 3 && !showSpinner">
+      <h3 style="display: flex; align-items: center; justify-content: space-between;">
+        3. Resumen de tu orden
+
+        <!-- Botón de edición que nos regresa al paso 2 -->
+        <button class="edit-button" (click)="step = 2" title="Editar datos de envío">
+          <i class="fa-solid fa-pen-to-square"></i>
+          Editar
+        </button>
+      </h3>
+
+      <!-- Si existe productId, es un solo producto. Si hay cartItems, se listan. -->
+      <div *ngIf="productId !== null; else multipleCart">
+        <p>Has seleccionado un producto con ID: {{ productId }}</p>
+        <p>Cantidad: 1</p>
+        <p>Precio: L {{ totalPrice }}</p>
+      </div>
+
+      <ng-template #multipleCart>
+        <div *ngIf="cartItems && cartItems.length > 0; else noItems">
+          <h4>Productos en el carrito:</h4>
+          <div *ngFor="let item of cartItems">
+            <p>
+              {{ item.giftcard.name }}
+              (x {{ item.cartItem.quantity }})
+              => L {{ item.giftcard.priceHNL * item.cartItem.quantity }}
+            </p>
+          </div>
+          <p><strong>Total:</strong> L {{ totalPrice }}</p>
+        </div>
+        <ng-template #noItems>
+          <p>No hay items en el carrito.</p>
+        </ng-template>
+      </ng-template>
+
+      <hr />
+
+      <!-- Mostramos el email, teléfono y si seleccionó SMS -->
+      <p><strong>Email:</strong> {{ emailForKey || 'No ingresado' }}</p>
+      <p><strong>Teléfono:</strong>
+        <span *ngIf="paymentDetails.phoneNumber && paymentDetails.phoneNumber !== ''">
+      {{ paymentDetails.phoneNumber }}
+    </span>
+        <span *ngIf="!paymentDetails.phoneNumber || paymentDetails.phoneNumber === ''">
+      No ingresado
+    </span>
+      </p>
+      <p><strong>SMS:</strong>
+        <span *ngIf="wantsSMSKey">Sí (se enviará al teléfono anterior)</span>
+        <span *ngIf="!wantsSMSKey">No</span>
+      </p>
+
+      <hr />
+      <p class="error-message" *ngIf="manualVerificationError">{{ manualVerificationError }}</p>
+
+      <div class="button-group">
+        <!-- Al presionar, disparamos la verificación final -->
+        <button class="primary-button" (click)="goToStep4ConfirmVerification()">
+          Continuar
+        </button>
+        <button class="cancel-button" (click)="closeModal()">Cancelar</button>
+      </div>
+    </ng-container>
+
+
+    <!-- Paso 4: Resultado o Mensajes finales (Spinner activo o estado de la transacción) -->
+    <ng-container *ngIf="step === 4">
+      <!-- Mensaje de verificación en proceso o final -->
+      <div *ngIf="isPaymentVerified && manualVerificationSuccess">
+        <p class="success-message">{{ manualVerificationSuccess }}</p>
+      </div>
+
+      <!-- Mensaje de error de verificación -->
+      <div *ngIf="!isPaymentVerified && manualVerificationError">
+        <p class="error-message">{{ manualVerificationError }}</p>
+      </div>
+
+      <!-- Mostrar resultados de la transacción -->
+      <div *ngIf="transactionStatus === 'COMPLETED' || transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'">
+        <div *ngIf="transactionStatus === 'AWAITING_MANUAL_PROCESSING' || transactionStatus === 'PROCESSING'">
           <h3>¡Gracias por verificar tu pago!</h3>
-          <p>Su transacción está siendo procesada. En breve recibirás tu codigo en tu email.</p>
+          <p>Su transacción está siendo procesada. En breve recibirás tu código en tu email.</p>
           <button type="button" class="primary-button" (click)="closeModal()">Cerrar</button>
         </div>
 
-        <!-- Detalles del pago no coincidente -->
+        <!-- Detalles de pago no coincidente -->
         <div *ngIf="paymentReferenceNumber && unmatchedPaymentResponse">
           <h3>Detalles del Pago</h3>
           <p><strong>Número de referencia:</strong> {{ unmatchedPaymentResponse.unmatchedPayment.referenceNumber }}</p>
@@ -47,10 +196,10 @@
             </div>
           </div>
         </div>
-      </ng-container>
+      </div>
 
       <!-- Mensaje de monto insuficiente -->
-      <p>{{insufficientPaymentAmount}}</p>
+      <p>{{ insufficientPaymentAmount }}</p>
       <ng-container *ngIf="showInsufficientPaymentAmount">
         <!-- Contenido adicional si es necesario -->
       </ng-container>
@@ -59,128 +208,27 @@
       <ng-container *ngIf="transactionStatus === 'CANCELLED'">
         <div class="cancelled-message">
           <h3>Producto no disponible</h3>
-          <p>El producto que intentas comprar no está disponible por el momento. Por favor, intenta nuevamente más tarde con el número de referencia de tu pago.</p>
+          <p>El producto que intentas comprar no está disponible por el momento. Intente más tarde.</p>
           <button type="button" class="primary-button" (click)="reloadPage()">
             <i class="fa-solid fa-arrows-rotate"></i> Reintentar
           </button>
         </div>
       </ng-container>
 
-      <!-- Formulario de verificación manual -->
-      <ng-container *ngIf="transactionStatus !== 'COMPLETED' && transactionStatus !== 'AWAITING_MANUAL_PROCESSING' && transactionStatus !== 'CANCELLED' && transactionStatus !== 'PROCESSING'">
-        <form *ngIf="!paymentReferenceNumber" (ngSubmit)="submitManualVerification()" #verificationForm="ngForm">
-          <h3>Verificar Pago</h3>
-          <div class="form-group">
-            <label for="refNumber">Número de Referencia</label>
-            <input
-              type="text"
-              id="refNumber"
-              name="refNumber"
-              [(ngModel)]="manualVerificationData.refNumber"
-              required
-              class="retro-input"
-            />
-          </div>
-
-          <!-- Mensaje de verificación -->
-          <div *ngIf="isPaymentVerified || manualVerificationError" class="verification-message">
-            <p *ngIf="isPaymentVerified" class="success-message">
-              Su pago ha sido verificado. Haga clic en el botón Continuar.
-            </p>
-            <p *ngIf="!isPaymentVerified && manualVerificationError" class="error-message">
-              {{ manualVerificationError }}
-            </p>
-          </div>
-
-          <!-- Botones -->
-          <div class="button-group">
-            <button type="submit" class="primary-button" [disabled]="!verificationForm.form.valid || isPaymentVerified">
-              Verificar Pago
-            </button>
-            <button type="button" class="cancel-button" (click)="hideManualVerification()">Cancelar</button>
-          </div>
-
-          <!-- Mensajes de éxito adicional -->
-          <div *ngIf="manualVerificationSuccess && isPaymentVerified" class="success-message">
-            {{ manualVerificationSuccess }}
-          </div>
-
-          <!-- Instrucciones -->
-          <div class="instructions">
-            <p><strong>Asegúrate, por favor, de que tu pago haya sido enviado al número:</strong> <strong>+504 9663 1493</strong>.</p>
-            <p>Una vez que el pago se haya realizado, copia el número de referencia y colócalo en este campo.</p>
-            <p>Muchas gracias por confiar en nosotros.</p>
-          </div>
-        </form>
-      </ng-container>
-
-      <!-- Prompt de entrega de clave por email o SMS -->
-      <!-- Prompt de entrega de clave por email o SMS -->
-      <div class="email-prompt-modal" *ngIf="showEmailPrompt">
-        <div class="email-prompt-content">
-          <h3>Opciones de entrega de la clave</h3>
-
-          <!-- Formulario para Email y SMS -->
-          <form #emailPromptForm="ngForm">
-            <!-- Campo de Email Directo -->
-            <div class="form-group">
-              <label for="emailForKey">Email</label>
-              <input
-                type="email"
-                id="emailForKey"
-                [(ngModel)]="emailForKey"
-                name="emailForKey"
-                required
-                email
-                #emailForKeyModel="ngModel"
-                class="retro-input"
-              />
-              <!-- Mensaje de error si el email no es válido -->
-              <div *ngIf="emailForKeyModel.invalid && (emailForKeyModel.dirty || emailForKeyModel.touched)" class="error-message">
-                <small *ngIf="emailForKeyModel.errors?.['required']">El correo electrónico es requerido.</small>
-                <small *ngIf="emailForKeyModel.errors?.['email']">Por favor, introduce un correo electrónico válido.</small>
-              </div>
-            </div>
-
-            <!-- Opción de envío por SMS -->
-            <div class="form-group">
-              <label class="custom-checkbox">
-                <input type="checkbox" [(ngModel)]="wantsSMSKey" name="wantsSMSKey" />
-                <span class="checkmark"></span>
-                Enviar la clave por SMS al número: {{paymentDetails.phoneNumber}} <span class="sms-cost">(Costo extra: 1 Lps)</span>
-              </label>
-            </div>
-
-            <!-- Botones -->
-            <div class="button-group">
-              <button
-                type="button"
-                class="primary-button"
-                (click)="confirmEmailPrompt()"
-                [disabled]="!emailPromptForm.form.valid"
-              >
-                Continuar
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-
-
       <!-- Mensajes de éxito/error generales -->
       <div *ngIf="successMessage" class="success-message">
         {{ successMessage }}
       </div>
-      <div *ngIf="errorMessage && !showVerificationForm && !showManualVerificationForm" class="error-message">
+      <div *ngIf="errorMessage" class="error-message">
         {{ errorMessage }}
       </div>
     </ng-container>
   </div>
 </div>
 
-<!-- Modal de autenticación -->
+<!-- Modal de autenticación (opcional) -->
 <app-auth-modal
-  *ngIf="showAuthModal"
+  *ngIf="false"
   (close)="handleAuthModalClose()"
   (authenticated)="handleAuthSuccess()"
 ></app-auth-modal>
