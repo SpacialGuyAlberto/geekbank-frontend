@@ -20,7 +20,7 @@ import {MainScreenGiftCardService} from "../main-screen-gift-card-service.servic
 
 import {Store} from "@ngrx/store";
 import {loadGiftCards, loadGiftCardsFailure, loadGiftCardDetails, loadGiftCardDetailsFailure, loadGiftCardDetailsSuccess, loadGiftCardsPage
-        , loadGiftCardsPageFailure, loadGiftCardsPageSuccess, loadGiftCardsSuccess
+  , loadGiftCardsPageFailure, loadGiftCardsPageSuccess, loadGiftCardsSuccess
 } from "./store/gift-card.actions";
 import {selectAllGiftCards, selectGiftCardsLoading} from "./store/gift-card.selector";
 import {MainScreenGiftCardItemDTO} from "../models/MainScreenGiftCardItem";
