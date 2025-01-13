@@ -1,12 +1,13 @@
 // models/page.ts
 export interface Page<T> {
   content: T[];
-  totalElements: number;
   totalPages: number;
-  size: number;
   number: number;
-  numberOfElements: number;
-  last: boolean;
+  size: number;
   first: boolean;
+  last: boolean;
+  numberOfElements: number;
+  // etc., lo que necesites
 }
+
 

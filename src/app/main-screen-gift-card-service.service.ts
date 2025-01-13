@@ -26,8 +26,11 @@ export class MainScreenGiftCardService {
    */
   getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
+    // Asegúrate de usar <Page<MainScreenGiftCardItemDTO>>
     return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
   }
+
+
   /**
    * Agrega nuevos elementos de tarjetas de regalo para la pantalla principal.
    *
