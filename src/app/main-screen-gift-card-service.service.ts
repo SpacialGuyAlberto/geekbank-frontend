@@ -28,9 +28,6 @@ export class MainScreenGiftCardService {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
     return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
   }
-
-
-
   /**
    * Agrega nuevos elementos de tarjetas de regalo para la pantalla principal.
    *
