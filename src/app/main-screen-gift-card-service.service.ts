@@ -7,6 +7,7 @@ import {KinguinGiftCard} from "./models/KinguinGiftCard";
 import { MainScreenGiftCardItem, MainScreenGiftCardItemDTO } from '../app/models/MainScreenGiftCardItem';
 import { environment } from '../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
+import {Page} from "./models/Page.model";
 
 @Injectable({
   providedIn: 'root'
@@ -23,12 +24,12 @@ export class MainScreenGiftCardService {
    *
    * @returns Observable de una lista de MainScreenGiftCardItemDTO
    */
-  getMainScreenGiftCardItems(): Observable<MainScreenGiftCardItemDTO[]> {
-    return this.http.get<MainScreenGiftCardItemDTO[]>(`${this.baseUrl}`).pipe(
-      tap(_ => console.log('Fetched main screen gift card items')),
-      catchError(this.handleError<MainScreenGiftCardItemDTO[]>('getMainScreenGiftCardItems', []))
-    );
+  getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
+    const url = `${this.baseUrl}?page=${page}&size=${size}`;
+    return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
   }
+
+
 
   /**
    * Agrega nuevos elementos de tarjetas de regalo para la pantalla principal.
