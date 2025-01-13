@@ -23,7 +23,6 @@ export class ManualOrdersService {
       );
   }
 
-
   private handleError(error: HttpErrorResponse) {
     let errorMsg = '';
     if (error.error instanceof ErrorEvent) {

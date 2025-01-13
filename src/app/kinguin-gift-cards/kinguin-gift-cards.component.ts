@@ -23,6 +23,7 @@ import {loadGiftCards, loadGiftCardsFailure, loadGiftCardDetails, loadGiftCardDe
         , loadGiftCardsPageFailure, loadGiftCardsPageSuccess, loadGiftCardsSuccess
 } from "./store/gift-card.actions";
 import {selectAllGiftCards, selectGiftCardsLoading} from "./store/gift-card.selector";
+import {MainScreenGiftCardItemDTO} from "../models/MainScreenGiftCardItem";
 
 
 @Component({
@@ -56,6 +57,13 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   totalItems: number = 8000;
   isSearching: boolean = false;
   private giftCardsSubscription!: Subscription;
+  // Ejemplo de variables en tu componente
+
+  currentPageMain: number = 0;   // Página actual para tus Main Screen Gift Cards
+  pageSizeMain: number = 10;     // Cuántos items quieres por página
+  totalPagesMain: number = 0;    // Para guardar cuántas páginas totales existen
+  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []; // Arreglo que guardará la data recibida
+
 
   constructor(
     private authService: AuthService,
@@ -108,27 +116,44 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     }
   }
 
-  fetchMainGiftCard(): void {
-    this.mainGiftCards.getMainScreenGiftCardItems().subscribe( (data) => {
-      data.map( card => {
+  fetchMainGiftCard(page: number = 0, size: number = 10): void {
+    this.mainGiftCards.getMainScreenGiftCardItems(page, size)
+      .subscribe(response => {
+          // 'response' es un Page<MainScreenGiftCardItemDTO>
+          // 1. Actualiza tus variables de paginación:
+          this.currentPageMain = response.number;
+          this.totalPagesMain = response.totalPages;
 
-        card.giftcard.coverImageOriginal =
-          card.giftcard.coverImageOriginal ||
-          card.giftcard.images.cover?.thumbnail ||
-          card.giftcard.coverImage,
-            card.giftcard.coverImage=
-        card.giftcard.images.cover?.thumbnail || '',
+          // 2. Mapeamos cada DTO para extraer su 'giftcard' y procesarla
+          const newGiftCards = response.content.map(dto => {
+            // Ajustes de imagen o cualquier otra lógica
+            dto.giftcard.coverImageOriginal =
+              dto.giftcard.coverImageOriginal ||
+              dto.giftcard.images.cover?.thumbnail ||
+              dto.giftcard.coverImage;
 
-        // card.giftcard.coverImage = card.giftcard.images.cover?.thumbnail || '';
-        card.giftcard.randomDiscount = this.generatePersistentDiscount(card.giftcard.name);
-        this.giftCards.push(card.giftcard)
-        console.log(this.giftCards)
-        this.displayGiftCards();
-        // this.displayedGiftCards.push(card.giftcard);
-        return card;
-      })
-    });
+            dto.giftcard.coverImage =
+              dto.giftcard.images.cover?.thumbnail || '';
+
+            // Ejemplo de "randomDiscount"
+            dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
+
+            return dto.giftcard;
+          });
+
+          // 3. Decide si quieres reemplazar tu arreglo o concatenarlo (infinite scroll vs paginado clásico)
+          // Si es paginado clásico (sustituir la lista cada vez):
+          this.giftCards = newGiftCards;
+
+          // 4. Muestra en pantalla
+          this.displayGiftCards();  // Ajusta para que tome 'this.giftCards'
+        },
+        error => {
+          console.error('Error al cargar gift cards de la pantalla principal paginadas', error);
+          this.showSnackBar('Error fetching main screen gift cards.');
+        });
   }
+
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
     // 1. Recolecta todas las URLs de posibles imágenes
@@ -257,9 +282,39 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
 
   loadMore(): void {
-    const nextItems = this.giftCards.slice(this.currentIndex, this.currentIndex + this.itemsPerPage);
-    this.displayedGiftCards = [...this.displayedGiftCards, ...nextItems];
-    this.currentIndex += this.itemsPerPage;
+    // Verificar si ya llegamos a la última página
+    if (this.currentPageMain < this.totalPagesMain - 1) {
+      // Siguiente página
+      const nextPage = this.currentPageMain + 1;
+
+      this.mainGiftCards.getMainScreenGiftCardItems(nextPage, this.pageSizeMain)
+        .subscribe(response => {
+            this.currentPageMain = response.number;
+            this.totalPagesMain = response.totalPages;
+
+            // Mapeo de GiftCards
+            const newGiftCards = response.content.map(dto => {
+              dto.giftcard.coverImageOriginal =
+                dto.giftcard.coverImageOriginal ||
+                dto.giftcard.images.cover?.thumbnail ||
+                dto.giftcard.coverImage;
+              dto.giftcard.coverImage =
+                dto.giftcard.images.cover?.thumbnail || '';
+              dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
+              return dto.giftcard;
+            });
+
+            // Concatena con lo que ya teníamos
+            this.giftCards = [...this.giftCards, ...newGiftCards];
+            this.displayedGiftCards = this.giftCards; // Muestra todo junto
+          },
+          error => {
+            console.error('Error al cargar más gift cards', error);
+            this.showSnackBar('Error fetching more gift cards.');
+          });
+    } else {
+      this.showSnackBar('No hay más elementos que cargar');
+    }
   }
 
   goToPage(page: number): void {
