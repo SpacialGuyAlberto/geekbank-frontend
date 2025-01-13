@@ -117,16 +117,37 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   fetchMainGiftCard(page: number = 0, size: number = 10): void {
-    // Suscribirte esperando un Page<MainScreenGiftCardItemDTO>
     this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
-      (response) => {
-        // 'response' es un objeto con 'content', 'totalPages', 'number', etc.
-        // 1. Actualiza paginación
-        this.currentPageMain = response.number;
-        this.totalPagesMain = response.totalPages;
+      (res: any) => {
+        console.log('Raw response from server:', res);
 
-        // 2. Mapea su 'content' que es el array real
-        const newGiftCards = response.content.map(dto => {
+        // Aquí creamos una variable "content" que contendrá el array final.
+        let content: MainScreenGiftCardItemDTO[] = [];
+
+        if (Array.isArray(res)) {
+          // Caso A) El servidor devolvió un array plano
+          content = res;
+          // Si no hay paginación real en este caso, define totalPagesMain manual (o deja como está).
+          this.currentPageMain = 0;
+          this.totalPagesMain = 1;
+
+        } else if (res && Array.isArray(res.content)) {
+          // Caso B) El servidor devolvió un objeto tipo Page<...> con { content, totalPages, number, etc. }
+          content = res.content;
+
+          // Aquí sí tenemos datos de paginación reales:
+          this.currentPageMain = res.number;
+          this.totalPagesMain = res.totalPages;
+
+        } else {
+          // Caso C) Respuesta desconocida
+          console.warn('Respuesta sin "content" ni arreglo válido. Estructura desconocida.');
+          return;
+        }
+
+        // Ahora 'content' es un array de MainScreenGiftCardItemDTO
+        // Mapeamos cada DTO -> giftcard
+        const newGiftCards = content.map(dto => {
           // Ajustes de imágenes
           dto.giftcard.coverImageOriginal =
             dto.giftcard.coverImageOriginal ||
@@ -142,10 +163,10 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
           return dto.giftcard;
         });
 
-        // 3. Reemplaza el array o concatena si gustas
+        // Asignamos el nuevo arreglo a this.giftCards
         this.giftCards = newGiftCards;
 
-        // 4. Muestra en pantalla
+        // Finalmente, mostramos en pantalla
         this.displayGiftCards();
       },
       error => {
@@ -154,6 +175,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       }
     );
   }
+
 
 
 
