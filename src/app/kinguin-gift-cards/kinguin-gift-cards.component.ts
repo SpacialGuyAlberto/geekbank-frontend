@@ -117,42 +117,45 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   fetchMainGiftCard(page: number = 0, size: number = 10): void {
-    this.mainGiftCards.getMainScreenGiftCardItems(page, size)
-      .subscribe(response => {
-          // 'response' es un Page<MainScreenGiftCardItemDTO>
-          // 1. Actualiza tus variables de paginación:
-          this.currentPageMain = response.number;
-          this.totalPagesMain = response.totalPages;
+    // Suscribirte esperando un Page<MainScreenGiftCardItemDTO>
+    this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
+      (response) => {
+        // 'response' es un objeto con 'content', 'totalPages', 'number', etc.
+        // 1. Actualiza paginación
+        this.currentPageMain = response.number;
+        this.totalPagesMain = response.totalPages;
 
-          // 2. Mapeamos cada DTO para extraer su 'giftcard' y procesarla
-          const newGiftCards = response.content.map(dto => {
-            // Ajustes de imagen o cualquier otra lógica
-            dto.giftcard.coverImageOriginal =
-              dto.giftcard.coverImageOriginal ||
-              dto.giftcard.images.cover?.thumbnail ||
-              dto.giftcard.coverImage;
+        // 2. Mapea su 'content' que es el array real
+        const newGiftCards = response.content.map(dto => {
+          // Ajustes de imágenes
+          dto.giftcard.coverImageOriginal =
+            dto.giftcard.coverImageOriginal ||
+            dto.giftcard.images.cover?.thumbnail ||
+            dto.giftcard.coverImage;
 
-            dto.giftcard.coverImage =
-              dto.giftcard.images.cover?.thumbnail || '';
+          dto.giftcard.coverImage =
+            dto.giftcard.images.cover?.thumbnail || '';
 
-            // Ejemplo de "randomDiscount"
-            dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
+          // randomDiscount
+          dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
 
-            return dto.giftcard;
-          });
-
-          // 3. Decide si quieres reemplazar tu arreglo o concatenarlo (infinite scroll vs paginado clásico)
-          // Si es paginado clásico (sustituir la lista cada vez):
-          this.giftCards = newGiftCards;
-
-          // 4. Muestra en pantalla
-          this.displayGiftCards();  // Ajusta para que tome 'this.giftCards'
-        },
-        error => {
-          console.error('Error al cargar gift cards de la pantalla principal paginadas', error);
-          this.showSnackBar('Error fetching main screen gift cards.');
+          return dto.giftcard;
         });
+
+        // 3. Reemplaza el array o concatena si gustas
+        this.giftCards = newGiftCards;
+
+        // 4. Muestra en pantalla
+        this.displayGiftCards();
+      },
+      error => {
+        console.error('Error al cargar gift cards', error);
+        this.showSnackBar('Error fetching main screen gift cards.');
+      }
+    );
   }
+
+
 
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
@@ -282,31 +285,21 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
 
   loadMore(): void {
-    // Verificar si ya llegamos a la última página
     if (this.currentPageMain < this.totalPagesMain - 1) {
-      // Siguiente página
       const nextPage = this.currentPageMain + 1;
-
       this.mainGiftCards.getMainScreenGiftCardItems(nextPage, this.pageSizeMain)
-        .subscribe(response => {
+        .subscribe((response) => {
             this.currentPageMain = response.number;
             this.totalPagesMain = response.totalPages;
 
-            // Mapeo de GiftCards
             const newGiftCards = response.content.map(dto => {
-              dto.giftcard.coverImageOriginal =
-                dto.giftcard.coverImageOriginal ||
-                dto.giftcard.images.cover?.thumbnail ||
-                dto.giftcard.coverImage;
-              dto.giftcard.coverImage =
-                dto.giftcard.images.cover?.thumbnail || '';
-              dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
+              // Ajustar imágenes / random discount
               return dto.giftcard;
             });
 
-            // Concatena con lo que ya teníamos
+            // Concatena con las existentes
             this.giftCards = [...this.giftCards, ...newGiftCards];
-            this.displayedGiftCards = this.giftCards; // Muestra todo junto
+            this.displayedGiftCards = this.giftCards;
           },
           error => {
             console.error('Error al cargar más gift cards', error);
@@ -316,6 +309,8 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.showSnackBar('No hay más elementos que cargar');
     }
   }
+
+
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {

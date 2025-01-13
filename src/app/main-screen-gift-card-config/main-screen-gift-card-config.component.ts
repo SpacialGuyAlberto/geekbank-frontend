@@ -68,24 +68,28 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   }
 
   loadGiftCards(page: number, size: number): void {
-    this.mainScreenGiftCardService.getMainScreenGiftCardItems(page, size).subscribe({
-      next: (response: Page<MainScreenGiftCardItemDTO>) => {
-        this.mainScreenGiftCardItems = response.content;
+    this.mainScreenGiftCardService.getMainScreenGiftCardItems(page, size)
+      .subscribe((response) => {
+          // Valida que 'response.content' sea un array
+          if (!response.content) {
+            console.warn('Respuesta sin "content".');
+            return;
+          }
 
-        // Si quieres verlos en el panel "Mis Tarjetas de Regalo Destacadas",
-        // haz un mapeo para quedarte sólo con el giftcard:
-        this.currentGiftCards = response.content.map(dto => dto.giftcard);
+          // page e items
+          this.currentPage = response.number;
+          this.totalPages = response.totalPages;
 
-        // Variables de paginación
-        this.totalPages = response.totalPages;
-        this.currentPage = response.number;
-      },
-      error: (err) => {
-        console.error('Error fetching paginated giftcards', err);
-        this.showSnackBar("Failed loading gift cards.");
-      }
-    });
+          // Mapea
+          this.mainScreenGiftCardItems = response.content;
+          this.currentGiftCards = response.content.map(dto => dto.giftcard);
+        },
+        error => {
+          console.error('Error fetching paginated giftcards', error);
+          this.showSnackBar("Failed loading gift cards.");
+        });
   }
+
 
 
   onNextPage(): void {
