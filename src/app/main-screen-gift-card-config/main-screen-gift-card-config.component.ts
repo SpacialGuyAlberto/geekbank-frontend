@@ -69,25 +69,39 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
   loadGiftCards(page: number, size: number): void {
     this.mainScreenGiftCardService.getMainScreenGiftCardItems(page, size)
-      .subscribe((response) => {
-          // Valida que 'response.content' sea un array
-          if (!response.content) {
-            console.warn('Respuesta sin "content".');
-            return;
+      .subscribe({
+        next: (res: any) => {
+          console.log('Raw response from server:', res);
+
+          let items: MainScreenGiftCardItemDTO[] = [];
+
+          // A) Si res es un array plano:  [ { mainScreenGiftCardItem, giftcard }, ... ]
+          if (Array.isArray(res)) {
+            items = res; // Asignamos directamente
+
+            // B) Si res es un objeto con 'content' (objeto Page<MainScreenGiftCardItemDTO>)
+          } else if (res && Array.isArray(res.content)) {
+            // Podrías además leer res.totalPages, res.number, etc., si quieres
+            items = res.content;
+
+          } else {
+            console.warn('Respuesta sin "content" ni arreglo válido. Estructura desconocida.');
+            return; // No hacemos nada más
           }
 
-          // page e items
-          this.currentPage = response.number;
-          this.totalPages = response.totalPages;
+          // Ahora 'items' es un array real de MainScreenGiftCardItemDTO
+          // Mapea cada DTO -> giftcard, si gustas
+          this.mainScreenGiftCardItems = items;
+          this.currentGiftCards = items.map(dto => dto.giftcard);
 
-          // Mapea
-          this.mainScreenGiftCardItems = response.content;
-          this.currentGiftCards = response.content.map(dto => dto.giftcard);
+          // ... Lo que ya hacías con la lista final ...
         },
-        error => {
-          console.error('Error fetching paginated giftcards', error);
+        error: err => {
+          console.error('Error fetching gift cards array', err);
           this.showSnackBar("Failed loading gift cards.");
-        });
+        }
+      });
+
   }
 
 
