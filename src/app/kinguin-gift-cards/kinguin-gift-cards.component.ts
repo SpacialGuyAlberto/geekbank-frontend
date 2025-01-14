@@ -299,30 +299,51 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   loadMore(): void {
     if (this.currentPageMain < this.totalPagesMain - 1) {
       const nextPage = this.currentPageMain + 1;
-      this.mainGiftCards.getMainScreenGiftCardItems(nextPage, this.pageSizeMain)
-        .subscribe((response) => {
+      this.mainGiftCards.getMainScreenGiftCardItems(nextPage, this.pageSizeMain).subscribe(
+        async (response) => {
+          try {
             this.currentPageMain = response.number;
             this.totalPagesMain = response.totalPages;
 
-            const newGiftCards = response.content.map(dto => {
-              // Ajustar imágenes / random discount
-              return dto.giftcard;
-            });
+            // Procesar las gift cards de manera asíncrona
+            const newGiftCards = await Promise.all(
+              response.content.map(async (dto) => {
+                const giftCard = dto.giftcard;
 
-            // Concatena con las existentes
+                // Ajustar imágenes de la gift card
+                giftCard.coverImageOriginal =
+                  giftCard.coverImageOriginal ||
+                  giftCard.images.cover?.thumbnail ||
+                  giftCard.coverImage ||
+                  (await this.getBestImageUrl(giftCard));
+
+                giftCard.coverImage =
+                  giftCard.images.cover?.thumbnail || giftCard.coverImage || '';
+
+                // Generar un descuento aleatorio
+                giftCard.randomDiscount = this.generatePersistentDiscount(giftCard.name);
+
+                return giftCard;
+              })
+            );
+
+            // Concatena las nuevas gift cards con las existentes
             this.giftCards = [...this.giftCards, ...newGiftCards];
             this.displayedGiftCards = this.giftCards;
-          },
-          error => {
-            console.error('Error al cargar más gift cards', error);
+          } catch (error) {
+            console.error('Error al procesar las gift cards:', error);
             this.showSnackBar('Error fetching more gift cards.');
-          });
+          }
+        },
+        (error) => {
+          console.error('Error al cargar más gift cards:', error);
+          this.showSnackBar('Error fetching more gift cards.');
+        }
+      );
     } else {
       this.showSnackBar('No hay más elementos que cargar');
     }
   }
-
-
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
