@@ -26,8 +26,8 @@ export class MainScreenGiftCardService {
    */
 // En tu servicio
 // main-screen-gift-card.service.ts
-  getMainScreenGiftCardItems(page: number, size: number) {
-    const url = `${environment.apiUrl}/main-screen-gift-cards?page=${page}&size=${size}`;
+  getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
+    const url = `${this.baseUrl}?page=${page}&size=${size}`;
     return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
   }
 
