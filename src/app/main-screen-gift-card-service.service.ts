@@ -27,7 +27,7 @@ export class MainScreenGiftCardService {
   getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
     // Asegúrate de usar <Page<MainScreenGiftCardItemDTO>>
-    return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
+    return this.http.get<any>(url);
   }
 
 
