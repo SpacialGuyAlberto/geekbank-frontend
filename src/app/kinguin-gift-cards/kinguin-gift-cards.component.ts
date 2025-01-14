@@ -92,10 +92,6 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
         this.fetchMainGiftCard();
-
-
-
-
       }
     });
     this.fetchCurrencyExchange();

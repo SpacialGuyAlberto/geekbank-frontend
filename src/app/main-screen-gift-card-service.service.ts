@@ -24,11 +24,12 @@ export class MainScreenGiftCardService {
    *
    * @returns Observable de una lista de MainScreenGiftCardItemDTO
    */
-  getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
-    const url = `${this.baseUrl}?page=${page}&size=${size}`;
-    // Asegúrate de usar <Page<MainScreenGiftCardItemDTO>>
-    return this.http.get<any>(url);
+  getMainScreenGiftCardItems(page = 0, size = 10): Observable<Page<MainScreenGiftCardItemDTO>> {
+    return this.http.get<Page<MainScreenGiftCardItemDTO>>(
+      `${environment.apiUrl}/main-screen-gift-cards?page=${page}&size=${size}`
+    );
   }
+
 
 
   /**
