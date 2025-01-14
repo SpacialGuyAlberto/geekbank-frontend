@@ -121,34 +121,31 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       (res: any) => {
         console.log('Raw response from server:', res);
 
-        // Aquí creamos una variable "content" que contendrá el array final.
+        // Variable que contendrá el array final de MainScreenGiftCardItemDTO
         let content: MainScreenGiftCardItemDTO[] = [];
 
+        // CASO A) El servidor devolvió un array plano: [ { mainScreenGiftCardItem, giftcard }, ... ]
         if (Array.isArray(res)) {
-          // Caso A) El servidor devolvió un array plano
           content = res;
-          // Si no hay paginación real en este caso, define totalPagesMain manual (o deja como está).
+          // En este caso no hay paginación real (o la ignoramos):
           this.currentPageMain = 0;
           this.totalPagesMain = 1;
 
+          // CASO B) El servidor devolvió un objeto tipo Page<...> con { content, totalPages, number, ... }
         } else if (res && Array.isArray(res.content)) {
-          // Caso B) El servidor devolvió un objeto tipo Page<...> con { content, totalPages, number, etc. }
           content = res.content;
-
-          // Aquí sí tenemos datos de paginación reales:
           this.currentPageMain = res.number;
           this.totalPagesMain = res.totalPages;
 
+          // CASO C) Respuesta desconocida
         } else {
-          // Caso C) Respuesta desconocida
           console.warn('Respuesta sin "content" ni arreglo válido. Estructura desconocida.');
           return;
         }
 
-        // Ahora 'content' es un array de MainScreenGiftCardItemDTO
         // Mapeamos cada DTO -> giftcard
         const newGiftCards = content.map(dto => {
-          // Ajustes de imágenes
+          // Ajustar imágenes
           dto.giftcard.coverImageOriginal =
             dto.giftcard.coverImageOriginal ||
             dto.giftcard.images.cover?.thumbnail ||
@@ -169,15 +166,12 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
         // Finalmente, mostramos en pantalla
         this.displayGiftCards();
       },
-      error => {
+      (error) => {
         console.error('Error al cargar gift cards', error);
         this.showSnackBar('Error fetching main screen gift cards.');
       }
     );
   }
-
-
-
 
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {

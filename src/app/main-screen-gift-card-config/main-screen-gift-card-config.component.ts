@@ -75,34 +75,42 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
           let items: MainScreenGiftCardItemDTO[] = [];
 
-          // A) Si res es un array plano:  [ { mainScreenGiftCardItem, giftcard }, ... ]
+          // CASO A) Si 'res' es un array plano [ { mainScreenGiftCardItem, giftcard }, ... ]
           if (Array.isArray(res)) {
-            items = res; // Asignamos directamente
+            items = res;
+            // No hay paginación real, asígnalos manual
+            this.currentPage = 0;
+            this.totalPages = 1;
 
-            // B) Si res es un objeto con 'content' (objeto Page<MainScreenGiftCardItemDTO>)
+            // CASO B) Si 'res' es un objeto Page<MainScreenGiftCardItemDTO> con { content, totalPages, number, ... }
           } else if (res && Array.isArray(res.content)) {
-            // Podrías además leer res.totalPages, res.number, etc., si quieres
             items = res.content;
+            // Leer la paginación real del back-end
+            this.currentPage = res.number;
+            this.totalPages = res.totalPages;
 
           } else {
+            // CASO C) Estructura desconocida
             console.warn('Respuesta sin "content" ni arreglo válido. Estructura desconocida.');
-            return; // No hacemos nada más
+            return;
           }
 
-          // Ahora 'items' es un array real de MainScreenGiftCardItemDTO
-          // Mapea cada DTO -> giftcard, si gustas
+          // Ahora 'items' es un array de MainScreenGiftCardItemDTO
+          // Si quieres mostrar esa lista, la guardas:
           this.mainScreenGiftCardItems = items;
+
+          // Si quieres poblar el panel “Mis Tarjetas de Regalo Destacadas”:
           this.currentGiftCards = items.map(dto => dto.giftcard);
 
-          // ... Lo que ya hacías con la lista final ...
+          // Aquí podrías hacer más lógica si lo deseas...
         },
-        error: err => {
-          console.error('Error fetching gift cards array', err);
+        error: (err) => {
+          console.error('Error fetching paginated giftcards', err);
           this.showSnackBar("Failed loading gift cards.");
         }
       });
-
   }
+
 
 
 
