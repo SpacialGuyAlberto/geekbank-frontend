@@ -10,30 +10,28 @@
       </div>
 
       <div [ngClass]="footerSection">
-        <h2>Useful Links</h2>
+        <h2>Enlaces Útiles</h2>
         <ul>
           <li><a href="/acerca-de">About us</a></li>
-          <li (click)="openTerms()" sytel="cursor: pointer;"><a >Terms and conditions</a></li>
+          <li (click)="openTerms()" sytel="cursor: pointer;"><a >Términos y condiciones</a></li>
           <div *ngIf="termsAndConditions">
             <app-terms-and-conditions *ngIf="termsAndConditions"></app-terms-and-conditions>
           </div>
-          <li><a href="/privacidad">Privacy Policy</a></li>
-          <li><a href="/faq">FAQ</a></li>
+          <li><a href="/privacidad">Politica de privacidad</a></li>
+          <li><a href="/faq">Preguntas frequentes</a></li>
         </ul>
       </div>
 
       <div [ngClass]="footerSection">
-        <h2>Categoríes</h2>
+        <h2>Categorías</h2>
         <ul>
-          <li><a href="/categoria1">Videogames</a></li>
+
           <li><a href="/categoria2">Software</a></li>
-          <li><a href="/categoria3">Fashion</a></li>
-          <li><a href="/categoria4">Utilities</a></li>
         </ul>
       </div>
 
       <div [ngClass]="footerSection">
-        <h2>Follow us</h2>
+        <h2>Siguenos</h2>
         <div [ngClass]="socialClass">
           <a href="https://www.facebook.com/profile.php?id=61562974481602" target="_blank" aria-label="Facebook">
             <i class="fab fa-facebook-f facebook"></i>
@@ -59,12 +57,11 @@
       </div>
 
       <div [ngClass]="footerSection">
-        <h2>Pay with</h2>
+        <h2>Forma de pago</h2>
         <div [ngClass]="paymentClass">
           <i class="fa-solid fa-credit-card credit-icon"></i>
           <i class="fa-brands fa-cc-paypal paypal-icon"></i>
           <i class="fa-solid fa-piggy-bank piggybank-icon"></i>
-          <i class="fa-brands fa-bitcoin bitcoin-icon"></i>
         </div>
       </div>
 
