@@ -41,8 +41,8 @@
     </li>
 
 
-    <a *ngIf="!(isAuthenticated$ | async)" (click)="goToLogin()" class="nav-link">Login</a>
-    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Register</a>
+    <a *ngIf="!(isAuthenticated$ | async)" (click)="goToLogin()" class="nav-link">Iniciar sesión</a>
+    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Registrarse</a>
     <i
       *ngIf="isSmallScreen"
       (click)="openSearchModal()"
@@ -179,10 +179,10 @@
           </ul>
         </li>
         <li *ngIf="!(isAuthenticated$ | async)">
-          <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Login</a>
+          <a routerLink="/login" class="menu-link" (click)="closeMenuModal()">Iniciar sesión</a>
         </li>
         <li *ngIf="!(isAuthenticated$ | async)">
-          <a routerLink="/register" class="menu-link" (click)="closeMenuModal()">Register</a>
+          <a routerLink="/register" class="menu-link" (click)="closeMenuModal()">Registrarse</a>
         </li>
         <li>
           <a routerLink="/cart" class="menu-link" (click)="closeMenuModal()">
