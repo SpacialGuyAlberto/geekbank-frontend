@@ -51,7 +51,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   cards$!: Observable<KinguinGiftCard[]>
   exchangeRate: number = 0; // Tasa de cambio actualizada
   totalPages: number = 3309;
-  itemsPerPage: number = 15;
+  itemsPerPage: number = 500;
   currentIndex: number = 0;
   displayedLimit: number = 10;
   totalItems: number = 8000;
@@ -237,7 +237,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
 
 
   displayGiftCards(): void {
-    this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
+    this.displayedGiftCards = this.giftCards.slice(this.currentIndex, this.itemsPerPage);
     console.log(this.displayedGiftCards);
     this.currentIndex = this.itemsPerPage;
   }
