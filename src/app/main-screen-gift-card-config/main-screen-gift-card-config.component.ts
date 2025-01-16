@@ -112,8 +112,6 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   }
 
 
-
-
   onNextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
@@ -129,29 +127,37 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   }
 
   save(): void {
-    const productIds = this.currentGiftCards.map((card) => card.kinguinId);
+    // Obtener los IDs de las tarjetas existentes
+    const existingProductIds = this.mainScreenGiftCardItems.map(item => item.giftcard.kinguinId);
 
-    this.mainScreenGiftCardService.removeMainScreenGiftCardItems([]).subscribe(
+    // Obtener los IDs de las nuevas tarjetas que se desean añadir
+    const newProductIds = this.currentGiftCards.map(card => card.kinguinId);
+
+    // Primero, eliminar las tarjetas existentes
+    this.mainScreenGiftCardService.removeMainScreenGiftCardItems(existingProductIds).subscribe(
       () => {
-        console.log('Previous highlights removed successfully!');
-        this.showSnackBar("Changes saved successfully.")
-        this.mainScreenGiftCardService.addMainScreenGiftCardItems(productIds).subscribe(
+        console.log('Tarjetas de regalo existentes eliminadas correctamente.');
+        this.showSnackBar("Tarjetas antiguas eliminadas.");
+
+        // Luego, añadir las nuevas tarjetas de regalo
+        this.mainScreenGiftCardService.addMainScreenGiftCardItems(newProductIds).subscribe(
           () => {
-            console.log('Highlights saved successfully!');
-            this.showSnackBar("Changes saved successfully.")
+            console.log('Nuevas tarjetas de regalo añadidas correctamente.');
+            this.showSnackBar("Cambios guardados exitosamente.");
           },
           (error) => {
-            console.error('Failed to save highlights', error);
-            this.showSnackBar("Failed saving changes.")
+            console.error('Error al añadir nuevas tarjetas de regalo', error);
+            this.showSnackBar("Error al guardar los cambios.");
           }
         );
       },
       (error) => {
-        console.error('Failed to remove previous highlights', error);
-        this.showSnackBar("Failed saving changes.")
+        console.error('Error al eliminar tarjetas de regalo existentes', error);
+        this.showSnackBar("Error al eliminar tarjetas antiguas.");
       }
     );
   }
+
 
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'Close', {
