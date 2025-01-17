@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { KinguinGiftCard } from "../models/KinguinGiftCard";
 import { KinguinService } from "../kinguin.service";
@@ -40,7 +40,8 @@ import {MainScreenGiftCardItemDTO} from "../models/MainScreenGiftCardItem";
     RecommendationsComponent,
     FiltersComponent,
     MatSnackBarModule
-  ]
+  ],
+  encapsulation: ViewEncapsulation.None
 })
 export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   @Input() giftCardsInput: KinguinGiftCard[] | null = null; // Renombrado para evitar conflicto
@@ -63,6 +64,7 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
   pageSizeMain: number = 10;     // Cuántos items quieres por página
   totalPagesMain: number = 0;    // Para guardar cuántas páginas totales existen
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []; // Arreglo que guardará la data recibida
+  isSearchMode: boolean = false;
 
 
   constructor(
@@ -83,15 +85,18 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
       this.giftCards = this.giftCardsInput;
       this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
       this.currentIndex = this.itemsPerPage;
+      this.isSearchMode = true;
     } else {
       /// this.fetchGiftCards();
     }
-
     // this.store.dispatch(loadGiftCards());
     // this.cards$ = this.store.select(selectAllGiftCards);
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show){
         this.fetchMainGiftCard();
+        this.isSearchMode = false;
+      } else {
+        this.isSearchMode = true;
       }
     });
     this.fetchCurrencyExchange();
@@ -104,9 +109,11 @@ export class KinguinGiftCardsComponent implements OnInit, AfterViewInit, OnDestr
         this.giftCards = newGiftCards;
         this.displayedGiftCards = this.giftCards.slice(0, this.itemsPerPage);
         this.currentIndex = this.itemsPerPage;
+        this.isSearchMode = true;
         this.cd.detectChanges();
       } else {
         // Si giftCardsInput está vacío, recuperar datos predeterminados
+        this.isSearchMode = false;
         this.fetchGiftCards();
       }
     }

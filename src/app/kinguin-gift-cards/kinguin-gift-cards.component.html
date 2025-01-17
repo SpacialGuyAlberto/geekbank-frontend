@@ -1,22 +1,53 @@
-<div class="gift-cards-container">
-  <div *ngFor="let card of displayedGiftCards" class="gift-card" (click)="viewDetails(card)">
-    <div class="image-container">
-      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
+<div [ngClass]="{
+      'gift-cards-container': !isSearchMode,
+      'gift-cards-container-search': isSearchMode
+    }">
+  <div *ngFor="let card of displayedGiftCards" [ngClass]="{
+        'gift-card': !isSearchMode,
+        'gift-card-search': isSearchMode
+      }" (click)="viewDetails(card)">
+    <div [ngClass]="{
+          'image-container': !isSearchMode,
+          'image-container-search': isSearchMode
+        }">
+      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" [ngClass]="{
+            'gift-card-image': !isSearchMode,
+            'gift-card-image-search': isSearchMode
+          }">
     </div>
-    <div class="gift-card-content">
-      <!-- Mostrar el descuento dinámico -->
-      <span class="discount-percentage">{{ card.randomDiscount }}% OFF</span>
-      <h3 class="gift-card-title">{{ card.name }}</h3>
-      <span class="platform">{{card.platform}}</span>
-      <div class="gift-card-price">
-        <!-- Precio original calculado -->
-        <span class="original-price">
-          {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
-        <!-- Precio con descuento -->
-        <span class="discounted-price">
-          {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
+    <div [ngClass]="{
+          'gift-card-content': !isSearchMode,
+          'gift-card-content-search': isSearchMode
+        }">
+      <!-- Mover el span de descuento antes del precio -->
+      <span [ngClass]="{
+            'discount-percentage': !isSearchMode,
+            'discount-percentage-search': isSearchMode
+          }">{{ card.randomDiscount }}% OFF</span>
+      <h3 [ngClass]="{
+            'gift-card-title': !isSearchMode,
+            'gift-card-title-search': isSearchMode
+          }">{{ card.name }}</h3>
+      <span [ngClass]="{
+            'platform': !isSearchMode,
+            'platform-search': isSearchMode
+          }">{{card.platform}}</span>
+      <span *ngIf="card.genres.length > 0" [ngClass]="{
+            'platform': !isSearchMode,
+            'platform-search': isSearchMode
+          }">{{card.genres[0]}}</span>
+      <div [ngClass]="{
+            'gift-card-price': !isSearchMode,
+            'gift-card-price-search': isSearchMode
+          }">
+        <span [ngClass]="{
+              'original-price': !isSearchMode,
+              'original-price-search': isSearchMode
+            }">{{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}</span>
+        <span [ngClass]="{
+              'discounted-price': !isSearchMode,
+              'discounted-price-search': isSearchMode
+            }">{{ card.priceHNL |  currency:'HNL':'symbol':'1.2-2'}}</span>
       </div>
     </div>
   </div>
@@ -26,23 +57,6 @@
 <div class="load-more-container">
   <button class="load-more-button" (click)="loadMore()">
     <span class="arrow"></span>
-    <span class="load-more-text">Cargar Mas</span>
+    <span class="load-more-text">Cargar Más</span>
   </button>
 </div>
-
-<!--<div class="gift-cards-container" *ngIf="cards$ | async as cards">-->
-<!--  &lt;!&ndash;  <div *ngFor="let card of (giftCardsInput && giftCardsInput.length > 0 ? displayedGiftCards : displayedGiftCards)"&ndash;&gt;-->
-<!--  <div >-->
-<!--    class="gift-card"-->
-<!--    (click)="viewDetails(card)">-->
-<!--    <div class="image-container">-->
-<!--      <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">-->
-<!--    </div>-->
-<!--    <div class="gift-card-content">-->
-<!--      <h3 class="gift-card-title">{{ card.name }}</h3>-->
-<!--      <div class="gift-card-price">-->
-<!--        <span>{{ (card.price * exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
