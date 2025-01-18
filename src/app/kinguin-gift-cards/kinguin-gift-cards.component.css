@@ -1,45 +1,50 @@
+/* =========================================
+   Variables CSS
+========================================= */
 :root {
   --scale-factor: 0.75; /* 75% del tamaño original */
+
+  /* Colores principales */
   --primary-color: #0B0D19;
   --secondary-color: #021526;
+  --accent-color: #88D66C;
   --text-color: #B5CDE2FF;
   --highlight-color: #00d4ff;
   --highlight-color-1: #ff5733; /* Añadido */
   --highlight-color-2: #88D66C; /* Añadido */
   --highlight-color-3: #ffbd33; /* Añadido */
   --highlight-color-4: #33ff57; /* Añadido */
-  --accent-color: #88D66C;
+  --discount-color: #FF5733; /* Definida */
+
+  /* Colores para búsqueda */
+  --search-card-background: #5f575d;
+  --search-border-color: #5f575d;
+  --search-text-color: #333333;
+  --search-accent-color: #FF5733;
+
+  /* Otros colores */
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --card-background-color: #203a43;
+
+  /* Tipografías */
   --font-primary: 'Roboto', sans-serif;
   --font-secondary: 'VT323', monospace;
+
+  /* Transiciones */
   --transition-speed: 0.3s;
-  --discount-color: #FF5733; /* Asegúrate de definir esta variable */
-  --search-card-background: #5f575d; /* Ajusta según tu diseño */
-  --search-border-color: #5f575d; /* Ajusta según tu diseño */
-  --search-text-color: #333333; /* Ajusta según tu diseño */
-  --search-accent-color: #FF5733; /* Ajusta según tu diseño */
-  --shadow-color: rgba(0, 0, 0, 0.3); /* Definición para box-shadow en .gift-card-search */
-  --card-background-color: #203a43; /* Definición para discounted-price-search */
 }
 
+/* =========================================
+   Contenedores
+========================================= */
 
-/* Contenedor de Gift Cards */
+/* Contenedor principal de Gift Cards */
 .gift-cards-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
   gap: calc(1.5rem * var(--scale-factor));
   width: 70%;
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-  margin-bottom: 5rem
-}
-
-.gift-cards-container-search {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(150px * var(--scale-factor)), 1fr)); /* Reducido de 200px a 150px */
-  grid-auto-rows: 350px;
-  gap: calc(1rem * var(--scale-factor)); /* Reducido el gap */
-  width: 60%; /* Reducido de 75% a 60% */
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-  overflow: visible; /* Permite que las tarjetas escaladas no se recorten */
+  margin: 0 auto 5rem auto; /* Centra horizontalmente y margen inferior */
 }
 
 /* Contenedor de Gift Cards en modo búsqueda */
@@ -53,285 +58,40 @@
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
-
-.gift-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  max-width: calc(300px * var(--scale-factor)); /* Ancho máximo escalado */
-  background-color: var(--primary-color);
-  border: calc(0.125rem * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
-  border-radius: calc(0.5rem * var(--scale-factor));
-  padding: 0;
-  text-align: center;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
-  box-shadow: 0 calc(0.25rem * var(--scale-factor)) calc(1.25rem * var(--scale-factor)) rgba(0, 0, 0, 0.6);
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  min-height: calc(20rem * var(--scale-factor));
+/* Contenedor alternativo para búsqueda */
+.gift-cards-container-search-alt {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(150px * var(--scale-factor)), 1fr));
+  grid-auto-rows: 350px;
+  gap: calc(1rem * var(--scale-factor));
+  width: 60%;
+  margin: 0 auto;
+  overflow: visible;
 }
 
-.gift-card-search {
-  display: flex;
-  flex-direction: row;
-  color: #b5beb4;
-  padding: 0;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 10px var(--shadow-color);
-}
-
-.gift-card:hover {
-  transform: translateY(calc(-5px * var(--scale-factor)));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-.gift-card-search:hover {
-  transform: scale(1.05); /* Escala al 105% */
-  z-index: 1; /* Superpone sobre las demás tarjetas */
-}
-
-h2 {
-  font-family: var(--font-primary);
-  font-size: calc(1.5rem * var(--scale-factor));
-  color: #F8F9FA; /* Blanco ligeramente suave */
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: calc(0.2rem * var(--scale-factor));
-  margin-bottom: calc(2rem * var(--scale-factor));
-  position: relative;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-}
-
-h2::before,
-h2::after {
-  position: absolute;
-  width: calc(4rem * var(--scale-factor));
-  height: calc(0.2rem * var(--scale-factor));
-  background: #F8F9FA; /* Blanco ligeramente suave */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-h2::before {
-  left: calc(-5rem * var(--scale-factor));
-}
-
-h2::after {
-  right: calc(-5rem * var(--scale-factor));
-}
-
-
-@keyframes animatedBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.gift-card-image {
-  width: 100%;
-  height: calc(15rem * var(--scale-factor));
-  object-fit: cover;
-  border-top-left-radius: calc(0.5rem * var(--scale-factor));
-  border-top-right-radius: calc(0.5rem * var(--scale-factor));
-  display: block;
-  transition: transform var(--transition-speed) ease;
-}
-
-.gift-card-image-search {
-  width: 100%; /* Ocupa todo el ancho del contenedor */
-  height: 100%; /* Ocupa toda la altura del contenedor */
-  object-fit: cover; /* Escala la imagen para llenar el contenedor */
-
-  margin: 0; /* Elimina márgenes */
-  padding: 0; /* Elimina padding */
-  transition: transform var(--transition-speed) ease; /* Suaviza animaciones */
-}
-
-.gift-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-  flex-grow: 1;
-  margin-top: calc(1rem * var(--scale-factor));
-  padding: calc(1rem * var(--scale-factor));
-}
-
-.gift-card-content-search {
-  flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
-  display: flex;
-  flex-direction: column;
-  justify-content: center; /* Centra verticalmente el contenido */
-  gap: 8px; /* Ajustado para mejor espaciado */
-  padding: 2rem; /* Eliminado padding */
-}
-
-.gift-card-title {
-  font-size: calc(0.5rem * var(--scale-factor));
-  color: #dcd0d0;
-  text-transform: uppercase;
-  white-space: normal; /* Permite que el texto ajuste automáticamente */
-  overflow: visible; /* Evita recortar el texto */
-  text-overflow: clip; /* Deshabilita los puntos suspensivos */
-  max-width: 100%;
-  line-height: 1; /* Opcional: ajusta la separación entre líneas */
-}
-
-
-.gift-card-title-search {
-  font-size: 1.25rem;
-  /*color: var(--accent-color);*/
-  margin-bottom: 0.5rem;
-  font-family: var(--font-secondary);
-}
-
-.gift-card-price {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
-  font-size: calc(1.1rem * var(--scale-factor));
-  color: #88D66C;
-  font-weight: bold;
-  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
-}
-
-.gift-card-price-search {
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.image-container-search {
-  width: 150px;
-  height: auto;
-  overflow: hidden;
-}
-/* Precio original tachado */
-.original-price {
-  text-decoration: line-through;
-  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
-  margin-bottom: 4px; /* Espacio inferior */
-  font-size: calc(0.9rem * var(--scale-factor));
-}
-.original-price-search {
-  text-decoration: line-through;
-  color: #ccc;
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-/* Precio con descuento */
-.discounted-price {
-  font-size: calc(1.5em * var(--scale-factor));
-  color: var(--accent-color);
-}
-
-.discounted-price-search {
-  background-color: var(--card-background-color);
-  color: #fff;
-  padding: 4px 8px; /* Reducido padding */
-  font-size: 1.5rem; /* Reducido tamaño de fuente */
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-
-.gift-card-search:hover .gift-card-title-search {
-  white-space: normal;
-  max-height: calc(3rem * var(--scale-factor));
-}
-.discount-percentage {
-  position: absolute;
-  top: 10px; /* Ajusta según tus necesidades */
-  left: 10px; /* Ajusta según tus necesidades */
-  background-color: var(--discount-color);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: calc(0.75rem * var(--scale-factor));
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1; /* Por encima de otros elementos */
-}
-
-
-.discount-percentage-search {
-  position: absolute; /* Asegura el posicionamiento absoluto */
-  top: 10px;
-  left: 10px;
-  background-color: var(--search-accent-color);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 2; /* Asegura que esté por encima del precio */
-}
-
-.load-more-container {
+/* Contenedor de paginación */
+.pagination-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
 }
 
-.load-more-button {
-  background: rgba(28, 29, 50, 0.4);
-  color: white;
-  height: 3rem; /* Incrementar altura */
-  border: none;
-  border-radius: 50px;
-  padding: 15px 30px; /* Incrementar padding */
-  font-size: 1.5rem; /* Incrementar tamaño de fuente */
-  cursor: pointer;
+/* Contenedor del indicador de carga */
+.loading-indicator {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 15px; /* Ajustar espacio entre elementos internos */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, transform 0.3s;
-  position: relative;
-  overflow: hidden;
+  margin: 20px 0;
 }
 
-
-.load-more-button:hover {
-  background-color:   rgba(28, 29, 50, 0.4);
-  transform: translateY(-2px);
+/* Contenedor de las barras de carga */
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(4px * var(--scale-factor));
 }
 
-.load-more-button:active {
-  transform: translateY(0);
-}
-
-.arrow {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-left: 2px solid #B5CDE2FF;
-  border-bottom: 2px solid #B5CDE2FF;
-  transform: rotate(-45deg);
-  margin-top: 2px;
-  transition: transform 0.2s;
-}
-
-.load-more-button:hover .arrow {
-  transform: rotate(135deg);
-}
-
-.text {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--text-color)
-}
-
+/* Contenedor de la plataforma */
 .platform {
   display: inline-block;
   background-color: #021526;
@@ -347,37 +107,271 @@ h2::after {
   align-self: center;
 }
 
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-::ng-deep .mat-paginator {
-  background-color: transparent;
-}
-
-::ng-deep .mat-paginator-range-actions {
-  display: flex;
-  align-items: center;
-}
-
-::ng-deep .mat-paginator-page-size {
-  margin-right: 20px;
-}
-
+/* Plataforma en modo búsqueda */
 .platform-search {
   background-color: var(--secondary-color);
   color: var(--text-color);
   padding: 6px 10px;
   border-radius: 4px;
-  font-size: 0.8rem; /* Reducido el tamaño de fuente */
+  font-size: 0.8rem;
   text-transform: uppercase;
   margin-top: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   align-self: flex-start;
 }
-/* Animaciones */
+
+/* =========================================
+   Tarjetas de Regalo (Gift Cards)
+========================================= */
+
+/* Estilo general de la tarjeta */
+.gift-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  max-width: calc(300px * var(--scale-factor));
+  background-color: var(--primary-color);
+  border: calc(0.125rem * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
+  border-radius: calc(0.5rem * var(--scale-factor));
+  padding: 0;
+  text-align: center;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  box-shadow: 0 calc(0.25rem * var(--scale-factor)) calc(1.25rem * var(--scale-factor)) rgba(0, 0, 0, 0.6);
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  min-height: calc(20rem * var(--scale-factor));
+}
+
+/* Estilo de la tarjeta en modo búsqueda */
+.gift-card-search {
+  display: flex;
+  flex-direction: row;
+  color: #b5beb4;
+  padding: 0;
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+  box-shadow: 0 4px 10px var(--shadow-color);
+}
+
+/* Imagen de la tarjeta */
+.gift-card-image {
+  width: 100%;
+  height: calc(15rem * var(--scale-factor));
+  object-fit: cover;
+  border-top-left-radius: calc(0.5rem * var(--scale-factor));
+  border-top-right-radius: calc(0.5rem * var(--scale-factor));
+  display: block;
+  transition: transform var(--transition-speed) ease;
+}
+
+.gift-card-image-search {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+  transition: transform var(--transition-speed) ease;
+}
+
+/* Contenido de la tarjeta */
+.gift-card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  flex-grow: 1;
+  margin-top: calc(1rem * var(--scale-factor));
+  padding: calc(1rem * var(--scale-factor));
+}
+
+.gift-card-content-search {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 2rem;
+}
+
+/* Título de la tarjeta */
+.gift-card-title {
+  font-size: calc(0.5rem * var(--scale-factor));
+  color: #dcd0d0;
+  text-transform: uppercase;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  max-width: 100%;
+  line-height: 1;
+}
+
+.gift-card-title-search {
+  font-size: 1.25rem;
+  /*color: var(--accent-color);*/
+  margin-bottom: 0.5rem;
+  font-family: var(--font-secondary);
+}
+
+/* Precio de la tarjeta */
+.gift-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: calc(1.1rem * var(--scale-factor));
+  color: #88D66C;
+  font-weight: bold;
+  margin-top: calc(1rem * var(--scale-factor));
+}
+
+.gift-card-price-search {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* Precio original y con descuento */
+.original-price {
+  text-decoration: line-through;
+  color: #B5CDE2FF;
+  margin-bottom: 4px;
+  font-size: calc(0.9rem * var(--scale-factor));
+}
+
+.original-price-search {
+  text-decoration: line-through;
+  color: #ccc;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.discounted-price {
+  font-size: calc(1.5em * var(--scale-factor));
+  color: var(--accent-color);
+}
+
+.discounted-price-search {
+  background-color: var(--card-background-color);
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor de imagen en búsqueda */
+.image-container-search {
+  width: 150px;
+  height: auto;
+  overflow: hidden;
+}
+
+/* Porcentaje de descuento */
+.discount-percentage {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: var(--discount-color);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: calc(0.75rem * var(--scale-factor));
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+.discount-percentage-search {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: var(--search-accent-color);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+}
+
+/* =========================================
+   Estados (Hover)
+========================================= */
+
+/* Hover en la tarjeta */
+.gift-card:hover {
+  transform: translateY(calc(-5px * var(--scale-factor)));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Hover en la tarjeta de búsqueda */
+.gift-card-search:hover {
+  transform: scale(1.05);
+  z-index: 1;
+}
+
+.gift-card-search:hover .gift-card-title-search {
+  white-space: normal;
+  max-height: calc(3rem * var(--scale-factor));
+}
+
+/* Hover en el botón de cargar más */
+.load-more-button:hover {
+  background-color: rgba(28, 29, 50, 0.4);
+  transform: translateY(-2px);
+}
+
+.load-more-button:active {
+  transform: translateY(0);
+}
+
+/* Hover en la flecha del botón */
+.load-more-button:hover .arrow {
+  transform: rotate(135deg);
+}
+
+/* =========================================
+   Tipografía
+========================================= */
+
+/* Estilo del título principal */
+h2 {
+  font-family: var(--font-primary);
+  font-size: calc(1.5rem * var(--scale-factor));
+  color: #F8F9FA;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: calc(0.2rem * var(--scale-factor));
+  margin-bottom: calc(2rem * var(--scale-factor));
+  position: relative;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+h2::before,
+h2::after {
+  position: absolute;
+  width: calc(4rem * var(--scale-factor));
+  height: calc(0.2rem * var(--scale-factor));
+  background: #F8F9FA;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+h2::before {
+  left: calc(-5rem * var(--scale-factor));
+}
+
+h2::after {
+  right: calc(-5rem * var(--scale-factor));
+}
+
+/* =========================================
+   Animaciones
+========================================= */
+
+/* Animación para el borde */
 @keyframes animatedBorder {
   0% {
     background-position: 0% 50%;
@@ -390,33 +384,70 @@ h2::after {
   }
 }
 
-@keyframes animatedBorder {
-  0% {
-    background-position: 0% 50%;
+/* Animación para las barras de carga */
+@keyframes pulse-bars {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.7;
   }
   50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    transform: scaleY(1.5);
+    opacity: 1;
   }
 }
 
+/* =========================================
+   Botones
+========================================= */
 
-/* Indicador de Carga */
-.loading-indicator {
+/* Contenedor del botón de cargar más */
+.load-more-container {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin: 20px 0;
+  margin-top: 20px;
 }
 
-.bars {
+/* Estilo del botón de cargar más */
+.load-more-button {
+  background: rgba(28, 29, 50, 0.4);
+  color: white;
+  height: 3rem;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  cursor: pointer;
   display: flex;
-  align-items: flex-end;
-  gap: calc(4px * var(--scale-factor));
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
 }
 
+.arrow {
+  display: block;
+  width: 7px;
+  height: 7px;
+  border-left: 2px solid #B5CDE2FF;
+  border-bottom: 2px solid #B5CDE2FF;
+  transform: rotate(-45deg);
+  margin-top: 2px;
+  transition: transform 0.2s;
+}
+
+.text {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--text-color);
+}
+
+/* =========================================
+   Indicadores de Carga
+========================================= */
+
+/* Barras individuales de carga */
 .bar {
   width: calc(8px * var(--scale-factor));
   height: calc(20px * var(--scale-factor));
@@ -456,29 +487,33 @@ h2::after {
   animation-delay: 0.4s;
 }
 
-@keyframes pulse-bars {
-  0%, 100% {
-    transform: scaleY(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scaleY(1.5);
-    opacity: 1;
-  }
-}
+/* =========================================
+   Paginación de Angular Material
+========================================= */
 
 /* Aplica estilos directamente al paginador */
+::ng-deep .mat-paginator {
+  background-color: transparent;
+}
+
+::ng-deep .mat-paginator-range-actions {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-paginator-page-size {
+  margin-right: 20px;
+}
+
 .pagination-container mat-paginator {
   color: #ffffff; /* Cambia el color del texto */
   background-color: #1a3640; /* Cambia el fondo */
 }
 
-/* Estilos para los botones de navegación */
 .pagination-container mat-paginator .mat-paginator-navigation-button {
   color: #ffcc00; /* Cambia el color de los botones */
 }
 
-/* Estilo para el texto de rango y etiquetas */
 .pagination-container mat-paginator .mat-paginator-range-label {
   color: #ffffff; /* Cambia el color del texto del rango */
 }
@@ -491,23 +526,29 @@ h2::after {
   color: #ffcc00; /* Cambia el color del selector de tamaño de página */
 }
 
+/* =========================================
+   Media Queries
+========================================= */
 
-/* Media Queries */
 @media (max-width: 768px) {
+  /* Ajustes para contenedor principal */
   .gift-cards-container {
     grid-template-columns: repeat(2, 1fr);
     gap: calc(1.5rem * var(--scale-factor));
   }
 
+  /* Ajustes para el título de la tarjeta */
   .gift-card-title {
     font-size: calc(0.2rem * var(--scale-factor));
     margin-top: -1.5rem;
   }
 
+  /* Ajustes para el precio de la tarjeta */
   .gift-card-price {
     font-size: calc(0.9rem * var(--scale-factor));
   }
 
+  /* Ajustes para la imagen de la tarjeta */
   .gift-card-image {
     height: calc(15rem * var(--scale-factor));
     object-fit: cover;
@@ -516,21 +557,24 @@ h2::after {
     margin-bottom: calc(0.625rem * var(--scale-factor));
   }
 
+  /* Ajustes para el título principal */
   h2 {
     font-size: calc(2rem * var(--scale-factor));
     margin-top: calc(1rem * var(--scale-factor));
     letter-spacing: calc(0.1rem * var(--scale-factor));
   }
 
+  /* Ajustes para la plataforma */
   .platform {
-    font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño más compacto */
+    font-size: calc(0.6rem * var(--scale-factor));
   }
 
+  /* Ajustes para el botón de cargar más */
   .load-more-button {
     padding: calc(0.6rem * var(--scale-factor));
   }
 
-  /* Ajustes para el badge de descuento en pantallas pequeñas */
+  /* Ajustes para el porcentaje de descuento */
   .discount-percentage {
     top: 8px;
     left: 8px;
@@ -540,56 +584,298 @@ h2::after {
 }
 
 @media (max-width: 480px) {
-  .gift-cards-container {
-    grid-template-rows: repeat(2, 1fr);
-    grid-gap: calc(3rem * var(--scale-factor));
-    justify-content: center;
-    margin-right: 4rem;
+  /* =========================================
+     Reset Global de Box-Sizing
+  ========================================= */
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
 
-  .gift-card {
-    width: 120%;
+  /* =========================================
+     Ajustes para Contenedor de Búsqueda Principal
+  ========================================= */
+  .gift-cards-container-search {
+    display: flex;
+    flex-direction: column; /* Apilar tarjetas verticalmente */
+    gap: 12px; /* Reducir el espacio entre tarjetas */
+    width: 100%; /* Utilizar todo el ancho disponible */
+    margin: 0 auto;
+    padding: 10px; /* Reducir el padding */
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    box-sizing: border-box; /* Incluir padding en el cálculo del ancho */
   }
 
-  .gift-card-title {
-    font-size: calc(0.9rem * var(--scale-factor));
-    margin-bottom: -1rem;
+  /* =========================================
+     Ajustes para la Tarjeta de Regalo en Búsqueda
+  ========================================= */
+  .gift-card-search {
+    display: flex;
+    flex-direction: column; /* Apilar imagen y contenido verticalmente */
+    align-items: stretch; /* Asegurar que los elementos ocupen todo el ancho */
+    width: 100%; /* Ocupar todo el ancho del contenedor */
+    max-width: none; /* Eliminar restricciones de ancho máximo */
+    padding: 0; /* Eliminar padding para maximizar el espacio */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Suavizar la sombra */
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Fondo consistente */
+    border-radius: calc(0.5rem * var(--scale-factor)); /* Bordes redondeados */
+    overflow: hidden; /* Evitar que elementos internos sobresalgan */
+    position: relative; /* Para posicionamiento absoluto de elementos internos si es necesario */
   }
 
-  .gift-card-price {
-    font-size: calc(0.85rem * var(--scale-factor));
+  /* =========================================
+     Ajustes para la Imagen de la Tarjeta en Búsqueda
+  ========================================= */
+  .image-container-search {
+    width: 100%; /* Ocupar todo el ancho de la tarjeta */
+    height: 250px; /* Establecer una altura fija para cubrir la parte superior */
+    position: relative; /* Posicionamiento relativo para posibles elementos absolutos */
+    overflow: hidden; /* Ocultar cualquier desbordamiento */
   }
 
-  .gift-card-image {
-    height: calc(15rem * var(--scale-factor));
-    object-fit: cover;
+  .gift-card-image-search {
+    display: block; /* Asegurar que la imagen sea un bloque */
+    width: 100%; /* Ocupar todo el ancho de la tarjeta */
+    height: 100%; /* Ocupar toda la altura del contenedor */
+    object-fit: cover; /* Asegurar que la imagen cubra completamente el contenedor sin distorsión */
     border-top-left-radius: calc(0.5rem * var(--scale-factor));
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: calc(0.625rem * var(--scale-factor));
+    margin-bottom: 0; /* Eliminar margen inferior */
   }
 
+  /* =========================================
+     Ajustes para el Contenido de la Tarjeta en Búsqueda
+  ========================================= */
+  .gift-card-content-search {
+    padding: 8px; /* Reducir el padding */
+    gap: 6px; /* Reducir el espacio entre elementos */
+    width: 100%; /* Ocupar todo el ancho disponible */
+    align-items: center; /* Centrar los elementos */
+    text-align: center; /* Centrar el texto */
+    box-sizing: border-box; /* Incluir padding en el cálculo del ancho */
+  }
+
+  /* =========================================
+     Ajustes para el Título de la Tarjeta en Búsqueda
+  ========================================= */
+  .gift-card-title-search {
+    font-size: 1.1rem; /* Aumentar ligeramente el tamaño de la fuente */
+    margin-bottom: 4px; /* Reducir margen inferior */
+    font-family: var(--font-secondary);
+    width: 100%; /* Asegurar que el título ocupe todo el ancho */
+    word-wrap: break-word; /* Permitir que el texto se ajuste */
+  }
+
+  /* =========================================
+     Ajustes para el Precio de la Tarjeta en Búsqueda
+  ========================================= */
+  .gift-card-price-search {
+    font-size: 1.2rem; /* Aumentar el tamaño de la fuente */
+    text-align: center; /* Centrar el texto */
+    width: 100%; /* Ocupar todo el ancho disponible */
+    color: var(--accent-color); /* Asegurar que el precio destaque */
+  }
+
+  /* =========================================
+     Ajustes para el Precio Original y con Descuento en Búsqueda
+  ========================================= */
+  .original-price-search {
+    font-size: 0.9rem; /* Ajustar el tamaño de la fuente */
+    margin-bottom: 4px; /* Reducir margen inferior */
+    text-decoration: line-through; /* Indicar precio original */
+    color: #ccc; /* Color más tenue para el precio original */
+  }
+
+  .discounted-price-search {
+    font-size: 1.3rem; /* Ajustar el tamaño de la fuente */
+    padding: 3px 6px; /* Reducir el padding */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Suavizar la sombra */
+    background-color: var(--accent-color); /* Fondo para destacar el descuento */
+    color: #fff; /* Color del texto contrastante */
+    border-radius: 4px; /* Bordes redondeados */
+    display: inline-block; /* Alinear el descuento correctamente */
+  }
+
+  /* =========================================
+     Ajustes para el Porcentaje de Descuento en Búsqueda
+  ========================================= */
+  .discount-percentage-search {
+    position: absolute; /* Posicionar la etiqueta sobre la imagen */
+    top: 8px; /* Ajustar posición vertical */
+    left: 8px; /* Ajustar posición horizontal */
+    padding: 3px 6px; /* Reducir el padding */
+    font-size: 0.9rem; /* Aumentar ligeramente el tamaño de la fuente */
+    background-color: var(--discount-color); /* Fondo para destacar el porcentaje */
+    color: #fff; /* Color del texto contrastante */
+    border-radius: 4px; /* Bordes redondeados */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* Suavizar la sombra */
+    z-index: 2; /* Asegurar que esté por encima de la imagen */
+  }
+
+  /* =========================================
+     Ajustes para la Plataforma en Búsqueda
+  ========================================= */
+  .platform-search {
+    font-size: 0.85rem; /* Aumentar ligeramente el tamaño de la fuente */
+    padding: 4px 8px; /* Ajustar el padding */
+    margin-top: 6px; /* Reducir el margen superior */
+    background-color: #021526; /* Fondo para la plataforma */
+    color: #fff; /* Color del texto */
+    border-radius: 12px; /* Bordes redondeados */
+    display: inline-block; /* Alinear correctamente */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Suavizar la sombra */
+  }
+
+  /* =========================================
+     Ajustes para el Botón de Cargar Más en Búsqueda
+  ========================================= */
   .load-more-button {
-    padding: calc(0.5rem * var(--scale-factor));
-    height: 4rem;
-    font-size: 1.5rem;
+    padding: 12px 20px; /* Reducir el padding */
+    height: auto; /* Permitir que la altura se ajuste automáticamente */
+    font-size: 1.3rem; /* Aumentar ligeramente el tamaño de la fuente */
+    width: 100%; /* Hacer que el botón ocupe todo el ancho disponible */
+    box-sizing: border-box; /* Incluir padding en el ancho total */
+    border-radius: 25px; /* Ajustar el radio de borde */
+    background: rgba(28, 29, 50, 0.4); /* Fondo del botón */
+    color: white; /* Color del texto */
+    cursor: pointer; /* Cambiar el cursor al pasar sobre el botón */
+    display: flex; /* Alinear el contenido del botón */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    gap: 10px; /* Espacio entre texto y flecha */
+    transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
   }
 
+  .load-more-button:hover {
+    background-color: rgba(28, 29, 50, 0.6); /* Cambiar fondo al pasar el mouse */
+    transform: translateY(-2px); /* Levantar ligeramente el botón */
+  }
+
+  .load-more-button:active {
+    transform: translateY(0); /* Restablecer posición al hacer clic */
+  }
+
+  .arrow {
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-left: 2px solid #B5CDE2FF;
+    border-bottom: 2px solid #B5CDE2FF;
+    transform: rotate(-45deg);
+    transition: transform 0.2s;
+  }
+
+  .load-more-button:hover .arrow {
+    transform: rotate(135deg); /* Girar la flecha al pasar el mouse */
+  }
+
+  .text {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--text-color);
+  }
+
+  /* =========================================
+     Ajustes para el Título Principal (h2) en Búsqueda
+  ========================================= */
   h2 {
-    font-size: calc(1.8rem * var(--scale-factor));
-    margin-top: calc(0.8rem * var(--scale-factor));
-    letter-spacing: calc(0.08rem * var(--scale-factor));
+    font-size: 1.6rem; /* Ajustar el tamaño de la fuente */
+    margin-bottom: 1.5rem; /* Reducir el margen inferior */
+    letter-spacing: 0.1rem; /* Ajustar el espaciado entre letras */
+    text-align: center; /* Centrar el título */
+    color: #F8F9FA; /* Color del texto */
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6); /* Sombra del texto */
+    position: relative; /* Para las líneas decorativas */
   }
 
-  /* Ajustes para el badge de descuento en pantallas muy pequeñas */
-  .discount-percentage {
-    top: 5px;
-    left: 5px;
-    padding: 2px 5px;
-    font-size: calc(0.6rem * var(--scale-factor));
+  h2::before,
+  h2::after {
+    position: absolute;
+    content: '';
+    height: 0.15rem; /* Reducir la altura de las líneas */
+    background: #F8F9FA;
+    top: 50%;
+    transform: translateY(-50%);
   }
-  .platform {
-    font-size: calc(0.6rem * var(--scale-factor));
-    padding: 2px 4px;
-    margin-top: 2rem;
+
+  h2::before {
+    left: -3rem; /* Ajustar posición */
+    width: 3rem; /* Reducir el ancho de las líneas */
+  }
+
+  h2::after {
+    right: -3rem; /* Ajustar posición */
+    width: 3rem; /* Reducir el ancho de las líneas */
+  }
+
+  /* =========================================
+     Ajustes para el Indicador de Carga en Búsqueda
+  ========================================= */
+  .loading-indicator {
+    margin: 10px 0; /* Reducir el margen */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bars {
+    display: flex;
+    align-items: flex-end;
+    gap: calc(2px * var(--scale-factor)); /* Reducir el espacio entre barras */
+  }
+
+  .bar,
+  .bar1,
+  .bar2,
+  .bar3,
+  .bar4,
+  .bar5 {
+    width: calc(6px * var(--scale-factor)); /* Reducir el ancho de las barras */
+    height: calc(15px * var(--scale-factor)); /* Reducir la altura de las barras */
+    background-color: var(--highlight-color);
+    border-radius: calc(4px * var(--scale-factor));
+    animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+
+  .bar1 {
+    background-color: var(--highlight-color-1);
+    animation-delay: -0.4s;
+  }
+
+  .bar2 {
+    background-color: var(--highlight-color-2);
+    animation-delay: -0.2s;
+  }
+
+  .bar3 {
+    background-color: var(--highlight-color-3);
+    animation-delay: 0s;
+  }
+
+  .bar4 {
+    background-color: var(--highlight-color-4);
+    animation-delay: 0.2s;
+  }
+
+  .bar5 {
+    background-color: var(--highlight-color);
+    animation-delay: 0.4s;
+  }
+
+  /* =========================================
+     Animaciones
+  ========================================= */
+  @keyframes pulse-bars {
+    0%, 100% {
+      transform: scaleY(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scaleY(1.5);
+      opacity: 1;
+    }
   }
 }
+
+
+
+
