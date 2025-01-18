@@ -43,12 +43,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   --accent-blue: #1e90ff; /* Azul brillante */
   --text-color: #B5CDE2FF; /* Gris claro para texto */
   --border-color: rgba(255, 255, 255, 0.1); /* Borde muy sutil */
-  --search-background: #1e1e1e;
-  --search-card-background: #2c2c2c;
-  --search-border-color: #555;
-  --search-text-color: #e0e0e0;
-  --search-accent-color: #ff9800;
-  --card-background-color: #1A1C2E;
+
   /* Botones con Linear Gradients */
   --button-add-bg: linear-gradient(45deg, #39ff14, #8e44ad); /* Verde neón a púrpura */
   --button-add-hover-bg: linear-gradient(45deg, #2ed71f, #7a3ea0); /* Verde más oscuro a púrpura oscuro */

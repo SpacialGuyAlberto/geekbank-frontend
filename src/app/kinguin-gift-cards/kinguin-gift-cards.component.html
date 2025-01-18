@@ -1,7 +1,29 @@
+<!-- Paginación Mejorada con Angular Material -->
+<div class="pagination-container" *ngIf="totalPages > 1">
+  <mat-paginator [length]="totalItems"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 20, 50]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
+
 <div [ngClass]="{
       'gift-cards-container': !isSearchMode,
       'gift-cards-container-search': isSearchMode
     }">
+
+  <!-- Indicador de Carga -->
+  <div *ngIf="isLoading && isSearchMode" class="loading-indicator">
+    <div class="bars">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+      <div class="bar bar4"></div>
+      <div class="bar bar5"></div>
+    </div>
+  </div>
+
+  <!-- Lista de Gift Cards -->
   <div *ngFor="let card of displayedGiftCards" [ngClass]="{
         'gift-card': !isSearchMode,
         'gift-card-search': isSearchMode
@@ -19,23 +41,25 @@
           'gift-card-content': !isSearchMode,
           'gift-card-content-search': isSearchMode
         }">
-      <!-- Mover el span de descuento antes del precio -->
+      <!-- Span de Descuento -->
       <span [ngClass]="{
             'discount-percentage': !isSearchMode,
             'discount-percentage-search': isSearchMode
           }">{{ card.randomDiscount }}% OFF</span>
+
+      <!-- Título de la Gift Card -->
       <h3 [ngClass]="{
             'gift-card-title': !isSearchMode,
             'gift-card-title-search': isSearchMode
           }">{{ card.name }}</h3>
+
+      <!-- Plataforma y Géneros -->
       <span [ngClass]="{
             'platform': !isSearchMode,
             'platform-search': isSearchMode
-          }">{{card.platform}}</span>
-      <span *ngIf="card.genres.length > 0" [ngClass]="{
-            'platform': !isSearchMode,
-            'platform-search': isSearchMode
-          }">{{card.genres[0]}}</span>
+          }">{{ card.platform }}</span>
+
+      <!-- Precio de la Gift Card -->
       <div [ngClass]="{
             'gift-card-price': !isSearchMode,
             'gift-card-price-search': isSearchMode
@@ -43,18 +67,31 @@
         <span [ngClass]="{
               'original-price': !isSearchMode,
               'original-price-search': isSearchMode
-            }">{{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}</span>
+            }">
+          {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
+        </span>
         <span [ngClass]="{
               'discounted-price': !isSearchMode,
               'discounted-price-search': isSearchMode
-            }">{{ card.priceHNL |  currency:'HNL':'symbol':'1.2-2'}}</span>
+            }">
+          {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
+        </span>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Paginación Mejorada con Angular Material -->
+<div class="pagination-container" *ngIf="totalPages > 1">
+  <mat-paginator [length]="totalItems"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 20, 50]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
 
-<div class="load-more-container">
+<!-- Botón Cargar Más -->
+<div *ngIf="!isSearchMode && hasMoreItems" class="load-more-container">
   <button class="load-more-button" (click)="loadMore()">
     <span class="arrow"></span>
     <span class="load-more-text">Cargar Más</span>

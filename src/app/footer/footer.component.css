@@ -141,7 +141,7 @@
 }
 
 .facebook:hover {
-   background: blue;
+  background: blue;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

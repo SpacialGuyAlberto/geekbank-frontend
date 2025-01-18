@@ -4,6 +4,10 @@
   --secondary-color: #021526;
   --text-color: #B5CDE2FF;
   --highlight-color: #00d4ff;
+  --highlight-color-1: #ff5733; /* Añadido */
+  --highlight-color-2: #88D66C; /* Añadido */
+  --highlight-color-3: #ffbd33; /* Añadido */
+  --highlight-color-4: #33ff57; /* Añadido */
   --accent-color: #88D66C;
   --font-primary: 'Roboto', sans-serif;
   --font-secondary: 'VT323', monospace;
@@ -13,10 +17,21 @@
   --search-border-color: #5f575d; /* Ajusta según tu diseño */
   --search-text-color: #333333; /* Ajusta según tu diseño */
   --search-accent-color: #FF5733; /* Ajusta según tu diseño */
+  --shadow-color: rgba(0, 0, 0, 0.3); /* Definición para box-shadow en .gift-card-search */
+  --card-background-color: #203a43; /* Definición para discounted-price-search */
 }
 
+
 /* Contenedor de Gift Cards */
-.gift-cards-container,
+.gift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
+  gap: calc(1.5rem * var(--scale-factor));
+  width: 70%;
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
+  margin-bottom: 5rem
+}
+
 .gift-cards-container-search {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(calc(150px * var(--scale-factor)), 1fr)); /* Reducido de 200px a 150px */
@@ -38,25 +53,26 @@
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
 
-/* Gift Card */
+
 .gift-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(135deg, rgba(39, 39, 57, 0.4), rgba(8, 64, 180, 0.4));
-  border: 2px solid rgba(173, 216, 230, 0.2);
-  border-radius: 8px;
+  width: 100%;
+  max-width: calc(300px * var(--scale-factor)); /* Ancho máximo escalado */
+  background-color: var(--primary-color);
+  border: calc(0.125rem * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
+  border-radius: calc(0.5rem * var(--scale-factor));
   padding: 0;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
+  box-shadow: 0 calc(0.25rem * var(--scale-factor)) calc(1.25rem * var(--scale-factor)) rgba(0, 0, 0, 0.6);
+  position: relative;
   cursor: pointer;
-  position: relative; /* Base para posicionamiento absoluto */
   overflow: hidden;
-  z-index: 0; /* Base z-index */
+  min-height: calc(20rem * var(--scale-factor));
 }
 
-/* Gift Card en modo búsqueda */
 .gift-card-search {
   display: flex;
   flex-direction: row;
@@ -66,57 +82,58 @@
   box-shadow: 0 4px 10px var(--shadow-color);
 }
 
-/* Span de descuento en la esquina superior izquierda */
-.discount-percentage {
-  position: absolute;
-  top: 10px; /* Ajusta según tus necesidades */
-  left: 10px; /* Ajusta según tus necesidades */
-  background-color: var(--discount-color);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: calc(0.75rem * var(--scale-factor));
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1; /* Por encima de otros elementos */
+.gift-card:hover {
+  transform: translateY(calc(-5px * var(--scale-factor)));
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
-.discount-percentage-search {
-  position: absolute; /* Asegura el posicionamiento absoluto */
-  top: 10px;
-  left: 10px;
-  background-color: var(--search-accent-color);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 2; /* Asegura que esté por encima del precio */
-}
-
-/* Efecto de borde animado */
-.gift-card::before {
-  content: '';
-  position: absolute;
-  top: calc(-2px * var(--scale-factor));
-  left: calc(-2px * var(--scale-factor));
-  right: calc(-2px * var(--scale-factor));
-  bottom: calc(-2px * var(--scale-factor));
-  border-radius: calc(15px * var(--scale-factor));
-  background: linear-gradient(45deg, rgba(28, 29, 50, 0.4), rgba(74, 35, 90, 0.4), rgb(33, 9, 9), rgba(173, 216, 230, 1));
-  background-size: 300% 300%;
-  z-index: -1;
-  animation: animatedBorder 5s ease infinite;
-}
-
-/* Efecto al hacer hover sobre una tarjeta */
-.gift-card:hover,
 .gift-card-search:hover {
   transform: scale(1.05); /* Escala al 105% */
   z-index: 1; /* Superpone sobre las demás tarjetas */
 }
 
+h2 {
+  font-family: var(--font-primary);
+  font-size: calc(1.5rem * var(--scale-factor));
+  color: #F8F9FA; /* Blanco ligeramente suave */
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: calc(0.2rem * var(--scale-factor));
+  margin-bottom: calc(2rem * var(--scale-factor));
+  position: relative;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+h2::before,
+h2::after {
+  position: absolute;
+  width: calc(4rem * var(--scale-factor));
+  height: calc(0.2rem * var(--scale-factor));
+  background: #F8F9FA; /* Blanco ligeramente suave */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+h2::before {
+  left: calc(-5rem * var(--scale-factor));
+}
+
+h2::after {
+  right: calc(-5rem * var(--scale-factor));
+}
+
+
+@keyframes animatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 
 .gift-card-image {
   width: 100%;
@@ -128,15 +145,24 @@
   transition: transform var(--transition-speed) ease;
 }
 
-/* Contenido de la Gift Card */
+.gift-card-image-search {
+  width: 100%; /* Ocupa todo el ancho del contenedor */
+  height: 100%; /* Ocupa toda la altura del contenedor */
+  object-fit: cover; /* Escala la imagen para llenar el contenedor */
+
+  margin: 0; /* Elimina márgenes */
+  padding: 0; /* Elimina padding */
+  transition: transform var(--transition-speed) ease; /* Suaviza animaciones */
+}
+
 .gift-card-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
   flex-grow: 1;
-  margin-top: 0; /* Eliminado margen superior */
-  padding: 0; /* Eliminado padding */
+  margin-top: calc(1rem * var(--scale-factor));
+  padding: calc(1rem * var(--scale-factor));
 }
 
 .gift-card-content-search {
@@ -148,21 +174,17 @@
   padding: 2rem; /* Eliminado padding */
 }
 
-/* Título de la Gift Card */
 .gift-card-title {
-  font-size: calc(0.9rem * var(--scale-factor)); /* Mantén el tamaño ajustable */
-  color: var(--text-color);
-  margin-bottom: calc(0.625rem * var(--scale-factor));
-  margin-top: -1rem;
+  font-size: calc(0.5rem * var(--scale-factor));
+  color: #dcd0d0;
   text-transform: uppercase;
-  word-wrap: break-word; /* Ajusta palabras largas */
-  word-break: break-word; /* Divide palabras largas */
-  white-space: normal; /* Permite ajuste de líneas */
-  max-height: calc(3rem * var(--scale-factor)); /* Limita la altura máxima */
-  overflow: hidden; /* Evita desbordamiento visual */
-  text-overflow: ellipsis; /* Muestra "..." si el texto excede */
-  line-height: 1.2; /* Ajusta la separación entre líneas */
+  white-space: normal; /* Permite que el texto ajuste automáticamente */
+  overflow: visible; /* Evita recortar el texto */
+  text-overflow: clip; /* Deshabilita los puntos suspensivos */
+  max-width: 100%;
+  line-height: 1; /* Opcional: ajusta la separación entre líneas */
 }
+
 
 .gift-card-title-search {
   font-size: 1.25rem;
@@ -171,54 +193,6 @@
   font-family: var(--font-secondary);
 }
 
-/* Contenedor de la imagen en modo búsqueda */
-.image-container-search {
-  width: 150px;
-  height: auto;
-  overflow: hidden;
-}
-
-/* Imagen de la Gift Card en modo búsqueda */
-.gift-card-image-search {
-  width: 100%; /* Ocupa todo el ancho del contenedor */
-  height: 100%; /* Ocupa toda la altura del contenedor */
-  object-fit: cover; /* Escala la imagen para llenar el contenedor */
-
-  margin: 0; /* Elimina márgenes */
-  padding: 0; /* Elimina padding */
-  transition: transform var(--transition-speed) ease; /* Suaviza animaciones */
-}
-
-/* Plataforma */
-.platform {
-  display: inline-block; /* Asegura que sea un bloque dentro del contenido */
-  background-color: #021526; /* Fondo oscuro para contraste */
-  color: #ffffff; /* Texto blanco para visibilidad */
-  font-size: calc(0.6rem * var(--scale-factor)); /* Tamaño de texto ajustable */
-  font-weight: bold; /* Resalta el texto */
-  padding: 4px 6px; /* Espaciado interno */
-  border-radius: 12px; /* Bordes redondeados */
-  margin-top: 4px; /* Espaciado superior para separación del título */
-  text-align: center; /* Centra el texto */
-  text-transform: uppercase; /* Todo en mayúsculas */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Sombra para efecto de elevación */
-  width: fit-content; /* Se ajusta al tamaño del texto */
-  align-self: center; /* Centra horizontalmente dentro del contenedor */
-}
-
-.platform-search {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem; /* Reducido el tamaño de fuente */
-  text-transform: uppercase;
-  margin-top: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  align-self: flex-start;
-}
-
-/* Precio de la Gift Card */
 .gift-card-price {
   display: flex;
   flex-direction: column;
@@ -236,6 +210,11 @@
   align-items: flex-end;
 }
 
+.image-container-search {
+  width: 150px;
+  height: auto;
+  overflow: hidden;
+}
 /* Precio original tachado */
 .original-price {
   text-decoration: line-through;
@@ -243,20 +222,16 @@
   margin-bottom: 4px; /* Espacio inferior */
   font-size: calc(0.9rem * var(--scale-factor));
 }
-
 .original-price-search {
   text-decoration: line-through;
   color: #ccc;
   font-size: 1rem;
   margin-bottom: 6px;
 }
-
 /* Precio con descuento */
 .discounted-price {
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: calc(1.4rem * var(--scale-factor));
-  margin-bottom: 4px; /* Espacio inferior */
+  font-size: calc(1.5em * var(--scale-factor));
+  color: var(--accent-color);
 }
 
 .discounted-price-search {
@@ -268,39 +243,40 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Título de la Gift Card al hacer hover */
-.gift-card:hover .gift-card-title {
-  white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-  max-height: calc(4rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
-}
 
-/* Título de la Gift Card en modo búsqueda al hacer hover */
 .gift-card-search:hover .gift-card-title-search {
   white-space: normal;
   max-height: calc(3rem * var(--scale-factor));
 }
-
-/* Títulos */
-h2 {
-  font-family: var(--font-primary);
-  font-size: calc(1.5rem * var(--scale-factor));
-  color: #FFFFFF; /* Blanco puro */
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: calc(0.15rem * var(--scale-factor));
-  margin-bottom: calc(1.5rem * var(--scale-factor));
-  margin-top: calc(2rem * var(--scale-factor)); /* Espaciado superior adicional */
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.6);
-  position: relative; /* Para posicionar bien en el layout */
+.discount-percentage {
+  position: absolute;
+  top: 10px; /* Ajusta según tus necesidades */
+  left: 10px; /* Ajusta según tus necesidades */
+  background-color: var(--discount-color);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: calc(0.75rem * var(--scale-factor));
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 1; /* Por encima de otros elementos */
 }
 
-/* Hover para destacar el título */
-h2:hover {
-  text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.8);
-  color: #00d4ff; /* Cambia a color destacado al pasar el mouse */
+
+.discount-percentage-search {
+  position: absolute; /* Asegura el posicionamiento absoluto */
+  top: 10px;
+  left: 10px;
+  background-color: var(--search-accent-color);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  z-index: 2; /* Asegura que esté por encima del precio */
 }
 
-/* Load More Button */
 .load-more-container {
   display: flex;
   justify-content: center;
@@ -325,8 +301,9 @@ h2:hover {
   overflow: hidden;
 }
 
+
 .load-more-button:hover {
-  background-color: rgba(28, 29, 50, 0.4);
+  background-color:   rgba(28, 29, 50, 0.4);
   transform: translateY(-2px);
 }
 
@@ -352,9 +329,54 @@ h2:hover {
 .text {
   font-size: 12px;
   letter-spacing: 1px;
-  color: var(--text-color);
+  color: var(--text-color)
 }
 
+.platform {
+  display: inline-block;
+  background-color: #021526;
+  color: #ffffff;
+  font-size: calc(0.6rem * var(--scale-factor));
+  font-weight: bold;
+  padding: 4px 6px;
+  border-radius: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  width: fit-content;
+  align-self: center;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+::ng-deep .mat-paginator {
+  background-color: transparent;
+}
+
+::ng-deep .mat-paginator-range-actions {
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .mat-paginator-page-size {
+  margin-right: 20px;
+}
+
+.platform-search {
+  background-color: var(--secondary-color);
+  color: var(--text-color);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem; /* Reducido el tamaño de fuente */
+  text-transform: uppercase;
+  margin-top: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  align-self: flex-start;
+}
 /* Animaciones */
 @keyframes animatedBorder {
   0% {
@@ -368,17 +390,117 @@ h2:hover {
   }
 }
 
+@keyframes animatedBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+/* Indicador de Carga */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(4px * var(--scale-factor));
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor));
+  height: calc(20px * var(--scale-factor));
+  background-color: var(--highlight-color);
+  border-radius: calc(4px * var(--scale-factor));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar1 {
+  background-color: var(--highlight-color-1);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
+  animation-delay: -0.4s;
+}
+
+.bar2 {
+  background-color: var(--highlight-color-2);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
+  animation-delay: -0.2s;
+}
+
+.bar3 {
+  background-color: var(--highlight-color-3);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
+  animation-delay: 0s;
+}
+
+.bar4 {
+  background-color: var(--highlight-color-4);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
+  animation-delay: 0.2s;
+}
+
+.bar5 {
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse-bars {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
+}
+
+/* Aplica estilos directamente al paginador */
+.pagination-container mat-paginator {
+  color: #ffffff; /* Cambia el color del texto */
+  background-color: #1a3640; /* Cambia el fondo */
+}
+
+/* Estilos para los botones de navegación */
+.pagination-container mat-paginator .mat-paginator-navigation-button {
+  color: #ffcc00; /* Cambia el color de los botones */
+}
+
+/* Estilo para el texto de rango y etiquetas */
+.pagination-container mat-paginator .mat-paginator-range-label {
+  color: #ffffff; /* Cambia el color del texto del rango */
+}
+
+.pagination-container mat-paginator .mat-paginator-page-size-label {
+  color: #ffffff; /* Cambia el color del texto de "Elementos por página" */
+}
+
+.pagination-container mat-paginator .mat-select-value-text {
+  color: #ffcc00; /* Cambia el color del selector de tamaño de página */
+}
+
+
 /* Media Queries */
 @media (max-width: 768px) {
-  .gift-cards-container,
-  .gift-cards-container-search {
+  .gift-cards-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: calc(0.75rem * var(--scale-factor)); /* Reducido el gap */
-    width: 80%; /* Ajuste para pantallas más pequeñas */
+    gap: calc(1.5rem * var(--scale-factor));
   }
 
   .gift-card-title {
-    font-size: calc(0.8rem * var(--scale-factor));
+    font-size: calc(0.2rem * var(--scale-factor));
     margin-top: -1.5rem;
   }
 
@@ -392,15 +514,6 @@ h2:hover {
     border-top-left-radius: calc(0.5rem * var(--scale-factor));
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
     margin-bottom: calc(0.625rem * var(--scale-factor));
-  }
-
-  .gift-card-image-search {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* Mantiene la imagen completa */
-    border-radius: 8px;
-    transition: transform var(--transition-speed) ease;
-    background-color: #fff; /* Opcional: agrega un fondo blanco para mejor visualización */
   }
 
   h2 {
@@ -424,38 +537,18 @@ h2:hover {
     padding: 3px 6px;
     font-size: calc(0.7rem * var(--scale-factor));
   }
-
-  .gift-card-search .gift-card-title-search {
-    font-size: 0.9rem; /* Reducido el tamaño de fuente en búsqueda */
-  }
-
-  .gift-card-search .discounted-price-search {
-    font-size: 0.9rem;
-    padding: 3px 6px;
-  }
-
-  .gift-card-search .platform-search {
-    font-size: 0.7rem;
-    padding: 3px 6px;
-  }
 }
 
 @media (max-width: 480px) {
   .gift-cards-container {
     grid-template-rows: repeat(2, 1fr);
-    grid-gap: calc(1.5rem * var(--scale-factor));
+    grid-gap: calc(3rem * var(--scale-factor));
     justify-content: center;
-    margin-right: 2rem;
+    margin-right: 4rem;
   }
 
   .gift-card {
     width: 120%;
-  }
-
-  .gift-card-search {
-    flex-direction: row;
-    padding: 4px; /* Reducido padding */
-    max-width: 100%; /* Ajustado para pantallas muy pequeñas */
   }
 
   .gift-card-title {
@@ -473,15 +566,6 @@ h2:hover {
     border-top-left-radius: calc(0.5rem * var(--scale-factor));
     border-top-right-radius: calc(0.5rem * var(--scale-factor));
     margin-bottom: calc(0.625rem * var(--scale-factor));
-  }
-
-  .gift-card-image-search {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
-    transition: transform var(--transition-speed) ease;
-    background-color: #fff;
   }
 
   .load-more-button {
@@ -503,21 +587,6 @@ h2:hover {
     padding: 2px 5px;
     font-size: calc(0.6rem * var(--scale-factor));
   }
-
-  .gift-card-search .gift-card-title-search {
-    font-size: 0.8rem; /* Reducido aún más en pantallas muy pequeñas */
-  }
-
-  .gift-card-search .discounted-price-search {
-    font-size: 0.8rem;
-    padding: 2px 4px;
-  }
-
-  .gift-card-search .platform-search {
-    font-size: 0.6rem;
-    padding: 2px 4px;
-  }
-
   .platform {
     font-size: calc(0.6rem * var(--scale-factor));
     padding: 2px 4px;
