@@ -1,20 +1,79 @@
-<div class="gift-cards-container">
-  <div *ngFor="let card of displayedGiftCards" class="gift-card" (click)="viewDetails(card)">
-    <div class="image-container">
-      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
+<!-- Paginación Mejorada con Angular Material -->
+<div class="pagination-container" *ngIf="totalPages > 1">
+  <mat-paginator [length]="totalItems"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 20, 50]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
+</div>
+
+<div [ngClass]="{
+      'gift-cards-container': !isSearchMode,
+      'gift-cards-container-search': isSearchMode
+    }">
+
+  <!-- Indicador de Carga -->
+  <div *ngIf="isLoading && isSearchMode" class="loading-indicator">
+    <div class="bars">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+      <div class="bar bar4"></div>
+      <div class="bar bar5"></div>
     </div>
-    <div class="gift-card-content">
-      <!-- Mostrar el descuento dinámico -->
-      <span class="discount-percentage">{{ card.randomDiscount }}% OFF</span>
-      <h3 class="gift-card-title">{{ card.name }}</h3>
-      <span class="platform">{{card.platform}}</span>
-      <div class="gift-card-price">
-        <!-- Precio original calculado -->
-        <span class="original-price">
+  </div>
+
+  <!-- Lista de Gift Cards -->
+  <div *ngFor="let card of displayedGiftCards" [ngClass]="{
+        'gift-card': !isSearchMode,
+        'gift-card-search': isSearchMode
+      }" (click)="viewDetails(card)">
+    <div [ngClass]="{
+          'image-container': !isSearchMode,
+          'image-container-search': isSearchMode
+        }">
+      <img [src]="card.coverImageOriginal" alt="{{ card.name }}" [ngClass]="{
+            'gift-card-image': !isSearchMode,
+            'gift-card-image-search': isSearchMode
+          }">
+    </div>
+    <div [ngClass]="{
+          'gift-card-content': !isSearchMode,
+          'gift-card-content-search': isSearchMode
+        }">
+      <!-- Span de Descuento -->
+      <span [ngClass]="{
+            'discount-percentage': !isSearchMode,
+            'discount-percentage-search': isSearchMode
+          }">{{ card.randomDiscount }}% OFF</span>
+
+      <!-- Título de la Gift Card -->
+      <h3 [ngClass]="{
+            'gift-card-title': !isSearchMode,
+            'gift-card-title-search': isSearchMode
+          }">{{ card.name }}</h3>
+
+      <!-- Plataforma y Géneros -->
+      <span [ngClass]="{
+            'platform': !isSearchMode,
+            'platform-search': isSearchMode
+          }">{{ card.platform }}</span>
+
+      <!-- Precio de la Gift Card -->
+      <div [ngClass]="{
+            'gift-card-price': !isSearchMode,
+            'gift-card-price-search': isSearchMode
+          }">
+        <span [ngClass]="{
+              'original-price': !isSearchMode,
+              'original-price-search': isSearchMode
+            }">
           {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
         </span>
-        <!-- Precio con descuento -->
-        <span class="discounted-price">
+        <span [ngClass]="{
+              'discounted-price': !isSearchMode,
+              'discounted-price-search': isSearchMode
+            }">
           {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
         </span>
       </div>
@@ -22,27 +81,19 @@
   </div>
 </div>
 
-
-<div class="load-more-container">
-  <button class="load-more-button" (click)="loadMore()">
-    <span class="arrow"></span>
-    <span class="load-more-text">Cargar Mas</span>
-  </button>
+<!-- Paginación Mejorada con Angular Material -->
+<div class="pagination-container" *ngIf="totalPages > 1">
+  <mat-paginator [length]="totalItems"
+                 [pageSize]="itemsPerPage"
+                 [pageSizeOptions]="[5, 10, 20, 50]"
+                 (page)="onPageChange($event)">
+  </mat-paginator>
 </div>
 
-<!--<div class="gift-cards-container" *ngIf="cards$ | async as cards">-->
-<!--  &lt;!&ndash;  <div *ngFor="let card of (giftCardsInput && giftCardsInput.length > 0 ? displayedGiftCards : displayedGiftCards)"&ndash;&gt;-->
-<!--  <div >-->
-<!--    class="gift-card"-->
-<!--    (click)="viewDetails(card)">-->
-<!--    <div class="image-container">-->
-<!--      <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image">-->
-<!--    </div>-->
-<!--    <div class="gift-card-content">-->
-<!--      <h3 class="gift-card-title">{{ card.name }}</h3>-->
-<!--      <div class="gift-card-price">-->
-<!--        <span>{{ (card.price * exchangeRate).toFixed(2) | currency: 'Lps. ' }}</span>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<!-- Botón Cargar Más -->
+<div *ngIf="!isSearchMode && hasMoreItems" class="load-more-container">
+  <button class="load-more-button" (click)="loadMore()">
+    <span class="arrow"></span>
+    <span class="load-more-text">Cargar Más</span>
+  </button>
+</div>
