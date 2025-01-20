@@ -292,7 +292,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         }],
         amount: this.totalAmount ? this.totalAmount : this.totalPrice,
         manual: this.isManualTransaction,
-        sendKeyToSMS: this.wantsSMSKey
+        sendKeyToSMS: this.wantsSMSKey,
+        sendKeyToWhatsApp: this.wantsSMSKey
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
@@ -316,7 +317,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             0
           ),
           manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey
+          sendKeyToSMS: this.wantsSMSKey,
+          sendKeyToWhatsApp: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -335,7 +337,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           }],
           amount: this.totalPrice,
           manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey
+          sendKeyToSMS: this.wantsSMSKey,
+          sendKeyToWhatsApp: this.wantsSMSKey
         };
       }
       if (this.gameUserId !== null) {
@@ -360,7 +363,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
             0
           ),
           manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey
+          sendKeyToSMS: this.wantsSMSKey,
+
+          sendKeyToWhatsApp: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -379,7 +384,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           }],
           amount: this.totalAmount ? this.totalAmount : this.totalPrice,
           manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey
+          sendKeyToSMS: this.wantsSMSKey,
+          sendKeyToWhatsApp: this.wantsSMSKey
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;

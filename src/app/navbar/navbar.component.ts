@@ -118,7 +118,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   showCartModal = false;
   cartItems: CartItemWithGiftcard[] = [];
   isFreeFireSearchActive: boolean = false;
-
+  isSearchMode: boolean = false;
+  isSearch: Subscription | null =  null;
 
   private subscriptions: Subscription = new Subscription();
   private currentTransaction: Transaction | undefined = undefined;
@@ -254,7 +255,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   goToHome() {
     this.uiStateService.setShowHighlights(true);
-    this.router.navigate(['/home']);
+    this.sharedService.deactivateSearchMode();
+    window.location.href = '/home';
   }
 
   navigateToPurchaseConfirmation(): void {
