@@ -4,6 +4,7 @@ export interface OrderRequest {
   guestId?: string | null;
   email?: string | null;
   sendKeyToSMS?: boolean;
+  sendKeyToWhatsApp?:boolean;
   phoneNumber: string;
   products: Product[];
   amount: number;

@@ -9,9 +9,11 @@ export class SharedService {
   // Crear un Subject para emitir eventos
   private controlSubject = new Subject<string>();
   private selectedTableSubject = new Subject<string>();
+  private isSearchMode = new Subject<boolean>()
 
   controlObservable$ = this.controlSubject.asObservable();
   selectedTable$ = this.selectedTableSubject.asObservable();
+  isSearchMode$ = this.isSearchMode.asObservable();
   constructor() { }
 
   // Método para emitir un evento
@@ -22,4 +24,9 @@ export class SharedService {
   emitTableAction(tab : string){
     this.selectedTableSubject.next(tab)
   }
+
+  deactivateSearchMode(){
+    this.isSearchMode.next(false);
+  }
+
 }

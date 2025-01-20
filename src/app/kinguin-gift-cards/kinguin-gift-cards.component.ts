@@ -19,6 +19,8 @@ import { loadGiftCards } from "./store/gift-card.actions";
 import { selectAllGiftCards, selectGiftCardsLoading } from "./store/gift-card.selector";
 import { MainScreenGiftCardItemDTO } from "../models/MainScreenGiftCardItem";
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { SharedService} from "../shared.service";
+
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -40,8 +42,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 })
 export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() giftCardsInput: KinguinGiftCard[] | null = null; // Renombrado para evitar conflicto
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('mainPaginator') mainPaginator!: MatPaginator;
 
   giftCards: KinguinGiftCard[] = [];
   isLoading: boolean = false; // Variable para controlar el estado de carga
@@ -55,11 +57,12 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   hasMoreItems: boolean = true;
   private giftCardsSubscription!: Subscription;
 
-  // Variables para paginación en pantalla principal
-  currentPageMain: number = 0;   // Página actual para tus Main Screen Gift Cards
-  pageSizeMain: number = 10;     // Cuántos items quieres por página
-  totalPagesMain: number = 0;    // Para guardar cuántas páginas totales existen
-  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []; // Arreglo que guardará la data recibida
+  currentPageMain: number = 0;
+  pageSizeMain: number = 10;
+  totalItemsMain: number = 0;
+  totalPagesMain: number = 0;
+  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = [];
+  private isShearch: Subscription | null = null;
 
   constructor(
     private authService: AuthService,
@@ -70,10 +73,13 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     private uiStateService: UIStateServiceService,
     private mainGiftCards: MainScreenGiftCardService,
     private snackBar: MatSnackBar,
-    private store: Store
+    private store: Store,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
+
+
     if (this.giftCardsInput && this.giftCardsInput.length > 0) {
       this.isLoading = true; // Iniciar carga si hay input
       this.giftCards = this.giftCardsInput;
@@ -83,6 +89,10 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
       this.isSearchMode = true;
       this.isLoading = false; // Finalizar carga
     } else {
+      this.isShearch = this.sharedService.isSearchMode$.subscribe( value =>{
+        this.isSearchMode = value;
+      })
+
       this.fetchGiftCards();
     }
 
@@ -120,55 +130,70 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   }
 
   fetchMainGiftCard(page: number = 0, size: number = 10): void {
-    this.isLoading = true; // Iniciar la carga
+    this.isLoading = true;
     this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
       async (res: any) => {
         try {
-
           let content: MainScreenGiftCardItemDTO[] = [];
 
+          // Puede ser un array sin paginación o un objeto con .content
           if (Array.isArray(res)) {
             content = res;
-            this.currentPageMain = 0;
+            this.totalItemsMain = content.length;
             this.totalPagesMain = 1;
+            this.currentPageMain = 0;
           } else if (res && Array.isArray(res.content)) {
             content = res.content;
-            this.currentPageMain = res.number + 1; // Asumiendo que `res.number` es 0-indexado
+            // Ajustamos paginación
+            this.currentPageMain = res.number; // 0-based
+            this.pageSizeMain = res.size;
             this.totalPagesMain = res.totalPages;
-          } else {
-            this.isLoading = false; // Finalizar carga
-            return;
+            this.totalItemsMain = res.totalElements ?? content.length;
           }
 
-          const newGiftCards = content.map(dto => {
-            dto.giftcard.coverImageOriginal =
-              dto.giftcard.coverImageOriginal ||
-              dto.giftcard.images.cover?.thumbnail ||
-              dto.giftcard.coverImage;
+          // Mapeo de DTO => KinguinGiftCard
+          const newGiftCards = await Promise.all(
+            content.map(async dto => {
+              const gc = dto.giftcard;
+              gc.coverImageOriginal =
+                gc.coverImageOriginal ||
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                (await this.getBestImageUrl(gc));
 
-            dto.giftcard.coverImage =
-              dto.giftcard.images.cover?.thumbnail || '';
+              gc.coverImage =
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                '';
 
-            dto.giftcard.randomDiscount = this.generatePersistentDiscount(dto.giftcard.name);
+              gc.randomDiscount = this.generatePersistentDiscount(gc.name);
+              return gc;
+            })
+          );
 
-            return dto.giftcard;
-          });
-
+          // Asignamos la data
           this.giftCards = newGiftCards;
-          this.totalItems = this.giftCards.length;
-          this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-          this.updateDisplayedGiftCards();
-          this.isLoading = false; // Finalizar la carga
+          // En modo principal, el backend ya nos da la página => se muestra tal cual.
+          this.displayedGiftCards = this.giftCards;
+
+          this.isLoading = false;
         } catch (error) {
           this.showSnackBar('Error al procesar las gift cards principales.');
-          this.isLoading = false; // Finalizar la carga en caso de error
+          this.isLoading = false;
         }
       },
-      (error) => {
+      () => {
         this.showSnackBar('Error al cargar las gift cards principales.');
-        this.isLoading = false; // Finalizar la carga en caso de error
+        this.isLoading = false;
       }
     );
+  }
+
+  onPageChangeMain(event: PageEvent): void {
+    this.currentPageMain = event.pageIndex; // 0-based
+    this.pageSizeMain = event.pageSize;
+    // Pedimos al servidor la página:
+    this.fetchMainGiftCard(this.currentPageMain, this.pageSizeMain);
   }
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
@@ -344,6 +369,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     if (this.giftCardsSubscription) {
       this.giftCardsSubscription.unsubscribe();
     }
+    this.isSearchMode = false;
   }
 
   showSnackBar(message: string): void {
@@ -390,3 +416,4 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.updateDisplayedGiftCards();
   }
 }
+
