@@ -78,7 +78,10 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   ) { }
 
   ngOnInit(): void {
-
+    this.isShearch = this.sharedService.isSearchMode$.subscribe(value => {
+      this.isSearchMode = value;
+      console.log('isSearchMode => ', value);
+    });
 
     if (this.giftCardsInput && this.giftCardsInput.length > 0) {
       this.isLoading = true; // Iniciar carga si hay input
@@ -89,9 +92,10 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
       this.isSearchMode = true;
       this.isLoading = false; // Finalizar carga
     } else {
-      this.isShearch = this.sharedService.isSearchMode$.subscribe( value =>{
+      this.isShearch = this.sharedService.isSearchMode$.subscribe(value => {
         this.isSearchMode = value;
-      })
+        console.log('isSearchMode => ', value);
+      });
 
       this.fetchGiftCards();
     }

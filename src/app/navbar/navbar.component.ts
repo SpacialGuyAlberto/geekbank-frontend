@@ -256,7 +256,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   goToHome() {
     this.uiStateService.setShowHighlights(true);
     this.sharedService.deactivateSearchMode();
-    this.router.navigate(['/home']);
+    window.location.href = '/home';
   }
 
   navigateToPurchaseConfirmation(): void {

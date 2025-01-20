@@ -1,6 +1,6 @@
 // src/app/shared/shared.service.ts
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,11 +9,11 @@ export class SharedService {
   // Crear un Subject para emitir eventos
   private controlSubject = new Subject<string>();
   private selectedTableSubject = new Subject<string>();
-  private isSearchMode = new Subject<boolean>()
+  private isSearchModeBS = new BehaviorSubject<boolean>(false);
 
   controlObservable$ = this.controlSubject.asObservable();
   selectedTable$ = this.selectedTableSubject.asObservable();
-  isSearchMode$ = this.isSearchMode.asObservable();
+  public isSearchMode$ = this.isSearchModeBS.asObservable();
   constructor() { }
 
   // Método para emitir un evento
@@ -25,8 +25,8 @@ export class SharedService {
     this.selectedTableSubject.next(tab)
   }
 
-  deactivateSearchMode(){
-    this.isSearchMode.next(false);
+  deactivateSearchMode() {
+    this.isSearchModeBS.next(false);
   }
 
 }
