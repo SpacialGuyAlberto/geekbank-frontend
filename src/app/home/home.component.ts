@@ -17,6 +17,7 @@ import { GiftCard } from "../models/GiftCard";
 import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
 import {SearchStateService} from "../search-state.service";
+import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.component";
 
 
 @Component({
@@ -33,7 +34,8 @@ import {SearchStateService} from "../search-state.service";
     RecommendationsComponent,
     FiltersComponent,
     BannerComponent,
-    OffersBannerComponent
+    OffersBannerComponent,
+    InferiorFilterComponent
   ]
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {

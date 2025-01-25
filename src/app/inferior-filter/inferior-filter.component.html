@@ -1,0 +1,21 @@
+<div class="platform-grid">
+  <div
+    class="platform-item"
+    *ngFor="let platform of platforms"
+    (click)="goToPlatform(platform.name)"
+  >
+    <!-- Parte superior con fondo y/o icono -->
+    <div class="platform-top">
+      <img
+        *ngIf="platform.icon"
+        class="platform-icon"
+        [src]="platform.icon"
+        [alt]="platform.name"
+      />
+    </div>
+    <!-- Parte inferior con el label -->
+    <div class="platform-bottom">
+      {{ platform.name }}
+    </div>
+  </div>
+</div>
