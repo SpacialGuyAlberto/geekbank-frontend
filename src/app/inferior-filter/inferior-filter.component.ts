@@ -51,7 +51,8 @@ export class InferiorFilterComponent {
     { name: 'PlayStation', icon: 'assets/ps-logo.png' },
     { name: 'Ubisoft', icon: 'assets/ubisoft.png' },
     { name: 'XBOX', icon: 'assets/xbox.png' },
-    { name: 'XBOX 360', icon: 'assets/xbox-360.png' },
+    { name: 'Xbox One', icon: 'assets/xbox.png' },
+    { name: 'Xbox 360', icon: 'assets/xbox-360.png' },
     { name: 'XBOX LIVE Gold Card', icon: 'assets/xbox-live-gold.jpg' },
     // etc...
   ];

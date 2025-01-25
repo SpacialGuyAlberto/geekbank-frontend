@@ -3,7 +3,7 @@
   /* Por defecto, en pantallas grandes (desktop), hacemos tarjetas más anchas */
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
-  margin: 4rem;
+  margin-top: 4rem;
   justify-items: center;
 }
 
@@ -12,6 +12,7 @@
 @media (max-width: 600px) {
   .platform-grid {
     grid-template-columns: repeat(2, 1fr);
+    margin-top: 5rem;
   }
 }
 

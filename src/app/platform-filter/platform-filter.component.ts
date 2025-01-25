@@ -68,7 +68,6 @@ export class PlatformFilterComponent implements OnInit {
    * Carga gift cards filtradas por plataforma con paginación.
    */
   async loadPlatformCards(platform: string, page: number): Promise<void> {
-    // Preparar el objeto de filtros
     const filters: any = {
       platform: platform,
       page: page,
@@ -83,7 +82,7 @@ export class PlatformFilterComponent implements OnInit {
     }
 
     try {
-      // Llamada al servicio con firstValueFrom para usar async/await
+      // Llamada al servicio usando async/await
       const giftCards = await firstValueFrom(
         this.kinguinService.getFilteredGiftCards(filters)
       );
@@ -106,15 +105,13 @@ export class PlatformFilterComponent implements OnInit {
       // Si es primera página, reemplazamos; si no, concatenamos
       if (page === 1) {
         this.searchResults = mappedGiftCards;
-        // Establecer banners SOLO en la carga inicial
+        // Configuramos banners SOLO en la carga inicial
         this.setBannerImages();
       } else {
         this.searchResults = [...this.searchResults, ...mappedGiftCards];
       }
 
-      // Determinar si hay más
-      // Mientras se traiga 'pageSize' elementos, presumimos que hay más
-      // y también limitamos a un total de 'totalLimit'
+      // Determinar si hay más (mientras vengan pageSize elementos, hay más)
       const totalLoaded = this.searchResults.length;
       this.hasMore = totalLoaded < this.totalLimit && giftCards.length === this.pageSize;
 
@@ -146,8 +143,7 @@ export class PlatformFilterComponent implements OnInit {
   }
 
   /**
-   * Obtiene la “mejor” imagen disponible para la gift card.
-   * (Similar a la lógica en filtered-page.component)
+   * Determinar la mejor imagen (mayor resolución) para la gift card.
    */
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
     const imageUrls: string[] = [];
@@ -181,7 +177,7 @@ export class PlatformFilterComponent implements OnInit {
   }
 
   /**
-   * Auxiliar para checar la resolución de una imagen.
+   * Obtiene la resolución de una imagen.
    */
   getImageResolution(url: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
@@ -193,7 +189,7 @@ export class PlatformFilterComponent implements OnInit {
   }
 
   /**
-   * Generar descuento pseudoaleatorio en base al nombre de la tarjeta.
+   * Generar descuento pseudoaleatorio (15% a 40%) a partir del nombre.
    */
   generatePersistentDiscount(cardName: string): number {
     let hash = 0;
@@ -201,13 +197,12 @@ export class PlatformFilterComponent implements OnInit {
       hash = (hash << 5) - hash + cardName.charCodeAt(i);
       hash &= hash;
     }
-    // Devuelve un rango entre 15 y 40.
     return Math.abs(hash % 26) + 15;
   }
 
   /**
-   * Selecciona 2 imágenes aleatorias para los banners superior e inferior.
-   * Se llama solo en la carga inicial (página 1).
+   * Seleccionar 2 imágenes aleatorias para los banners superior e inferior
+   * en la carga inicial (página 1).
    */
   setBannerImages(): void {
     if (this.searchResults.length > 0) {
@@ -225,7 +220,7 @@ export class PlatformFilterComponent implements OnInit {
   }
 
   /**
-   * Navega a la vista de detalles de la gift card seleccionada.
+   * Navegar a la vista de detalles de la gift card seleccionada.
    */
   viewDetails(card: KinguinGiftCard): void {
     this.router.navigate(['/gift-card-details', card.kinguinId])
