@@ -1,0 +1,80 @@
+<div class="offer-details-container">
+  <!-- Banner de fondo superior -->
+  <div
+    class="banner-background top-banner"
+    *ngIf="bannerImageUrl"
+    [ngStyle]="{'background-image': 'url(' + bannerImageUrl + ')'}">
+  </div>
+
+  <!-- Banner de fondo inferior -->
+  <div
+    class="banner-background bottom-banner"
+    *ngIf="bannerImageUrlBottom"
+    [ngStyle]="{'background-image': 'url(' + bannerImageUrlBottom + ')'}">
+  </div>
+
+  <!-- Overlay de carga: aparece si isLoading = true (carga inicial) o isLoadingMore = true (carga adicional) -->
+  <div *ngIf="isLoading || isLoadingMore" class="loading-indicator">
+    <div class="bars">
+      <div class="bar bar1"></div>
+      <div class="bar bar2"></div>
+      <div class="bar bar3"></div>
+      <div class="bar bar4"></div>
+      <div class="bar bar5"></div>
+    </div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <!-- Cuando no hay datos y no hay error -->
+  <div
+    *ngIf="!isLoading && !isLoadingMore && !errorMessage && searchResults.length === 0"
+    class="no-results"
+  >
+    No se encontraron resultados para la plataforma "{{ platformName }}".
+  </div>
+
+  <!-- Lista de Gift Cards -->
+  <div *ngIf="searchResults.length > 0" class="results-container">
+    <div
+      class="result-item"
+      *ngFor="let card of searchResults"
+      (click)="viewDetails(card)"
+    >
+      <img
+        [src]="card.coverImageOriginal"
+        alt="{{ card.name }}"
+        class="card-image"
+      />
+      <div class="card-content">
+        <span class="discount-percentage">
+          {{ card.randomDiscount }}% OFF
+        </span>
+        <h3 class="gift-card-title">{{ card.name }}</h3>
+        <span class="platform">{{ card.platform }}</span>
+        <div class="card-price">
+          <span class="original-price">
+            {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100))
+            | currency:'HNL':'symbol':'1.2-2' }}
+          </span>
+          <span class="discounted-price">
+            {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón "Cargar más" (cuando NO está cargando y hay más por cargar) -->
+  <div class="load-more-container" *ngIf="hasMore && !isLoading && !isLoadingMore">
+    <button class="load-more-button" (click)="loadMore()" [disabled]="isLoadingMore">
+      <ng-container *ngIf="!isLoadingMore">
+        Cargar más
+      </ng-container>
+      <ng-container *ngIf="isLoadingMore">
+        Cargando...
+      </ng-container>
+    </button>
+  </div>
+</div>

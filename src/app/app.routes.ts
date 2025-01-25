@@ -24,6 +24,7 @@ import {CheckoutComponent} from "./checkout/checkout.component";
 import {FilteredPageComponent} from "./filtered-page/filtered-page.component";
 import {TermsAndConditionsComponent} from "./terms-and-conditions/terms-and-conditions.component";
 import {OfferComponent} from "./offer/offer.component";
+import {PlatformFilterComponent} from "./platform-filter/platform-filter.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -50,6 +51,7 @@ export const routes: Routes = [
   { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'wish-list', component: WishlistComponent },
   {path: 'checkout', component: CheckoutComponent },
+  { path: 'platform/:name', component: PlatformFilterComponent },
   { path: 'filtered/:category', component: FilteredPageComponent },
   { path: 'terms', component: TermsAndConditionsComponent},
   {

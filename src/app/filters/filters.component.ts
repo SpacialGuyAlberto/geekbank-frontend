@@ -38,10 +38,65 @@ export class FiltersComponent {
   regions = [
     { id: 1, name: 'Europe' },
     { id: 2, name: 'United States' },
-    // más regiones...
+    { id: 3, name: 'Region free' },
+    { id: 4, name: 'Other' },
+    { id: 5, name: 'Outside Europe' },
+    { id: 6, name: 'RU VPN' },
+    { id: 7, name: 'Russia' },
+    { id: 8, name: 'United Kingdom' },
+    { id: 9, name: 'China' },
+    { id: 10, name: 'RoW (Rest of World)' },
+    { id: 11, name: 'Latin America' },
+    { id: 12, name: 'Asia' },
+    { id: 13, name: 'Germany' },
+    { id: 14, name: 'Australia' },
+    { id: 15, name: 'Brazil' },
+    { id: 16, name: 'India' },
+    { id: 17, name: 'Japan' },
+    { id: 18, name: 'North America' },
+    { id: 45, name: 'Argentina' },
+    { id: 46, name: 'Turkey' }
   ];
+
   operatingSystems = ['Windows', 'Mac', 'Linux'];
-  genres = ['Action', 'Adventure', 'RPG', 'Anime', 'Casual'];
+  genres = [
+    'Action',
+    'Adventure',
+    'Anime',
+    'Casual',
+    'Co-op',
+    'Dating Simulator',
+    'Fighting',
+    'FPS',
+    'Hack and Slash',
+    'Hidden Object',
+    'Horror',
+    'Indie',
+    'Life Simulation',
+    'MMO',
+    'Music / Soundtrack',
+    'Online Courses',
+    'Open World',
+    'Platformer',
+    'Point & click',
+    'PSN Card',
+    'Puzzle',
+    'Racing',
+    'RPG',
+    'Simulation',
+    'Software',
+    'Sport',
+    'Story rich',
+    'Strategy',
+    'Subscription',
+    'Survival',
+    'Third-Person Shooter',
+    'Visual Novel',
+    'VR Games',
+    'XBOX LIVE Gold Card',
+    'XBOX LIVE Points'
+  ];
+
   languages = ['English', 'Spanish', 'German'];
   tags = ['indie valley', 'dlc', 'base', 'software'];
 
