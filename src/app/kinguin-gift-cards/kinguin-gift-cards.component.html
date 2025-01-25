@@ -1,5 +1,5 @@
 <!-- Paginación Angular Material (Superior) -->
-<div class="pagination-container" *ngIf="totalPages > 1">
+<div class="pagination-container" *ngIf="isSearchMode">
   <mat-paginator
     [length]="totalItems"
     [pageSize]="itemsPerPage"
@@ -120,7 +120,7 @@
   >
   </mat-paginator>
 </div>
-<div class="pagination-container" *ngIf="totalPages > 1">
+<div class="pagination-container" *ngIf="isSearchMode && totalPages > 0">
   <mat-paginator
     [length]="totalItems"
     [pageSize]="itemsPerPage"
