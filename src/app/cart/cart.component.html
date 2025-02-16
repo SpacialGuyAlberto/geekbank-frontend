@@ -60,7 +60,6 @@
               <span>TIGO MONEY</span>
             </button>
 
-
             <button
               class="payment-option-button"
               (click)="selectOption('BALANCE')"
@@ -79,7 +78,6 @@
               <i class="fab fa-paypal fa-lg"></i>
               <span>PayPal</span>
             </button>
-
             <!-- Botón para Tarjeta de Crédito -->
             <button
               class="payment-option-button"
@@ -90,7 +88,6 @@
               <span>Card</span>
             </button>
           </div>
-
         </div>
       </ng-container>
 
@@ -98,7 +95,6 @@
       <ng-template #emptyCart>
         <p>Tu carrito está vacío.</p>
       </ng-template>
-
     </div>
 
     <!-- Contenedor Derecho: Información de Pago -->
@@ -118,8 +114,8 @@
       </form>
       <div class="discount-section">
         <label for="discountCode">Código de Descuento:</label>
-        <input type="text" id="discountCode" name="discountCode">
-        <button class="discount-button">Aplicar Descuento</button>
+        <input type="text" id="discountCode" name="discountCode" [(ngModel)]="promoCode">
+        <button class="discount-button" (click)="onApplyDiscount()">Aplicar Descuento</button>
       </div>
 
       <ng-container>

@@ -293,7 +293,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         amount: this.totalAmount ? this.totalAmount : this.totalPrice,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
-        sendKeyToWhatsApp: this.wantsSMSKey
+        sendKeyToWhatsApp: this.wantsSMSKey,
+        promoCode: localStorage.getItem("promoCode")
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
@@ -318,7 +319,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -338,7 +340,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
       }
       if (this.gameUserId !== null) {
@@ -364,8 +367,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -385,7 +388,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalAmount ? this.totalAmount : this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;

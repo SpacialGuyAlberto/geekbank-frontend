@@ -89,7 +89,7 @@ export class CartComponent implements OnInit, OnDestroy {
   wantsEmailKey: boolean = false;
   wantsSMSKey: boolean = false;
   emailForKey: string = '';
-
+  promoCode: string = '';
   userEmail?: string;
   paymentDetails = { phoneNumber: '' };
   guestId?: string | null = '';
@@ -102,9 +102,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private productId: number | null = null;
   orderDetails?: OrderRequest;
   selectedOption: string | null = null;
-
   showCancelledModal: boolean = false;
-
 
   constructor(
     private cartService: CartService,
@@ -220,7 +218,8 @@ export class CartComponent implements OnInit, OnDestroy {
         amount: this.totalHNL,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
-        gameUserId: this.gameUserId || undefined
+        gameUserId: this.gameUserId || undefined,
+        promoCode: this.promoCode
       };
     } else if (this.authService.isAuthenticated() && this.userId !== null) {
       // Caso: Usuario autenticado con userId
@@ -240,7 +239,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       } else {
         // Carrito vacío, usar balance u otro
@@ -258,7 +258,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       }
     } else if (this.guestId) {
@@ -277,7 +278,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       } else {
         orderDetails = {
@@ -293,7 +295,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       }
     } else {
@@ -309,7 +312,6 @@ export class CartComponent implements OnInit, OnDestroy {
     console.log("DETALLES DE ORDEN:", orderDetails);
     this.orderDetails = orderDetails;
 
-    // Dependiendo de la opción seleccionada, mostrar el botón correspondiente:
     if (this.selectedOption === 'paypal') {
       // PayPal: usamos la orden tal cual está
       this.selectedOption = null;
@@ -327,7 +329,6 @@ export class CartComponent implements OnInit, OnDestroy {
       console.log('No se ha seleccionado ninguna opción.');
     }
   }
-
 
   getExchangeRate(): void {
     this.isLoading = true;
@@ -442,8 +443,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest | undefined;
 
-
-
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId ? Number(this.userId) : null,
@@ -459,7 +458,8 @@ export class CartComponent implements OnInit, OnDestroy {
         amount: this.totalPrice,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
-        gameUserId: this.gameUserId || undefined
+        gameUserId: this.gameUserId || undefined,
+        promoCode: this.promoCode
       };
     } else if (this.authService.isAuthenticated() && this.userId !== null) {
       if (this.cartItems && this.cartItems.length > 0) {
@@ -478,7 +478,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       } else {
         orderDetails = {
@@ -495,7 +496,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       }
     }
@@ -514,7 +516,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       } else {
         orderDetails = {
@@ -530,7 +533,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promoCode
         };
       }
     } else {
@@ -540,9 +544,13 @@ export class CartComponent implements OnInit, OnDestroy {
     if (!orderDetails) {
       throw new Error('No se pudo crear el OrderRequest.');
     }
-
     console.log("DETALLES DE ORDEN", orderDetails);
     return orderDetails;
+  }
+
+  onApplyDiscount(){
+    console.log("tu codigo de descuento", this.promoCode);
+    localStorage.setItem("promoCode", this.promoCode);
   }
 
   onPaymentSuccess(transactionNumber: string) {
