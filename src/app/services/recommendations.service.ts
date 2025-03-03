@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import {environment} from "../../environments/environment";
 import {catchError} from "rxjs/operators"; // Ajusta la ruta si es necesario
 

@@ -1,21 +1,21 @@
 // src/app/gift-card-details/gift-card-details.component.ts
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { KinguinService } from "../kinguin.service";
-import { KinguinGiftCard, Screenshot, SystemRequirement } from "../models/KinguinGiftCard";
+import { KinguinService } from "../kinguin-gift-cards/kinguin.service";
+import { KinguinGiftCard, Screenshot, SystemRequirement } from "../kinguin-gift-cards/KinguinGiftCard";
 import { CurrencyPipe, ViewportScroller } from "@angular/common";
 import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
-import { CartService } from '../cart.service';
+import { CartService } from '../cart/cart.service';
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { BackgroundAnimationService } from "../background-animation.service";
-import { CurrencyService } from "../currency.service";
+import { BackgroundAnimationService } from "../services/background-animation.service";
+import { CurrencyService } from "../services/currency.service";
 import { FormsModule, NgForm } from "@angular/forms";
-import { AuthService } from "../auth.service";
+import { AuthService } from "../services/auth.service";
 import { NotificationService } from "../services/notification.service";
 import { FeedbackService } from "../services/feedback.service";
-import { Feedback } from "../models/Feedback";
-import { WishListService } from "../wish-list.service";
+import { Feedback } from "../feedback-list/Feedback";
+import { WishListService } from "../user-details/settings/wishlist/wish-list.service";
 import { HttpClient } from '@angular/common/http';
 import { BannerComponent } from "../banner/banner.component";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
@@ -25,9 +25,9 @@ import { map, switchMap } from "rxjs/operators";
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import { PaymentComponent } from "../payment/payment.component";
-import { WishItemWithGiftcard } from "../models/WishItem";
-import { ActivationDetails } from "../activation-details.service";
-import { ActivationDetailsService } from "../activation-details.service";
+import { WishItemWithGiftcard } from "../user-details/WishItem";
+import { ActivationDetails } from "../activation/activation-details.service";
+import { ActivationDetailsService } from "../activation/activation-details.service";
 
 interface Language {
   name: string;

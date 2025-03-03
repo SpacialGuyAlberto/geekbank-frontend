@@ -1,13 +1,11 @@
-<!-- src/app/components/offer/offer.component.html -->
 <div class="offer-details-container">
-  <!-- Banner de fondo superior -->
+
   <div
     class="banner-background top-banner"
     *ngIf="bannerImageUrl"
     [ngStyle]="{'background-image': 'url(' + bannerImageUrl + ')'}">
   </div>
 
-  <!-- Banner de fondo inferior -->
   <div
     class="banner-background bottom-banner"
     *ngIf="bannerImageUrlBottom"

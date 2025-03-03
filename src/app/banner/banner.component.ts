@@ -1,7 +1,7 @@
 // src/app/banner/banner.component.ts
 import { Component, OnInit } from '@angular/core';
-import {KinguinService} from "../kinguin.service";
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import {CurrencyPipe, NgForOf, NgIf, NgStyle} from "@angular/common";
 import { Router } from '@angular/router';
 

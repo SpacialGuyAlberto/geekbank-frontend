@@ -1,27 +1,27 @@
-// cart.component.ts
+
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import { CartService } from '../cart.service';
+import { CartService } from './cart.service';
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import { CartItemWithGiftcard } from "../models/CartItem";
-import { BackgroundAnimationService } from "../background-animation.service";
-import { CurrencyService } from "../currency.service";
+import { CartItemWithGiftcard } from "./CartItem";
+import { BackgroundAnimationService } from "../services/background-animation.service";
+import { CurrencyService } from "../services/currency.service";
 import { FormsModule } from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
-import { AuthService } from "../auth.service";
+import { AuthService } from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomKeyMostSoldComponent } from "../random-key-most-sold/random-key-most-sold.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { PayPalButtonComponent } from "../paypal-button/paypal-button.component";
-import { Subject, takeUntil } from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
 import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
-import {GuestService} from "../guest.service";
-import {User} from "../models/User";
+import {GuestService} from "../services/guest.service";
+import {User} from "../user-details/User";
 import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
-
+import {PromotionsService} from "../promotions/promotions.service";
 
 @Component({
   selector: 'app-cart',
@@ -76,6 +76,7 @@ export class CartComponent implements OnInit, OnDestroy {
   conversionError: string = '';
   userId: number | null = null;
   user: User | null = null;
+  codeExist: boolean = true;
   showPaypalPaymentModal: boolean = false;
   totalAmountString: string | null = '';
   totalAmountUSD: number | null = 0;
@@ -109,10 +110,11 @@ export class CartComponent implements OnInit, OnDestroy {
     private guestService: GuestService,
     private animation: BackgroundAnimationService,
     private currencyService: CurrencyService,
+    private promotionService: PromotionsService,
     private dialog: MatDialog,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
   ) {}
 
   @HostListener('window:load', ['$event'])
@@ -124,7 +126,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadCartItems();
-    console.log('USER ID : ' + this.userId);
 
     this.cartService.cartItemCount$
       .pipe(takeUntil(this.destroy$))
@@ -184,12 +185,10 @@ export class CartComponent implements OnInit, OnDestroy {
   calculateTotalPriceHNL(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
     this.totalHNL = parseFloat(total.toFixed(2));
-    console.log('TOTAL HNL:' + this.totalHNL)
   }
 
   selectOption(option: string): void {
     this.selectedOption = option;
-    console.log('Opción seleccionada:', option);
   }
 
   continueWithOption(): void {
@@ -201,9 +200,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest | undefined;
 
-    // Lógica para crear orderDetails sin exigir refNumber ni isEmailPromptComplete aún
     if (this.productId !== null) {
-      // Caso: Se tiene productId específico
       orderDetails = {
         userId: this.userId ? Number(this.userId) : null,
         guestId: this.guestId || null,
@@ -222,9 +219,7 @@ export class CartComponent implements OnInit, OnDestroy {
         promoCode: this.promoCode
       };
     } else if (this.authService.isAuthenticated() && this.userId !== null) {
-      // Caso: Usuario autenticado con userId
       if (this.cartItems && this.cartItems.length > 0) {
-        // Carrito con ítems
         orderDetails = {
           userId: this.userId ? Number(this.userId) : null,
           guestId: this.guestId || null,
@@ -243,7 +238,6 @@ export class CartComponent implements OnInit, OnDestroy {
           promoCode: this.promoCode
         };
       } else {
-        // Carrito vacío, usar balance u otro
         orderDetails = {
           userId: this.userId ? Number(this.userId) : null,
           guestId: this.guestId || null,
@@ -263,7 +257,6 @@ export class CartComponent implements OnInit, OnDestroy {
         };
       }
     } else if (this.guestId) {
-      // Caso: Usuario invitado
       if (this.cartItems && this.cartItems.length > 0) {
         orderDetails = {
           guestId: this.guestId,
@@ -309,24 +302,20 @@ export class CartComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log("DETALLES DE ORDEN:", orderDetails);
+    return;
     this.orderDetails = orderDetails;
 
     if (this.selectedOption === 'paypal') {
-      // PayPal: usamos la orden tal cual está
       this.selectedOption = null;
       this.showPayPalButton = true;
     } else if (this.selectedOption === 'card') {
-      // Card: usamos la misma orden
       this.selectedOption = null;
       this.showCardButton = true;
     } else if (this.selectedOption === 'TIGO MONEY') {
-      // Tigo: Aquí NO necesitamos refNumber todavía.
-      // El componente Tigo preguntará por el refNumber y luego actualizará la orden.
       this.selectedOption = null;
       this.showPaymentModal = true;
     } else {
-      console.log('No se ha seleccionado ninguna opción.');
+     return;
     }
   }
 
@@ -336,7 +325,6 @@ export class CartComponent implements OnInit, OnDestroy {
 
     this.currencyService.getExchangeRateEURtoHNL(this.totalPriceEUR).subscribe(
       (rate: number) => {
-        console.log('Exchange Rate (HNL per EUR):', rate);
         this.exchangeRate = rate;
         this.isLoading = false;
         this.snackBar.open('Tasa de cambio obtenida exitosamente.', 'Cerrar', {
@@ -344,7 +332,6 @@ export class CartComponent implements OnInit, OnDestroy {
         });
       },
       (error) => {
-        console.error('Error al obtener la tasa de cambio:', error);
         this.conversionError = 'Error al obtener la tasa de cambio.';
         this.isLoading = false;
         this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
@@ -405,7 +392,7 @@ export class CartComponent implements OnInit, OnDestroy {
       return;
     }
     this.showPaymentModal = true;
-    console.log('Total en HNL:', this.totalPriceEUR * this.exchangeRate);
+    return;
   }
 
   closeDialog(): void {
@@ -544,12 +531,10 @@ export class CartComponent implements OnInit, OnDestroy {
     if (!orderDetails) {
       throw new Error('No se pudo crear el OrderRequest.');
     }
-    console.log("DETALLES DE ORDEN", orderDetails);
     return orderDetails;
   }
 
   onApplyDiscount(){
-    console.log("tu codigo de descuento", this.promoCode);
     localStorage.setItem("promoCode", this.promoCode);
   }
 
@@ -562,17 +547,22 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   handleTransactionCancelled() {
-    // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
     this.showCancelledModal = true;
   }
 
   openTerms(): void {
     this.dialog.open(TermsAndConditionsComponent, {
-      width: '600px', // Puedes ajustar el tamaño según tus necesidades
-      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+      width: '600px',
+      maxHeight: '80vh',
     });
   }
 
+  checkIfCodeExists(code: string): Observable<boolean> {
+     this.promotionService.promotionCodeExist(code).subscribe( value => {
+       this.codeExist = value;
+    })
+    return this.promotionService.promotionCodeExist(code)
+  }
 
   protected readonly Number = Number;
 }

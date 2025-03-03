@@ -5,25 +5,24 @@ import {NavbarComponent} from "./navbar/navbar.component";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {SocialAuthService} from "@abacritt/angularx-social-login";
 import {CommonModule} from "@angular/common";
-import {KinguinGiftCard} from "./models/KinguinGiftCard";
+import {KinguinGiftCard} from "./kinguin-gift-cards/KinguinGiftCard";
 import {KinguinGiftCardsComponent} from "./kinguin-gift-cards/kinguin-gift-cards.component";
 import {NgModel} from "@angular/forms";
-import {TelegramListenerService} from "./telegram-listener.service";
 import {TranslateModule, TranslateService} from "@ngx-translate/core";
 import {FooterComponent} from "./footer/footer.component";
-import { AuthService } from './auth.service';
-import { CartService } from './cart.service';
-import {CartItemWithGiftcard} from "./models/CartItem";
+import { AuthService } from './services/auth.service';
+import { CartService } from './cart/cart.service';
+import {CartItemWithGiftcard} from "./cart/CartItem";
 // import {loadUserDetails} from "./state/auth/auth.actions";
 import {Store} from "@ngrx/store";
-import {User} from "./models/User";
+import {User} from "./user-details/User";
 import {Observable} from "rxjs";
 import {AuthState} from "./state/auth/auth.state";
 import {selectUser} from "./state/user/user.selector";
 import {selectIsAuthenticated} from "./state/auth/auth.selectors";
 import {CookieConsentComponent} from "./cookie-consent/cookie-consent.component";
 import {loadUserFromSession} from "./state/auth/auth.actions";
-import {VisitService} from "./visit.service";
+import {VisitService} from "./admin-panel/visit.service";
 
 @Component({
   standalone: true,

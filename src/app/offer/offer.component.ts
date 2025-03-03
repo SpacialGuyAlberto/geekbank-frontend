@@ -1,8 +1,8 @@
-/* src/app/components/offer/offer.component.ts */
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import {NgForOf, NgIf, CurrencyPipe, NgClass, NgStyle} from '@angular/common';
 import {Router} from "@angular/router";
 @Component({
@@ -17,8 +17,8 @@ export class OfferComponent implements OnInit {
   searchResults: KinguinGiftCard[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
-  bannerImageUrl: string = ''; // Imagen del banner superior
-  bannerImageUrlBottom: string = ''; // Imagen del banner inferior
+  bannerImageUrl: string = '';
+  bannerImageUrlBottom: string = '';
 
   constructor(
     private router: Router,

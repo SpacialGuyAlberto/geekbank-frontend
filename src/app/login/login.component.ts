@@ -15,7 +15,7 @@ import { AppState } from '../app.state';
 import { login } from '../state/auth/auth.actions';
 import { selectIsAuthenticated } from '../state/auth/auth.selectors';
 import {FormsModule} from "@angular/forms";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../services/auth.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({

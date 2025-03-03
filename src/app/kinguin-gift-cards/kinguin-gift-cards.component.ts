@@ -1,25 +1,25 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { KinguinService } from "../kinguin.service";
+import { KinguinGiftCard } from "./KinguinGiftCard";
+import { KinguinService } from "./kinguin.service";
 import { Router } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { HighlightsComponent } from "../highlights/highlights.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
-import { CurrencyService } from "../currency.service";
+import { CurrencyService } from "../services/currency.service";
 import { Subscription } from "rxjs";
-import { UIStateServiceService } from "../uistate-service.service";
-import { AuthService } from "../auth.service";
+import { UIStateServiceService } from "../services/uistate-service.service";
+import { AuthService } from "../services/auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MainScreenGiftCardService } from "../main-screen-gift-card-service.service";
+import { MainScreenGiftCardService } from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
 import { Store } from "@ngrx/store";
 import { loadGiftCards } from "./store/gift-card.actions";
 import { selectAllGiftCards, selectGiftCardsLoading } from "./store/gift-card.selector";
-import { MainScreenGiftCardItemDTO } from "../models/MainScreenGiftCardItem";
+import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SharedService} from "../shared.service";
+import { SharedService} from "../services/shared.service";
 
 
 @Component({

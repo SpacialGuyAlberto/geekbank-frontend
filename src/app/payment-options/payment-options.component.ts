@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Output, OnInit, Input} from '@angular/core';
 import {NgIf} from "@angular/common";
-import { PaymentMethod } from '../models/payment-method.interface';
+import { PaymentMethod } from './payment-method.interface';
 import { OrderDetails } from '../models/order-details.model';
-import { AuthService } from "../auth.service";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: 'app-payment-options',

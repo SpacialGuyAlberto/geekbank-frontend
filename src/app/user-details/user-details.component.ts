@@ -1,13 +1,13 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import { AuthService } from '../auth.service';
-import { User } from '../models/User';
+import { AuthService } from '../services/auth.service';
+import { User } from './User';
 import { CommonModule } from '@angular/common';
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {BackgroundAnimationService} from "../background-animation.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import {BackgroundAnimationService} from "../services/background-animation.service";
 import {AccountInfoComponent} from "./settings/account-info/account-info.component";
 import {OrdersComponent} from "./settings/orders/orders.component";
 import {PaymentMethodsComponent} from "./settings/payment-methods/payment-methods.component";
-import {AdminPanelComponent} from "./admin-panel/admin-panel.component";
+import {AdminPanelComponent} from "../admin-panel/admin-panel.component";
 import {Router, RouterOutlet} from "@angular/router";
 import {ChangePasswordComponent} from "./settings/account-info/change-password/change-password.component";
 

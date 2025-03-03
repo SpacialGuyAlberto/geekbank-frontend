@@ -25,7 +25,7 @@ export class OffersBannerComponent implements OnInit {
     {
       imageUrl: 'https://storage.googleapis.com/api-ecommerce/minecraft_cover_original.jpg',
       title: 'Minecraft',
-      link: '/free-fire-details'
+      link: '/#'
     },
     {
       imageUrl: 'https://m.media-amazon.com/images/M/MV5BZmQwMjQ2ZTUtZmM5MC00MTdkLWIxYzgtODU1NzQ4Zjg4NmMxXkEyXkFqcGc@._V1_.jpg',
@@ -52,7 +52,6 @@ export class OffersBannerComponent implements OnInit {
       title: 'devil may cry',
       link: '#'
     },
-
   ];
 
   isModalOpen: boolean = false;

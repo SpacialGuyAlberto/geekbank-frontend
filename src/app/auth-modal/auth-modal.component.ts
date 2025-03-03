@@ -1,10 +1,10 @@
 // src/app/auth-modal/auth-modal.component.ts
 
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import {FormsModule} from "@angular/forms";
 import {NgIf} from "@angular/common";
-import {Account, User} from "../models/User";
+import {Account, User} from "../user-details/User";
 
 
 @Component({

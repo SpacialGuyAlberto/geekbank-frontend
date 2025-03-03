@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Injector, Input, OnInit, Output, StaticProvider} from '@angular/core';
-import { PaymentService } from "../payment.service";
+import { PaymentService } from "../payment-options/payment.service";
 import { TigoPaymentComponent } from '../tigo-payment/tigo-payment.component';
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { NgComponentOutlet, NgIf } from "@angular/common";
 import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE, IS_MANUAL_TRANSACTION} from "./payment.token";
-import {TigoService} from "../tigo.service";
-import {TigoPaymentService} from "../tigo-payment.service";
+import {TigoService} from "../tigo-payment/tigo.service";
+import {TigoPaymentService} from "../tigo-payment/tigo-payment.service";
 import {BalancePaymentComponent} from "../balance-payment/balance-payment.component";
 
 @Component({

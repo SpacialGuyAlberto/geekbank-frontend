@@ -1,11 +1,11 @@
 import {Component, OnInit, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
 import { loadScript, PayPalNamespace } from '@paypal/paypal-js';
-import { PayPalService } from '../pay-pal.service';
-import {TransactionsService} from "../transactions.service";
-import { OrderService } from '../order.service';
+import { PayPalService } from '../payment-options/pay-pal.service';
+import {TransactionsService} from "../transactions/transactions.service";
+import { OrderService } from '../services/order.service';
 import { OrderRequest } from '../models/order-request.model';
 import {firstValueFrom, Subscription} from 'rxjs';
-import {WebSocketService} from "../web-socket.service";
+import {WebSocketService} from "../services/web-socket.service";
 
 @Component({
   selector: 'app-paypal-button',

@@ -4,13 +4,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgIf, NgForOf, CurrencyPipe, DatePipe, NgClass } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 
-import { Transaction, TransactionProduct } from '../models/transaction.model';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { Transaction, TransactionProduct } from '../transactions/transaction.model';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 
-import { TransactionsService } from '../transactions.service';
+import { TransactionsService } from '../transactions/transactions.service';
 import { RecommendationsService } from '../services/recommendations.service';
-import { AuthService } from '../auth.service';
-import { KinguinService } from '../kinguin.service';
+import { AuthService } from '../services/auth.service';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { FormsModule } from "@angular/forms";
 
 @Component({

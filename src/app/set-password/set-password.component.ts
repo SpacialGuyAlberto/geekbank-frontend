@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from "../auth.service";
+import { AuthService } from "../services/auth.service";
 import {NgClass, NgIf} from "@angular/common";
-import { UserService } from "../user.service";
+import { UserService } from "../user-details/user.service";
 import {HttpResponse} from "@angular/common/http";
 
 @Component({

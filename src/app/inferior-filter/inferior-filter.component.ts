@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { Router } from '@angular/router';
 
 @Component({

@@ -1,22 +1,22 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HomeService } from "../home.service";
+import { HomeService } from "./home.service";
 import { FreeFireGiftCardComponent } from "../free-fire-gift-card/free-fire-gift-card.component";
 import { KinguinGiftCardsComponent } from "../kinguin-gift-cards/kinguin-gift-cards.component";
 import { NgModel } from "@angular/forms";
 import { HighlightsComponent } from '../highlights/highlights.component';
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
-import { BackgroundAnimationService } from "../background-animation.service";
-import { UIStateServiceService } from "../uistate-service.service";
+import { BackgroundAnimationService } from "../services/background-animation.service";
+import { UIStateServiceService } from "../services/uistate-service.service";
 import { Subscription } from "rxjs";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { KinguinService } from '../kinguin.service';
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { GiftCard } from "../models/GiftCard";
 import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
-import {SearchStateService} from "../search-state.service";
+import {SearchStateService} from "../services/search-state.service";
 import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.component";
 
 

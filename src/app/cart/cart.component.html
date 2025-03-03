@@ -1,19 +1,13 @@
 <!-- src/app/cart/cart.component.html -->
-
-<!-- Contenedor para la animación de fondo -->
 <div class="graph-container">
-  <canvas id="graphCanvas"></canvas> <!-- Canvas para el fondo animado -->
+  <canvas id="graphCanvas"></canvas>
 </div>
 
-<!-- Contenedor Principal del Carrito -->
 <div class="cart-container">
-  <h2>Shopping Cart</h2>
+  <h2>Carrito de compras</h2>
   <div class="cart-content">
 
-    <!-- Sección de Ítems del Carrito -->
     <div class="cart-items">
-
-      <!-- Verificar si hay ítems en el carrito -->
       <ng-container *ngIf="cartItems.length > 0; else emptyCart">
         <ul>
           <li *ngFor="let item of cartItems" class="cart-item">
@@ -33,24 +27,18 @@
           </li>
         </ul>
 
-        <!-- Sección de Precio Total y Opciones de Pago -->
-
         <div class="total-price-section">
           <h3>Total Price: {{ totalHNL | number:'1.2-2' }} HNL</h3>
 
-          <!-- Indicador de Carga para la Tasa de Cambio -->
           <div *ngIf="isLoading">
             <p>Cargando tasa de cambio...</p>
-            <!-- Puedes reemplazar esto con un spinner gráfico -->
           </div>
 
-          <!-- Mensaje de Error en la Conversión -->
           <div *ngIf="conversionError">
             <p class="error">{{ conversionError }}</p>
           </div>
 
           <div class="payment-options">
-            <!-- Botón para Tigo Money -->
             <button
               class="payment-option-button"
               (click)="selectOption('TIGO MONEY')"
@@ -69,7 +57,6 @@
               <span>Balance</span>
             </button>
 
-            <!-- Botón para PayPal -->
             <button
               class="payment-option-button"
               (click)="selectOption('paypal')"
@@ -78,7 +65,6 @@
               <i class="fab fa-paypal fa-lg"></i>
               <span>PayPal</span>
             </button>
-            <!-- Botón para Tarjeta de Crédito -->
             <button
               class="payment-option-button"
               (click)="selectOption('card')"
@@ -91,13 +77,11 @@
         </div>
       </ng-container>
 
-      <!-- Plantilla para Carrito Vacío -->
       <ng-template #emptyCart>
         <p>Tu carrito está vacío.</p>
       </ng-template>
     </div>
 
-    <!-- Contenedor Derecho: Información de Pago -->
     <div class="payment-info">
       <h3>Información de Pago</h3>
       <form>
@@ -115,7 +99,12 @@
       <div class="discount-section">
         <label for="discountCode">Código de Descuento:</label>
         <input type="text" id="discountCode" name="discountCode" [(ngModel)]="promoCode">
-        <button class="discount-button" (click)="onApplyDiscount()">Aplicar Descuento</button>
+        <button class="discount-button" (click)="checkIfCodeExists(promoCode)">Aplicar Descuento</button>
+        <div *ngIf="!codeExist" >
+          <p
+            class="error-message"
+          >Codigo  de descuento no existe</p>
+        </div>
       </div>
 
       <ng-container>
@@ -148,7 +137,7 @@
         </div>
 
       </ng-container>
-      <!-- Texto de Aceptación de Términos y Condiciones -->
+
       <p class="terms-text">
         Al hacer clic en "Continuar con el pago" reconozco que he leído y aceptado los
         <li (click)="openTerms()" sytel="cursor: pointer;"><a target="_blank">Terminos y condiciones de Astralisbank.com</a></li>
@@ -157,13 +146,12 @@
   </div>
 </div>
 
-<!-- Sección de Productos Relacionados -->
 <div class="related-products-container">
   <h2 class="related-products-title">También te pueden interesar</h2>
   <app-recommendations></app-recommendations>
 </div>
 
-<!-- Diálogo de Notificación -->
+
 <div *ngIf="showDialog" class="dialog-overlay">
   <div class="dialog">
     <p>No more items in the cart.</p>

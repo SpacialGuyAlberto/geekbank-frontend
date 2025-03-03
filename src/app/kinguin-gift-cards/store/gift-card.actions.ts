@@ -1,6 +1,6 @@
 // src/app/features/gift-card/store/gift-card.actions.ts
 import { createAction, props } from '@ngrx/store';
-import {KinguinGiftCard} from "../../models/KinguinGiftCard";
+import {KinguinGiftCard} from "../KinguinGiftCard";
 
 // Cargar Gift Cards
 export const loadGiftCards = createAction('[GiftCard] Load GiftCards');

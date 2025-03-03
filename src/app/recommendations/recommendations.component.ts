@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {CurrencyPipe, NgClass, NgForOf, NgOptimizedImage} from "@angular/common";
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import {RecommendationsService} from "../services/recommendations.service";
 import {NavigationEnd, Router} from "@angular/router";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../services/auth.service";
 import {filter} from "rxjs/operators";
 
 

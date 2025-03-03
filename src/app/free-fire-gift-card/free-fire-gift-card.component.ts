@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {FreeFireGiftCardService} from "../free-fire-gift-card.service";
+import {FreeFireGiftCardService} from "../services/free-fire-gift-card.service";
 import {GiftCard} from "../models/GiftCard";
 import {CurrencyPipe, CommonModule} from "@angular/common";
 import {FreeFireDetailsComponent} from "../free-fire-details/free-fire-details.component";

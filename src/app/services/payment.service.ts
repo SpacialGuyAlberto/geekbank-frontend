@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CreatePaymentResponse, CapturePaymentResponse } from '../models/payment.models';
+import { CreatePaymentResponse, CapturePaymentResponse } from '../payment-options/payment.models';
 import { environment } from '../../environments/environment';
-import {PaymentMethod} from "../models/payment-method.interface";
+import {PaymentMethod} from "../payment-options/payment-method.interface";
 import { OrderDetails } from '../models/order-details.model';
 
 @Injectable({

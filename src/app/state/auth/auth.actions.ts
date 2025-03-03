@@ -1,6 +1,6 @@
 // src/app/state/auth/auth.actions.ts
 import { createAction, props } from '@ngrx/store';
-import { User } from '../../models/User';
+import { User } from '../../user-details/User';
 
 // Login Actions
 export const login = createAction(

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {KinguinService} from "../kinguin.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import { CurrencyPipe, CommonModule, NgForOf, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";

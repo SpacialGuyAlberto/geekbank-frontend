@@ -3,11 +3,11 @@ import { FormsModule } from '@angular/forms';
 import {HttpClientModule, HttpResponse} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { AuthService } from '../auth.service';
-import {BackgroundAnimationService} from "../background-animation.service";
+import { AuthService } from '../services/auth.service';
+import {BackgroundAnimationService} from "../services/background-animation.service";
 import {After} from "node:v8";
 import {response} from "express";
-import {UserService} from "../user.service";
+import {UserService} from "../user-details/user.service";
 import {user} from "@angular/fire/auth";
 
 @Component({

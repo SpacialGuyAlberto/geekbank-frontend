@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FreeFireProductService } from "../free-fire-product.service";
+import { FreeFireProductService } from "../services/free-fire-product.service";
 import { FreeFireDiamondProduct } from "../models/free-fire-diamond-product.interface";
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import {CartService} from "../cart.service";
+import {CartService} from "../cart/cart.service";
 import {PaymentComponent} from "../payment/payment.component";
 
 

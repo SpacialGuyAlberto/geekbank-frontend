@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { KinguinGiftCard } from '../../models/KinguinGiftCard';
+import { KinguinGiftCard } from '../../kinguin-gift-cards/KinguinGiftCard';
 
 export const addCartItem = createAction(
   '[Cart] Add Cart Item',

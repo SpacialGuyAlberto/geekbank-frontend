@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForOf, NgOptimizedImage } from "@angular/common";
-import { HighlightItemWithGiftcard } from "../models/HighlightItem";
-import { HighlightService } from "../highlights.service";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { HighlightItemWithGiftcard } from "../highlights-config/HighlightItem";
+import { HighlightService } from "../highlights-config/highlights.service";
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { Router } from '@angular/router';
 import { firstValueFrom } from "rxjs";
 

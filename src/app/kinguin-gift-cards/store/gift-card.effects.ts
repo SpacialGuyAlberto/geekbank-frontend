@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as GiftCardActions from './gift-card.actions';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import {KinguinService} from "../../kinguin.service";
+import {KinguinService} from "../kinguin.service";
 
 @Injectable()
 export class GiftCardEffects {

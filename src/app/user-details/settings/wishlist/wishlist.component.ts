@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CurrencyPipe, NgForOf, NgIf } from "@angular/common";
-import { KinguinGiftCard } from "../../../models/KinguinGiftCard";
-import { WishListService } from "../../../wish-list.service";
-import { WishItemWithGiftcard } from "../../../models/WishItem";
+import { KinguinGiftCard } from "../../../kinguin-gift-cards/KinguinGiftCard";
+import { WishListService } from "./wish-list.service";
+import { WishItemWithGiftcard } from "../../WishItem";
 import {MatIcon} from "@angular/material/icon";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import {NotificationService} from "../../../services/notification.service";

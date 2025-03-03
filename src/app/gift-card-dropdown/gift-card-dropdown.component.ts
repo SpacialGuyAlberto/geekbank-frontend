@@ -1,6 +1,6 @@
 // src/app/components/gift-card-dropdown/gift-card-dropdown.component.ts
 import { Component, Input } from '@angular/core';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { CurrencyPipe, NgForOf } from '@angular/common';
 
 @Component({

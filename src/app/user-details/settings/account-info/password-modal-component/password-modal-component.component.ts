@@ -3,9 +3,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from "@angular/common";
-import { UserService } from "../../../../user.service";
-import { AuthService } from "../../../../auth.service";
-import { User } from "../../../../models/User";
+import { UserService } from "../../../user.service";
+import { AuthService } from "../../../../services/auth.service";
+import { User } from "../../../User";
 import { DetailsBody } from "../account-info.component";
 import {NotificationService} from "../../../../services/notification.service";
 import {MatSnackBarModule, MatSnackBar} from "@angular/material/snack-bar";
