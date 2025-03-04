@@ -69,14 +69,11 @@ export class OfferComponent implements OnInit {
 
   setBannerImages(): void {
     if (this.searchResults.length > 0) {
-      // Seleccionar una imagen aleatoria para el banner superior
       const randomIndexTop = Math.floor(Math.random() * this.searchResults.length);
       this.bannerImageUrl = this.searchResults[randomIndexTop].coverImageOriginal;
 
-      // Seleccionar otra imagen aleatoria para el banner inferior
       let randomIndexBottom = Math.floor(Math.random() * this.searchResults.length);
 
-      // Asegurarse de que las imágenes superior e inferior no sean la misma
       while (randomIndexBottom === randomIndexTop && this.searchResults.length > 1) {
         randomIndexBottom = Math.floor(Math.random() * this.searchResults.length);
       }

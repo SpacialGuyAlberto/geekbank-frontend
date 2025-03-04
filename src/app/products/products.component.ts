@@ -74,9 +74,8 @@ export class ProductsComponent implements OnInit {
       const dx = event.clientX - this.startX;
       const newWidth = this.startWidth + dx;
 
-      // Establecer límites de ancho
-      const minWidth = 200; // mínimo en píxeles
-      const maxWidth = 600; // máximo en píxeles
+      const minWidth = 200;
+      const maxWidth = 600;
 
       if (newWidth > minWidth && newWidth < maxWidth) {
         this.renderer.setStyle(this.productsList.nativeElement, 'flex', `0 0 ${newWidth}px`);
@@ -88,7 +87,6 @@ export class ProductsComponent implements OnInit {
   onMouseUp() {
     if (this.dragging) {
       this.dragging = false;
-      // Restaurar el cursor
       this.renderer.setStyle(document.body, 'cursor', 'default');
     }
   }
@@ -130,34 +128,20 @@ export class ProductsComponent implements OnInit {
 
   addProduct() {
     this.createNewProduct = true;
-    // Implementa la lógica para añadir un nuevo producto si es necesario.
   }
 
-  // -------------------------------------------------------------------
-  // Manejo de la tarjeta seleccionada y sus Activation Details
-  // -------------------------------------------------------------------
-
-  /**
-   * Muestra u oculta los detalles del producto.
-   * Además, podemos cargar los Activation Details desde el backend si existen.
-   */
   toggleProductDetails(product: KinguinGiftCard) {
     if (product === this.selectedProduct) {
-      // Si está abierto, lo cerramos
+
       this.selectedProduct = undefined;
     } else {
-      // Cargamos detalles de activación para este kinguinId (product.id, product.productId, etc.).
       this.selectedProduct = product;
-
-      // Cargar los detalles de activación
       this.activationDetailsService.getDetails(product.kinguinId).subscribe({
         next: (details: ActivationDetails) => {
-          // Guardamos los valores para mostrarlos en inputs
           this.activationVideoUrl = details.videoUrl || '';
           this.activationTextDetails = details.textDetails || '';
         },
         error: (err) => {
-          // 404 o no existe => no pasa nada, dejamos vacíos los campos
           this.activationVideoUrl = '';
           this.activationTextDetails = '';
         }
@@ -182,7 +166,6 @@ export class ProductsComponent implements OnInit {
         this.snackBar.open('Detalles de activacion guardados con exito.', 'Cerrar', {
           duration: 3000,
         });
-        // Opcional: actualizar los detalles mostrados si es necesario
       },
       error: (err) => {
         this.snackBar.open('Ocurrio un error al guardar los detalles de activacion.', 'Cerrar', {
@@ -220,9 +203,6 @@ export class ProductsComponent implements OnInit {
     this.selectedProduct = undefined;
   }
 
-  // -------------------------------------------------------------------
-  // Paginación
-  // -------------------------------------------------------------------
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;

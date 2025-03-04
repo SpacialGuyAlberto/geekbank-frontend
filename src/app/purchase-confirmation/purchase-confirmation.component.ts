@@ -21,25 +21,18 @@ import { FormsModule } from "@angular/forms";
   styleUrls: ['./purchase-confirmation.component.css']
 })
 export class PurchaseConfirmationComponent implements OnInit {
-  // Estados de carga y errores
+
   isLoading = false;
   errorMessage = '';
 
-  // Número de transacción ingresado o recibido
   transactionNumber = '';
 
-  // Transacción reciente
   recentTransaction: Transaction | null = null;
-
-  // Paginación
   currentPage = 1;
   pageSize = 10;
   totalPages = 1;
 
-  // Recomendaciones
   recommendedGiftCards: KinguinGiftCard[] = [];
-
-  // Modal de keys
   showKeysModal = false;
 
   constructor(
@@ -52,7 +45,6 @@ export class PurchaseConfirmationComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Verificar si hay transactionNumber en queryParams
     this.route.queryParams.subscribe(params => {
       const qParam = params['transactionNumber'];
       if (qParam) {
@@ -60,20 +52,16 @@ export class PurchaseConfirmationComponent implements OnInit {
         this.fetchTransactionByNumber(qParam);
       }
     });
-
-    // Cargar recomendaciones
     const userId = this.getCurrentUserId();
     this.fetchRecommendations(userId);
   }
 
-  // Método para manejar la búsqueda de transacción
   handleTransactionSearch(): void {
     if (this.transactionNumber.trim()) {
       this.fetchTransactionByNumber(this.transactionNumber);
     }
   }
 
-  // Obtener la transacción por número
   fetchTransactionByNumber(transactionNumber: string): void {
     this.isLoading = true;
     this.errorMessage = '';
@@ -87,7 +75,6 @@ export class PurchaseConfirmationComponent implements OnInit {
           return;
         }
 
-        // Procesar la transacción
         this.recentTransaction = transaction;
 
         // Cargar imágenes de productos
@@ -107,7 +94,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     });
   }
 
-  // Obtener la imagen del producto
   async fetchProductPicture(productId: number): Promise<string> {
     try {
       const card = await firstValueFrom(this.kinguinService.getGiftCardDetails(productId.toString()));
@@ -119,7 +105,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     }
   }
 
-  // Paginación
   getPageNumbers(): number[] {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
@@ -127,7 +112,6 @@ export class PurchaseConfirmationComponent implements OnInit {
   goToPage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    // Adaptar si tuvieras un arreglo de múltiples transacciones
   }
 
   previousPage(): void {
@@ -142,7 +126,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     }
   }
 
-  // Recomendaciones
   fetchRecommendations(userId: number): void {
     if (this.authService.isLoggedIn()) {
       this.recommendationsService.getRecommendationsByUser(userId).subscribe({
@@ -155,7 +138,7 @@ export class PurchaseConfirmationComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al obtener recomendaciones:', err);
-          this.loadPopularRecommendations(); // Fallback
+          this.loadPopularRecommendations();
         }
       });
     } else {
@@ -183,7 +166,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     this.router.navigate(['/gift-card-details', card.kinguinId]);
   }
 
-  // Abrir/Cerrar Modal de Keys
   openKeysModal(): void {
     this.showKeysModal = true;
   }
@@ -192,7 +174,6 @@ export class PurchaseConfirmationComponent implements OnInit {
     this.showKeysModal = false;
   }
 
-  // Obtener userId (ejemplo)
   getCurrentUserId(): number {
     const userIdStr = sessionStorage.getItem('userId');
     if (userIdStr) {
@@ -201,6 +182,6 @@ export class PurchaseConfirmationComponent implements OnInit {
         return userId;
       }
     }
-    return 1; // Valor por defecto
+    return 1;
   }
 }

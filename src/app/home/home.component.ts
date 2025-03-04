@@ -38,7 +38,7 @@ import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.compon
     InferiorFilterComponent
   ]
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   showFreeFireComponent: boolean = false;
 
   username: string = '';
@@ -53,10 +53,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   searchQuery: string = '';
   searchResults: KinguinGiftCard[] = [];
 
-  // Propiedades para manejar los resultados filtrados
   filteredGiftCards: KinguinGiftCard[] = [];
   hasFilteredResults: boolean = false;
-  currentGiftCards: KinguinGiftCard[] | null = null; // Nueva propiedad
+  currentGiftCards: KinguinGiftCard[] | null = null;
   private searchSubscription!: Subscription;
 
   constructor(
@@ -93,10 +92,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
-    // Implementa cualquier lógica adicional después de la inicialización de la vista
-  }
-
   toggleFilter() {
     this.isFilterVisible = !this.isFilterVisible;
   }
@@ -123,7 +118,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isFilterVisible = true;
   }
 
-  // Cierra el modal de filtros
   isLoading: boolean = false;
   closeFilterModal() {
     this.isFilterVisible = false;
@@ -147,10 +141,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filteredGiftCards = [];
     this.hasFilteredResults = false;
     this.currentGiftCards = null;
-    this.showHighlightsAndRecommendations = true; // Opcional: Mostrar de nuevo los destacados
+    this.showHighlightsAndRecommendations = true;
     console.log('Filters reset.');
   }
-
 
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
@@ -162,15 +155,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       ) {
         this.showFreeFireComponent = true;
         this.showHighlightsAndRecommendations = false;
-        // En caso de Free Fire, dejamos currentGiftCards vacío (o null),
-        // ya que mostrarás <app-free-fire-gift-card>
         this.currentGiftCards = [];
       } else {
         this.showFreeFireComponent = false;
         this.kinguinService.searchGiftCards(this.searchQuery)
           .subscribe((data: KinguinGiftCard[]) => {
             this.searchResults = data;
-            // Para que se muestren en <app-kinguin-gift-cards>
             this.currentGiftCards = data;
             this.showHighlightsAndRecommendations = false;
           });

@@ -50,7 +50,6 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
   }
 
   loadGiftCards(): void {
-    // Cargar gift cards sin filtrar o con filtros predeterminados
     this.kinguinService.getFilteredGiftCards(this.defaultFilters).subscribe(
       (giftCards) => {
         this.giftCards = giftCards.map(card => ({

@@ -1,4 +1,3 @@
-// Importar la interfaz KinguinGiftCard que ya tienes
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 
 export interface CartItem {

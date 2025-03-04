@@ -35,6 +35,4 @@ export class FreeFireGiftCardComponent implements OnInit{
     this.showDetails = true;
     this.router.navigate(['/free-fire-details'])
   }
-
-
 }

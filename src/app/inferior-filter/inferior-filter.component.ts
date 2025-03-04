@@ -75,7 +75,6 @@ export class InferiorFilterComponent {
 
 
   goToPlatform(platformName: string): void {
-    // Navega a la ruta '/platform/platformName'
     this.router.navigate(['/platform', platformName])
       .then(success => {
         if (!success) {

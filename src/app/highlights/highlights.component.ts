@@ -47,7 +47,7 @@ export class HighlightsComponent implements OnInit {
       for (const item of data) {
         const giftcard = item.giftcard;
 
-        // Obtener todas las URLs de imágenes disponibles
+
         const imageUrls: string[] = [];
         if (giftcard.coverImageOriginal) {
           imageUrls.push(giftcard.coverImageOriginal);
@@ -59,10 +59,8 @@ export class HighlightsComponent implements OnInit {
           imageUrls.push(...giftcard.screenshots.map(screenshot => screenshot.url));
         }
 
-        // Eliminar duplicados
         const uniqueImageUrls = Array.from(new Set(imageUrls));
 
-        // Cargar todas las imágenes y obtener sus resoluciones
         const imagePromises = uniqueImageUrls.map(url =>
           this.getImageResolution(url)
             .then(res => ({ url, resolution: res.width * res.height }))
@@ -74,7 +72,7 @@ export class HighlightsComponent implements OnInit {
 
         const results = await Promise.all(imagePromises);
 
-        // Filtrar imágenes válidas y ordenar por resolución descendente
+
         const validImages = results
           .filter(img => img.resolution > 0)
           .sort((a, b) => b.resolution - a.resolution);

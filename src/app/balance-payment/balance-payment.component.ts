@@ -72,7 +72,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-
   handlePurchase(): void {
 
     if (!this.userId) {
@@ -124,7 +123,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
             tempPin: response.tempPin,
           },
         });
-
       },
       error: (err) => {
         console.error('Error during purchase:', err);
@@ -138,7 +136,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
     this.isCancelling = true;
     this.showSpinner = true;
 
-    // Cancelar lógica aquí si es necesario
     setTimeout(() => {
       this.isCancelling = false;
       this.showSpinner = false;

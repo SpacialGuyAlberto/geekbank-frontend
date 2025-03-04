@@ -20,7 +20,6 @@ import {Chart} from "chart.js";
 })
 export class EmployeeDashboardComponent implements AfterViewInit {
 
-  // Información personal básica
   employee = {
     name: 'Luis Alberto',
     position: 'Desarrollador de Software',
@@ -28,24 +27,21 @@ export class EmployeeDashboardComponent implements AfterViewInit {
     status: 'Activo'
   };
 
-  // Ganancias
   earnings = {
-    baseSalary: 50000, // Salario base anual
+    baseSalary: 50000,
     bonuses: 5000,
     commissions: 2000,
-    totalEarned: 58000, // Total ganado
-    totalWithdrawn: 10000, // Total retirado hasta la fecha
-    availableToWithdraw: 48000 // Ganancias disponibles para retirar
+    totalEarned: 58000,
+    totalWithdrawn: 10000,
+    availableToWithdraw: 48000
   };
 
-  // Historial de retiros
   withdrawalHistory: Array<{ date: Date, amount: number }> = [
     { date: new Date('2023-09-15'), amount: 2000 },
     { date: new Date('2023-08-20'), amount: 1500 },
     { date: new Date('2023-07-10'), amount: 1800 },
   ];
 
-  // Monto del retiro que el usuario desea hacer
   withdrawalAmount = 0;
 
   selectedChart: string = 'monthlyEarnings';
@@ -57,21 +53,20 @@ export class EmployeeDashboardComponent implements AfterViewInit {
     this.createWithdrawalHistoryChart();
   }
 
-  // Método para realizar un retiro
+
   withdraw() {
     if (this.withdrawalAmount <= 0 || this.withdrawalAmount > this.earnings.availableToWithdraw) {
       alert('Por favor, introduce un monto válido para retirar.');
       return;
     }
 
-    // Lógica para realizar el retiro a través de PayPal
+
     alert(`Has retirado $${this.withdrawalAmount} a tu cuenta de PayPal.`);
 
-    // Actualizar las ganancias disponibles
+
     this.earnings.availableToWithdraw -= this.withdrawalAmount;
     this.earnings.totalWithdrawn += this.withdrawalAmount;
 
-    // Agregar el retiro al historial
     this.withdrawalHistory.unshift({
       date: new Date(),
       amount: this.withdrawalAmount

@@ -54,7 +54,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   constructor(private authService: AuthService, private userService: UserService) { }
 
   ngOnInit(): void {
-    // Inicialización si es necesario
+
   }
 
   ngAfterViewInit(): void {
@@ -87,11 +87,9 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, speed);
   }
 
-  // Envío del formulario
   onSubmit() {
     this.submitted = true;
 
-    // Validar la contraseña
     if (!this.isPasswordValid()) {
       this.message = 'La contraseña debe tener al menos 6 caracteres';
       this.messageClass = 'error-message';
@@ -99,7 +97,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    // Validar que las contraseñas coincidan
     if (this.password !== this.confirmPassword) {
       this.message = 'Las contraseñas no coinciden';
       this.messageClass = 'error-message';
@@ -109,7 +106,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.message = 'Registrando usuario, por favor espera...';
     this.messageClass = 'info-message';
 
-    // Intentar registrar
     this.authService.register(this.email, this.password, this.name).subscribe({
       next: (response: HttpResponse<any>) => {
         setTimeout(() => {
@@ -133,7 +129,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
       },
     });
   }
-  // Manejo de pasos del formulario
+
   nextStep() {
     if (this.currentStep === 1) {
       if (!this.name || this.name.trim().length === 0) {
@@ -176,7 +172,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Paso anterior
   previousStep() {
     if (this.currentStep > 1) {
       this.currentStep--;
@@ -199,7 +194,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
         this.emailValid = false;
         this.message = '';
         this.messageClass = '';
-        this.userExists = false; // Resetear si el email está vacío
+        this.userExists = false;
       }
     }, 700);
   }
@@ -221,7 +216,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, 2000);
   }
 
-  // Validaciones de confirmación de contraseña
   onConfirmPasswordKeyUp() {
     clearTimeout(this.passwordTypingTimeout);
     this.passwordTypingTimeout = setTimeout(() => {
@@ -244,7 +238,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }, 700);
   }
 
-  // Eventos de blur
   onPasswordBlur() {
     this.passwordTouched = true;
   }
@@ -254,7 +247,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     this.checkPasswordsMatch();
   }
 
-  // Cálculo de la fortaleza de la contraseña
   calculatePasswordStrength() {
     const password = this.password;
     let strength = 0;
@@ -276,7 +268,6 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Validaciones auxiliares
   isEmailValid(): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     this.emailValid = emailRegex.test(this.email);

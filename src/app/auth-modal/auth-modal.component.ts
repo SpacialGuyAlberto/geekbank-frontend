@@ -1,5 +1,3 @@
-// src/app/auth-modal/auth-modal.component.ts
-
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import {FormsModule} from "@angular/forms";
@@ -69,23 +67,6 @@ export class AuthModalComponent {
     });
   }
 
-
-  // onRegister(): void {
-  //   if (this.registerData.password !== this.registerData.confirmPassword) {
-  //     this.registerError = 'Las contraseñas no coinciden.';
-  //     return;
-  //   }
-  //
-  //   this.authService.register(this.registerData).subscribe({
-  //     next: () => {
-  //       this.authenticated.emit();
-  //       this.onClose();
-  //     },
-  //     error: (err) => {
-  //       this.registerError = err.error?.message || 'Error al crear la cuenta. Por favor, inténtelo nuevamente.';
-  //     }
-  //   });
-  // }
   onRegister() {
     console.log("registering");
   }

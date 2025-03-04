@@ -1,4 +1,4 @@
-// src/app/gift-card-details/gift-card-details.component.ts
+
 import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { KinguinService } from "../kinguin-gift-cards/kinguin.service";
@@ -57,7 +57,7 @@ interface Language {
 })
 export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
 
-  displayedActivationDetails: string = ''; // Nueva variable
+  displayedActivationDetails: string = '';
   suggestionLoading: boolean = false;
   giftCard: KinguinGiftCard | undefined;
   activeTab: string = 'description';
@@ -130,8 +130,8 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
     console.log('Evento window:load detectado');
-    const productId = localStorage.getItem('productId'); // Recuperar el valor
-    if (productId) { // Validar que no sea null
+    const productId = localStorage.getItem('productId');
+    if (productId) {
       this.checkIfInCart(parseInt(productId, 10));
       console.log('CHeking if im cart')
     }
@@ -166,7 +166,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.loadGiftCardLanguages();
           this.checkIfInWishlist(this.giftCard.kinguinId);
 
-          // Verificar la longitud de los detalles de activación
           if (this.giftCard.activationDetails.length < 4) {
             this.fetchActivationDetails(this.giftCard);
           } else {
@@ -192,8 +191,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.viewPortScroller.scrollToPosition([0, 0]);
-    // O, si prefieres usar window.scrollTo:
-    // window.scrollTo(0, 0);
   }
 
   private checkIfInWishlist(kinguinId: number): void {
@@ -255,7 +252,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     if (!this.giftCard) return;
     this.giftCardLanguages = this.giftCard.languages
       .map(language => this.languageToCountryMap[language])
-      .filter(code => code) // Filtrar códigos no definidos
+      .filter(code => code)
       .map(code => this.languagesData.find(language => language.code === code))
       .filter(country => country !== undefined) as Language[];
   }
@@ -269,7 +266,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         console.log('Tasa de cambio (1 EUR):', convertedAmount);
         this.exchangeRate = convertedAmount;
         this.isLoading = false;
-        // Mostrar notificación de éxito
+
         this.snackBar.open('Tasa de cambio actualizada.', 'Cerrar', {
           duration: 3000,
         });
@@ -291,14 +288,13 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
   fetchActivationDetails(product: KinguinGiftCard) {
     this.activationDetailsService.getDetails(product.kinguinId).subscribe({
       next: (details: ActivationDetails) => {
-        // Asignar los detalles obtenidos a la variable para mostrar
         this.displayedActivationDetails = details.textDetails || 'Detalles de activación no disponibles.';
 
-        // Asignar la URL del video si está disponible
+
         this.activationVideoUrl = details.videoUrl || '';
       },
       error: (err) => {
-        // Manejar el error y asignar un mensaje por defecto
+
         this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
         this.activationVideoUrl = '';
         console.error('Error al obtener detalles de activación:', err);
@@ -327,7 +323,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const userId = sessionStorage.getItem('userId'); // Asumiendo que tienes un método para obtener el ID del usuario
+    const userId = sessionStorage.getItem('userId');
     if (!userId) {
       this.snackBar.open('Debes estar autenticado para enviar feedback.', 'Cerrar', {
         duration: 3000,
@@ -338,7 +334,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     const feedback: Partial<Feedback> = {
       score: this.feedbackScore,
       message: this.feedbackMessage.trim(),
-      userId: userId, // Ahora es string
+      userId: userId,
       giftCardId: this.giftCard.kinguinId.toString(),
       createdAt: new Date()
     };
@@ -372,7 +368,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     }
 
     if (giftCard.wished) {
-      // Busca el elemento en la lista de deseos
       const element = this.wishedItems.find(item => item.giftCard.kinguinId === giftCard.kinguinId);
 
       if (!element) {
@@ -385,7 +380,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
       this.wishListService.removeWishItem(element.wishedItem.id).subscribe(() => {
         giftCard.wished = false;
         this.showSnackBar('Producto eliminado de la lista de deseos.');
-        this.loadWishedItems(); // Actualiza la lista de deseos
+        this.loadWishedItems();
       }, error => {
         console.error('Error al eliminar el producto de la wishlist:', error);
         this.showSnackBar('Hubo un error al eliminar el producto de la lista de deseos.');
@@ -394,7 +389,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
       this.wishListService.addWishItem(giftCard.kinguinId, giftCard.price).subscribe(() => {
         giftCard.wished = true;
         this.showSnackBar(`Producto agregado a la lista de deseos: ${giftCard.name}`);
-        this.loadWishedItems(); // Actualiza la lista de deseos
+        this.loadWishedItems();
       }, error => {
         console.error('Error al agregar el producto a la wishlist:', error);
         this.showSnackBar('Hubo un error al agregar el producto a la lista de deseos.');
@@ -402,7 +397,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // Cargar la lista de deseos
   private loadWishedItems(): void {
     this.wishListService.getWishItems().subscribe(
       data => {

@@ -26,11 +26,10 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
-  // Variables de formulario
+
   email: string = '';
   password: string = '';
 
-  // Variables para mensajes y validación
   message: string = '';
   messageClass: string = '';
   emailValid: boolean = false;
@@ -40,14 +39,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   private emailTypingTimeout: any;
   private passwordTypingTimeout: any;
 
-  // Observables para el estado de autenticación y errores
   isAuthenticated$: Observable<boolean | null>;
-  // authError$: Observable<any>;
-
-  // Suscripciones
   private subscriptions: Subscription = new Subscription();
 
-  // ViewChild para inputs
   @ViewChild('emailInput') emailInput!: ElementRef;
   @ViewChild('passwordInput') passwordInput!: ElementRef;
 
@@ -56,11 +50,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
               private authService: AuthService
               ) {
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    // this.authError$ = this.store.select(selectAuthError);
   }
 
   ngOnInit(): void {
-    // Suscribirse al estado de autenticación
     this.subscriptions.add(
       this.isAuthenticated$.subscribe((isAuthenticated) => {
         if (isAuthenticated) {
@@ -107,7 +99,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onSubmit() {
     if (this.isFormValid()) {
-      // Despachar la acción de login
       this.store.dispatch(login({ email: this.email, password: this.password }));
     } else {
       this.message = 'Please fill out the form correctly.';
@@ -155,7 +146,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onPasswordKeyPress(event: KeyboardEvent) {
     if (event.key === 'Enter') {
-      this.onSubmit(); // Ejecutar el login si presionan Enter en el campo de contraseña
+      this.onSubmit();
     }
   }
 
@@ -169,6 +160,4 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
     this.passwordValid = this.password.length >= 6;
     return this.passwordValid;
   }
-
-
 }

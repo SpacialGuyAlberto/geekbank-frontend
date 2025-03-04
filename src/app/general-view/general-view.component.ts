@@ -21,14 +21,14 @@ import {SalesMetricsService} from "../services/sales-metrics.service";
 })
 export class GeneralViewComponent implements OnInit, AfterViewInit {
   @Input() totalCustomers: number = 0;
-  // Datos ficticios que deberían venir de tu API o backend.
-  totalSales = 0; // Monto de ventas totales
-  totalProfit = 0; // Ganancias después de los costos
-  totalClients = 200; // Número de clientes
+
+  totalSales = 0;
+  totalProfit = 0;
+  totalClients = 200;
   totalTransactions: number = 0;
-  completedTransactions = 1200; // Transacciones completadas
-  pendingOrders = 50; // Pedidos pendientes
-  totalProducts = 3000; // Inventario total de productos
+  completedTransactions = 1200;
+  pendingOrders = 50;
+  totalProducts = 3000;
   salesMetrics: SalesMetrics | undefined = undefined;
   protected visitCount: number = 0;
 
@@ -80,7 +80,7 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
           datasets: [{
             label: 'Ventas Mensuales',
             data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
-            backgroundColor: '#ffcc00', // Color de las barras
+            backgroundColor: '#ffcc00',
             borderColor: '#ffcc00',
             borderWidth: 1
           }]
@@ -139,13 +139,13 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
         plugins: {
           legend: {
             labels: {
-              color: '#fff' // Color del texto de la leyenda
+              color: '#fff'
             }
           },
           title: {
             display: true,
             text: 'Categorías más Vendidas',
-            color: '#fff', // Color del título
+            color: '#fff',
             font: {
               size: 18
             }

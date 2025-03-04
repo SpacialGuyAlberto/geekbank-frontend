@@ -60,28 +60,27 @@ export class FooterComponent implements OnInit, OnDestroy{
       this.paymentClass = 'payment-icons-admin'
       this.newsletter = 'newsletter-form-admin'
       this.footerDivider = 'footer-divider-admin'
-      // this.contactClass = 'contact-info-admin'
+
       this.footerSection = 'footer-section-admin'
     } else {
       this.paymentClass = 'payment-icons-default';
       this.socialClass = 'social-icons-default';
       this.newsletter = 'newsletter-form-default';
       this.footerDivider = 'footer-divider-default'
-      // this.contactClass = 'contact-info-default';
+
       this.footerSection = 'footer-section-default'
     }
   }
 
   openTerms(): void {
     this.dialog.open(TermsAndConditionsComponent, {
-      width: '600px', // Puedes ajustar el tamaño según tus necesidades
-      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+      width: '600px',
+      maxHeight: '80vh',
     });
   }
 
 
   ngOnDestroy(): void {
-    // Desuscribirse para evitar fugas de memoria
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }

@@ -32,7 +32,6 @@ export class CreateCustomerComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit() {
-    // Validar el email antes de enviar
     if (!this.isEmailValid()) {
       this.message = 'Por favor, ingresa un email válido.';
       this.messageClass = 'error-message';
