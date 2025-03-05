@@ -20,7 +20,6 @@ import { TournamentAnnouncementComponent } from "./tournament-announcement/tourn
 import { OrdersComponent } from "./user-details/settings/orders/orders.component";
 import { WishlistComponent } from "./user-details/settings/wishlist/wishlist.component";
 import { PaymentMethodsComponent } from "./user-details/settings/payment-methods/payment-methods.component";
-import {CheckoutComponent} from "./checkout/checkout.component";
 import {FilteredPageComponent} from "./filtered-page/filtered-page.component";
 import {TermsAndConditionsComponent} from "./terms-and-conditions/terms-and-conditions.component";
 import {OfferComponent} from "./offer/offer.component";
@@ -50,7 +49,6 @@ export const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'wish-list', component: WishlistComponent },
-  {path: 'checkout', component: CheckoutComponent },
   { path: 'platform/:name', component: PlatformFilterComponent },
   { path: 'filtered/:category', component: FilteredPageComponent },
   { path: 'terms', component: TermsAndConditionsComponent},

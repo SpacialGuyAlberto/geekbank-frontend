@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import {PromotionsService} from "./promotions.service";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 
+
 @Component({
   selector: 'app-promotions',
   standalone: true,
@@ -29,7 +30,11 @@ export class PromotionsComponent {
   searchCode: string = '';
   filteredPayments: (NgIterable<unknown> & NgIterable<any>) | undefined | null;
   payments: any;
+  private _id: any;
 
+  constructor(private promotionService: PromotionsService) {
+    promotionService = this.promotionService;
+  }
 
   openCreateModal() {
 
@@ -51,7 +56,8 @@ export class PromotionsComponent {
 
   }
 
-  deletePayment(id) {
+  createPromotion(){
 
   }
+
 }

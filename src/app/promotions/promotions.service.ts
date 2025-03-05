@@ -9,6 +9,7 @@ import {OrderDetails} from "../models/order-details.model";
 import {VerifyPaymentRequest} from "../models/verify-payment-request.model";
 import {OrderRequest} from "../models/order-request.model";
 import {UnmatchedPaymentResponseDto} from "../models/unmatched-payment-response.model";
+import {Promotion} from "./Promotion.model";
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,10 @@ export class PromotionsService {
 
   public promotionCodeExist(code: string) : Observable<boolean> {
     return this.http.get<boolean>(`${this.apiUrl}/checkIfCodeExists/${code}`)
+  }
+
+  public fetchPromotionWithCode(code: string): Observable<Promotion> {
+    return this.http.get<Promotion>(`${this.apiUrl}/fetch-code/${code}`);
   }
 
 }

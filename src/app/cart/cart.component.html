@@ -99,11 +99,15 @@
       <div class="discount-section">
         <label for="discountCode">Código de Descuento:</label>
         <input type="text" id="discountCode" name="discountCode" [(ngModel)]="promoCode">
-        <button class="discount-button" (click)="checkIfCodeExists(promoCode)">Aplicar Descuento</button>
+        <button class="discount-button" (click)="[checkIfCodeExists(promoCode), fetchPromoWithCode(promoCode)]">Aplicar Descuento</button>
         <div *ngIf="!codeExist" >
           <p
             class="error-message"
           >Codigo  de descuento no existe</p>
+        </div>
+        <div *ngIf="codeExistBlueprint" >
+          <p
+          >{{this.discountReceived}}</p>
         </div>
       </div>
 
