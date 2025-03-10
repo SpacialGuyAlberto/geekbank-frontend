@@ -31,7 +31,7 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []
   currentGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 0;
-  pageSize: number = 10; // la cantidad que desees
+  pageSize: number = 14; // la cantidad que desees
   totalPages: number = 0;
   isListView: boolean = false;
 
