@@ -1,6 +1,6 @@
 // src/app/payment/payment.tokens.ts
 import { InjectionToken } from '@angular/core';
-import { CartItemWithGiftcard } from '../models/CartItem';
+import { CartItemWithGiftcard } from '../cart/CartItem';
 
 export const CART_ITEMS = new InjectionToken<CartItemWithGiftcard[]>('cartItems');
 export const TOTAL_PRICE = new InjectionToken<number>('totalPrice');

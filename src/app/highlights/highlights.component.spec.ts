@@ -2,13 +2,13 @@
 
 import { ComponentFixture, TestBed, fakeAsync, tick, flushMicrotasks } from '@angular/core/testing';
 import { HighlightsComponent } from './highlights.component';
-import { HighlightService } from '../highlights.service';
+import { HighlightService } from '../highlights-config/highlights.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
-import { HighlightItemWithGiftcard } from '../models/HighlightItem';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
+import { HighlightItemWithGiftcard } from '../highlights-config/HighlightItem';
 
 describe('HighlightsComponent', () => {
   let component: HighlightsComponent;

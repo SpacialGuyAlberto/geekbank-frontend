@@ -1,5 +1,5 @@
 // src/app/state/auth/auth.state.ts
-import { User } from '../../models/User';
+import { User } from '../../user-details/User';
 
 // auth.state.ts
 export interface AuthState {

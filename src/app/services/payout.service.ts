@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CreatePayoutRequest, CreatePayoutResponse } from '../models/payment.models';
+import { CreatePayoutRequest, CreatePayoutResponse } from '../payment-options/payment.models';
 import { environment } from '../../environments/environment';
 
 @Injectable({

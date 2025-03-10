@@ -3,27 +3,27 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { NgClass, NgForOf, NgIf } from "@angular/common";
-import { CartItemWithGiftcard } from "../models/CartItem";
-import { TigoService } from "../tigo.service";
-import { WebSocketService } from "../web-socket.service";
+import { CartItemWithGiftcard } from "../cart/CartItem";
+import { TigoService } from "./tigo.service";
+import { WebSocketService } from "../services/web-socket.service";
 import { Subscription, take, firstValueFrom } from "rxjs";
 import { NotificationService } from "../services/notification.service";
-import { TransactionsService } from "../transactions.service";
-import { Transaction } from "../models/transaction.model";
-import { AuthService } from "../auth.service";
-import { GuestService } from "../guest.service";
+import { TransactionsService } from "../transactions/transactions.service";
+import { Transaction } from "../transactions/transaction.model";
+import { AuthService } from "../services/auth.service";
+import { GuestService } from "../services/guest.service";
 import { Router } from "@angular/router";
-import { CurrencyService } from "../currency.service";
-import { PaymentMethod } from "../models/payment-method.interface";
-import { PaymentService } from "../payment.service";
+import { CurrencyService } from "../services/currency.service";
+import { PaymentMethod } from "../payment-options/payment-method.interface";
+import { PaymentService } from "../payment-options/payment.service";
 import { CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE } from "../payment/payment.token";
-import { TigoPaymentService } from "../tigo-payment.service";
+import { TigoPaymentService } from "./tigo-payment.service";
 import { OrderDetails } from "../models/order-details.model";
 import { OrderRequest } from "../models/order-request.model";
 import { UnmatchedPaymentResponseDto } from "../models/unmatched-payment-response.model";
 import { AuthModalComponent } from "../auth-modal/auth-modal.component";
 import { AccountService } from "../account.service";
-import { Account, User } from "../models/User";
+import { Account, User } from "../user-details/User";
 import { switchMap } from "rxjs/operators";
 
 @Component({
@@ -293,7 +293,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         amount: this.totalAmount ? this.totalAmount : this.totalPrice,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
-        sendKeyToWhatsApp: this.wantsSMSKey
+        sendKeyToWhatsApp: this.wantsSMSKey,
+        promoCode: localStorage.getItem("promoCode")
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
@@ -318,7 +319,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -338,7 +340,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
       }
       if (this.gameUserId !== null) {
@@ -364,8 +367,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           ),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -385,7 +388,8 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           amount: this.totalAmount ? this.totalAmount : this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          sendKeyToWhatsApp: this.wantsSMSKey
+          sendKeyToWhatsApp: this.wantsSMSKey,
+          promoCode: localStorage.getItem("promoCode")
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;

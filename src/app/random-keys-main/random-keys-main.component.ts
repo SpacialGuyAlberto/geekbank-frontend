@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {KinguinService} from "../kinguin.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import {MatDialog} from "@angular/material/dialog";
 import {forkJoin, Observable} from "rxjs";
 import {GiftCardDetailsComponent} from "../gift-card-details/gift-card-details.component";

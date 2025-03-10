@@ -1,25 +1,25 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { KinguinService } from "../kinguin.service";
+import { KinguinGiftCard } from "./KinguinGiftCard";
+import { KinguinService } from "./kinguin.service";
 import { Router } from '@angular/router';
 import { FormsModule } from "@angular/forms";
 import { SearchBarComponent } from "../search-bar/search-bar.component";
 import { HighlightsComponent } from "../highlights/highlights.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
-import { CurrencyService } from "../currency.service";
+import { CurrencyService } from "../services/currency.service";
 import { Subscription } from "rxjs";
-import { UIStateServiceService } from "../uistate-service.service";
-import { AuthService } from "../auth.service";
+import { UIStateServiceService } from "../services/uistate-service.service";
+import { AuthService } from "../services/auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MainScreenGiftCardService } from "../main-screen-gift-card-service.service";
+import { MainScreenGiftCardService } from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
 import { Store } from "@ngrx/store";
 import { loadGiftCards } from "./store/gift-card.actions";
 import { selectAllGiftCards, selectGiftCardsLoading } from "./store/gift-card.selector";
-import { MainScreenGiftCardItemDTO } from "../models/MainScreenGiftCardItem";
+import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SharedService} from "../shared.service";
+import { SharedService} from "../services/shared.service";
 
 
 @Component({
@@ -51,14 +51,14 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   currentPage: number = 1;
   exchangeRate: number = 0; // Tasa de cambio actualizada
   totalPages: number = 0;
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 14;
   totalItems: number = 0;
   isSearchMode: boolean = false;
   hasMoreItems: boolean = true;
   private giftCardsSubscription!: Subscription;
 
   currentPageMain: number = 0;
-  pageSizeMain: number = 10;
+  pageSizeMain: number = 14;
   totalItemsMain: number = 0;
   totalPagesMain: number = 0;
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = [];
@@ -133,7 +133,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     }
   }
 
-  fetchMainGiftCard(page: number = 0, size: number = 10): void {
+  fetchMainGiftCard(page: number = 0, size: number = 14): void {
     this.isLoading = true;
     this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
       async (res: any) => {
@@ -155,7 +155,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
             this.totalItemsMain = res.totalElements ?? content.length;
           }
 
-          // Mapeo de DTO => KinguinGiftCard
+
           const newGiftCards = await Promise.all(
             content.map(async dto => {
               const gc = dto.giftcard;
@@ -175,7 +175,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
             })
           );
 
-          // Asignamos la data
           this.giftCards = newGiftCards;
           // En modo principal, el backend ya nos da la página => se muestra tal cual.
           this.displayedGiftCards = this.giftCards;
@@ -408,7 +407,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.giftCards = [];
     this.displayedGiftCards = [];
     this.currentPageMain = 0;
-    this.pageSizeMain = 10;
+    this.pageSizeMain = 14;
     this.totalPagesMain = 0;
     this.hasMoreItems = true;
   }

@@ -16,10 +16,6 @@
         <div class="input-container">
           <input type="text" id="name" [(ngModel)]="name" name="name"
                  (keydown.enter)="nextStep()" #nameInput required>
-          <!-- Comentado por ahora
-          <span *ngIf="nameTouched && nameValid" class="valid-feedback">✔</span>
-          <span *ngIf="nameTouched && !nameValid && name.length > 0" class="invalid-feedback">✘</span>
-          -->
         </div>
       </div>
 

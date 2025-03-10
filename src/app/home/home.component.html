@@ -63,12 +63,8 @@
         </div>
       </div>
 
-      <!-- Sección de Tarjetas Filtradas -->
       <div class="giftcard-section" *ngIf="!isLoading">
-
-        <!-- Contenedor para las Kinguin Gift Cards -->
         <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
-          <!-- Pasar los datos filtrados al componente de tarjetas -->
           <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
         </div>
       </div>

@@ -1,5 +1,5 @@
 // src/app/features/gift-card/models/gift-card.state.ts
-import {KinguinGiftCard} from "../../models/KinguinGiftCard";
+import {KinguinGiftCard} from "../KinguinGiftCard";
 
 export interface GiftCardState {
   giftCards: KinguinGiftCard[];

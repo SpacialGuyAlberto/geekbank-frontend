@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
-import { TransactionsService } from "../../../transactions.service";
+import { TransactionsService } from "../../../transactions/transactions.service";
 import { FormsModule } from "@angular/forms";
-import { Transaction, TransactionProduct } from "../../../models/transaction.model";
-import { KinguinService } from "../../../kinguin.service";
-import { KinguinGiftCard } from "../../../models/KinguinGiftCard";
+import { Transaction, TransactionProduct } from "../../../transactions/transaction.model";
+import { KinguinService } from "../../../kinguin-gift-cards/kinguin.service";
+import { KinguinGiftCard } from "../../../kinguin-gift-cards/KinguinGiftCard";
 import { firstValueFrom } from "rxjs";
 
 interface Order {

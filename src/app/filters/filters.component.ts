@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { KinguinService } from "../kinguin.service";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { KinguinService } from "../kinguin-gift-cards/kinguin.service";
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { FormsModule } from "@angular/forms";
 import { NgClass, NgForOf } from "@angular/common";
 
@@ -111,10 +111,9 @@ export class FiltersComponent {
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
-      this.filteredResults.emit(giftCards); // Emisión de resultados filtrados
+      this.filteredResults.emit(giftCards);
       console.log('Filtered Results: ', giftCards);
 
-      // Emitir evento al padre cuando se aplican los filtros
       this.filtersApplied.emit();
       this.isFilterVisible = false;
     });
@@ -125,7 +124,7 @@ export class FiltersComponent {
   }
 
   resetFilters(): void {
-    // Resetear los filtros a sus valores por defecto
+
     this.filters = {
       hideOutOfStock: false,
       platform: '',
@@ -136,17 +135,14 @@ export class FiltersComponent {
       language: '',
       tags: ''
     };
-    // Emitir los resultados filtrados vacíos o todos los giftCards
     this.kinguinService.getKinguinGiftCards(1).subscribe(data => {
       const giftCards: KinguinGiftCard[] = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
-      this.filteredResults.emit(giftCards); // Emisión de todos los giftCards
+      this.filteredResults.emit(giftCards);
       console.log('Filters reset. All gift cards loaded.');
-
-      // Emitir evento al padre para indicar que los filtros fueron reseteados
       this.filtersApplied.emit();
       this.isFilterVisible = false;
     });

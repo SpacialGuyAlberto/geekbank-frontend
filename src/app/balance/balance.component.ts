@@ -2,13 +2,13 @@
 import { Component, OnInit } from '@angular/core';
 import {AsyncPipe, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import {AuthService} from "../auth.service";
+import {AuthService} from "../services/auth.service";
 import {TigoPaymentComponent} from "../tigo-payment/tigo-payment.component";
 import {PaymentComponent} from "../payment/payment.component";
 import {selectUser, selectIsAuthenticated, selectUserBalance} from "../state/auth/auth.selectors";
 import { AppState } from "../app.state";
 import {Observable, of} from "rxjs";
-import {User} from "../models/User";
+import {User} from "../user-details/User";
 import {Store} from "@ngrx/store";
 import {loadUserFromSession} from "../state/auth/auth.actions";
 import {map} from "rxjs/operators";

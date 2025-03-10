@@ -1,4 +1,4 @@
-import {KinguinGiftCard} from "./KinguinGiftCard";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 
 export interface HomeItem {
   id: number;

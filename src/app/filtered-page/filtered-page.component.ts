@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {KinguinGiftCard} from "../models/KinguinGiftCard";
-import {KinguinService} from "../kinguin.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import { CurrencyPipe, CommonModule, NgForOf, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";
@@ -33,10 +33,8 @@ export class FilteredPageComponent implements OnInit {
   hasMore: boolean = true;
   errorMessage: string = '';
 
-  // Banner dinámico
   bannerImage: string = '';
 
-  // Array de géneros
   genres: { key: string; label: string; icon?: string }[] = [
     { key: 'Action', label: 'Action', icon: 'fa-solid fa-plane' },
     { key: 'Adventure', label: 'Adventure', icon: 'fa-brands fa-space-awesome' },
@@ -86,7 +84,6 @@ export class FilteredPageComponent implements OnInit {
       this.selectedCategory = params.get('category');
 
       if (this.selectedCategory) {
-        // Switch/case para asignar el banner según el género
         switch (this.selectedCategory) {
           case 'Action':
             this.bannerImage = 'assets/action-banner.webp';
@@ -128,17 +125,12 @@ export class FilteredPageComponent implements OnInit {
             this.bannerImage = 'assets/software.webp';
             break;
 
-          // ... añade más cases si quieres control total
-
           default:
-            // Reemplaza espacios por '-' y asigna el .webp
 
             const sanitized = this.selectedCategory.replace(/\s+/g, '-');
             this.bannerImage = 'assets/action-banner.webp';
             break;
         }
-
-        // Carga las gift cards de la categoría
         this.loadGiftCardsByCategory(this.selectedCategory, this.currentPage);
       } else {
         this.isLoading = false;
@@ -170,7 +162,6 @@ export class FilteredPageComponent implements OnInit {
 
     filters = this.cleanFilters(filters);
 
-    // Actualiza estados de carga
     if (page === 1) {
       this.isLoading = true;
     } else {
@@ -202,12 +193,10 @@ export class FilteredPageComponent implements OnInit {
         this.giftCards = [...this.giftCards, ...mappedGiftCards];
       }
 
-      // Actualiza el estado de carga
       this.isLoading = false;
       this.isLoadingMore = false;
       this.errorMessage = '';
 
-      // Determina si hay más gift cards
       const totalLoaded = this.giftCards.length;
       this.hasMore =
         totalLoaded < this.totalLimit && giftCards.length === this.pageSize;
@@ -296,7 +285,6 @@ export class FilteredPageComponent implements OnInit {
       hash = (hash << 5) - hash + cardName.charCodeAt(i);
       hash = hash & hash;
     }
-    // Genera número entre 15 y 40 basado en el hash
     const random = Math.abs(hash % 26) + 15;
     return random;
   }

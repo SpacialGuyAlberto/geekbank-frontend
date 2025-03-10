@@ -1,9 +1,9 @@
 // src/app/components/search-bar/search-bar.component.ts
 import { Component, Output, EventEmitter, ChangeDetectorRef, OnInit, OnDestroy } from '@angular/core';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { FormsModule } from "@angular/forms";
-import { UIStateServiceService } from "../uistate-service.service";
+import { UIStateServiceService } from "../services/uistate-service.service";
 import { Subject, Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(5000), // Espera 5000ms después del último evento
+      debounceTime(5000),
       distinctUntilChanged(),
       switchMap(query => {
         if (query.trim() === '') {
@@ -72,20 +72,16 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
-    // 1. Recolecta todas las URLs de posibles imágenes
     const imageUrls: string[] = [];
 
-    // coverImageOriginal
     if (card.coverImageOriginal) {
       imageUrls.push(card.coverImageOriginal);
     }
 
-    // thumbnail
     if (card.images.cover?.thumbnail) {
       imageUrls.push(card.images.cover.thumbnail);
     }
 
-    // coverImage
     if (card.coverImage) {
       imageUrls.push(card.coverImage);
     }
@@ -94,15 +90,12 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
     }
 
-    // screenshots
     if (card.screenshots && card.screenshots.length > 0) {
       imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
     }
 
-    // 2. Eliminar duplicados
     const uniqueImageUrls = Array.from(new Set(imageUrls));
 
-    // 3. Obtener resolución de cada URL
     const promises = uniqueImageUrls.map(url =>
       this.getImageResolution(url)
         .then(res => ({
@@ -117,16 +110,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
     const results = await Promise.all(promises);
 
-    // 4. Filtrar imágenes válidas y ordenar por resolución descendente
     const validImages = results
       .filter(img => img.resolution > 0)
       .sort((a, b) => b.resolution - a.resolution);
 
-    // 5. Retornar la mejor imagen o vacío
     return validImages.length > 0 ? validImages[0].url : '';
   }
 
-// Método para obtener dimensiones de una imagen (reutilizado de loadHighlights)
   getImageResolution(url: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -141,18 +131,15 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     this.isFreeFireSearch.emit(isFreeFire);
 
     if (query === '') {
-      // Si la consulta está vacía, emitir resultados vacíos
       this.searchResults.emit([]);
       this.uiStateService.setShowHighlights(false);
       this.cd.detectChanges();
       return;
     }
 
-    // Cancelar cualquier búsqueda pendiente y reiniciar la suscripción
     this.searchSubject.complete();
     this.searchSubscription.unsubscribe();
 
-    // Realizar la búsqueda inmediata al presionar Enter
     this.kinguinService.searchGiftCards(query).pipe(
       catchError(err => {
         console.error('Error en la búsqueda de tarjetas (Enter):', err);
@@ -161,7 +148,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
     ).subscribe(async (data: KinguinGiftCard[]) => {
       console.log('Resultados de búsqueda (Enter):', data);
 
-      // Procesar las tarjetas de forma asíncrona
       const giftCardsPromises = data.map(async card => {
         card.coverImageOriginal =
           card.coverImageOriginal ||
@@ -178,7 +164,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.uiStateService.setShowHighlights(false);
       this.cd.detectChanges();
 
-      // Reiniciar el Subject y la suscripción para futuras búsquedas "on the fly"
       this.searchSubject = new Subject<string>();
       this.searchSubscription = this.searchSubject.pipe(
         debounceTime(3000),
@@ -202,7 +187,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
             card.coverImageOriginal ||
             card.images.cover?.thumbnail ||
             card.coverImage ||
-            await this.getBestImageUrl(card); // Llama a la función asíncrona si no hay imagen disponible
+            await this.getBestImageUrl(card);
           card.coverImage = card.images.cover?.thumbnail || '';
           return card;
         });

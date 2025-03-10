@@ -1,8 +1,8 @@
-/* src/app/components/offer/offer.component.ts */
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import {NgForOf, NgIf, CurrencyPipe, NgClass, NgStyle} from '@angular/common';
 import {Router} from "@angular/router";
 @Component({
@@ -17,8 +17,8 @@ export class OfferComponent implements OnInit {
   searchResults: KinguinGiftCard[] = [];
   isLoading: boolean = false;
   errorMessage: string = '';
-  bannerImageUrl: string = ''; // Imagen del banner superior
-  bannerImageUrlBottom: string = ''; // Imagen del banner inferior
+  bannerImageUrl: string = '';
+  bannerImageUrlBottom: string = '';
 
   constructor(
     private router: Router,
@@ -69,14 +69,11 @@ export class OfferComponent implements OnInit {
 
   setBannerImages(): void {
     if (this.searchResults.length > 0) {
-      // Seleccionar una imagen aleatoria para el banner superior
       const randomIndexTop = Math.floor(Math.random() * this.searchResults.length);
       this.bannerImageUrl = this.searchResults[randomIndexTop].coverImageOriginal;
 
-      // Seleccionar otra imagen aleatoria para el banner inferior
       let randomIndexBottom = Math.floor(Math.random() * this.searchResults.length);
 
-      // Asegurarse de que las imágenes superior e inferior no sean la misma
       while (randomIndexBottom === randomIndexTop && this.searchResults.length > 1) {
         randomIndexBottom = Math.floor(Math.random() * this.searchResults.length);
       }

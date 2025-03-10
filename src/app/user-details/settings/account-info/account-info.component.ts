@@ -4,20 +4,20 @@ import { ChangePasswordComponent } from "./change-password/change-password.compo
 import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common";
 import { PasswordModalComponent } from "./password-modal-component/password-modal-component.component";
 import { PaymentMethodsComponent } from "../payment-methods/payment-methods.component";
-import { StatisticsComponent } from "../../admin-panel/statistics/statistics.component";
-import { ProductsComponent } from "../../admin-panel/products/products.component";
+import { StatisticsComponent } from "../../../statistics/statistics.component";
+import { ProductsComponent } from "../../../products/products.component";
 import { OrdersComponent } from "../orders/orders.component";
-import { AuthService } from "../../../auth.service";
+import { AuthService } from "../../../services/auth.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { WishlistComponent } from "../wishlist/wishlist.component";
 import {Observable, of, Subscription} from "rxjs";
-import { SharedService } from "../../../shared.service";
+import { SharedService } from "../../../services/shared.service";
 import { filter } from "rxjs/operators";
 
 import {Store} from "@ngrx/store";
 import {selectUser, selectIsAuthenticated} from "../../../state/auth/auth.selectors";
 import {AppState} from "../../../app.state";
-import {User} from "../../../models/User";
+import {User} from "../../User";
 
 export interface DetailsBody {
   name?: string;

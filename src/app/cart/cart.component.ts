@@ -1,26 +1,27 @@
 // cart.component.ts
 import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
-import { CartService } from '../cart.service';
+import {CartService} from "./cart.service";
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import { Router, RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import { CartItemWithGiftcard } from "../models/CartItem";
-import { BackgroundAnimationService } from "../background-animation.service";
-import { CurrencyService } from "../currency.service";
+import {CartItemWithGiftcard} from "./CartItem";
+import {CurrencyService} from "../services/currency.service";
 import { FormsModule } from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
-import { AuthService } from "../auth.service";
+import {AuthService} from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RandomKeyMostSoldComponent } from "../random-key-most-sold/random-key-most-sold.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { PayPalButtonComponent } from "../paypal-button/paypal-button.component";
-import { Subject, takeUntil } from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
 import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
-import {GuestService} from "../guest.service";
-import {User} from "../models/User";
+import {GuestService} from "../services/guest.service";
+import {User} from "../user-details/User";
 import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
+import {PromotionsService} from "../promotions/promotions.service";
+import {Promotion} from "../promotions/Promotion.model";
 
 
 @Component({
@@ -89,7 +90,7 @@ export class CartComponent implements OnInit, OnDestroy {
   wantsEmailKey: boolean = false;
   wantsSMSKey: boolean = false;
   emailForKey: string = '';
-
+  promo: Promotion | undefined = undefined;
   userEmail?: string;
   paymentDetails = { phoneNumber: '' };
   guestId?: string | null = '';
@@ -104,12 +105,12 @@ export class CartComponent implements OnInit, OnDestroy {
   selectedOption: string | null = null;
 
   showCancelledModal: boolean = false;
-
-
+  protected codeExistBlueprint: boolean = false;
+  protected discountReceived: string = "";
   constructor(
     private cartService: CartService,
     private guestService: GuestService,
-    private animation: BackgroundAnimationService,
+    private promotionService: PromotionsService,
     private currencyService: CurrencyService,
     private dialog: MatDialog,
     private authService: AuthService,
@@ -179,19 +180,17 @@ export class CartComponent implements OnInit, OnDestroy {
 
   calculateTotalPriceEUR(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
-    this.totalPriceEUR = parseFloat(total.toFixed(2));
+    this.totalPriceEUR = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);;
     this.getExchangeRate();
   }
 
   calculateTotalPriceHNL(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
-    this.totalHNL = parseFloat(total.toFixed(2));
-    console.log('TOTAL HNL:' + this.totalHNL)
+    this.totalHNL = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);
   }
 
   selectOption(option: string): void {
     this.selectedOption = option;
-    console.log('Opción seleccionada:', option);
   }
 
   continueWithOption(): void {
@@ -203,9 +202,7 @@ export class CartComponent implements OnInit, OnDestroy {
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest | undefined;
 
-    // Lógica para crear orderDetails sin exigir refNumber ni isEmailPromptComplete aún
     if (this.productId !== null) {
-      // Caso: Se tiene productId específico
       orderDetails = {
         userId: this.userId ? Number(this.userId) : null,
         guestId: this.guestId || null,
@@ -566,6 +563,33 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
 
-  protected readonly Number = Number;
-}
+  checkIfCodeExists(code: string): Observable<boolean> {
+    this.promotionService.promotionCodeExist(code).subscribe( value => {
+      this.codeExist = value;
+      this.codeExistBlueprint = value;
+    });
 
+    return this.promotionService.promotionCodeExist(code);
+  }
+
+  fetchPromoWithCode(code: string ){
+    if (this.codeExistBlueprint){
+      this.promotionService.fetchPromotionWithCode(code).subscribe(
+        (value) => {
+          this.promo = value;
+          this.discountReceived = value ? `You have received ${this.promo.discountPorcentage} of discount` : "You have not received discount";
+        });
+    }
+    this.snackBar.open('Descuento aplicado a tu orden de compra', 'Cerrar', { duration: 5000 });
+  }
+
+  calculatePromoDiscount() : number {
+    return this.promo != undefined ? this.promo.discountPorcentage : 1;
+  }
+
+
+
+  protected readonly Number = Number;
+  promoCode: string = "";
+  codeExist: boolean = true;
+}

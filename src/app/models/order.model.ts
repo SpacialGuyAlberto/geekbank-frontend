@@ -8,17 +8,17 @@ export interface Order {
   phoneNumber?: string;
   amount: number;
   refNumber?: string;
-  createdAt: Date; // LocalDateTime mapeado a Date en TypeScript
-  transaction?: Transaction; // Transacción relacionada
-  products?: TransactionProduct[]; // Lista de productos asociados
+  createdAt: Date;
+  transaction?: Transaction;
+  products?: TransactionProduct[];
 }
 
 export interface Transaction {
   id: number;
-  transactionDetails: string; // Agregar las propiedades específicas según tu implementación
+  transactionDetails: string;
 }
 
 export interface TransactionProduct {
   id: number;
-  productName: string; // Agregar las propiedades específicas según tu implementación
+  productName: string;
 }

@@ -11,6 +11,7 @@ export interface OrderRequest {
   manual: boolean;
   gameUserId?: number;
   refNumber?: string;
+  promoCode?: string | null | undefined;
 }
 
 export interface Product {

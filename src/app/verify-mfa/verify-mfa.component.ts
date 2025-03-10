@@ -1,7 +1,7 @@
 // verify-mfa.component.ts
 import { Component } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { UserService } from '../user.service';
+import { UserService } from '../user-details/user.service';
 import { Router } from '@angular/router';
 
 @Component({

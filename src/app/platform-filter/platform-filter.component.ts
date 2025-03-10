@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import {
   CurrencyPipe,
   NgForOf,
@@ -23,22 +23,13 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./platform-filter.component.css']
 })
 export class PlatformFilterComponent implements OnInit {
-  // Variables de estado
-  isLoading: boolean = false;       // Carga inicial (página 1)
-  isLoadingMore: boolean = false;   // Carga adicional (página > 1)
+  isLoading: boolean = false;
+  isLoadingMore: boolean = false;
   errorMessage: string = '';
-
-  // Arreglo donde se guardan los resultados filtrados
   searchResults: KinguinGiftCard[] = [];
-
-  // Variables para el banner superior e inferior
   bannerImageUrl: string = '';
   bannerImageUrlBottom: string = '';
-
-  // Parámetro de la ruta (plataforma)
   platformName: string = '';
-
-  // Paginación
   currentPage: number = 1;
   pageSize: number = 10;
   totalLimit: number = 1000;
@@ -51,13 +42,11 @@ export class PlatformFilterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Leer el parámetro de plataforma desde la ruta: /platform/:name
     this.route.paramMap.subscribe(params => {
       const platformParam = params.get('name');
       if (platformParam) {
         this.platformName = platformParam;
 
-        // Carga inicial: página 1
         this.currentPage = 1;
         this.loadPlatformCards(this.platformName, this.currentPage);
       }
@@ -82,7 +71,6 @@ export class PlatformFilterComponent implements OnInit {
     }
 
     try {
-      // Llamada al servicio usando async/await
       const giftCards = await firstValueFrom(
         this.kinguinService.getFilteredGiftCards(filters)
       );
@@ -102,20 +90,16 @@ export class PlatformFilterComponent implements OnInit {
         });
       }
 
-      // Si es primera página, reemplazamos; si no, concatenamos
       if (page === 1) {
         this.searchResults = mappedGiftCards;
-        // Configuramos banners SOLO en la carga inicial
         this.setBannerImages();
       } else {
         this.searchResults = [...this.searchResults, ...mappedGiftCards];
       }
 
-      // Determinar si hay más (mientras vengan pageSize elementos, hay más)
       const totalLoaded = this.searchResults.length;
       this.hasMore = totalLoaded < this.totalLimit && giftCards.length === this.pageSize;
 
-      // Finalizar spinners
       this.isLoading = false;
       this.isLoadingMore = false;
       this.errorMessage = '';

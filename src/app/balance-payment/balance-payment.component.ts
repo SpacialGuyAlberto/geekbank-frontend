@@ -2,12 +2,12 @@ import {Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject} from 
 import { FormsModule } from '@angular/forms';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import { Subscription } from 'rxjs';
-import { OrderService } from '../order.service';
+import { OrderService } from '../services/order.service';
 import { NotificationService } from '../services/notification.service';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../services/auth.service';
 import { AccountService } from '../account.service';
 import { OrderRequest } from '../models/order-request.model';
-import { Account } from '../models/User';
+import { Account } from '../user-details/User';
 import {before} from "node:test";
 import { Router } from '@angular/router';
 import {CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
@@ -72,7 +72,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
     }
   }
 
-
   handlePurchase(): void {
 
     if (!this.userId) {
@@ -124,7 +123,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
             tempPin: response.tempPin,
           },
         });
-
       },
       error: (err) => {
         console.error('Error during purchase:', err);
@@ -138,7 +136,6 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
     this.isCancelling = true;
     this.showSpinner = true;
 
-    // Cancelar lógica aquí si es necesario
     setTimeout(() => {
       this.isCancelling = false;
       this.showSpinner = false;

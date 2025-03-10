@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { KinguinService } from '../kinguin.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { Router } from '@angular/router';
 
 @Component({
@@ -75,7 +75,6 @@ export class InferiorFilterComponent {
 
 
   goToPlatform(platformName: string): void {
-    // Navega a la ruta '/platform/platformName'
     this.router.navigate(['/platform', platformName])
       .then(success => {
         if (!success) {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ChangeDetectorRef, NgZone } from '@angular/core';
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { RecommendationsService } from "../services/recommendations.service";
 import {Observable, of, Subscription} from 'rxjs';
 import {tap, catchError, map} from 'rxjs/operators';

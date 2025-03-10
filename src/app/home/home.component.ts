@@ -1,22 +1,22 @@
 import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HomeService } from "../home.service";
+import { HomeService } from "./home.service";
 import { FreeFireGiftCardComponent } from "../free-fire-gift-card/free-fire-gift-card.component";
 import { KinguinGiftCardsComponent } from "../kinguin-gift-cards/kinguin-gift-cards.component";
 import { NgModel } from "@angular/forms";
 import { HighlightsComponent } from '../highlights/highlights.component';
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { FiltersComponent } from "../filters/filters.component";
-import { BackgroundAnimationService } from "../background-animation.service";
-import { UIStateServiceService } from "../uistate-service.service";
+import { BackgroundAnimationService } from "../services/background-animation.service";
+import { UIStateServiceService } from "../services/uistate-service.service";
 import { Subscription } from "rxjs";
-import { KinguinGiftCard } from "../models/KinguinGiftCard";
-import { KinguinService } from '../kinguin.service';
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { GiftCard } from "../models/GiftCard";
 import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
-import {SearchStateService} from "../search-state.service";
+import {SearchStateService} from "../services/search-state.service";
 import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.component";
 
 
@@ -38,7 +38,7 @@ import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.compon
     InferiorFilterComponent
   ]
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy {
   showFreeFireComponent: boolean = false;
 
   username: string = '';
@@ -53,10 +53,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   searchQuery: string = '';
   searchResults: KinguinGiftCard[] = [];
 
-  // Propiedades para manejar los resultados filtrados
   filteredGiftCards: KinguinGiftCard[] = [];
   hasFilteredResults: boolean = false;
-  currentGiftCards: KinguinGiftCard[] | null = null; // Nueva propiedad
+  currentGiftCards: KinguinGiftCard[] | null = null;
   private searchSubscription!: Subscription;
 
   constructor(
@@ -93,10 +92,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  ngAfterViewInit(): void {
-    // Implementa cualquier lógica adicional después de la inicialización de la vista
-  }
-
   toggleFilter() {
     this.isFilterVisible = !this.isFilterVisible;
   }
@@ -123,7 +118,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isFilterVisible = true;
   }
 
-  // Cierra el modal de filtros
   isLoading: boolean = false;
   closeFilterModal() {
     this.isFilterVisible = false;
@@ -147,10 +141,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.filteredGiftCards = [];
     this.hasFilteredResults = false;
     this.currentGiftCards = null;
-    this.showHighlightsAndRecommendations = true; // Opcional: Mostrar de nuevo los destacados
+    this.showHighlightsAndRecommendations = true;
     console.log('Filters reset.');
   }
-
 
   executeSearch() {
     if (this.searchQuery.trim() !== '') {
@@ -162,15 +155,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       ) {
         this.showFreeFireComponent = true;
         this.showHighlightsAndRecommendations = false;
-        // En caso de Free Fire, dejamos currentGiftCards vacío (o null),
-        // ya que mostrarás <app-free-fire-gift-card>
         this.currentGiftCards = [];
       } else {
         this.showFreeFireComponent = false;
         this.kinguinService.searchGiftCards(this.searchQuery)
           .subscribe((data: KinguinGiftCard[]) => {
             this.searchResults = data;
-            // Para que se muestren en <app-kinguin-gift-cards>
             this.currentGiftCards = data;
             this.showHighlightsAndRecommendations = false;
           });

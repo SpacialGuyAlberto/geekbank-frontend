@@ -48,10 +48,9 @@
   flex: 2;
 }
 
-/* Sección de Información de Pago */
 .payment-info {
   flex: 1;
-  background: #16212e; /* Fondo plano y consistente */
+  background: #16212e;
   padding: 1.5rem;
   border-radius: 0.5rem;
   color: #A0E4FF;
@@ -86,9 +85,12 @@
   font-size: 1rem;
 }
 
-/* ------------------ Mejoras en los Botones ------------------ */
+.error-message {
+  color: #dc3545;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
 
-/* Estilos Globales para Botones */
 button {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* Fuente más profesional */
   font-size: 1rem;
@@ -96,7 +98,7 @@ button {
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
-  background: #3a8dff; /* Color plano para los botones */
+  background: #3a8dff;
   color: #ffffff;
   transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra sutil */
@@ -109,16 +111,15 @@ button:disabled {
 
 .payment-button:enabled {
   background-color: #28901a !important;
-  animation: vibrate 0.5s ease 10; /* 10 iteraciones de 0.5s = 5 segundos */
-  animation-fill-mode: forwards; /* Detiene la animación al completarse */
+  animation: vibrate 0.5s ease 10;
+  animation-fill-mode: forwards;
 }
-
 
 .payment-button:enabled:hover {
-  background-color: #1e6fd8; /* color cuando pasas el mouse */
+  background-color: #1e6fd8;
   transform: translateY(-2px);
 }
-/* Botones de Opciones de Pago */
+
 .payment-option-button {
   width: 100%; /* Ocupa todo el ancho del contenedor */
   display: flex; /* Utiliza flexbox para alinear los elementos internos */
@@ -238,9 +239,7 @@ button:disabled {
     transform: translate(0, 0);
   }
 }
-/* ================================================================ */
 
-/* Botón Continuar con el Pago */
 .continue-button-container {
   margin-top: 1.5rem;
   text-align: center;
@@ -259,22 +258,20 @@ button:disabled {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover normal cuando está habilitado */
+
 .continue-button-container button:hover {
   background: #1e6fd8;
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Cuando el botón está habilitado (se seleccionó un método de pago),
-   le agregamos la animación de vibración (infinita) */
+
 .continue-button-container button:enabled {
-  background: #28901a; /* Verde para indicar que está listo */
+  background: #28901a;
   box-shadow: 0 0 10px rgba(58, 141, 255, 0.7);
-  animation: vibrate 0.5s infinite; /* <-- ¡VIBRACIÓN INFINITA! */
+  animation: vibrate 0.5s infinite;
 }
 
-/* Cuando se hace hover estando habilitado, sumamos el cambio de color + vibración */
 .continue-button-container button:enabled:hover {
   background: #1e6fd8;
   transform: translateY(-2px);
@@ -611,6 +608,8 @@ button:disabled {
   margin-left: 10rem;
 }
 
+
+
 /* ------------------ Responsividad ------------------ */
 @media (max-width: 1024px) {
   .cart-content {
@@ -682,7 +681,6 @@ button:disabled {
     box-shadow: 0 0 10px rgba(58, 141, 255, 0.7);
     animation: vibrate 0.5s infinite; /* <-- ¡VIBRACIÓN INFINITA! */
   }
-
 
   .gift-card-image {
     width: 6rem;

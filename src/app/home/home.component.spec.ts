@@ -4,11 +4,11 @@ import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testin
 import { HomeComponent } from './home.component';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { KinguinService } from '../kinguin.service';
-import { UIStateServiceService } from '../uistate-service.service';
-import { KinguinGiftCard } from '../models/KinguinGiftCard';
+import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
+import { UIStateServiceService } from '../services/uistate-service.service';
+import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import {HighlightService} from "../highlights.service";
+import {HighlightService} from "../highlights-config/highlights.service";
 import { MatDialogModule } from '@angular/material/dialog'; // Si usas Angular Material Dialog
 import { ReactiveFormsModule } from '@angular/forms'; // Si usas formularios reactivos
 import { CommonModule } from '@angular/common';

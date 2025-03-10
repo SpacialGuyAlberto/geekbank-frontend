@@ -1,7 +1,7 @@
 // src/app/components/category-items/category-items.component.ts
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { KinguinGiftCard } from '../../models/KinguinGiftCard';
-import { KinguinService } from '../../kinguin.service';
+import { KinguinGiftCard } from '../../kinguin-gift-cards/KinguinGiftCard';
+import { KinguinService } from '../../kinguin-gift-cards/kinguin.service';
 import { CurrencyPipe, NgForOf, NgIf } from "@angular/common";
 import { RouterLink } from '@angular/router';
 import {Router} from "@angular/router";
@@ -50,7 +50,6 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
   }
 
   loadGiftCards(): void {
-    // Cargar gift cards sin filtrar o con filtros predeterminados
     this.kinguinService.getFilteredGiftCards(this.defaultFilters).subscribe(
       (giftCards) => {
         this.giftCards = giftCards.map(card => ({

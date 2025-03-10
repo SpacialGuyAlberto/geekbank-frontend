@@ -1,7 +1,7 @@
 // cart.reducer.ts
 import { createReducer, on } from '@ngrx/store';
 import { addCartItem, removeCartItem, updateCartItem, clearCart } from './cart.actions';
-import { KinguinGiftCard } from '../../models/KinguinGiftCard';
+import { KinguinGiftCard } from '../../kinguin-gift-cards/KinguinGiftCard';
 
 export interface CartState {
   items: KinguinGiftCard[];

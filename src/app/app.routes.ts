@@ -4,13 +4,13 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from "./home/home.component";
 import { ActivationComponent } from "./activation/activation.component";
 import { LogoutComponent } from "./logout/logout.component";
-import { AuthGuard } from "./auth.guard";
-import { NoAuthGuard } from "./noauth.guard";
+import { AuthGuard } from "./services/auth.guard";
+import { NoAuthGuard } from "./services/noauth.guard";
 import { GiftCardDetailsComponent } from "./gift-card-details/gift-card-details.component";
 import { UserDetailsComponent } from "./user-details/user-details.component";
 import { CartComponent } from "./cart/cart.component";
 import { TigoPaymentComponent } from "./tigo-payment/tigo-payment.component";
-import { AdminPanelComponent } from "./user-details/admin-panel/admin-panel.component";
+import { AdminPanelComponent } from "./admin-panel/admin-panel.component";
 import { SetPasswordComponent } from "./set-password/set-password.component";
 import { AccountInfoComponent } from "./user-details/settings/account-info/account-info.component";
 import { PurchaseConfirmationComponent } from "./purchase-confirmation/purchase-confirmation.component";
@@ -20,7 +20,6 @@ import { TournamentAnnouncementComponent } from "./tournament-announcement/tourn
 import { OrdersComponent } from "./user-details/settings/orders/orders.component";
 import { WishlistComponent } from "./user-details/settings/wishlist/wishlist.component";
 import { PaymentMethodsComponent } from "./user-details/settings/payment-methods/payment-methods.component";
-import {CheckoutComponent} from "./checkout/checkout.component";
 import {FilteredPageComponent} from "./filtered-page/filtered-page.component";
 import {TermsAndConditionsComponent} from "./terms-and-conditions/terms-and-conditions.component";
 import {OfferComponent} from "./offer/offer.component";
@@ -50,7 +49,6 @@ export const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'wish-list', component: WishlistComponent },
-  {path: 'checkout', component: CheckoutComponent },
   { path: 'platform/:name', component: PlatformFilterComponent },
   { path: 'filtered/:category', component: FilteredPageComponent },
   { path: 'terms', component: TermsAndConditionsComponent},
