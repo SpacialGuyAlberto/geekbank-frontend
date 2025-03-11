@@ -22,10 +22,12 @@ export class FiltersComponent implements OnInit{
   @Output() filtersApplied = new EventEmitter<void>();
   @Input() searchQuery : string = "";
 
+  filterReseted: boolean = false;
   isFilterOpen = false;
   isFilterVisible: boolean = false;
   showHighlightsAndRecommendations: boolean = true;
   private searchQuerySubscription: Subscription | undefined;
+  private isSearchModeSubscription: Subscription | undefined;
 
   filters = {
     hideOutOfStock: false,
@@ -114,10 +116,14 @@ export class FiltersComponent implements OnInit{
     this.searchQuerySubscription = this.sharedService.searchQuery$.subscribe( value => {
       this.searchQuery = value;
     });
+    this.isSearchModeSubscription = this.sharedService.isSearchMode$.subscribe(value => {
+      this.filterReseted = value;
+    })
   }
 
   applyFilters(): void {
-    this.filters.name = this.searchQuery;
+
+    this.filters.name = this.filterReseted ? "" : this.searchQuery.toLowerCase().trim();
     this.kinguinService.getFilteredGiftCards(this.filters).subscribe(data => {
       const giftCards: KinguinGiftCard[] = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
@@ -135,7 +141,13 @@ export class FiltersComponent implements OnInit{
     this.isFilterOpen = !this.isFilterOpen;
   }
 
+  toggleFilterReset(): void {
+    this.filterReseted = !this.filterReseted;
+  }
+
   resetFilters(): void {
+
+    this.toggleFilterReset();
 
     this.filters = {
       hideOutOfStock: false,
@@ -148,7 +160,7 @@ export class FiltersComponent implements OnInit{
       tags: '',
       name: ''
     };
-    this.filters.name = this.searchQuery;
+
     this.kinguinService.getKinguinGiftCards(1).subscribe(data => {
       const giftCards: KinguinGiftCard[] = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
