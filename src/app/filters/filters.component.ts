@@ -1,8 +1,10 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { KinguinService } from "../kinguin-gift-cards/kinguin.service";
 import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { FormsModule } from "@angular/forms";
 import { NgClass, NgForOf } from "@angular/common";
+import {Subscription} from "rxjs";
+import {SharedService} from "../services/shared.service";
 
 @Component({
   selector: 'app-filters',
@@ -15,13 +17,15 @@ import { NgClass, NgForOf } from "@angular/common";
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.css']
 })
-export class FiltersComponent {
+export class FiltersComponent implements OnInit{
   @Output() filteredResults = new EventEmitter<KinguinGiftCard[]>();
   @Output() filtersApplied = new EventEmitter<void>();
+  @Input() searchQuery : string = "";
 
   isFilterOpen = false;
   isFilterVisible: boolean = false;
   showHighlightsAndRecommendations: boolean = true;
+  private searchQuerySubscription: Subscription | undefined;
 
   filters = {
     hideOutOfStock: false,
@@ -31,7 +35,8 @@ export class FiltersComponent {
     os: '',
     genre: '',
     language: '',
-    tags: ''
+    tags: '',
+    name: ''
   };
 
   platforms = ['PC', 'PlayStation', 'Xbox'];
@@ -100,11 +105,19 @@ export class FiltersComponent {
   languages = ['English', 'Spanish', 'German'];
   tags = ['indie valley', 'dlc', 'base', 'software'];
 
-  constructor(private kinguinService: KinguinService) {}
+  constructor(
+    private kinguinService: KinguinService,
+    private sharedService: SharedService
+    ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.searchQuerySubscription = this.sharedService.searchQuery$.subscribe( value => {
+      this.searchQuery = value;
+    });
+  }
 
   applyFilters(): void {
+    this.filters.name = this.searchQuery;
     this.kinguinService.getFilteredGiftCards(this.filters).subscribe(data => {
       const giftCards: KinguinGiftCard[] = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
@@ -112,7 +125,6 @@ export class FiltersComponent {
         return card;
       });
       this.filteredResults.emit(giftCards);
-      console.log('Filtered Results: ', giftCards);
 
       this.filtersApplied.emit();
       this.isFilterVisible = false;
@@ -133,8 +145,10 @@ export class FiltersComponent {
       os: '',
       genre: '',
       language: '',
-      tags: ''
+      tags: '',
+      name: ''
     };
+    this.filters.name = this.searchQuery;
     this.kinguinService.getKinguinGiftCards(1).subscribe(data => {
       const giftCards: KinguinGiftCard[] = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
@@ -142,7 +156,6 @@ export class FiltersComponent {
         return card;
       });
       this.filteredResults.emit(giftCards);
-      console.log('Filters reset. All gift cards loaded.');
       this.filtersApplied.emit();
       this.isFilterVisible = false;
     });

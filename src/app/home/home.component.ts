@@ -40,14 +40,10 @@ import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.compon
 })
 export class HomeComponent implements OnInit, OnDestroy {
   showFreeFireComponent: boolean = false;
-
   username: string = '';
   showHighlightsAndRecommendations: boolean = true;
-  existingAccountsData: GiftCard[] = [];
   giftCard: GiftCard | null = null;
-  newAccountsData: KinguinGiftCard[] = [];
   isSmallScreen: boolean = false;
-  isSearching: boolean = false;
   isFilterVisible: boolean = false;
   uiStateSubscription!: Subscription;
   searchQuery: string = '';

@@ -6,6 +6,7 @@ import { FormsModule } from "@angular/forms";
 import { UIStateServiceService } from "../services/uistate-service.service";
 import { Subject, Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
+import {SharedService} from "../services/shared.service";
 
 @Component({
   selector: 'app-search-bar',
@@ -19,14 +20,15 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() searchResults = new EventEmitter<KinguinGiftCard[]>();
   @Output() isFreeFireSearch = new EventEmitter<boolean>();
-
   searchQuery: string = '';
 
   private searchSubject = new Subject<string>();
   private searchSubscription!: Subscription;
 
+
   constructor(
     private kinguinService: KinguinService,
+    private sharedService: SharedService,
     private uiStateService: UIStateServiceService,
     private cd: ChangeDetectorRef
   ) {}
@@ -41,13 +43,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
         return this.kinguinService.searchGiftCards(query).pipe(
           catchError(err => {
-            console.error('Error en la búsqueda de tarjetas:', err);
             return of([] as KinguinGiftCard[]);
           })
         );
       })
     ).subscribe((data: KinguinGiftCard[]) => {
-      console.log('Resultados de búsqueda (debounced):', data);
 
       const giftCards = data.map(card => {
         card.coverImageOriginal = card.images.cover?.thumbnail || '';
@@ -127,6 +127,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
   }
   onSearchEnter(): void {
     const query = this.searchQuery.trim().toLowerCase();
+    this.sharedService.traceSearchQuery(query);
     const isFreeFire = query.includes('free fire') || query.includes('freefair') || query.includes('free fair');
     this.isFreeFireSearch.emit(isFreeFire);
 
@@ -146,14 +147,13 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         return of([] as KinguinGiftCard[]);
       })
     ).subscribe(async (data: KinguinGiftCard[]) => {
-      console.log('Resultados de búsqueda (Enter):', data);
 
       const giftCardsPromises = data.map(async card => {
         card.coverImageOriginal =
           card.coverImageOriginal ||
           card.images.cover?.thumbnail ||
           card.coverImage ||
-          await this.getBestImageUrl(card); // Llama a la función asíncrona si no hay imagen disponible
+          await this.getBestImageUrl(card);
         card.coverImage = card.images.cover?.thumbnail || '';
         return card;
       });
@@ -180,7 +180,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
           );
         })
       ).subscribe(async (res: KinguinGiftCard[]) => {
-        console.log('Resultados de búsqueda (re-subscribed):', res);
 
         const gcPromises = res.map(async card => {
           card.coverImageOriginal =
