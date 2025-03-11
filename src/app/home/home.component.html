@@ -33,7 +33,9 @@
       <div *ngIf="!isSmallScreen" class="filter-section">
         <app-filters
           (filteredResults)="handleFilteredResults($event)"
-          (filtersApplied)="applyFilters()">
+          (filtersApplied)="applyFilters()"
+          [searchQuery]="searchQuery"
+        >
         </app-filters>
       </div>
 

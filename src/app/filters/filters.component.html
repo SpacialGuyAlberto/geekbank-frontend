@@ -27,7 +27,7 @@
     <div class="filter-group">
       <label for="price-range">Rango de Precios</label>
       <input type="range" id="price-range" [(ngModel)]="filters.priceRange" min="0" max="100">
-      <span class="price-value">${{ filters.priceRange }}</span>
+      <span class="price-value">${{ (filters.priceRange * 27.89).toFixed(0)}}</span>
     </div>
 
     <div class="filter-group">

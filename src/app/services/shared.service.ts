@@ -10,10 +10,12 @@ export class SharedService {
   private controlSubject = new Subject<string>();
   private selectedTableSubject = new Subject<string>();
   private isSearchModeBS = new BehaviorSubject<boolean>(false);
+  private searchQuery = new BehaviorSubject<string>("");
 
   controlObservable$ = this.controlSubject.asObservable();
   selectedTable$ = this.selectedTableSubject.asObservable();
   public isSearchMode$ = this.isSearchModeBS.asObservable();
+  public searchQuery$ = this.searchQuery.asObservable();
   constructor() { }
 
   // Método para emitir un evento
@@ -27,6 +29,10 @@ export class SharedService {
 
   deactivateSearchMode() {
     this.isSearchModeBS.next(false);
+  }
+
+  traceSearchQuery(query: string) {
+    this.searchQuery.next(query)
   }
 
 }
