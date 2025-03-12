@@ -150,7 +150,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           localStorage.setItem('productId', id);
           this.productId = id;
           console.log(`Gift Card ID: ${this.kinguinId}`);
-          return this.kinguinService.getGiftCardDetails(id);
+          return this.kinguinService.getGiftCardInformation(id);
 
         } else {
           return of(null);
