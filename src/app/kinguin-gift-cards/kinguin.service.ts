@@ -1,6 +1,6 @@
 // src/app/services/kinguin.service.ts
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
 import { KinguinGiftCard } from './KinguinGiftCard';
 import {environment} from "../../environments/environment";
@@ -61,6 +61,13 @@ export class KinguinService {
     console.log('Parameters being sent:', params.toString());
 
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params });
+  }
+
+  fetchTranslation(text: string | number | boolean): Observable<string> {
+    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const params = new HttpParams().set('text', text.toString().trim());
+
+    return this.http.get<string>('http://localhost:7070/api/kinguin/translate', { headers, params, responseType: 'text' as 'json' });
   }
 
   getGiftCardsByCategory(category: string): Observable<KinguinGiftCard[]> {

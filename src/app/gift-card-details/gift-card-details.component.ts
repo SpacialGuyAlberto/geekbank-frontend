@@ -221,8 +221,9 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private processGiftCardDetails(): void {
+  private async processGiftCardDetails(): Promise<void> {
     if (this.giftCard) {
+
       this.giftCard.coverImageOriginal = this.giftCard.images.cover?.thumbnail || '';
       this.giftCard.coverImage = this.giftCard.images.cover?.thumbnail || '';
       if (this.giftCard.images.screenshots.length > 0) {
@@ -232,6 +233,14 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.images = [this.giftCard.coverImageOriginal];
         this.currentImage = this.images[0];
       }
+
+      await this.kinguinService.fetchTranslation(this.giftCard.regionalLimitations).subscribe(value => {
+        if (this.giftCard?.regionalLimitations) {
+          this.giftCard.regionalLimitations = value;
+          console.log(value)
+        }
+      })
+
       console.log('Detalles de la tarjeta de regalo procesados:', this.giftCard);
     }
   }
