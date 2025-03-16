@@ -155,7 +155,7 @@
   <div class="tab" [class.active]="activeTab === 'description'" (click)="setActiveTab('description')">
     Description
   </div>
-  <div class="tab" [class.active]="activeTab === 'activation'" (click)="setActiveTab('activation')">
+  <div class="tab" [class.active]="activeTab === 'activation'" (click)="[setActiveTab('activation'), fetchActivationDetails()]">
     Detalles de activacion
   </div>
   <div class="tab" [class.active]="activeTab === 'requirements'" (click)="setActiveTab('requirements')">
@@ -168,7 +168,7 @@
 
 <div class="tab-content">
   <div *ngIf="activeTab === 'description'">
-    <p>{{giftCard?.description}}.</p>
+    <p>{{displayedDescription}}.</p>
   </div>
   <div *ngIf="activeTab === 'activation'">
     <!-- Mostrar detalles predeterminados si existen y son suficientes -->

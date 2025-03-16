@@ -109,6 +109,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
   private isTigoPaymentModalOpen: boolean = false;
   protected activationVideoUrl: string | null = '';
   private activationTextDetails: string | null = '';
+  protected displayedDescription: string | null = '';
 
   constructor(
     private activationDetailsService: ActivationDetailsService,
@@ -129,11 +130,9 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
 
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
-    console.log('Evento window:load detectado');
     const productId = localStorage.getItem('productId');
     if (productId) {
       this.checkIfInCart(parseInt(productId, 10));
-      console.log('CHeking if im cart')
     }
   }
 
@@ -149,7 +148,8 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.kinguinId = parseInt(id, 10);
           localStorage.setItem('productId', id);
           this.productId = id;
-          console.log(`Gift Card ID: ${this.kinguinId}`);
+          this.fetchActivationDetails();
+
           return this.kinguinService.getGiftCardDetails(id);
 
         } else {
@@ -166,19 +166,12 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.loadGiftCardLanguages();
           this.checkIfInWishlist(this.giftCard.kinguinId);
 
-          if (this.giftCard.activationDetails.length < 4) {
-            this.fetchActivationDetails(this.giftCard);
-          } else {
-            this.displayedActivationDetails = this.giftCard.activationDetails;
-          }
-
         } else {
-          console.error('No se recibió ningún dato de la tarjeta de regalo.');
+         return;
         }
         this.suggestionLoading = false;
       },
       error: (error) => {
-        console.error('Error al cargar los detalles de la tarjeta de regalo:', error);
         this.suggestionLoading = false;
       }
     });
@@ -197,7 +190,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     this.wishListService.isItemInWishList(kinguinId).subscribe(isInWishlist => {
       if (this.giftCard) {
         this.giftCard.wished = isInWishlist;
-        console.log(`Estado de wishlist para ${kinguinId}: ${isInWishlist}`);
       }
     });
   }
@@ -209,11 +201,11 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         if (itemInCart) {
           this.isInCart = true;
           this.quantityInCart = itemInCart.cartItem.quantity;
-          console.log(`Item encontrado en el carrito: ${JSON.stringify(itemInCart)}`);
+
         } else {
           this.isInCart = false;
           this.quantityInCart = 0;
-          console.log('Item no encontrado en el carrito.');
+
         }
       })
     ).subscribe({
@@ -232,7 +224,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.images = [this.giftCard.coverImageOriginal];
         this.currentImage = this.images[0];
       }
-      console.log('Detalles de la tarjeta de regalo procesados:', this.giftCard);
     }
   }
 
@@ -243,7 +234,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.filterGiftCardLanguages();
         this.suggestionLoading = false;
       }, error => {
-        console.error('Error al cargar los datos de idiomas:', error);
+
         this.suggestionLoading = false;
       });
   }
@@ -263,7 +254,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
 
     this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
       (convertedAmount: number) => {
-        console.log('Tasa de cambio (1 EUR):', convertedAmount);
         this.exchangeRate = convertedAmount;
         this.isLoading = false;
 
@@ -275,7 +265,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         }
       },
       (error) => {
-        console.error('Error al obtener la tasa de cambio:', error);
         this.conversionError = 'Error al obtener la tasa de cambio.';
         this.isLoading = false;
         this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
@@ -285,21 +274,20 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  fetchActivationDetails(product: KinguinGiftCard) {
-    this.activationDetailsService.getDetails(product.kinguinId).subscribe({
-      next: (details: ActivationDetails) => {
-        this.displayedActivationDetails = details.textDetails || 'Detalles de activación no disponibles.';
-
-
-        this.activationVideoUrl = details.videoUrl || '';
-      },
-      error: (err) => {
-
-        this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
-        this.activationVideoUrl = '';
-        console.error('Error al obtener detalles de activación:', err);
-      }
-    });
+  fetchActivationDetails() {
+    if ( this.giftCard) {
+      this.kinguinService.getGiftCardInformation(this.giftCard.kinguinId.toString()).subscribe({
+        next: (giftcard: KinguinGiftCard) => {
+          this.displayedActivationDetails = giftcard.activationDetails || 'Detalles de activación no disponibles.';
+          this.displayedDescription = giftcard.description || 'Descripcion de producto no encontrada.'
+          this.activationVideoUrl = '';
+        },
+        error: (err) => {
+          this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
+          this.activationVideoUrl = '';
+        }
+      });
+    }
   }
 
   calculateConvertedPrice(): void {
@@ -347,7 +335,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.closeFeedbackModal();
       },
       error: (error) => {
-        console.error('Error al enviar feedback:', error);
         this.snackBar.open('Hubo un error al enviar tu feedback. Por favor, intenta de nuevo.', 'Cerrar', {
           duration: 3000,
         });
@@ -371,18 +358,15 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
       const element = this.wishedItems.find(item => item.giftCard.kinguinId === giftCard.kinguinId);
 
       if (!element) {
-        console.error(`Error: No se encontró el elemento con KinguinId ${giftCard.kinguinId} en la lista de deseos.`);
         this.showSnackBar('Hubo un error al procesar tu solicitud. Por favor, intenta de nuevo.');
         return;
       }
 
-      console.log(`Eliminando el elemento de la wishlist: ID ${element.wishedItem.id}`);
       this.wishListService.removeWishItem(element.wishedItem.id).subscribe(() => {
         giftCard.wished = false;
         this.showSnackBar('Producto eliminado de la lista de deseos.');
         this.loadWishedItems();
       }, error => {
-        console.error('Error al eliminar el producto de la wishlist:', error);
         this.showSnackBar('Hubo un error al eliminar el producto de la lista de deseos.');
       });
     } else {
@@ -391,7 +375,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.showSnackBar(`Producto agregado a la lista de deseos: ${giftCard.name}`);
         this.loadWishedItems();
       }, error => {
-        console.error('Error al agregar el producto a la wishlist:', error);
         this.showSnackBar('Hubo un error al agregar el producto a la lista de deseos.');
       });
     }
@@ -401,10 +384,8 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     this.wishListService.getWishItems().subscribe(
       data => {
         this.wishedItems = data;
-        console.log('Lista de deseos cargada:', this.wishedItems);
       },
       error => {
-        console.error('Error al cargar los ítems de la lista de deseos:', error);
       }
     );
   }
@@ -419,7 +400,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
         this.showSnackBar('Producto eliminado del carrito.');
       }, error => {
-        console.error('Error al eliminar del carrito:', error);
         this.showSnackBar('Hubo un error al eliminar el producto del carrito.');
       });
     } else {
@@ -431,7 +411,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.showSnackBar(`Producto agregado al carrito: ${giftCard.name}. Cuyo precio es: ${giftCard.priceHNL}`);
         this.notificationService.addNotification(this.notifMessage, giftCard.coverImage);
       }, error => {
-        console.error('Error al agregar al carrito:', error);
         this.showSnackBar('Hubo un error al agregar el producto al carrito.');
       });
     }
@@ -447,10 +426,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     });
   }
 
-  redirectToLogin(): void {
-    this.router.navigate(['/login']);
-  }
-
   openFeedbackModal(): void {
     this.isFeedbackModalOpen = true;
   }
@@ -461,17 +436,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     this.feedbackScore = 0;
   }
 
-  getTotalPrice(): number {
-    return this.giftCard ? parseFloat((this.giftCard.price).toFixed(2)) : 0;
-  }
-
-  buyNow(giftCard: KinguinGiftCard): void {
-    this.showSnackBar('Funcionalidad "Comprar ahora" en desarrollo.');
-  }
-
-  goBack(): void {
-    this.router.navigate(['/home']);
-  }
 
   nextImage(): void {
     if (this.images.length > 0) {
@@ -487,33 +451,15 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  openPaymentModal() {
-    this.isPaymentModalOpen = true;
-  }
-
   setActiveTab(tab: string) {
     this.activeTab = tab;
-  }
-
-  closePaymentModal() {
-    this.isPaymentModalOpen = false;
-  }
-
-  onPaymentSelected(method: string) {
-    this.closePaymentModal();
-    if (method === 'Tigo Money') {
-      this.isTigoPaymentModalOpen = true;
-    }
-    console.log(`Método de pago seleccionado: ${method}`);
   }
 
   checkIfInCart(kinguinId: number) {
     this.cartService.isItemInCart(this.kinguinId).subscribe(isInCart => {
       if (isInCart) {
         this.isInCart = isInCart
-        console.log(`El producto con ID ${this.kinguinId} está en el carrito.`);
       } else {
-        console.log(`El producto con ID ${this.kinguinId} NO está en el carrito.`);
         this.isInCart = false;
       }
     });

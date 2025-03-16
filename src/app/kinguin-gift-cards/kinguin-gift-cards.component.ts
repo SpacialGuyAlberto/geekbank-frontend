@@ -20,7 +20,7 @@ import { selectAllGiftCards, selectGiftCardsLoading } from "./store/gift-card.se
 import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SharedService} from "../services/shared.service";
-
+import {DeeplService} from "../deepl.service";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -46,10 +46,10 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   @ViewChild('mainPaginator') mainPaginator!: MatPaginator;
 
   giftCards: KinguinGiftCard[] = [];
-  isLoading: boolean = false; // Variable para controlar el estado de carga
+  isLoading: boolean = false;
   displayedGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 1;
-  exchangeRate: number = 0; // Tasa de cambio actualizada
+  exchangeRate: number = 0;
   totalPages: number = 0;
   itemsPerPage: number = 14;
   totalItems: number = 0;
@@ -63,12 +63,14 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   totalPagesMain: number = 0;
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = [];
   private isShearch: Subscription | null = null;
+  private translatedText: string = '';
 
   constructor(
     private authService: AuthService,
     private kinguinService: KinguinService,
     private router: Router,
     private currencyService: CurrencyService,
+    private deepl: DeeplService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
     private mainGiftCards: MainScreenGiftCardService,
@@ -140,7 +142,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
         try {
           let content: MainScreenGiftCardItemDTO[] = [];
 
-          // Puede ser un array sin paginación o un objeto con .content
           if (Array.isArray(res)) {
             content = res;
             this.totalItemsMain = content.length;
@@ -154,7 +155,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
             this.totalPagesMain = res.totalPages;
             this.totalItemsMain = res.totalElements ?? content.length;
           }
-
 
           const newGiftCards = await Promise.all(
             content.map(async dto => {
@@ -176,7 +176,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
           );
 
           this.giftCards = newGiftCards;
-          // En modo principal, el backend ya nos da la página => se muestra tal cual.
           this.displayedGiftCards = this.giftCards;
 
           this.isLoading = false;
@@ -195,7 +194,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   onPageChangeMain(event: PageEvent): void {
     this.currentPageMain = event.pageIndex; // 0-based
     this.pageSizeMain = event.pageSize;
-    // Pedimos al servidor la página:
     this.fetchMainGiftCard(this.currentPageMain, this.pageSizeMain);
   }
 
@@ -321,6 +319,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
 
                 // Generar un descuento aleatorio
                 giftCard.randomDiscount = this.generatePersistentDiscount(giftCard.name);
+                giftCard.name = this.translate(giftCard.name)
 
                 return giftCard;
               })
@@ -417,6 +416,20 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.totalItems = this.giftCards.length;
     this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
     this.updateDisplayedGiftCards();
+  }
+
+  translate(text: string): string {
+    let translation = "";
+    this.deepl.translateText(text, 'DE').subscribe(
+      (response) => {
+        translation= response.translations[0].text;
+      },
+      (error) => {
+        console.error('Error en la traducción:', error);
+      }
+    );
+    console.log(translation)
+    return translation;
   }
 }
 
