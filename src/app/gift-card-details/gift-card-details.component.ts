@@ -148,10 +148,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.kinguinId = parseInt(id, 10);
           localStorage.setItem('productId', id);
           this.productId = id;
-          this.fetchActivationDetails();
-
           return this.kinguinService.getGiftCardDetails(id);
-
         } else {
           return of(null);
         }
@@ -224,7 +221,20 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         this.images = [this.giftCard.coverImageOriginal];
         this.currentImage = this.images[0];
       }
+      this.kinguinService.getGiftCardInformation(this.giftCard.kinguinId.toString()).subscribe({
+        next: (giftcard: KinguinGiftCard) => {
+          this.displayedActivationDetails = giftcard.activationDetails || 'Detalles de activación no disponibles.';
+          this.displayedDescription = giftcard.description || 'Descripcion de producto no encontrada.'
+          this.activationVideoUrl = '';
+        },
+        error: (err) => {
+          this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
+          this.activationVideoUrl = '';
+        }
+      });
     }
+
+
   }
 
   private loadGiftCardLanguages(): void {
@@ -272,22 +282,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
         });
       }
     );
-  }
-
-  fetchActivationDetails() {
-    if ( this.giftCard) {
-      this.kinguinService.getGiftCardInformation(this.giftCard.kinguinId.toString()).subscribe({
-        next: (giftcard: KinguinGiftCard) => {
-          this.displayedActivationDetails = giftcard.activationDetails || 'Detalles de activación no disponibles.';
-          this.displayedDescription = giftcard.description || 'Descripcion de producto no encontrada.'
-          this.activationVideoUrl = '';
-        },
-        error: (err) => {
-          this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
-          this.activationVideoUrl = '';
-        }
-      });
-    }
   }
 
   calculateConvertedPrice(): void {
