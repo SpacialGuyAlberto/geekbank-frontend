@@ -27,7 +27,7 @@ export class HighlightsConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
   highlightItems: HighlightItemWithGiftcard[] = [];
   currentHighlights: KinguinGiftCard[] = [];
-  highlightsItems: HighlightItem[] = [];
+  displayedHighlights: HighlightItem[] = [];
   highlightList: HighlightItem[] = [];
   currentHighlightItem: HighlightItem | undefined = undefined;
   modalVisible: boolean = false;
@@ -46,7 +46,7 @@ export class HighlightsConfigComponent implements OnInit {
 
   ngOnInit() {
     this.highlightService.getHighlights().subscribe((data) => {
-      data.map((item) => this.highlightList.push(item.hihlightItem));
+      data.map((item) => this.highlightList.push(item));
     });
 
     this.kinguinService.getGiftCardsModel().subscribe((data: KinguinGiftCard[]) => {
@@ -92,7 +92,6 @@ export class HighlightsConfigComponent implements OnInit {
   createHighlightFromCard(card: KinguinGiftCard): HighlightItem {
     let highlightItem : HighlightItem | undefined;
     highlightItem = {
-      id: 0,
       productId: card.kinguinId,
       imageUrl : "",
       title: card.name,
@@ -102,13 +101,13 @@ export class HighlightsConfigComponent implements OnInit {
     return highlightItem;
   }
 
-  removeFromHighlights(cardToRemove: KinguinGiftCard): void {
-    this.currentHighlights = this.currentHighlights.filter((card) => card !== cardToRemove);
+  removeFromHighlights(cardToRemove: HighlightItem): void {
+    this.highlightList = this.highlightList.filter((card) => card !== cardToRemove);
   }
 
   save(): void {
     const productIds = this.currentHighlights.map((card) => card.kinguinId);
-    const currentHighlights = this.highlightsItems;
+    const currentHighlights = this.highlightList;
 
     this.highlightService.removeHighlights([]).subscribe(
       () => {

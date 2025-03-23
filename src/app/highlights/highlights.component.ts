@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForOf, NgOptimizedImage } from "@angular/common";
-import { HighlightItemWithGiftcard } from "../highlights-config/HighlightItem";
+import {HighlightItem, HighlightItemWithGiftcard} from "../highlights-config/HighlightItem";
 import { HighlightService } from "../highlights-config/highlights.service";
 import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { firstValueFrom } from "rxjs";
 export class HighlightsComponent implements OnInit {
   highlightItems: HighlightItemWithGiftcard[] = [];
   highlights: KinguinGiftCard[] = [];
+  displayedHighlights: HighlightItem[] = [];
 
   currentIndex = 0;
 
@@ -35,60 +36,14 @@ export class HighlightsComponent implements OnInit {
 
   async loadHighlights() {
     try {
-      // Obtener los datos de highlights usando firstValueFrom
       const data = await firstValueFrom(this.highlightService.getHighlights());
+      this.displayedHighlights = data;
 
-      // Verificar que data no sea undefined, ni null y que sea un array
       if (!data || !Array.isArray(data)) {
         console.error('No se recibieron datos válidos para los highlights.');
         return;
       }
 
-      for (const item of data) {
-        const giftcard = item.giftcard;
-
-        const imageUrls: string[] = [];
-        if (giftcard.coverImageOriginal) {
-          imageUrls.push(giftcard.coverImageOriginal);
-        }
-        if (giftcard.images.cover?.thumbnail) {
-          imageUrls.push(giftcard.images.cover.thumbnail);
-        }
-        if (giftcard.screenshots && giftcard.screenshots.length > 0) {
-          imageUrls.push(...giftcard.screenshots.map(screenshot => screenshot.url));
-        }
-
-        const uniqueImageUrls = Array.from(new Set(imageUrls));
-
-        const imagePromises = uniqueImageUrls.map(url =>
-          this.getImageResolution(url)
-            .then(res => ({ url, resolution: res.width * res.height}))
-            .catch(err => {
-              console.error(`Error al cargar la imagen ${url}:`, err);
-              return { url, resolution: 0 }; // Considerar resolución 0 si falla
-            })
-        );
-
-        const results = await Promise.all(imagePromises);
-
-
-        const validImages = results
-          .filter(img => img.resolution > 0)
-          .sort((a, b) => b.resolution - a.resolution);
-
-        // Asignar la mejor imagen disponible
-        if (validImages.length > 0) {
-          giftcard.selectedImage = validImages[0].url;
-          console.log(validImages);
-        } else {
-          giftcard.selectedImage = '';
-          console.warn(`No se encontró una imagen válida para el giftcard: ${giftcard.name}`);
-        }
-
-        this.highlights.push(giftcard);
-      }
-
-      // Iniciar el carrusel automático (ahora que ya tenemos los slides)
       this.startAutoSlide();
 
     } catch (error) {

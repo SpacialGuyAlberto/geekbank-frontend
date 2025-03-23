@@ -62,7 +62,7 @@
         <div *ngFor="let item of highlightList">
           <div class="gift-card-image-container">
             <img [src]="item.imageUrl" alt="{{ item.productId }}" class="gift-card-image" />
-            <button class="remove-highlight-btn">
+            <button class="remove-highlight-btn" (click)="removeFromHighlights(item)">
               <i class="fas fa-minus-circle"></i>
             </button>
             <div class="gift-card-content">
