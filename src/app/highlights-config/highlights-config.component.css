@@ -34,6 +34,9 @@
   transition: background-color 0.3s ease;
 }
 
+#save-highlight-image-btn{
+  position: relative;
+}
 .save-btn:hover {
   background-color: #e6b800;
 }
@@ -391,3 +394,17 @@
 /* =======================================
    Información Adicional sobre la Gift Card
    ======================================= */
+.close {
+  position: relative;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: transform var(--transition-speed) ease;
+}
+
+.close:hover {
+  color: #f9c74f;
+  transform: scale(1.5);
+}

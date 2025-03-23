@@ -35,7 +35,7 @@ export class HighlightsConfigComponent implements OnInit {
   currentSelectedCard: KinguinGiftCard | undefined = undefined;
   currectSelectedCardImages: string[] = [];
   currentImage: string = "";
-  private currentImageIndex: number = 0;
+  protected currentImageIndex: number = 0;
   selectedImage: string = "";
 
   constructor(
@@ -154,6 +154,8 @@ export class HighlightsConfigComponent implements OnInit {
 
   closeModal(){
     this.modalVisible = false;
+    this.currentHighlightItem = undefined;
+    this.currectSelectedCardImages = [];
   }
 
   selectImageAsHighlightImage(): void {

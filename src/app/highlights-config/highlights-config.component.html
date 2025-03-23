@@ -92,10 +92,9 @@
 <!--    </div>-->
 <!--  </div>-->
   <ng-container>
-
     <div  class="gift-card-details-container">
-      <div class="fa-close" (click)="closeModal()">
-        <span>X</span>
+      <div (click)="closeModal()">
+        <span class="close">X</span>
       </div>
       <div class="gift-card-image-container">
         <button class="arrow left"  aria-label="Imagen Anterior">
@@ -108,10 +107,13 @@
 
         <img *ngIf="currentImage" [src]="currentImage" class="" alt="">
       </div>
+      <div>
+        <p>{{currentImageIndex + 1}} / {{currectSelectedCardImages.length}}</p>
+      </div>
     </div>
+    <button class="save-btn" id="save-highlight-image-btn" (click)="selectImageAsHighlightImage()">
+      <i class="fas fa-save"></i> Imagen como principal
+    </button>
   </ng-container>
 
-  <button class="save-btn" (click)="selectImageAsHighlightImage()">
-    <i class="fas fa-save"></i> Imagen como principal
-  </button>
 </div>
