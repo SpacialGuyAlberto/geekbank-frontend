@@ -18,6 +18,8 @@
       <h2>Resultados de Búsqueda</h2>
       <div class="gift-cards-container">
         <!-- Lista de tarjetas obtenidas de la búsqueda -->
+
+
         <div *ngFor="let card of giftCards" class="gift-card">
           <div class="gift-card-image-container">
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
@@ -41,22 +43,75 @@
       <h2>Mis Destacados</h2>
       <div class="gift-cards-container">
         <!-- Lista de tarjetas en los highlights actuales -->
-        <div *ngFor="let card of currentHighlights" class="gift-card">
+<!--        <div *ngFor="let card of currentHighlights" class="gift-card">-->
+<!--          <div class="gift-card-image-container">-->
+<!--            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />-->
+<!--            &lt;!&ndash; Botón para eliminar de los highlights &ndash;&gt;-->
+<!--            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">-->
+<!--              <i class="fas fa-minus-circle"></i>-->
+<!--            </button>-->
+<!--          </div>-->
+<!--          <div class="gift-card-content">-->
+<!--            <h3 class="gift-card-title">{{ card.name }}</h3>-->
+<!--            <div class="gift-card-price">-->
+<!--              <span>{{ card.price | currency }}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+        <div *ngFor="let item of highlightList">
           <div class="gift-card-image-container">
-            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-            <!-- Botón para eliminar de los highlights -->
-            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">
+            <img [src]="item.imageUrl" alt="{{ item.productId }}" class="gift-card-image" />
+            <button class="remove-highlight-btn">
               <i class="fas fa-minus-circle"></i>
             </button>
-          </div>
-          <div class="gift-card-content">
-            <h3 class="gift-card-title">{{ card.name }}</h3>
-            <div class="gift-card-price">
-              <span>{{ card.price | currency }}</span>
+            <div class="gift-card-content">
+              <h3 class="gift-card-title">{{ item.title }}</h3>
+              <div class="gift-card-price">
+                <span>{{ item.price | currency }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+<div
+  *ngIf="modalVisible"
+ class="modal"
+>
+<!--  <div *ngIf="showSpinner" class="loading-indicator">-->
+<!--    <div class="bars">-->
+<!--      <div class="bar bar1"></div>-->
+<!--      <div class="bar bar2"></div>-->
+<!--      <div class="bar bar3"></div>-->
+<!--      <div class="bar bar4"></div>-->
+<!--      <div class="bar bar5"></div>-->
+<!--    </div>-->
+<!--  </div>-->
+  <ng-container>
+
+    <div  class="gift-card-details-container">
+      <div class="fa-close" (click)="closeModal()">
+        <span>X</span>
+      </div>
+      <div class="gift-card-image-container">
+        <button class="arrow left"  aria-label="Imagen Anterior">
+          <span class="material-icons"  (click)="previousImage()" >arrow_back</span>
+        </button>
+
+        <button class="arrow right"  aria-label="Imagen Siguiente">
+          <span class="material-icons" (click)="nextImage()">arrow_forward</span>
+        </button>
+
+        <img *ngIf="currentImage" [src]="currentImage" class="" alt="">
+      </div>
+    </div>
+  </ng-container>
+
+  <button class="save-btn" (click)="selectImageAsHighlightImage()">
+    <i class="fas fa-save"></i> Imagen como principal
+  </button>
 </div>

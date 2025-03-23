@@ -47,7 +47,6 @@ export class HighlightsComponent implements OnInit {
       for (const item of data) {
         const giftcard = item.giftcard;
 
-
         const imageUrls: string[] = [];
         if (giftcard.coverImageOriginal) {
           imageUrls.push(giftcard.coverImageOriginal);
@@ -63,7 +62,7 @@ export class HighlightsComponent implements OnInit {
 
         const imagePromises = uniqueImageUrls.map(url =>
           this.getImageResolution(url)
-            .then(res => ({ url, resolution: res.width * res.height }))
+            .then(res => ({ url, resolution: res.width * res.height}))
             .catch(err => {
               console.error(`Error al cargar la imagen ${url}:`, err);
               return { url, resolution: 0 }; // Considerar resolución 0 si falla
@@ -80,6 +79,7 @@ export class HighlightsComponent implements OnInit {
         // Asignar la mejor imagen disponible
         if (validImages.length > 0) {
           giftcard.selectedImage = validImages[0].url;
+          console.log(validImages);
         } else {
           giftcard.selectedImage = '';
           console.warn(`No se encontró una imagen válida para el giftcard: ${giftcard.name}`);

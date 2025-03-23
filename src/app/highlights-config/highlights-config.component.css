@@ -172,3 +172,222 @@
     flex-direction: column;
   }
 }
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.85); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 1rem; /* Espacio adicional alrededor del contenido */
+  overflow: hidden; /* Evita el scroll en todo el modal */
+}
+
+
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: calc(4px * var(--scale-factor, 1));
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor, 1));
+  height: calc(20px * var(--scale-factor, 1));
+  background-color: var(--highlight-color, #f9c74f);
+  border-radius: calc(4px * var(--scale-factor, 1));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar {
+  width: calc(8px * var(--scale-factor));
+  height: calc(20px * var(--scale-factor));
+  background-color: var(--highlight-color);
+  border-radius: calc(4px * var(--scale-factor));
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.bar1 {
+  background-color: var(--highlight-color-1);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
+  animation-delay: -0.4s;
+}
+
+.bar2 {
+  background-color: var(--highlight-color-2);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
+  animation-delay: -0.2s;
+}
+
+.bar3 {
+  background-color: var(--highlight-color-3);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
+  animation-delay: 0s;
+}
+
+.bar4 {
+  background-color: var(--highlight-color-4);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
+  animation-delay: 0.2s;
+}
+
+.bar5 {
+  background-color: var(--highlight-color);
+  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
+  animation-delay: 0.4s;
+}
+
+
+@keyframes pulse-bars {
+  0%, 100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scaleY(1.5);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+/* =======================================
+   Contenedor de la Imagen de la Gift Card
+   ======================================= */
+
+.gift-card-details-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1rem;
+  max-width: 80%;
+  /*background-color: rgba(2, 21, 38, 0.8); !* Transparent background *!*/
+  color: #b5beb4;
+  /*border: 0.125rem solid rgba(255, 255, 255, 0.3); !* Soft neon border *!*/
+  border-radius: 0.125rem;
+  /*box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.7); !* Glowing shadow effect *!*/
+  z-index: 1000;
+  padding: 1rem;
+
+  /* Asegurar que la columna se ajuste cuando la pantalla sea pequeña */
+  flex-direction: row;
+  transition: transform 0.5s ease, border-color 0.5s ease;
+}
+
+
+.gift-card-details-container:hover {
+  transform: scale(1.02); /* Efecto de agrandamiento */
+  /*background: rgba(10, 20, 40, 0.8); !* Cambio sutil de fondo al hacer hover *!*/
+  /*box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.5); !* Aumento de sombra *!*/
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgb(216, 4, 101); /* Fondo semitransparente */
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+  z-index: 1000;
+}
+
+.arrow.left {
+  left: 10px;
+  z-index: 1000;/* Posición a la izquierda */
+}
+
+.arrow.right {
+  right: 10px;
+  z-index: 1000;/* Posición a la derecha */
+}
+
+.arrow:hover {
+  background: rgba(0, 0, 0, 0.8); /* Fondo más oscuro al hacer hover */
+  transform: translateY(-50%) scale(1.1); /* Ligero aumento de tamaño al hacer hover */
+}
+
+
+.arrow .material-icons {
+  font-size: 1.5rem;
+}
+
+.gift-card-image-container {
+  flex: 1;
+  max-width: 80%;
+  background-color: rgba(57, 255, 20, 0.1); /* Verde neón suave con transparencia */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.125rem;
+  overflow: hidden;
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.gift-card-image-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 80%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0)); /* Añade un degradado suave */
+  pointer-events: none;
+}
+
+.gift-card-image {
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+  border-top-left-radius: calc(0.5rem * var(--scale-factor));
+  border-top-right-radius: calc(0.5rem * var(--scale-factor));
+  display: block;
+  transition: transform var(--transition-speed) ease;
+}
+
+.gift-card-image-container:hover .gift-card-image {
+  transform: scale(1.05);
+}
+
+/* =======================================
+   Información Adicional sobre la Gift Card
+   ======================================= */

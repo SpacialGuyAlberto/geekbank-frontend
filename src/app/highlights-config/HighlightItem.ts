@@ -1,8 +1,11 @@
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 
 export interface HighlightItem {
-  id: number;
+  id?: number;
   productId: number;
+  imageUrl: string;
+  title: string;
+  price: number;
 }
 
 export interface HighlightItemWithGiftcard {
