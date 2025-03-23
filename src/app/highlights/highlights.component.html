@@ -8,6 +8,7 @@
     <div
       *ngFor="let highlight of displayedHighlights"
       class="highlight-card"
+      (click)="viewDetails(highlight.productId)"
       >
       <img
         [src]="highlight.imageUrl"

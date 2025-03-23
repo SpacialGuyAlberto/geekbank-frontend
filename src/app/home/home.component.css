@@ -115,6 +115,7 @@ body, html {
 
 .highlights-section {
   display: flex;
+  margin-left: 10%;
   justify-content: center;
 }
 

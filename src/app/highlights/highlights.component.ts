@@ -38,6 +38,9 @@ export class HighlightsComponent implements OnInit {
     try {
       const data = await firstValueFrom(this.highlightService.getHighlights());
       this.displayedHighlights = data;
+      data.map( value => {
+        console.log("CARD PRODUCT ID: " + value.productId)
+      })
 
       if (!data || !Array.isArray(data)) {
         console.error('No se recibieron datos válidos para los highlights.');
@@ -133,9 +136,9 @@ export class HighlightsComponent implements OnInit {
     track.style.transform = `translateX(${amountToMove}px)`;
   }
 
-  viewDetails(card: KinguinGiftCard): void {
-    console.log('CARD ID: ' + card.productId);
-    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
+  viewDetails(productId: number): void {
+    console.log('CARD ID: ' + productId);
+    this.router.navigate(['/gift-card-details', productId]).then(success => {
       if (success) {
         console.log('Navigation successful');
       } else {
