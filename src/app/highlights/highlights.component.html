@@ -6,12 +6,13 @@
 
   <div class="carousel-track">
     <div
-      *ngFor="let product of highlights"
+      *ngFor="let highlight of displayedHighlights"
       class="highlight-card"
-      (click)="viewDetails(product)">
+      (click)="viewDetails(highlight.productId)"
+      >
       <img
-        [src]="product.selectedImage"
-        [alt]="product.name"
+        [src]="highlight.imageUrl"
+        [alt]="highlight.title"
         class="highlight-card-image"
         loading="lazy"
       >

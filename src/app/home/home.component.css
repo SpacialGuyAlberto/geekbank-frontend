@@ -115,6 +115,7 @@ body, html {
 
 .highlights-section {
   display: flex;
+  margin-left: 10%;
   justify-content: center;
 }
 
@@ -192,6 +193,11 @@ body, html {
     left: 50%;
     right: 50%;
     transform: translateX(-50%); /* Centra el banner */
+  }
+
+  .highlights-section {
+    margin-right: 25%;
+    width: 130%;
   }
 
   .banner h1 {
