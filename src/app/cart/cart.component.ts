@@ -1,8 +1,8 @@
 // cart.component.ts
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {CartService} from "./cart.service";
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
-import { Router, RouterLink } from "@angular/router";
+import {Event, Router, RouterLink} from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import {CartItemWithGiftcard} from "./CartItem";
 import {CurrencyService} from "../services/currency.service";
@@ -15,14 +15,13 @@ import { RandomKeyMostSoldComponent } from "../random-key-most-sold/random-key-m
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { PayPalButtonComponent } from "../paypal-button/paypal-button.component";
 import {Observable, Subject, takeUntil} from "rxjs";
-import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION } from "../payment/payment.token";
+import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
 import {GuestService} from "../services/guest.service";
 import {User} from "../user-details/User";
 import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
 import {PromotionsService} from "../promotions/promotions.service";
 import {Promotion} from "../promotions/Promotion.model";
-
 
 @Component({
   selector: 'app-cart',
@@ -63,13 +62,17 @@ import {Promotion} from "../promotions/Promotion.model";
     {
       provide: IS_MANUAL_TRANSACTION,
       useValue: false
+    },
+    {
+      provide: PROMO_CODE,
+      useValue: null
     }
   ]
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
   cartItems: CartItemWithGiftcard[] = [];
   exchangeRate: number = 0;
-  showDialog: boolean = false;
+  showDialog: boolean = false
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
   isLoading: boolean = false;
@@ -78,6 +81,7 @@ export class CartComponent implements OnInit, OnDestroy {
   userId: number | null = null;
   user: User | null = null;
   showPaypalPaymentModal: boolean = false;
+  discountApplied: boolean = false;
   totalAmountString: string | null = '';
   totalAmountUSD: number | null = 0;
   totalAmountUSDString: string | null = '';
@@ -180,13 +184,19 @@ export class CartComponent implements OnInit, OnDestroy {
 
   calculateTotalPriceEUR(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
-    this.totalPriceEUR = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);;
+    this.totalPriceEUR = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);
     this.getExchangeRate();
   }
 
   calculateTotalPriceHNL(): void {
     let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
-    this.totalHNL = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);
+    this.totalHNL =  parseFloat(total.toFixed(2));
+    if (this.promo){
+      this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
+      console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
+    }
+
+    console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
   }
 
   selectOption(option: string): void {
@@ -217,7 +227,8 @@ export class CartComponent implements OnInit, OnDestroy {
         amount: this.totalHNL,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
-        gameUserId: this.gameUserId || undefined
+        gameUserId: this.gameUserId || undefined,
+        promoCode: this.promo?.code
       };
     } else if (this.authService.isAuthenticated() && this.userId !== null) {
       // Caso: Usuario autenticado con userId
@@ -237,7 +248,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promo?.code
         };
       } else {
         // Carrito vacío, usar balance u otro
@@ -255,7 +267,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalPrice,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promo?.code
         };
       }
     } else if (this.guestId) {
@@ -274,7 +287,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promo?.code
         };
       } else {
         orderDetails = {
@@ -290,7 +304,8 @@ export class CartComponent implements OnInit, OnDestroy {
           amount: this.totalHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
+          gameUserId: this.gameUserId || undefined,
+          promoCode: this.promo?.code
         };
       }
     } else {
@@ -303,21 +318,15 @@ export class CartComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log("DETALLES DE ORDEN:", orderDetails);
     this.orderDetails = orderDetails;
 
-    // Dependiendo de la opción seleccionada, mostrar el botón correspondiente:
     if (this.selectedOption === 'paypal') {
-      // PayPal: usamos la orden tal cual está
       this.selectedOption = null;
       this.showPayPalButton = true;
     } else if (this.selectedOption === 'card') {
-      // Card: usamos la misma orden
       this.selectedOption = null;
       this.showCardButton = true;
     } else if (this.selectedOption === 'TIGO MONEY') {
-      // Tigo: Aquí NO necesitamos refNumber todavía.
-      // El componente Tigo preguntará por el refNumber y luego actualizará la orden.
       this.selectedOption = null;
       this.showPaymentModal = true;
     } else {
@@ -439,8 +448,6 @@ export class CartComponent implements OnInit, OnDestroy {
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest | undefined;
 
-
-
     if (this.productId !== null) {
       orderDetails = {
         userId: this.userId ? Number(this.userId) : null,
@@ -551,24 +558,26 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   handleTransactionCancelled() {
-    // Este método se llama cuando TigoPaymentComponent emite el evento transactionCancelled
+
     this.showCancelledModal = true;
   }
 
   openTerms(): void {
     this.dialog.open(TermsAndConditionsComponent, {
-      width: '600px', // Puedes ajustar el tamaño según tus necesidades
-      maxHeight: '80vh', // Para asegurar que no exceda la altura de la pantalla
+      width: '600px',
+      maxHeight: '80vh',
     });
   }
 
-
   checkIfCodeExists(code: string): Observable<boolean> {
+
     this.promotionService.promotionCodeExist(code).subscribe( value => {
       this.codeExist = value;
       this.codeExistBlueprint = value;
+      if (value){
+        this.fetchPromoWithCode(code);
+      }
     });
-
     return this.promotionService.promotionCodeExist(code);
   }
 
@@ -578,6 +587,12 @@ export class CartComponent implements OnInit, OnDestroy {
         (value) => {
           this.promo = value;
           this.discountReceived = value ? `You have received ${this.promo.discountPorcentage} of discount` : "You have not received discount";
+          if (this.promo && !this.discountApplied){
+            let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
+            this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
+            console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
+            this.promoCode = value.code;
+          }
         });
     }
     this.snackBar.open('Descuento aplicado a tu orden de compra', 'Cerrar', { duration: 5000 });
@@ -585,11 +600,13 @@ export class CartComponent implements OnInit, OnDestroy {
 
   calculatePromoDiscount() : number {
     return this.promo != undefined ? this.promo.discountPorcentage : 1;
+    console.log("TOTAL AMOUNT HNL AFTER DISCOUNT" + this.totalHNL)
   }
-
-
 
   protected readonly Number = Number;
   promoCode: string = "";
   codeExist: boolean = true;
+
+  ngAfterViewInit(): void {
+  }
 }

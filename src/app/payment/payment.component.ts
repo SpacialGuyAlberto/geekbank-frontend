@@ -3,7 +3,7 @@ import { PaymentService } from "../payment-options/payment.service";
 import { TigoPaymentComponent } from '../tigo-payment/tigo-payment.component';
 import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
 import { NgComponentOutlet, NgIf } from "@angular/common";
-import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE, IS_MANUAL_TRANSACTION} from "./payment.token";
+import {CART_ITEMS, GAME_USER_ID, PRODUCT_ID, TOTAL_PRICE, IS_MANUAL_TRANSACTION, PROMO_CODE} from "./payment.token";
 import {TigoService} from "../tigo-payment/tigo.service";
 import {TigoPaymentService} from "../tigo-payment/tigo-payment.service";
 import {BalancePaymentComponent} from "../balance-payment/balance-payment.component";
@@ -30,7 +30,7 @@ export class PaymentComponent implements OnInit{
   @Input() gameUserId: number | null = null;
   @Input() isManualTransaction: boolean = false;
   @Input() buyingBalance: boolean = false;
-
+  @Input() promoCode: string | null = null;
   @Output() closeModal = new EventEmitter<void>();
   @Output() paymentSelected = new EventEmitter<string>();
 
@@ -54,7 +54,8 @@ export class PaymentComponent implements OnInit{
       { provide: TOTAL_PRICE, useValue: this.totalPrice || 0 },
       { provide: PRODUCT_ID, useValue: this.productId },
       { provide: GAME_USER_ID, useValue: this.gameUserId },
-      { provide: IS_MANUAL_TRANSACTION, useValue: this.isManualTransaction }
+      { provide: IS_MANUAL_TRANSACTION, useValue: this.isManualTransaction },
+      {provide: PROMO_CODE, useValue: this.promoCode}
     ];
     return Injector.create({ providers, parent: this.injector });
   }

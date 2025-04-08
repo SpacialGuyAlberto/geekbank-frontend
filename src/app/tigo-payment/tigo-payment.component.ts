@@ -16,7 +16,14 @@ import { Router } from "@angular/router";
 import { CurrencyService } from "../services/currency.service";
 import { PaymentMethod } from "../payment-options/payment-method.interface";
 import { PaymentService } from "../payment-options/payment.service";
-import { CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE } from "../payment/payment.token";
+import {
+  CART_ITEMS,
+  GAME_USER_ID,
+  IS_MANUAL_TRANSACTION,
+  PRODUCT_ID,
+  PROMO_CODE,
+  TOTAL_PRICE
+} from "../payment/payment.token";
 import { TigoPaymentService } from "./tigo-payment.service";
 import { OrderDetails } from "../models/order-details.model";
 import { OrderRequest } from "../models/order-request.model";
@@ -41,20 +48,18 @@ import { switchMap } from "rxjs/operators";
 })
 export class TigoPaymentComponent implements OnInit, OnDestroy {
 
-  // Inyecciones de valores
   cartItems = inject(CART_ITEMS, { optional: true }) || [];
   totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
   productId = inject(PRODUCT_ID, { optional: true });
   gameUserId = inject(GAME_USER_ID, { optional: true });
   isManualTransaction = inject(IS_MANUAL_TRANSACTION);
+  promoCode = inject(PROMO_CODE, { optional: true });
 
-  // Variables internas
   private postLoginAction: (() => void) | null = null;
   unmatchedPaymentResponse: UnmatchedPaymentResponseDto | null = null;
   account: Account | null = null;
   accountId: number = 0;
 
-  // Manejo de transacciones y verificación
   paymentReferenceNumber: string = "";
   insufficientPaymentAmount: string = "";
   showInsufficientPaymentAmount: boolean = false;
@@ -80,14 +85,9 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   tempPin: string = '';
   currentTransaction: Transaction | null = null;
   verifyTransactionSubscription: Subscription | null = null;
-  private verificationFormSubscription: Subscription | undefined;
-  private spinnerSubscription: Subscription | undefined;
   private transactionStatusSubscription: Subscription | undefined;
-  private tempPinSubscription: Subscription | undefined;
   private errorMessageSubscription: Subscription | undefined;
-  private orderRequestIdSubscription: Subscription | undefined;
 
-  // Control de formularios de verificación
   showVerificationForm: boolean = false;
   verificationMessage: string = '';
   verificationData = {
@@ -130,6 +130,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   // Recibimos un totalAmount si fuera necesario
   @Input() totalAmount!: number;
+  @Input() promo_code: string | null = "Muster";
 
   // ─────────────────────────────────────────────────────
   //        Manejo de "steps" para el workflow
@@ -138,7 +139,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   // Step 3: Resumen
   // Step 4: Procesamiento / resultado final
   // ─────────────────────────────────────────────────────
-  step: number = 1; // Comienza en 1 => ingresar referencia
+  step: number = 1;
 
   constructor(
     private accountService: AccountService,
@@ -294,7 +295,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
         sendKeyToWhatsApp: this.wantsSMSKey,
-        promoCode: localStorage.getItem("promoCode")
+        promoCode: this.promoCode
       };
       if (this.gameUserId !== null) {
         orderDetails.gameUserId = this.gameUserId;
@@ -320,7 +321,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
-          promoCode: localStorage.getItem("promoCode")
+          promoCode: this.promoCode
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -341,7 +342,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
-          promoCode: localStorage.getItem("promoCode")
+          promoCode: this.promoCode
         };
       }
       if (this.gameUserId !== null) {
@@ -368,7 +369,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
-          promoCode: localStorage.getItem("promoCode")
+          promoCode: this.promoCode
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -389,7 +390,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
-          promoCode: localStorage.getItem("promoCode")
+          promoCode: this.promoCode
         };
         if (this.gameUserId !== null) {
           orderDetails.gameUserId = this.gameUserId;
@@ -404,21 +405,17 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const expectedAmount = this.totalPrice;
 
     try {
-      // Verificamos el pago no asociado
       const isVerified = await this.verifyUnmatchedPayment(refNumber, expectedAmount);
       if (isVerified) {
         orderDetails.refNumber = refNumber;
         this.paymentReferenceNumber = refNumber;
-        // Iniciamos el pago
         this.tigoPaymentService.initializePayment(orderDetails);
         this.showSpinner = true;
         this.isPaymentVerified = true;
         this.manualVerificationSuccess = 'Su pago ha sido verificado.';
 
-        // Manejo de diferencias
         if (this.unmatchedPaymentResponse) {
           if (this.unmatchedPaymentResponse.difference === 0) {
-            // Esperamos a la transacción
             this.transactionSubscription = this.tigoPaymentService.transaction$.subscribe(transaction => {
               this.currentTransaction = transaction;
               if (this.currentTransaction?.transactionNumber) {
