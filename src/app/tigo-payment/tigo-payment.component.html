@@ -148,7 +148,10 @@
         <span *ngIf="wantsSMSKey">Sí (se enviará al teléfono anterior)</span>
         <span *ngIf="!wantsSMSKey">No</span>
       </p>
-
+      <p><strong>PROMO CODE:</strong>
+        <span *ngIf="promo_code">{{promo_code}}</span>
+        <span *ngIf="!promo_code">No hay un codigo de promocion</span>
+      </p>
       <hr />
       <p class="error-message" *ngIf="manualVerificationError">{{ manualVerificationError }}</p>
 
