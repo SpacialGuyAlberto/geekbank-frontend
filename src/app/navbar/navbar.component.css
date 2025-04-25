@@ -162,7 +162,7 @@ html {
   flex: 0 0 auto;
   display: flex;
   align-items: center;
-  gap: 1rem; /* 16px */
+  gap: 1.5rem; /* 24px - increased spacing between elements */
 }
 
 .navbar-links a,
@@ -177,6 +177,11 @@ html {
 .navbar-links i:hover {
   color: #99ccff;
   transform: scale(1.5);
+}
+
+/* Specific rule for login and register links */
+.navbar-links a.nav-link:hover {
+  transform: scale(1.3);
 }
 
 /* Íconos */
