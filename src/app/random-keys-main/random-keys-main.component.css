@@ -79,7 +79,7 @@
   text-align: left; /* Alineamos a la izquierda */
   color: #FFFFFF;
   padding-left: 2rem; /* Añadimos un poco de padding izquierdo */
-  margin-top: 2rem;
+  margin-top: 5rem; /* Increased from 2rem to create more space between banner and text */
   animation: fadeIn 1.5s ease-in-out;
   z-index: 2;
 }

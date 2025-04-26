@@ -27,7 +27,7 @@ html, body {
 
 .login-container {
   position: relative;
-  margin: 10rem auto;
+  margin: 15rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -134,6 +134,7 @@ button:focus {
   .login-container {
     width: 90%;
     padding: 0.9375rem; /* 15px to rem */
+    margin: 12rem auto; /* Adjusted for smaller screens */
   }
 
   .login-title {
@@ -155,6 +156,7 @@ button:focus {
 @media (min-width: 481px) and (max-width: 768px) {
   .login-container {
     width: 80%;
+    margin: 13rem auto; /* Adjusted for tablet screens */
   }
 
   .login-title {

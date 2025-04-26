@@ -8,7 +8,7 @@
 }
 
 .footer-top {
-  padding: 3rem 1rem;
+  padding: 3rem 2rem;
 }
 
 .footer-user-details {
@@ -30,9 +30,9 @@
 
 .footer-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
-  max-width: 1200px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 3rem;
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -45,11 +45,15 @@
 .footer-section-default h2 {
   font-size: 2rem;
   color: #46b2bb;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .footer-section-admin h2 {
   font-size: 2rem;
   color: #d1931f;
+  text-align: left;
+  white-space: nowrap;
 }
 
 .footer-section-default p {
@@ -112,22 +116,32 @@
   color: #c7d1d2;
 }
 
+.social-icons-admin {
+  margin-left: -10px; /* Negative margin to align with heading */
+}
+
+.social-icons-default {
+  margin-left: -10px; /* Negative margin to align with heading */
+}
+
 .social-icons-admin i {
   width: 40px;
-  margin-right: 0.2rem;
+  margin-right: 0.5rem;
   font-size: 1.5rem;
   animation: starGlow 3s infinite alternate; /* Añadir animación de glow */
   transition: transform var(--transition-speed) ease;
   color: #d1931f !important;
+  text-align: center;
 }
 
 .social-icons-default i {
   width: 40px;
-  margin-right: 0.2rem;
+  margin-right: 0.5rem;
   font-size: 1.5rem;
   animation: starGlow 3s infinite alternate; /* Añadir animación de glow */
   transition: transform var(--transition-speed) ease;
   color: #46b2bb !important;
+  text-align: center;
 }
 
 .social-icons-admin i:hover {
@@ -147,7 +161,7 @@
 }
 
 .twitter:hover {
-  background: turquoise;
+  background: black;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -160,6 +174,18 @@
 
 .linkedin:hover {
   background: white;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.whatsapp:hover {
+  background: #25D366;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.telegram:hover {
+  background: #0088cc;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -317,7 +343,8 @@
 /* Responsividad */
 @media (max-width: 768px) {
   .footer-container {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 2.5rem;
   }
 
   .footer-section h3 {

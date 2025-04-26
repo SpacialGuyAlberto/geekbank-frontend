@@ -142,14 +142,14 @@ describe('HomeComponent', () => {
         productId: 'prod-123',
         originalName: 'Original Gift Card Name',
         screenshots: [
-          { url: 'screenshot1.jpg', urlOriginal: 'screenshot1-original.jpg' }
+          {url: 'screenshot1.jpg', urlOriginal: 'screenshot1-original.jpg'}
         ],
         videos: [
-          { name: 'Intro Video', videoId: 'vid-123' }
+          {name: 'Intro Video', videoId: 'vid-123'}
         ],
         languages: ['EN', 'ES'],
         systemRequirements: [
-          { system: 'Windows', requirement: ['4GB RAM', '500MB HDD'] }
+          {system: 'Windows', requirement: ['4GB RAM', '500MB HDD']}
         ],
         tags: ['popular', 'new'],
         offers: [
@@ -172,7 +172,7 @@ describe('HomeComponent', () => {
         ageRating: '18+',
         images: {
           screenshots: [
-            { url: 'screenshot1.jpg', urlOriginal: 'screenshot1-original.jpg' }
+            {url: 'screenshot1.jpg', urlOriginal: 'screenshot1-original.jpg'}
           ],
           cover: {
             thumbnail: 'cover-thumbnail.jpg'
@@ -180,7 +180,8 @@ describe('HomeComponent', () => {
         },
         updatedAt: '2023-12-01T12:00:00Z',
         wished: true,
-        selectedImage: 'selected-image.jpg'
+        selectedImage: 'selected-image.jpg',
+        priceHNL: 0
       }
     ];
 
