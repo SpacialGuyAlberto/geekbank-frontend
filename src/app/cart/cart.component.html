@@ -130,15 +130,12 @@
           </app-paypal-button>
         </div>
         <div *ngIf="showCardButton">
-          <app-paypal-button
-            [amount]="totalAmountUSDString"
-            [onSubmitOrder]="submitOrder"
+          <app-card-payment
+            [amount]="60.12"
             [orderDetails]="orderDetails"
-            [paymentSource]="'card'"
             (paymentSuccess)="onPaymentSuccess($event)"
-            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
-          >
-          </app-paypal-button>
+            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">
+          </app-card-payment>
         </div>
 
       </ng-container>

@@ -22,6 +22,8 @@ import {User} from "../user-details/User";
 import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
 import {PromotionsService} from "../promotions/promotions.service";
 import {Promotion} from "../promotions/Promotion.model";
+import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
+
 
 @Component({
   selector: 'app-cart',
@@ -36,7 +38,8 @@ import {Promotion} from "../promotions/Promotion.model";
     RandomKeyMostSoldComponent,
     RecommendationsComponent,
     PayPalButtonComponent,
-    DecimalPipe
+    DecimalPipe,
+    CardPaymentComponent
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],

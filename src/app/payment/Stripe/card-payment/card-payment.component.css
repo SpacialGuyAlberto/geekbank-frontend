@@ -1,0 +1,73 @@
+/* ========================
+   Agrupador y disposición
+   ======================== */
+.card-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin:18px 0;
+}
+
+/* Elemento base */
+.card-field{
+  min-height:46px;
+  padding:14px 16px;
+  border:2px solid #d1d5db;
+  border-radius:8px;
+  background:#fff;
+  font-size:1rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  transition:border-color .25s,box-shadow .25s;
+  flex:1 1 120px;             /* por defecto */
+}
+
+/* Número de tarjeta más ancho */
+.card-number{ flex:2 1 280px; }   /* ocupa ~2× */
+.card-extra { flex:1 1 120px; }   /* Expiry y CVC */
+
+/* Estados */
+.card-field.StripeElement--focus   { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.25); }
+.card-field.StripeElement--invalid { border-color:#ef4444; }
+.card-field.StripeElement--complete{ border-color:#10b981; }
+
+/* Placeholder */
+.card-field ::placeholder{ color:#9ca3af; opacity:.8; }
+
+/* Mensaje de error */
+.msg-error{
+  color:#ef4444;
+  margin-top:8px;
+  font-size:.875rem;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+/* Botón pagar */
+.pay-btn{
+  width:100%;
+  padding:12px 0;
+  background:linear-gradient(90deg,#4f46e5 0%,#4338ca 100%);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  font-weight:600;
+  font-size:1rem;
+  cursor:pointer;
+  transition:background .25s,transform .1s;
+  box-shadow:0 4px 12px rgba(79,70,229,.35);
+}
+.pay-btn:hover { background:#4338ca; }
+.pay-btn:active{ transform:scale(.98); }
+.pay-btn[disabled]{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+
+/* Spinner */
+.spinner{
+  width:18px;height:18px;
+  border:2px solid transparent;
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .75s linear infinite;
+  margin-right:6px;
+}
+@keyframes spin{ to{ transform:rotate(360deg);} }

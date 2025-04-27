@@ -1,0 +1,13 @@
+<div *ngIf="data.error">
+  <h3 style="color: red;">Error</h3>
+  <p>{{ data.error }}</p>
+</div>
+<div *ngIf="!data.error">
+  <h3 style="color: green;">¡Éxito!</h3>
+  <div>Id: {{ data.id }}</div>
+  <div>Estado: {{ data.status }}</div>
+  <div>Cargo id: {{ data.chargeId }}</div>
+  <div>Balance transaction: {{ data.balanceTransaction }}</div>
+</div>
+<a routerLink="/checkout">Volver a pagar</a>
+
