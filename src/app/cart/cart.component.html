@@ -48,30 +48,30 @@
               <span>TIGO MONEY</span>
             </button>
 
-            <button
-              class="payment-option-button"
-              (click)="selectOption('BALANCE')"
-              [class.selected]="selectedOption === 'BALANCE'"
-            >
-              <i class="fa-solid fa-dollar-sign"></i>
-              <span>Balance</span>
-            </button>
+<!--            <button-->
+<!--              class="payment-option-button"-->
+<!--              (click)="selectOption('BALANCE')"-->
+<!--              [class.selected]="selectedOption === 'BALANCE'"-->
+<!--            >-->
+<!--              <i class="fa-solid fa-dollar-sign"></i>-->
+<!--              <span>Balance</span>-->
+<!--            </button>-->
 
-            <button
-              class="payment-option-button"
-              (click)="selectOption('paypal')"
-              [class.selected]="selectedOption === 'paypal'"
-            >
-              <i class="fab fa-paypal fa-lg"></i>
-              <span>PayPal</span>
-            </button>
+<!--            <button-->
+<!--              class="payment-option-button"-->
+<!--              (click)="selectOption('paypal')"-->
+<!--              [class.selected]="selectedOption === 'paypal'"-->
+<!--            >-->
+<!--              <i class="fab fa-paypal fa-lg"></i>-->
+<!--              <span>PayPal</span>-->
+<!--            </button>-->
             <button
               class="payment-option-button"
               (click)="selectOption('card')"
               [class.selected]="selectedOption === 'card'"
             >
               <i class="fas fa-credit-card fa-lg"></i>
-              <span>Card</span>
+              <span>Tarjeta</span>
             </button>
           </div>
         </div>
@@ -117,21 +117,21 @@
           [totalAmount]="totalHNL"
           [promo_code]="promoCode"
         ></app-tigo-payment>
-
-        <div *ngIf="showPayPalButton">
-          <app-paypal-button
-            [amount]="totalAmountUSDString"
-            [onSubmitOrder]="submitOrder"
-            [orderDetails]="orderDetails"
-            [paymentSource]="'paypal'"
-            (paymentSuccess)="onPaymentSuccess($event)"
-            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
-          >
-          </app-paypal-button>
-        </div>
+<!--        TODO-->
+<!--        <div *ngIf="showPayPalButton">-->
+<!--          <app-paypal-button-->
+<!--            [amount]="totalAmountUSDString"-->
+<!--            [onSubmitOrder]="submitOrder"-->
+<!--            [orderDetails]="orderDetails"-->
+<!--            [paymentSource]="'paypal'"-->
+<!--            (paymentSuccess)="onPaymentSuccess($event)"-->
+<!--            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"-->
+<!--          >-->
+<!--          </app-paypal-button>-->
+<!--        </div>-->
         <div *ngIf="showCardButton">
           <app-card-payment
-            [amount]="60.12"
+            [amount]="(totalHNL * 100) / 29"
             [orderDetails]="orderDetails"
             (paymentSuccess)="onPaymentSuccess($event)"
             (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">

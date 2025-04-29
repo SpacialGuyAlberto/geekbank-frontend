@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {
   loadStripe,
   Stripe, StripeCardCvcElement,
@@ -10,6 +10,7 @@ import {
 import {StripeService} from "../stripe.service";
 import {firstValueFrom} from "rxjs";
 import {CurrencyPipe, NgIf} from "@angular/common";
+import {OrderRequest} from "../../../models/order-request.model";
 
 @Component({
   selector: 'app-card-payment',
@@ -21,9 +22,9 @@ import {CurrencyPipe, NgIf} from "@angular/common";
   templateUrl: './card-payment.component.html',
   styleUrl: './card-payment.component.css'
 })
-export class CardPaymentComponent implements AfterViewInit {
-  @Input() amount!: number;               // céntimos
-  @Input() orderDetails: any;            // datos de la orden
+export class CardPaymentComponent implements OnInit, AfterViewInit {
+  @Input() amount!: number;
+  @Input() orderDetails?: OrderRequest;
   @Output() paymentSuccess = new EventEmitter<string>(); // transactionNumber o id
   @Output() paymentFailureKeysNotAvailable = new EventEmitter<void>();
 
@@ -43,7 +44,12 @@ export class CardPaymentComponent implements AfterViewInit {
 
   constructor(private stripeSvc: StripeService) {}
 
+  async ngOnInit() {
+    this.orderDetails?.products.map( product => { console.log(product.kinguinId)})
+  }
+
   async ngAfterViewInit() {
+    this.orderDetails?.products.map( product => { console.log(product.name)})
     this.stripe = (await loadStripe('pk_live_51RFhDhFjikDIxOfHEgc4MAHnitgb6AebPsYsNvdyJwid4ekGA7pxW0NVd3mQAS1gIN5YY3jZHGOEFkYPWd8D4yoU00IikKIuqo')) as Stripe;
     this.elements = this.stripe.elements();
     this.cardNumber = this.elements.create('cardNumber');
