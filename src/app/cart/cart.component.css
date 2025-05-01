@@ -162,6 +162,20 @@ button:disabled {
   transform: scale(1.05) !important; /* Efecto de ampliación */
 }
 
+/* Resalta el borde cuando falta el correo */
+input[required].ng-invalid.ng-touched {
+  border-color: #dc3545;
+}
+
+
+/* Deja la antigua regla como está y añade esta para el nuevo flag */
+.payment-button.ready {
+  background-color: #28901a !important;
+  animation: vibrate 0.5s ease 10;
+  animation-fill-mode: forwards;
+}
+
+
 /* Icono dentro del Botón de Opciones de Pago */
 .payment-option-button .icon {
   background-color: #0056b3; /* Color de fondo de Tigo Money */
