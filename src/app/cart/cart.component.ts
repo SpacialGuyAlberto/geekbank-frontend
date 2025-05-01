@@ -1,12 +1,12 @@
 // cart.component.ts
-import {AfterViewInit, Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, HostListener, input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CartService} from "./cart.service";
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {Event, Router, RouterLink} from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
 import {CartItemWithGiftcard} from "./CartItem";
 import {CurrencyService} from "../services/currency.service";
-import { FormsModule } from "@angular/forms";
+import {FormsModule, NgModel} from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
 import {AuthService} from "../services/auth.service";
@@ -72,7 +72,7 @@ import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-paymen
     }
   ]
 })
-export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CartComponent implements OnInit, OnDestroy {
   cartItems: CartItemWithGiftcard[] = [];
   exchangeRate: number = 0;
   showDialog: boolean = false
@@ -95,10 +95,12 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
   isEmailPromptComplete: boolean = false;
   showEmailPrompt: boolean = false;
   wantsEmailKey: boolean = false;
+  emailErrorMessage: boolean = false;
   wantsSMSKey: boolean = false;
   emailForKey: string = '';
   promo: Promotion | undefined = undefined;
   userEmail?: string;
+  emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
   paymentDetails = { phoneNumber: '' };
   guestId?: string | null = '';
   totalPrice: number = 0;
@@ -114,6 +116,9 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
   showCancelledModal: boolean = false;
   protected codeExistBlueprint: boolean = false;
   protected discountReceived: string = "";
+
+  @ViewChild('emailCtrl') emailCtrl!: NgModel;
+
   constructor(
     private cartService: CartService,
     private guestService: GuestService,
@@ -198,8 +203,6 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
       this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
       console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
     }
-
-    console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
   }
 
   selectOption(option: string): void {
@@ -327,9 +330,26 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedOption = null;
       this.showPayPalButton = true;
     } else if (this.selectedOption === 'card') {
-      this.selectedOption = null;
-      this.showCardButton = true;
-    } else if (this.selectedOption === 'TIGO MONEY') {
+
+      /* ---- VALIDACIONES ---- */
+      if (!this.emailForKey.trim()) {
+        this.emailCtrl.control.markAsTouched();
+        this.checkInput();
+        this.snackBar.open('El correo es obligatorio.', 'Cerrar', { duration: 3000 });
+        return;
+      }
+
+      if (!this.isEmailValid()) {
+        this.emailCtrl.control.markAsTouched();
+        this.snackBar.open('Formato de correo incorrecto.', 'Cerrar', { duration: 3000 });
+        return;
+      }
+
+      /* ---- Si todo está bien, ya podemos mostrar el botón de Stripe ---- */
+      this.selectedOption = null;      // ← mover AQUÍ (después de validar)
+      this.showCardButton  = true;
+    }
+    else if (this.selectedOption === 'TIGO MONEY') {
       this.selectedOption = null;
       this.showPaymentModal = true;
     } else {
@@ -610,6 +630,22 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
   promoCode: string = "";
   codeExist: boolean = true;
 
-  ngAfterViewInit(): void {
+
+  private isEmailValid(): boolean {
+    return new RegExp(this.emailRegex).test(this.emailForKey.trim());
   }
+
+  isPaymentReady(): boolean {
+    if (!this.selectedOption) { return false; }
+    if (this.selectedOption !== 'card') { return true; }
+    return !!this.emailForKey?.trim() && this.isEmailValid();
+  }
+
+  checkInput() {
+    if (this.emailForKey){
+      this.emailErrorMessage = true;
+    }
+  }
+
+  protected readonly input = input;
 }
