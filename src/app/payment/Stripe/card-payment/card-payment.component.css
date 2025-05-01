@@ -1,0 +1,103 @@
+/* === Agrupador y disposición === */
+.card-group{
+  display:flex;
+  flex-wrap:wrap;          /* permite que salten a la siguiente fila */
+  gap:12px;                /* separación entre campos */
+  margin:18px 0;
+}
+
+/* === Campo base === */
+.card-field{
+  min-height:46px;
+  padding:14px 16px;
+  border:2px solid #d1d5db;
+  border-radius:8px;
+  background:#fff;
+  font-size:1rem;
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+  transition:border-color .25s,box-shadow .25s;
+  flex:1 1 120px;          /* valor genérico   */
+}
+
+/* ---------- NUEVO ---------- */
+/* primer campo (número) grande y en su propia línea */
+.card-field:first-child{
+  flex:0 0 100%;           /* ocupa el 100 % del ancho */
+  min-height:56px;         /* un poco más alto          */
+  font-size:1.125rem;      /* fuente ligeramente mayor  */
+}
+
+/* resto de campos (caducidad y CVC) más pequeños, mitad y mitad */
+.card-field:not(:first-child){
+  flex:1 1 calc(50% - 6px);   /* dos columnas con el gap descontado */
+  max-width:calc(50% - 6px);
+}
+
+/* ==================== */
+/* Estados (sin cambios) */
+.card-field.StripeElement--focus   { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.25); }
+.card-field.StripeElement--invalid { border-color:#ef4444; }
+.card-field.StripeElement--complete{ border-color:#10b981; }
+
+/* Placeholder */
+.card-field ::placeholder{ color:#9ca3af; opacity:.8; }
+
+/* === Botón pagar (versión pro) === */
+.pay-btn{
+  /* layout */
+  width:100%;
+  padding:14px 0;
+  border:none;
+  border-radius:10px;
+
+  /* tipografía */
+  font-size:1.05rem;
+  font-weight:600;
+  letter-spacing:.03em;
+
+  /* fondo y color */
+  background:
+    linear-gradient(135deg,#6366f1 0%,#4f46e5 50%,#4338ca 100%);
+  color:#fff;
+
+  /* efectos */
+  box-shadow:0 6px 18px rgba(79,70,229,.35);
+  transition:
+    transform .15s cubic-bezier(.4,0,.2,1),
+    box-shadow .25s,
+    filter .25s,
+    background-position .35s;
+  background-size:200% 200%;       /* para animar gradiente */
+  background-position:0 50%;
+  cursor:pointer;
+}
+
+.pay-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(79,70,229,.45);
+  background-position:100% 50%;    /* barrido del gradiente */
+  filter:brightness(1.05);
+}
+
+.pay-btn:active{
+  transform:translateY(0);
+  box-shadow:0 4px 14px rgba(79,70,229,.35);
+}
+
+.pay-btn[disabled]{
+  opacity:.55;
+  cursor:not-allowed;
+  filter:grayscale(.25);
+  box-shadow:none;
+}
+
+/* Spinner: sin cambios pero hereda el nuevo padding */
+.spinner{
+  width:18px;height:18px;
+  border:2px solid transparent;
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .75s linear infinite;
+  margin-right:8px;
+}
+@keyframes spin{ to{ transform:rotate(360deg);} }

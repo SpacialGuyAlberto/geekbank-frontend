@@ -24,6 +24,8 @@ import {FilteredPageComponent} from "./filtered-page/filtered-page.component";
 import {TermsAndConditionsComponent} from "./terms-and-conditions/terms-and-conditions.component";
 import {OfferComponent} from "./offer/offer.component";
 import {PlatformFilterComponent} from "./platform-filter/platform-filter.component";
+import {ResultComponent} from "./payment/Stripe/result/result.component";
+import {CheckoutComponent} from "./payment/Stripe/checkout/checkout.component";
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -40,8 +42,6 @@ export const routes: Routes = [
   { path: 'set-password', component: SetPasswordComponent },
   // Opción 1: Si defines '/payment'
   // { path: 'payment', component: PaymentComponent },
-
-  // Opción 2: Actualizar las redirecciones a rutas existentes
   { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
   { path: 'free-fire-details', component: FreeFireDetailsComponent },
   { path: 'random-keys', component: RandomKeysComponent },
@@ -56,7 +56,7 @@ export const routes: Routes = [
     path: 'offer/:title',
     component: OfferComponent
   },
-
-  // Ruta comodín al final
+  { path: 'checkout', component: CheckoutComponent },
+  { path: 'checkout-result', component: ResultComponent },
   { path: '**', redirectTo: '/home' }
 ];

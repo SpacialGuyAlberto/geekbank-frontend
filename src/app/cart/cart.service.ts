@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { CartItemWithGiftcard } from "./CartItem";
 import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import {Promotion} from "../promotions/Promotion.model";
 @Injectable({
   providedIn: 'root'
 })
@@ -294,5 +295,4 @@ export class CartService {
       return of(items.some(item => item.cartItem.productId === kinguinId));
     }
   }
-
 }

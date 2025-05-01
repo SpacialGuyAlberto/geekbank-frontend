@@ -1,0 +1,21 @@
+<!-- checkout.component.html -->
+<div class="checkout">
+  <h2>Total: {{ amount/100 | currency:'EUR' }}</h2>
+
+  <!-- Stripe Elements -->
+  <div class="card-group">
+    <div #cardNumber class="card-field"></div>
+    <div #cardExpiry class="card-field"></div>
+    <div #cardCvc    class="card-field"></div>
+  </div>
+
+  <div *ngIf="error" class="msg-error">
+    <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+  </div>
+
+  <button class="pay-btn" (click)="payCard()" [disabled]="loading">
+    <span *ngIf="loading" class="spinner"></span>
+    {{ loading ? 'Procesando…' : 'Pagar' }}
+  </button>
+</div>
+

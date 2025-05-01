@@ -22,6 +22,8 @@ import {User} from "../user-details/User";
 import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
 import {PromotionsService} from "../promotions/promotions.service";
 import {Promotion} from "../promotions/Promotion.model";
+import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
+
 
 @Component({
   selector: 'app-cart',
@@ -36,7 +38,8 @@ import {Promotion} from "../promotions/Promotion.model";
     RandomKeyMostSoldComponent,
     RecommendationsComponent,
     PayPalButtonComponent,
-    DecimalPipe
+    DecimalPipe,
+    CardPaymentComponent
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
@@ -477,7 +480,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             kinguinId: item.cartItem.productId!,
             qty: item.cartItem.quantity,
             price: item.giftcard.price,
-            name: 'Producto'
+            name: item.giftcard.name
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
@@ -513,7 +516,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
             price: item.giftcard.price,
-            name: 'Producto'
+            name: item.giftcard.name
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,

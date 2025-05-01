@@ -1,0 +1,72 @@
+/* ============================
+   Stripe Elements Card Styles
+   ============================ */
+.card-element {
+  width: 100%;
+  padding: 14px 18px;
+  border: 1.5px solid #d1d5db;          /* slate‑300 */
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  transition: border-color .25s ease, box-shadow .25s ease;
+  font-size: 1rem;
+}
+
+/* Focus & states */
+.card-element.StripeElement--focus   {
+  border-color: #6366f1;                /* indigo‑500 */
+  box-shadow: 0 0 0 3px rgba(99,102,241,.25);
+}
+.card-element.StripeElement--invalid {
+  border-color: #ef4444;                /* red‑500 */
+}
+.card-element.StripeElement--complete {
+  border-color: #10b981;                /* emerald‑500 */
+}
+
+/* Placeholder (only visible while empty) */
+.card-element ::placeholder {
+  color: #9ca3af;                       /* slate‑400 */
+  opacity: .75;
+}
+
+/* ============================
+   Error message
+   ============================ */
+.error {
+  color: #ef4444;                       /* red‑500 */
+  margin-top: 8px;
+  font-size: .875rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ============================
+   Pay Button
+   ============================ */
+.pay-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(90deg,#6366f1 0%,#4f46e5 100%); /* indigo */
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform .1s ease, box-shadow .25s ease, opacity .25s ease;
+  box-shadow: 0 4px 12px rgba(79,70,229,.4);
+}
+
+.pay-btn:hover  { box-shadow: 0 6px 18px rgba(79,70,229,.5); }
+.pay-btn:active { transform: translateY(1px); }
+
+.pay-btn[disabled] {
+  opacity: .5;
+  cursor: not-allowed;
+  box-shadow: none;
+}

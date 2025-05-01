@@ -1,0 +1,11 @@
+<div class="checkout-container">
+  <h2>Total: {{ amount/100 | currency:'EUR' }}</h2>
+
+  <!-- Stripe Card Element -->
+  <div #cardElem class="card-element"></div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <button (click)="pay()" [disabled]="loading">
+    {{ loading ? 'Procesando…' : 'Pagar' }}
+  </button>
+</div>
