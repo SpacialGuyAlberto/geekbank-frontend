@@ -12,6 +12,7 @@ export interface OrderRequest {
   gameUserId?: number;
   refNumber?: string;
   promoCode?: string | null | undefined;
+  transactionNumber?: string;
 }
 
 export interface Product {

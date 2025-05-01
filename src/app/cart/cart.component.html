@@ -117,18 +117,6 @@
           [totalAmount]="totalHNL"
           [promo_code]="promoCode"
         ></app-tigo-payment>
-<!--        TODO-->
-<!--        <div *ngIf="showPayPalButton">-->
-<!--          <app-paypal-button-->
-<!--            [amount]="totalAmountUSDString"-->
-<!--            [onSubmitOrder]="submitOrder"-->
-<!--            [orderDetails]="orderDetails"-->
-<!--            [paymentSource]="'paypal'"-->
-<!--            (paymentSuccess)="onPaymentSuccess($event)"-->
-<!--            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"-->
-<!--          >-->
-<!--          </app-paypal-button>-->
-<!--        </div>-->
         <div *ngIf="showCardButton">
           <app-card-payment
             [amount]="(totalHNL * 100) / 29"

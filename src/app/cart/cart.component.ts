@@ -480,7 +480,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             kinguinId: item.cartItem.productId!,
             qty: item.cartItem.quantity,
             price: item.giftcard.price,
-            name: 'Producto'
+            name: item.giftcard.name
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,
@@ -516,7 +516,7 @@ export class CartComponent implements OnInit, AfterViewInit, OnDestroy {
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
             price: item.giftcard.price,
-            name: 'Producto'
+            name: item.giftcard.name
           })),
           amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
           manual: this.isManualTransaction,

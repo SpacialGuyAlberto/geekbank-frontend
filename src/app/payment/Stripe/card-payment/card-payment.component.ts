@@ -11,6 +11,8 @@ import {StripeService} from "../stripe.service";
 import {firstValueFrom} from "rxjs";
 import {CurrencyPipe, NgIf} from "@angular/common";
 import {OrderRequest} from "../../../models/order-request.model";
+import {OrderService} from "../../../services/order.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-card-payment',
@@ -41,8 +43,13 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
   card!: StripeCardElement;
   loading = false;
   error?: string;
+ private stripeToken = environment.stripeToken
 
-  constructor(private stripeSvc: StripeService) {}
+
+  constructor(
+    private stripeSvc: StripeService,
+    private orderService: OrderService,
+  ) {}
 
   async ngOnInit() {
     this.orderDetails?.products.map( product => { console.log(product.kinguinId)})
@@ -50,7 +57,7 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
 
   async ngAfterViewInit() {
     this.orderDetails?.products.map( product => { console.log(product.name)})
-    this.stripe = (await loadStripe('pk_live_51RFhDhFjikDIxOfHEgc4MAHnitgb6AebPsYsNvdyJwid4ekGA7pxW0NVd3mQAS1gIN5YY3jZHGOEFkYPWd8D4yoU00IikKIuqo')) as Stripe;
+    this.stripe = (await loadStripe(this.stripeToken)) as Stripe;
     this.elements = this.stripe.elements();
     this.cardNumber = this.elements.create('cardNumber');
     this.cardExpiry = this.elements.create('cardExpiry');
@@ -63,13 +70,9 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
 
   async payCard(): Promise<void> {
     this.loading = true;
-    this.error = undefined;
+    this.error   = undefined;
 
     try {
-      if (!this.cardNumber) {
-        throw new Error('Stripe card element no está inicializado');
-      }
-
       const { clientSecret } = await firstValueFrom(
         this.stripeSvc.createPaymentIntent(this.amount)
       );
@@ -80,11 +83,37 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
         });
 
       if (error) {
-        this.error = error.message ?? 'Error desconocido';
-        this.paymentFailureKeysNotAvailable.emit();
-      } else if (paymentIntent?.status === 'succeeded') {
-        this.paymentSuccess.emit(paymentIntent.id);
+        throw new Error(error.message ?? 'Error desconocido');
       }
+      if (paymentIntent?.status !== 'succeeded') {
+        throw new Error('El pago no se completó');
+      }
+
+      /* ------------------------------------------------------------------
+       * 1️⃣ Añade el ID del Payment Intent a tu OrderRequest.
+       * ------------------------------------------------------------------*/
+      const orderToSend: OrderRequest = {
+        ...this.orderDetails!,                   // datos originales
+        transactionNumber: paymentIntent.id      // ➤ NEW (añade el campo a tu modelo)
+      };
+
+      /* ------------------------------------------------------------------
+       * 2️⃣ Registra la orden/transaction en tu backend.
+       * ------------------------------------------------------------------*/
+      this.orderService
+        .placeOrderAndTransactionForPaypalAndCreditCard(orderToSend)
+        .subscribe({
+          next: (response: any) => {
+            const txNumber = response?.transactionNumber ?? paymentIntent.id;
+            console.log('[CardPay] Orden registrada. Tx:', txNumber);
+            this.paymentSuccess.emit(txNumber);         // notifica al padre
+          },
+          error: err => {
+            console.error('[CardPay] Error backend:', err);
+            this.paymentFailureKeysNotAvailable.emit(); // notifica fallo
+          }
+        });
+
     } catch (err: any) {
       this.error = err?.message || 'Fallo en el pago';
       this.paymentFailureKeysNotAvailable.emit();
