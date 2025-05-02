@@ -8,7 +8,6 @@ import { CommonModule } from "@angular/common";
 import { Router } from '@angular/router';
 import { CartService } from '../cart/cart.service';
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { BackgroundAnimationService } from "../services/background-animation.service";
 import { CurrencyService } from "../services/currency.service";
 import { FormsModule, NgForm } from "@angular/forms";
 import { AuthService } from "../services/auth.service";
@@ -17,17 +16,12 @@ import { FeedbackService } from "../services/feedback.service";
 import { Feedback } from "../feedback-list/Feedback";
 import { WishListService } from "../user-details/settings/wishlist/wish-list.service";
 import { HttpClient } from '@angular/common/http';
-import { BannerComponent } from "../banner/banner.component";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { of, Subscription, combineLatest } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
-import { PaymentOptionsComponent } from "../payment-options/payment-options.component";
-import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import { PaymentComponent } from "../payment/payment.component";
 import { WishItemWithGiftcard } from "../user-details/WishItem";
-import { ActivationDetails } from "../activation/activation-details.service";
-import { ActivationDetailsService } from "../activation/activation-details.service";
+import {ActivationDetails, ActivationDetailsService} from "../activation/activation-details.service";
 
 interface Language {
   name: string;
@@ -45,12 +39,8 @@ interface Language {
     CommonModule,
     MatSnackBarModule,
     FormsModule,
-    BannerComponent,
     SuggestionsComponent,
     MatProgressSpinnerModule,
-    PaymentOptionsComponent,
-    TigoPaymentComponent,
-    PaymentComponent
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
@@ -106,9 +96,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     "Korean": "KR",
     "Thai": "TH"
   };
-  private isTigoPaymentModalOpen: boolean = false;
   protected activationVideoUrl: string | null = '';
-  private activationTextDetails: string | null = '';
   protected displayedDescription: string | null = '';
 
   constructor(
@@ -232,9 +220,13 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.activationVideoUrl = '';
         }
       });
+
+      this.activationDetailsService.getDetails(this.giftCard.kinguinId).subscribe({
+        next: (details: ActivationDetails) => {
+          this.displayedActivationDetails = details.textDetails || 'Contacte a nuestro servicio al cliente para los servicios de activacion.';
+        }
+      })
     }
-
-
   }
 
   private loadGiftCardLanguages(): void {
