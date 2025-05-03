@@ -1,4 +1,3 @@
-// cart.component.ts
 import {AfterViewInit, Component, HostListener, input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {CartService} from "./cart.service";
 import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
@@ -11,9 +10,7 @@ import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
 import {AuthService} from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RandomKeyMostSoldComponent } from "../random-key-most-sold/random-key-most-sold.component";
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
-import { PayPalButtonComponent } from "../paypal-button/paypal-button.component";
 import {Observable, Subject, takeUntil} from "rxjs";
 import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
@@ -23,6 +20,8 @@ import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-con
 import {PromotionsService} from "../promotions/promotions.service";
 import {Promotion} from "../promotions/Promotion.model";
 import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
+import {PricingService} from "../pricing/pricing.service";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 
 
 @Component({
@@ -31,15 +30,13 @@ import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-paymen
   imports: [
     NgForOf,
     NgIf,
-    RouterLink,
     TigoPaymentComponent,
     FormsModule,
     MatIcon,
-    RandomKeyMostSoldComponent,
     RecommendationsComponent,
-    PayPalButtonComponent,
     DecimalPipe,
-    CardPaymentComponent
+    CardPaymentComponent,
+    ConvertToHnlPipe
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
@@ -72,7 +69,7 @@ import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-paymen
     }
   ]
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   cartItems: CartItemWithGiftcard[] = [];
   exchangeRate: number = 0;
   showDialog: boolean = false
@@ -127,25 +124,51 @@ export class CartComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private authService: AuthService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private pricing: PricingService
   ) {}
 
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
-    console.log('Evento window:load detectado');
     this.loadCartItems();
     this.countCartItems();
+    this.initExchangeRate();
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      value => {
+        this.exchangeRate = value;
+      }
+    );
+    const totalEUR = this.cartItems
+      .reduce((sum, i) => sum + i.cartItem.quantity * i.giftcard.price, 0);
+
+
+    // Si aún no tenemos tasa de cambio esperamos a que llegue
+    if (this.exchangeRate) {
+      this.totalHNL = this.pricing.calculateConvertedPrice(totalEUR, this.exchangeRate);
+    }
   }
 
   ngOnInit(): void {
     this.loadCartItems();
-    console.log('USER ID : ' + this.userId);
+    this.countCartItems();
+    this.recalcTotals();
+    this.initExchangeRate();
+    const totalEUR = this.cartItems
+      .reduce((sum, i) => sum + i.cartItem.quantity * i.giftcard.price, 0);
 
-    this.cartService.cartItemCount$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(count => {
-        this.cartItemCount = count;
-      });
+
+    // Si aún no tenemos tasa de cambio esperamos a que llegue
+    if (this.exchangeRate) {
+      this.totalHNL = this.pricing.calculateConvertedPrice(totalEUR, this.exchangeRate);
+    }
+    console.log("COUNT : " + this.cartItemCount)
+    console.log("TOTAL AMOUNT STRING: " + this.totalAmountString)
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      value => {
+        this.exchangeRate = value;
+        console.log("THIS EXCHANGE RATE: " + this.exchangeRate);
+      }
+    );
 
     if (this.authService.isLoggedIn()) {
       const storedUserId = sessionStorage.getItem("userId");
@@ -166,6 +189,7 @@ export class CartComponent implements OnInit, OnDestroy {
     }
   }
 
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
@@ -176,38 +200,52 @@ export class CartComponent implements OnInit, OnDestroy {
 
     this.cartService.cartItems$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(items => {
+      .subscribe(async items => {
         this.cartItems = items;
-        console.log("Loaded cart items: ", this.cartItems);
         this.updateCartItemCount();
-        this.calculateTotalPriceEUR();
-        this.calculateTotalPriceHNL()
-        let totalAmountEUR = this.totalHNL * 27.5;
-        this.totalAmountUSD = parseFloat((this.totalHNL / 26).toFixed(2));
+
+
+        /* ——— nuevo cálculo reactivo ——— */
+        await this.recalcTotals();
+
+        /* ——— derivados ——— */
+        this.totalAmountUSD       = +(this.totalHNL / 26).toFixed(2);
         this.totalAmountUSDString = this.totalAmountUSD.toString();
-        console.log('TOTAL AMOUNT STRING: ' + this.totalAmountUSDString)
-        this.totalAmountString = this.totalHNL.toString();
+        this.totalAmountString    = this.totalHNL.toString();
       });
   }
 
-  calculateTotalPriceEUR(): void {
-    let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.price, 0);
-    this.totalPriceEUR = parseFloat(total.toFixed(2)) * (this.calculatePromoDiscount() / 100);
-    this.getExchangeRate();
+
+  private async recalcTotals(): Promise<void> {
+    /* 1) Calculamos cada línea en paralelo               */
+    const promises = this.cartItems.map(item =>
+      this.pricing.convert(
+        item.giftcard.price * item.cartItem.quantity,
+        this.exchangeRate
+      )
+    );
+
+    /* 2) Esperamos a que todas terminen y sumamos         */
+    const converted = await Promise.all(promises);
+    this.totalHNL   = converted.reduce((sum, price) => sum + price, 0);
   }
 
-  calculateTotalPriceHNL(): void {
-    let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
-    this.totalHNL =  parseFloat(total.toFixed(2));
-    if (this.promo){
-      this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
-      console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
-    }
-  }
+
 
   selectOption(option: string): void {
     this.selectedOption = option;
   }
+
+
+  private initExchangeRate(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(async rate => {
+        this.exchangeRate = rate;
+        await this.recalcTotals();      // ← segundo cálculo, ahora con la tasa
+      });
+  }
+
 
   continueWithOption(): void {
     if (this.cartItems.length === 0) {
@@ -400,7 +438,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.cartService.updateCartItem(item.cartItem.productId, newQuantity).subscribe(() => {
       item.cartItem.quantity = newQuantity;
       this.updateCartItemCount();
-      this.calculateTotalPriceEUR();
+      this.recalcTotals()
     });
   }
 
@@ -410,7 +448,7 @@ export class CartComponent implements OnInit, OnDestroy {
       this.cartService.updateCartItem(item.cartItem.productId, newQuantity).subscribe(() => {
         item.cartItem.quantity = newQuantity;
         this.updateCartItemCount();
-        this.calculateTotalPriceEUR();
+        this.recalcTotals();
       });
     } else {
       this.cartService.removeCartItem(item.cartItem.productId).subscribe(() => {
@@ -420,7 +458,7 @@ export class CartComponent implements OnInit, OnDestroy {
         setTimeout(() => {
           this.closeDialog();
         }, 3000);
-        this.calculateTotalPriceEUR();
+        this.recalcTotals();
       });
     }
   }
@@ -648,4 +686,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   protected readonly input = input;
+
+  ngAfterViewInit(): void {
+    this.recalcTotals();
+  }
 }

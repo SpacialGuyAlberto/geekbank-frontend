@@ -2,25 +2,24 @@ import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestro
 import { CommonModule } from '@angular/common';
 import { KinguinGiftCard } from "./KinguinGiftCard";
 import { KinguinService } from "./kinguin.service";
-import { Router } from '@angular/router';
+import {NavigationEnd, Router} from '@angular/router';
 import { FormsModule } from "@angular/forms";
-import { SearchBarComponent } from "../search-bar/search-bar.component";
-import { HighlightsComponent } from "../highlights/highlights.component";
-import { RecommendationsComponent } from "../recommendations/recommendations.component";
-import { FiltersComponent } from "../filters/filters.component";
 import { CurrencyService } from "../services/currency.service";
-import { Subscription } from "rxjs";
+import {async, forkJoin, of, Subscription} from "rxjs";
 import { UIStateServiceService } from "../services/uistate-service.service";
 import { AuthService } from "../services/auth.service";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
 import { MainScreenGiftCardService } from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
 import { Store } from "@ngrx/store";
-import { loadGiftCards } from "./store/gift-card.actions";
-import { selectAllGiftCards, selectGiftCardsLoading } from "./store/gift-card.selector";
 import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SharedService} from "../services/shared.service";
 import {DeeplService} from "../deepl.service";
+import {PricingService} from "../pricing/pricing.service";
+import {catchError, filter, map, switchMap, tap} from "rxjs/operators";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -30,13 +29,10 @@ import {DeeplService} from "../deepl.service";
   imports: [
     CommonModule,
     FormsModule,
-    SearchBarComponent,
-    HighlightsComponent,
-    RecommendationsComponent,
-    FiltersComponent,
     MatSnackBarModule,
     MatPaginator,
-    // Asegúrate de importar MatPaginatorModule en tu módulo principal si no estás usando `standalone`
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount,
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -61,9 +57,11 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   pageSizeMain: number = 14;
   totalItemsMain: number = 0;
   totalPagesMain: number = 0;
-  mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = [];
+
   private isShearch: Subscription | null = null;
   private translatedText: string = '';
+
+  private navSub!: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -74,6 +72,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
     private mainGiftCards: MainScreenGiftCardService,
+    private pricingService: PricingService,
     private snackBar: MatSnackBar,
     private store: Store,
     private sharedService: SharedService
@@ -82,7 +81,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   ngOnInit(): void {
     this.isShearch = this.sharedService.isSearchMode$.subscribe(value => {
       this.isSearchMode = value;
-      console.log('isSearchMode => ', value);
     });
 
     if (this.giftCardsInput && this.giftCardsInput.length > 0) {
@@ -96,7 +94,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     } else {
       this.isShearch = this.sharedService.isSearchMode$.subscribe(value => {
         this.isSearchMode = value;
-        console.log('isSearchMode => ', value);
       });
 
       this.fetchGiftCards();
@@ -135,7 +132,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     }
   }
 
-  fetchMainGiftCard(page: number = 0, size: number = 14): void {
+fetchMainGiftCard(page: number = 0, size: number = 14): void {
     this.isLoading = true;
     this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
       async (res: any) => {
@@ -149,7 +146,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
             this.currentPageMain = 0;
           } else if (res && Array.isArray(res.content)) {
             content = res.content;
-            // Ajustamos paginación
             this.currentPageMain = res.number; // 0-based
             this.pageSizeMain = res.size;
             this.totalPagesMain = res.totalPages;
@@ -170,7 +166,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
                 gc.coverImage ||
                 '';
 
-              gc.randomDiscount = this.generatePersistentDiscount(gc.name);
+              gc.randomDiscount = this.pricingService.generatePersistentDiscount(gc.name);
               return gc;
             })
           );
@@ -259,7 +255,8 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
           if (!card.coverImageOriginal) {
             card.coverImageOriginal = await this.getBestImageUrl(card);
           }
-          card.randomDiscount = this.generatePersistentDiscount(card.name);
+          card.randomDiscount = this.pricingService.generatePersistentDiscount(card.name);
+          card.priceHNL = this.pricingService.calculateConvertedPrice(card.price, this.exchangeRate)
           return card;
         });
 
@@ -272,7 +269,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
         this.cd.detectChanges();
       } catch (error) {
         this.showSnackBar('Error al procesar las gift cards.');
-        this.isLoading = false; // Finalizar la carga en caso de error
+        this.isLoading = false;
       }
     }, error => {
       this.showSnackBar('Error al cargar las gift cards.');
@@ -292,66 +289,9 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.updateDisplayedGiftCards();
   }
 
-  loadMore(): void {
-    if (this.currentPageMain < this.totalPagesMain - 1) {
-      const nextPage = this.currentPageMain + 1;
-      this.isLoading = true; // Iniciar la carga
-      this.mainGiftCards.getMainScreenGiftCardItems(nextPage, this.pageSizeMain).subscribe(
-        async (response) => {
-          try {
-            this.currentPageMain = response.number;
-            this.totalPagesMain = response.totalPages;
-
-            // Procesar las gift cards de manera asíncrona
-            const newGiftCards = await Promise.all(
-              response.content.map(async (dto) => {
-                const giftCard = dto.giftcard;
-
-                // Ajustar imágenes de la gift card
-                giftCard.coverImageOriginal =
-                  giftCard.coverImageOriginal ||
-                  giftCard.images.cover?.thumbnail ||
-                  giftCard.coverImage ||
-                  (await this.getBestImageUrl(giftCard));
-
-                giftCard.coverImage =
-                  giftCard.images.cover?.thumbnail || giftCard.coverImage || '';
-
-                // Generar un descuento aleatorio
-                giftCard.randomDiscount = this.generatePersistentDiscount(giftCard.name);
-                giftCard.name = this.translate(giftCard.name)
-
-                return giftCard;
-              })
-            );
-
-            // Concatena las nuevas gift cards con las existentes
-            this.giftCards = [...this.giftCards, ...newGiftCards];
-            this.displayedGiftCards = this.giftCards;
-            this.isLoading = false; // Finalizar la carga
-          } catch (error) {
-            this.showSnackBar('Error al procesar las gift cards.');
-            this.isLoading = false; // Finalizar la carga en caso de error
-          }
-        },
-        (error) => {
-          this.showSnackBar('Error al cargar más gift cards.');
-          this.isLoading = false; // Finalizar la carga en caso de error
-        }
-      );
-    } else {
-      this.showSnackBar('No hay más elementos que cargar');
-    }
-  }
 
   viewDetails(card: KinguinGiftCard): void {
-    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
-      if (success) {
-
-      } else {
-
-      }
-    });
+    this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {});
   }
 
   fetchCurrencyExchange(): void {
@@ -368,6 +308,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
   }
 
   ngOnDestroy(): void {
+    this.navSub?.unsubscribe();
     if (this.giftCardsSubscription) {
       this.giftCardsSubscription.unsubscribe();
     }
@@ -380,19 +321,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     });
   }
 
-  generatePersistentDiscount(cardName: string): number {
-    let hash = 0;
-    for (let i = 0; i < cardName.length; i++) {
-      hash = (hash << 5) - hash + cardName.charCodeAt(i);
-      hash = hash & hash;
-    }
-
-    const random = Math.abs(hash % 26) + 15;
-    return random;
-  }
-
   ngAfterViewInit(): void {
-    // Marca todas las giftCards como deseadas después de la inicialización de la vista
     this.displayedGiftCards.forEach(item => {
       item.wished = true;
     });

@@ -19,7 +19,7 @@
                 <span class="quantity-display">{{ item.cartItem.quantity }}</span>
                 <button (click)="incrementProductQuantity(item)" aria-label="Increase Quantity">+</button>
               </div>
-              <p class="item-price">{{ (item.giftcard.priceHNL) | number:'1.2-2' }} LPS</p>
+              <p class="item-price">{{ ((item.giftcard.price * item.cartItem.quantity) | convertToHnl: exchangeRate) | number:'1.2-2' }} LPS</p>
             </div>
             <div class="item-actions">
               <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
