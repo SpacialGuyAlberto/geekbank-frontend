@@ -22,6 +22,8 @@ import { of, Subscription, combineLatest } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { WishItemWithGiftcard } from "../user-details/WishItem";
 import {ActivationDetails, ActivationDetailsService} from "../activation/activation-details.service";
+import {PricingService} from "../pricing/pricing.service";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 
 interface Language {
   name: string;
@@ -41,6 +43,7 @@ interface Language {
     FormsModule,
     SuggestionsComponent,
     MatProgressSpinnerModule,
+    ConvertToHnlPipe,
   ],
   templateUrl: './gift-card-details.component.html',
   styleUrls: ['./gift-card-details.component.css']
@@ -113,7 +116,8 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     private feedbackService: FeedbackService,
     private wishListService: WishListService,
     private http: HttpClient,
-    private viewPortScroller: ViewportScroller
+    private viewPortScroller: ViewportScroller,
+    private pricingService: PricingService,
   ) { }
 
   @HostListener('window:load', ['$event'])
@@ -263,7 +267,7 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           duration: 3000,
         });
         if (this.giftCard) {
-          this.calculateConvertedPrice();
+          this.convertedPrice = this.pricingService.calculateConvertedPrice(this.giftCard.price, this.exchangeRate)
         }
       },
       (error) => {
@@ -276,11 +280,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     );
   }
 
-  calculateConvertedPrice(): void {
-    if (this.giftCard && this.exchangeRate) {
-      this.convertedPrice = parseFloat((this.giftCard.price * this.exchangeRate).toFixed(2));
-    }
-  }
 
   submitFeedback(form: NgForm): void {
     if (!form.valid) {

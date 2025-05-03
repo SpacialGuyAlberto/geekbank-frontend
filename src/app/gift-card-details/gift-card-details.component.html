@@ -53,7 +53,7 @@
 
     <h2 class="gift-card-title">{{ giftCard.name }}</h2>
     <div class="gift-card-price">
-      {{ (giftCard.priceHNL).toFixed(2) | currency: 'HNL. ' }}
+      {{ giftCard.price | convertToHnl: exchangeRate | currency: 'HNL. ' }}
     </div>
 
     <div class="button-container">
