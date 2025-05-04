@@ -25,6 +25,7 @@ import {environment} from "../../../../environments/environment";
   styleUrl: './card-payment.component.css'
 })
 export class CardPaymentComponent implements OnInit, AfterViewInit {
+  @Input() totalOrderAmountHNL!: number;
   @Input() amount!: number;
   @Input() orderDetails?: OrderRequest;
   @Output() paymentSuccess = new EventEmitter<string>(); // transactionNumber o id

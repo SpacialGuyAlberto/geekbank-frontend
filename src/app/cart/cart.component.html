@@ -48,23 +48,6 @@
               <span>TIGO MONEY</span>
             </button>
 
-<!--            <button-->
-<!--              class="payment-option-button"-->
-<!--              (click)="selectOption('BALANCE')"-->
-<!--              [class.selected]="selectedOption === 'BALANCE'"-->
-<!--            >-->
-<!--              <i class="fa-solid fa-dollar-sign"></i>-->
-<!--              <span>Balance</span>-->
-<!--            </button>-->
-
-<!--            <button-->
-<!--              class="payment-option-button"-->
-<!--              (click)="selectOption('paypal')"-->
-<!--              [class.selected]="selectedOption === 'paypal'"-->
-<!--            >-->
-<!--              <i class="fab fa-paypal fa-lg"></i>-->
-<!--              <span>PayPal</span>-->
-<!--            </button>-->
             <button
               class="payment-option-button"
               (click)="selectOption('card')"
@@ -153,7 +136,8 @@
         ></app-tigo-payment>
         <div *ngIf="showCardButton">
           <app-card-payment
-            [amount]="(totalHNL * 100) / 29"
+            [totalOrderAmountHNL]="totalHNL"
+            [amount]="totalEUR"
             [orderDetails]="orderDetails"
             (paymentSuccess)="onPaymentSuccess($event)"
             (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">
