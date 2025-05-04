@@ -89,6 +89,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   showCardButton: boolean = false;
   showPayPalButton: boolean = false;
   totalHNL: number = 0;
+  totalEUR: number = 0;
   isEmailPromptComplete: boolean = false;
   showEmailPrompt: boolean = false;
   wantsEmailKey: boolean = false;
@@ -161,12 +162,9 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.exchangeRate) {
       this.totalHNL = this.pricing.calculateConvertedPrice(totalEUR, this.exchangeRate);
     }
-    console.log("COUNT : " + this.cartItemCount)
-    console.log("TOTAL AMOUNT STRING: " + this.totalAmountString)
     this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
       value => {
         this.exchangeRate = value;
-        console.log("THIS EXCHANGE RATE: " + this.exchangeRate);
       }
     );
 
@@ -204,32 +202,24 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
         this.cartItems = items;
         this.updateCartItemCount();
 
-
-        /* ——— nuevo cálculo reactivo ——— */
         await this.recalcTotals();
 
-        /* ——— derivados ——— */
         this.totalAmountUSD       = +(this.totalHNL / 26).toFixed(2);
         this.totalAmountUSDString = this.totalAmountUSD.toString();
         this.totalAmountString    = this.totalHNL.toString();
       });
   }
 
-
   private async recalcTotals(): Promise<void> {
-    /* 1) Calculamos cada línea en paralelo               */
-    const promises = this.cartItems.map(item =>
-      this.pricing.convert(
-        item.giftcard.price * item.cartItem.quantity,
-        this.exchangeRate
-      )
-    );
+    const promises = this.cartItems.map(async item => {
+      const price = await item.giftcard.price; // si price es una promesa
+      return price * item.cartItem.quantity;
+    });
 
-    /* 2) Esperamos a que todas terminen y sumamos         */
     const converted = await Promise.all(promises);
-    this.totalHNL   = converted.reduce((sum, price) => sum + price, 0);
+    this.totalEUR = converted.reduce((sum, price) => sum + price, 0);
+    this.totalHNL = await this.pricing.convert(this.totalEUR, this.exchangeRate);
   }
-
 
 
   selectOption(option: string): void {
@@ -391,7 +381,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedOption = null;
       this.showPaymentModal = true;
     } else {
-      console.log('No se ha seleccionado ninguna opción.');
+      console.warn('No se ha seleccionado ninguna opción.');
     }
   }
 
@@ -402,7 +392,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.currencyService.getExchangeRateEURtoHNL(this.totalPriceEUR).subscribe(
       (rate: number) => {
-        console.log('Exchange Rate (HNL per EUR):', rate);
         this.exchangeRate = rate;
         this.isLoading = false;
         this.snackBar.open('Tasa de cambio obtenida exitosamente.', 'Cerrar', {
@@ -421,7 +410,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeCartItem(productId: number): void {
-    console.log('Removing item with ID: ' + productId);
     this.cartService.removeCartItem(productId).subscribe(() => {
       this.loadCartItems();
     });
@@ -471,7 +459,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     this.showPaymentModal = true;
-    console.log('Total en HNL:', this.totalPriceEUR * this.exchangeRate);
   }
 
   closeDialog(): void {
@@ -484,7 +471,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   updateCartItemCount(): void {
     this.cartService.updateCartItemCount();
-    console.log(this.cartItemCount);
   }
 
   countCartItems(){
@@ -606,7 +592,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
       throw new Error('No se pudo crear el OrderRequest.');
     }
 
-    console.log("DETALLES DE ORDEN", orderDetails);
     return orderDetails;
   }
 
@@ -651,17 +636,11 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
           if (this.promo && !this.discountApplied){
             let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
             this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
-            console.log("PROMO DISCOUNT: " + this.promo?.discountPorcentage)
             this.promoCode = value.code;
           }
         });
     }
     this.snackBar.open('Descuento aplicado a tu orden de compra', 'Cerrar', { duration: 5000 });
-  }
-
-  calculatePromoDiscount() : number {
-    return this.promo != undefined ? this.promo.discountPorcentage : 1;
-    console.log("TOTAL AMOUNT HNL AFTER DISCOUNT" + this.totalHNL)
   }
 
   protected readonly Number = Number;

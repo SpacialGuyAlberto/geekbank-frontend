@@ -9,6 +9,10 @@ import {
   NgStyle
 } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
+import {CurrencyService} from "../services/currency.service";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+
 
 @Component({
   selector: 'app-platform-filter',
@@ -17,7 +21,9 @@ import { firstValueFrom } from 'rxjs';
     NgStyle,
     NgIf,
     CurrencyPipe,
-    NgForOf
+    NgForOf,
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount
   ],
   templateUrl: './platform-filter.component.html',
   styleUrls: ['./platform-filter.component.css']
@@ -34,8 +40,10 @@ export class PlatformFilterComponent implements OnInit {
   pageSize: number = 10;
   totalLimit: number = 1000;
   hasMore: boolean = true;
+  exchangeRate: number = 0;
 
   constructor(
+    private currencyService: CurrencyService,
     private kinguinService: KinguinService,
     private route: ActivatedRoute,
     private router: Router
@@ -51,6 +59,8 @@ export class PlatformFilterComponent implements OnInit {
         this.loadPlatformCards(this.platformName, this.currentPage);
       }
     });
+
+    this.fetchCurrencyExchange();
   }
 
   /**
@@ -214,4 +224,13 @@ export class PlatformFilterComponent implements OnInit {
         }
       });
   }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      }
+    );
+  }
+
 }

@@ -5,11 +5,15 @@ import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import {NgForOf, NgIf, CurrencyPipe, NgClass, NgStyle} from '@angular/common';
 import {Router} from "@angular/router";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+import {CurrencyService} from "../services/currency.service";
+
 @Component({
   selector: 'app-offer',
   templateUrl: './offer.component.html',
   standalone: true,
-  imports: [NgIf, NgForOf, CurrencyPipe, NgClass, NgStyle],
+  imports: [NgIf, NgForOf, CurrencyPipe, NgClass, NgStyle, ConvertToHnlPipe, DisplayPersistentDiscount],
   styleUrls: ['./offer.component.css']
 })
 export class OfferComponent implements OnInit {
@@ -19,8 +23,10 @@ export class OfferComponent implements OnInit {
   errorMessage: string = '';
   bannerImageUrl: string = '';
   bannerImageUrlBottom: string = '';
+  exchangeRate: number = 0;
 
   constructor(
+    private currencyService: CurrencyService,
     private router: Router,
     private route: ActivatedRoute,
     private kinguinService: KinguinService
@@ -34,6 +40,7 @@ export class OfferComponent implements OnInit {
         this.performSearch(this.offerTitle);
       }
     });
+    this.fetchCurrencyExchange();
   }
 
   performSearch(query: string): void {
@@ -91,4 +98,11 @@ export class OfferComponent implements OnInit {
     });
   }
 
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      }
+    );
+  }
 }

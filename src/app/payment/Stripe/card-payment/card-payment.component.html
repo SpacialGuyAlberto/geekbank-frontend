@@ -1,6 +1,7 @@
 <!-- checkout.component.html -->
 <div class="checkout">
-  <h2>Total: {{ amount/100 | currency:'EUR' }}</h2>
+  <h2>Total Lempiras: {{ totalOrderAmountHNL | currency: 'HNL'}}</h2>
+  <h2>Total Euros: {{ amount | currency:'EUR' }}</h2>
 
   <!-- Stripe Elements -->
   <div class="card-group">

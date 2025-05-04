@@ -5,7 +5,9 @@ import {RecommendationsService} from "../services/recommendations.service";
 import {NavigationEnd, Router} from "@angular/router";
 import {AuthService} from "../services/auth.service";
 import {filter} from "rxjs/operators";
-
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+import {CurrencyService} from "../services/currency.service";
 
 @Component({
   selector: 'app-recommendations',
@@ -14,7 +16,9 @@ import {filter} from "rxjs/operators";
     NgForOf,
     NgOptimizedImage,
     CurrencyPipe,
-    NgClass
+    NgClass,
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount
   ],
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.css']
@@ -24,9 +28,12 @@ export class RecommendationsComponent implements OnInit {
   currentIndex = 0;
   giftCards: KinguinGiftCard[] = [];
   routeClass: string = '';
-  constructor(private recommendationsService: RecommendationsService,
-              private router: Router,
-              private authService: AuthService
+  exchangeRate: number = 0;
+  constructor(
+    private currencyService: CurrencyService,
+    private recommendationsService: RecommendationsService,
+    private router: Router,
+    private authService: AuthService
               ) { }
 
   ngOnInit(): void {
@@ -41,6 +48,7 @@ export class RecommendationsComponent implements OnInit {
     this.setRouteClass(initialUrl);
     const userId = this.getCurrentUserId();
     this.fetchRecommendations(userId)
+    this.fetchCurrencyExchange();
   }
 
   fetchRecommendations(userId: number): void {
@@ -64,7 +72,7 @@ export class RecommendationsComponent implements OnInit {
           }
         );
     } else {
-      this.recommendationsService.getMostPopular(4)
+      this.recommendationsService.getMostPopular(1)
         .subscribe(async (data: KinguinGiftCard[]) => {
 
             for (const card of data) {
@@ -207,6 +215,14 @@ export class RecommendationsComponent implements OnInit {
 
     const random = Math.abs(hash % 26) + 15;
     return random;
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      }
+    );
   }
 }
 

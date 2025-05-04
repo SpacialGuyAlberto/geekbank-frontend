@@ -7,6 +7,9 @@ import { RouterLink } from '@angular/router';
 import {CategoryItemsComponent} from "../components/category-items/category-items.component";
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { CurrencyService} from "../services/currency.service";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
 
 @Component({
   selector: 'app-filtered-page',
@@ -17,7 +20,9 @@ import { firstValueFrom } from 'rxjs';
     NgIf,
     CurrencyPipe,
     RouterLink,
-    CategoryItemsComponent
+    CategoryItemsComponent,
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount
   ],
   templateUrl: './filtered-page.component.html',
   styleUrls: ['./filtered-page.component.css']
@@ -32,7 +37,7 @@ export class FilteredPageComponent implements OnInit {
   totalLimit: number = 1000;
   hasMore: boolean = true;
   errorMessage: string = '';
-
+  exchangeRate: number = 0;
   bannerImage: string = '';
 
   genres: { key: string; label: string; icon?: string }[] = [
@@ -74,6 +79,7 @@ export class FilteredPageComponent implements OnInit {
   ];
 
   constructor(
+    private currencyService: CurrencyService,
     private route: ActivatedRoute,
     private kinguinService: KinguinService,
     private router: Router
@@ -136,6 +142,7 @@ export class FilteredPageComponent implements OnInit {
         this.isLoading = false;
       }
     });
+    this.fetchCurrencyExchange();
   }
 
   private cleanFilters(filters: any): any {
@@ -287,5 +294,14 @@ export class FilteredPageComponent implements OnInit {
     }
     const random = Math.abs(hash % 26) + 15;
     return random;
+  }
+
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      }
+    );
   }
 }
