@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MainScreenGiftCardService} from "./main-screen-gift-card-service.service";
 import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
-import { MatSnackBar } from '@angular/material/snack-bar';
-import {MainScreenGiftCardItemDTO} from "./MainScreenGiftCardItem";
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MainScreenGiftCardItem, MainScreenGiftCardItemDTO} from "./MainScreenGiftCardItem";
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import {SearchBarComponent} from "../search-bar/search-bar.component";
 import {CurrencyPipe, NgClass, NgForOf, NgIf} from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import {error} from "@angular/compiler-cli/src/transformers/util";
-import {Page} from "../models/Page.model";
+import {FormsModule} from '@angular/forms';
+import {MatButtonModule} from '@angular/material/button';
+import {GiftcardClassification} from "./giftcard-classification.enum";
 
 @Component({
   selector: 'app-main-screen-gift-card-config',
@@ -28,12 +27,16 @@ import {Page} from "../models/Page.model";
 })
 export class MainScreenGiftCardConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
+  classificationKeys = Object.values(GiftcardClassification);
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []
   currentGiftCards: KinguinGiftCard[] = [];
   currentPage: number = 0;
-  pageSize: number = 14; // la cantidad que desees
+  pageSize: number = 14;
   totalPages: number = 0;
   isListView: boolean = false;
+  showClassificationModal = false;
+  selectedCardToClassify: KinguinGiftCard | null = null;
+  selectedClassification: GiftcardClassification | undefined  = undefined;
 
   constructor(
     private mainScreenGiftCardService: MainScreenGiftCardService,
@@ -58,6 +61,59 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
     if (!this.currentGiftCards.includes(card)) {
       this.currentGiftCards.push(card);
     }
+
+    this.selectedCardToClassify = card;
+    // this.selectedClassification = undefined;
+    this.showClassificationModal = true;
+  }
+
+  essambleMainCardDTO(card: KinguinGiftCard, classification: GiftcardClassification): MainScreenGiftCardItemDTO {
+    const item: MainScreenGiftCardItem = {
+      id: 23456,
+      productId: card.kinguinId,
+      createdAt: new Date(),
+      classification: this.selectedClassification
+    };
+
+    const dto: MainScreenGiftCardItemDTO = {
+      mainScreenGiftCardItem: item,
+      giftcard: card,
+    };
+
+    return dto;
+  }
+
+
+  confirmClassification(): void {
+    if (this.selectedCardToClassify && this.selectedClassification) {
+
+      const alreadyAdded = this.currentGiftCards.some(
+        card => card.kinguinId === this.selectedCardToClassify!.kinguinId
+      );
+
+      const dto = this.essambleMainCardDTO(this.selectedCardToClassify, this.selectedClassification);
+      this.mainScreenGiftCardService.addtoMainScreenGiftCards(dto).subscribe( card => {
+        this.showSnackBar(`Card ${card.productId} added successfully.`);
+      })
+
+      if (!alreadyAdded) {
+        this.currentGiftCards.push(this.selectedCardToClassify);
+
+      }
+    }
+
+    this.resetModal();
+  }
+
+
+  cancelClassification(): void {
+    this.resetModal();
+  }
+
+  private resetModal(): void {
+    this.showClassificationModal = false;
+    this.selectedCardToClassify = null;
+    this.selectedClassification = undefined;
   }
 
   removeFromGiftCards(cardToRemove: KinguinGiftCard): void {
@@ -71,6 +127,7 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
           console.log('Raw response from server:', res);
 
           let items: MainScreenGiftCardItemDTO[] = [];
+
 
           if (Array.isArray(res)) {
             items = res;

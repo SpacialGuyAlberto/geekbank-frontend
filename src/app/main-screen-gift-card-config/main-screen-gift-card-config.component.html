@@ -106,4 +106,24 @@
     </div>
 
   </div>
+
+
+  <ng-container *ngIf="showClassificationModal">
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <h2>Selecciona una Clasificación</h2>
+      <select [(ngModel)]="selectedClassification">
+        <option *ngFor="let key of classificationKeys" [value]="key">
+          {{ key }}
+        </option>
+      </select>
+
+      <div class="modal-actions">
+        <button class="modal-btn confirm" (click)="confirmClassification()">Confirmar y Guardar</button>
+        <button class="modal-btn cancel" (click)="cancelClassification()">Cancelar</button>
+      </div>
+    </div>
+  </ng-container>
+
+
 </div>

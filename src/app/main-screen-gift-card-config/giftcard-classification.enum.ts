@@ -1,0 +1,12 @@
+// giftcard-classification.enum.ts
+
+export enum GiftcardClassification {
+  GAMES = 'GAMES',
+  ENTERTAINMENT = 'ENTERTAINMENT',
+  STREAMING = 'STREAMING',
+  UTILITIES = 'UTILITIES',
+  EDUCATION = 'EDUCATION',
+  TRAVEL = 'TRAVEL',
+  FOOD = 'FOOD',
+  OTHER = 'OTHER'
+}

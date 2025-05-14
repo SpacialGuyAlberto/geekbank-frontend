@@ -251,6 +251,76 @@
   gap: 1rem;
 }
 
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(28, 28, 28, 0.85);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #2e2e2e;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  z-index: 1001;
+  min-width: 300px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  text-align: center;
+}
+
+.modal select {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 1rem 0;
+  border-radius: 0.3rem;
+  border: none;
+  background-color: #444;
+  color: #ffcc00;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+
+.modal-btn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 0.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.modal-btn.confirm {
+  background-color: #ffcc00;
+  color: #1c1c1c;
+}
+
+.modal-btn.confirm:hover {
+  background-color: #e6b800;
+}
+
+.modal-btn.cancel {
+  background-color: #444;
+  color: #fff;
+}
+
+.modal-btn.cancel:hover {
+  background-color: #666;
+}
+
+
 .pagination-btn {
   background-color: #444;
   color: #ffcc00;
