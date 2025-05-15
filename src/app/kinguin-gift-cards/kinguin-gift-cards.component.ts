@@ -1,24 +1,35 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { KinguinGiftCard } from "./KinguinGiftCard";
-import { KinguinService } from "./kinguin.service";
-import {NavigationEnd, Router} from '@angular/router';
-import { FormsModule } from "@angular/forms";
-import { CurrencyService } from "../services/currency.service";
-import {async, forkJoin, of, Subscription} from "rxjs";
-import { UIStateServiceService } from "../services/uistate-service.service";
-import { AuthService } from "../services/auth.service";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MainScreenGiftCardService } from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
-import { Store } from "@ngrx/store";
-import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SharedService} from "../services/shared.service";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {KinguinGiftCard} from "./KinguinGiftCard";
+import {KinguinService} from "./kinguin.service";
+import {Router} from '@angular/router';
+import {FormsModule} from "@angular/forms";
+import {CurrencyService} from "../services/currency.service";
+import {Subscription} from "rxjs";
+import {UIStateServiceService} from "../services/uistate-service.service";
+import {AuthService} from "../services/auth.service";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MainScreenGiftCardService} from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
+import {Store} from "@ngrx/store";
+import {MainScreenGiftCardItemDTO} from "../main-screen-gift-card-config/MainScreenGiftCardItem";
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {SharedService} from "../services/shared.service";
 import {DeeplService} from "../deepl.service";
 import {PricingService} from "../pricing/pricing.service";
-import {catchError, filter, map, switchMap, tap} from "rxjs/operators";
 import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+import {GiftcardClassification} from "../main-screen-gift-card-config/giftcard-classification.enum";
 
 
 @Component({
@@ -88,7 +99,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
       this.giftCards = this.giftCardsInput;
       this.totalItems = this.giftCards.length;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-      this.updateDisplayedGiftCards();
+      // this.updateDisplayedGiftCards();
       this.isSearchMode = true;
       this.isLoading = false; // Finalizar carga
     } else {
@@ -96,12 +107,14 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
         this.isSearchMode = value;
       });
 
-      this.fetchGiftCards();
+      // this.fetchGiftCards();
+      // this.fetchMainGiftCardByClassification(GiftcardClassification.UTILITIES)
     }
 
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show) {
-        this.fetchMainGiftCard();
+        // this.fetchMainGiftCard();
+        this.fetchMainGiftCardByClassification(GiftcardClassification.UTILITIES)
         this.isSearchMode = false;
       } else {
         this.isSearchMode = true;
@@ -186,6 +199,62 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
       }
     );
   }
+
+  fetchMainGiftCardByClassification(classification: GiftcardClassification): void {
+    this.isLoading = true;
+    this.mainGiftCards.getGiftcardsByClassification(classification).subscribe(
+      async (res: any) => {
+        try {
+          let content: MainScreenGiftCardItemDTO[] = [];
+
+          if (Array.isArray(res)) {
+            content = res;
+            this.totalItemsMain = content.length;
+            this.totalPagesMain = 1;
+            this.currentPageMain = 0;
+          } else if (res && Array.isArray(res.content)) {
+            content = res.content;
+            this.currentPageMain = res.number; // 0-based
+            this.pageSizeMain = res.size;
+            this.totalPagesMain = res.totalPages;
+            this.totalItemsMain = res.totalElements ?? content.length;
+          }
+
+          const newGiftCards = await Promise.all(
+            content.map(async dto => {
+              const gc = dto.giftcard;
+              gc.coverImageOriginal =
+                gc.coverImageOriginal ||
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                (await this.getBestImageUrl(gc));
+
+              gc.coverImage =
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                '';
+
+              gc.randomDiscount = this.pricingService.generatePersistentDiscount(gc.name);
+              return gc;
+            })
+          );
+
+          this.giftCards = newGiftCards;
+          this.displayedGiftCards = this.giftCards;
+
+          this.isLoading = false;
+        } catch (error) {
+          this.showSnackBar('Error al procesar las gift cards principales.');
+          this.isLoading = false;
+        }
+      },
+      () => {
+        this.showSnackBar('Error al cargar las gift cards principales.');
+        this.isLoading = false;
+      }
+    );
+  }
+
 
   onPageChangeMain(event: PageEvent): void {
     this.currentPageMain = event.pageIndex; // 0-based
@@ -340,25 +409,6 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
     this.hasMoreItems = true;
   }
 
-  resetSearch(): void {
-    this.currentPage = 1;
-    this.totalItems = this.giftCards.length;
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    this.updateDisplayedGiftCards();
-  }
 
-  translate(text: string): string {
-    let translation = "";
-    this.deepl.translateText(text, 'DE').subscribe(
-      (response) => {
-        translation= response.translations[0].text;
-      },
-      (error) => {
-        console.error('Error en la traducción:', error);
-      }
-    );
-    console.log(translation)
-    return translation;
-  }
 }
 

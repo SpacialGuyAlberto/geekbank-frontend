@@ -1,8 +1,8 @@
 // src/app/services/main-screen-gift-card.service.ts
 
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, of, throwError} from 'rxjs';
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import { MainScreenGiftCardItem, MainScreenGiftCardItemDTO } from './MainScreenGiftCardItem';
 import { environment } from '../../environments/environment';
@@ -62,8 +62,20 @@ export class MainScreenGiftCardService {
 
   getGiftcardsByClassification(classification: GiftcardClassification): Observable<MainScreenGiftCardItem[]> {
     const params = new HttpParams().set('classification', classification);
-    return this.http.get<MainScreenGiftCardItem[]>(this.baseUrl, { params });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.get<MainScreenGiftCardItem[]>(this.baseUrl, {
+      params,
+      headers,
+      withCredentials: true
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al obtener giftcards por clasificación:', error);
+        return throwError(() => new Error('No se pudieron cargar las tarjetas de regalo por clasificación.'));
+      })
+    );
   }
+
 
   /**
    * Elimina elementos de tarjetas de regalo para la pantalla principal basados en una lista de productIds.
