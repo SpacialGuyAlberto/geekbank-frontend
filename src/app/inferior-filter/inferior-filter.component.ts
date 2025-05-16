@@ -25,7 +25,7 @@ export class InferiorFilterComponent {
   platforms = [
     { name: 'Steam', icon: 'assets/steam.jpg' },
     { name: 'PlayStation 4', icon: 'assets/play4.png' },
-    { name: 'PlayStation 5', icon: 'assets/PS5.png' },
+    { name: 'PlayStation 5', icon: 'assets/ps5.png' },
     { name: 'Nintendo', icon: 'assets/nintendo.png' },
     { name: 'PlayStation 3', icon: 'assets/PS3.png' },
     { name: 'Battle.net', icon: 'assets/battlenet.png' },
