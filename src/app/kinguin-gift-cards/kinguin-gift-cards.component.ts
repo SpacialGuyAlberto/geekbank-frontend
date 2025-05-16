@@ -31,7 +31,6 @@ import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
 import {GiftcardClassification} from "../main-screen-gift-card-config/giftcard-classification.enum";
 
-
 @Component({
   selector: 'app-kinguin-gift-cards',
   templateUrl: './kinguin-gift-cards.component.html',
@@ -85,13 +84,11 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     GiftcardClassification.OPEN_WORLD,
   ];
 
-
   constructor(
     private authService: AuthService,
     private kinguinService: KinguinService,
     private router: Router,
     private currencyService: CurrencyService,
-    private deepl: DeeplService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
     private mainGiftCards: MainScreenGiftCardService,
@@ -332,7 +329,6 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
 
     return validImages.length > 0 ? validImages[0].url : '';
   }
-
 
   getImageResolution(url: string): Promise<{ width: number; height: number }> {
     return new Promise((resolve, reject) => {
