@@ -26,6 +26,7 @@ import {GiftcardClassification} from "./giftcard-classification.enum";
   styleUrls: ['./main-screen-gift-card-config.component.css']
 })
 export class MainScreenGiftCardConfigComponent implements OnInit {
+
   giftCards: KinguinGiftCard[] = [];
   classificationKeys = Object.values(GiftcardClassification);
   mainScreenGiftCardItems: MainScreenGiftCardItemDTO[] = []
@@ -40,7 +41,6 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
   constructor(
     private mainScreenGiftCardService: MainScreenGiftCardService,
-    private kinguinService: KinguinService,
     private snackBar: MatSnackBar,
   ) {}
 
@@ -50,7 +50,6 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
-    console.log('Search Results in Gift Cards Component: ', this.giftCards);
   }
 
   toggleViewMode(): void {
@@ -61,9 +60,7 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
     if (!this.currentGiftCards.includes(card)) {
       this.currentGiftCards.push(card);
     }
-
     this.selectedCardToClassify = card;
-    // this.selectedClassification = undefined;
     this.showClassificationModal = true;
   }
 
@@ -74,15 +71,12 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
       createdAt: new Date(),
       classification: this.selectedClassification
     };
-
     const dto: MainScreenGiftCardItemDTO = {
       mainScreenGiftCardItem: item,
       giftcard: card,
     };
-
     return dto;
   }
-
 
   confirmClassification(): void {
     if (this.selectedCardToClassify && this.selectedClassification) {
@@ -98,13 +92,11 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
 
       if (!alreadyAdded) {
         this.currentGiftCards.push(this.selectedCardToClassify);
-
       }
     }
 
     this.resetModal();
   }
-
 
   cancelClassification(): void {
     this.resetModal();
@@ -117,17 +109,27 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   }
 
   removeFromGiftCards(cardToRemove: KinguinGiftCard): void {
-    this.currentGiftCards = this.currentGiftCards.filter((card) => card !== cardToRemove);
+
+    if (this.currentGiftCards.includes(cardToRemove)) {
+      this.currentGiftCards.splice(this.currentGiftCards.indexOf(cardToRemove), 1);
+    }
+
+    this.mainScreenGiftCardService.removeGiftCardItem(cardToRemove).subscribe({
+      next: () => {
+        this.showSnackBar("Eliminado correctamente.")
+      },
+      error: (err) => {
+        this.showSnackBar("Error al eliminar card.")
+      }
+    });
   }
 
   loadGiftCards(page: number, size: number): void {
     this.mainScreenGiftCardService.getMainScreenGiftCardItems(page, size)
       .subscribe({
         next: (res: any) => {
-          console.log('Raw response from server:', res);
 
           let items: MainScreenGiftCardItemDTO[] = [];
-
 
           if (Array.isArray(res)) {
             items = res;
@@ -141,19 +143,16 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
             this.totalPages = res.totalPages;
 
           } else {
-            console.warn('Respuesta sin "content" ni arreglo válido. Estructura desconocida.');
             return;
           }
           this.mainScreenGiftCardItems = items;
           this.currentGiftCards = items.map(dto => dto.giftcard);
         },
         error: (err) => {
-          console.error('Error fetching paginated giftcards', err);
           this.showSnackBar("Failed loading gift cards.");
         }
       });
   }
-
 
   onNextPage(): void {
     if (this.currentPage < this.totalPages - 1) {
@@ -169,36 +168,9 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
     }
   }
 
-  save(): void {
-    const existingProductIds = this.mainScreenGiftCardItems.map(item => item.giftcard.kinguinId);
-
-    const newProductIds = this.currentGiftCards.map(card => card.kinguinId);
-    this.mainScreenGiftCardService.removeMainScreenGiftCardItems(existingProductIds).subscribe(
-      () => {
-        console.log('Tarjetas de regalo existentes eliminadas correctamente.');
-        this.showSnackBar("Tarjetas antiguas eliminadas.");
-        this.mainScreenGiftCardService.addMainScreenGiftCardItems(newProductIds).subscribe(
-          () => {
-            console.log('Nuevas tarjetas de regalo añadidas correctamente.');
-            this.showSnackBar("Cambios guardados exitosamente.");
-          },
-          (error) => {
-            console.error('Error al añadir nuevas tarjetas de regalo', error);
-            this.showSnackBar("Error al guardar los cambios.");
-          }
-        );
-      },
-      (error) => {
-        console.error('Error al eliminar tarjetas de regalo existentes', error);
-        this.showSnackBar("Error al eliminar tarjetas antiguas.");
-      }
-    );
-  }
-
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
     });
   }
-
 }

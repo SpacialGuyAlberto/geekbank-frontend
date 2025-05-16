@@ -60,11 +60,11 @@ export class MainScreenGiftCardService {
   }
 
 
-  getGiftcardsByClassification(classification: GiftcardClassification): Observable<MainScreenGiftCardItem[]> {
+  getGiftcardsByClassification(classification: GiftcardClassification): Observable<MainScreenGiftCardItemDTO[]> {
     const params = new HttpParams().set('classification', classification);
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.get<MainScreenGiftCardItem[]>(this.baseUrl, {
+    return this.http.get<MainScreenGiftCardItemDTO[]>(this.baseUrl, {
       params,
       headers,
       withCredentials: true
@@ -91,6 +91,11 @@ export class MainScreenGiftCardService {
     );
   }
 
+  removeGiftCardItem(card: KinguinGiftCard): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${card.kinguinId}`, {
+      withCredentials: true
+    });
+  }
   /**
    * Maneja los errores de las operaciones HTTP.
    *
@@ -100,8 +105,8 @@ export class MainScreenGiftCardService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`); // Log al consola
-      // Aquí puedes implementar notificaciones al usuario, etc.
+      console.error(`${operation} failed: ${error.message}`);
+
       return of(result as T);
     };
   }

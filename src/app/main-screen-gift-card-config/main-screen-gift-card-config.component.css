@@ -202,7 +202,6 @@
   color: #ffcc00;
 }
 
-/* Botones de la lista */
 .list-add-btn,
 .list-remove-btn {
   background-color: rgba(28, 28, 28, 0.7);
@@ -221,7 +220,6 @@
   transform: scale(1.05);
 }
 
-/* Scroll personalizado */
 .left-panel::-webkit-scrollbar,
 .right-panel::-webkit-scrollbar {
   width: 8px;

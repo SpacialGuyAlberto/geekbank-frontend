@@ -1,4 +1,3 @@
-// src/app/services/kinguin.service.ts
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {BehaviorSubject, Observable, tap} from 'rxjs';
@@ -8,6 +7,7 @@ import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
+
 export class KinguinService {
   private apiUrl = `${environment.apiUrl}/kinguin/gift-cards`;
   private giftCardsSubject: BehaviorSubject<KinguinGiftCard[]> = new BehaviorSubject<KinguinGiftCard[]>([]);
@@ -21,6 +21,7 @@ export class KinguinService {
   private updateGiftCardsModel(giftCard: KinguinGiftCard[]): void {
     this.giftCardsSubject.next(giftCard);
   }
+
   getKinguinGiftCards(page: number): Observable<KinguinGiftCard[]> {
     const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}?page=${page}`, { headers })
@@ -57,28 +58,6 @@ export class KinguinService {
       }
     });
 
-    // Log para verificar los parámetros
-    console.log('Parameters being sent:', params.toString());
-
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params });
   }
-
-  fetchTranslation(text: string | number | boolean): Observable<string> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
-    const params = new HttpParams().set('text', text.toString().trim());
-
-    return this.http.get<string>('http://localhost:7070/api/kinguin/translate', { headers, params, responseType: 'text' as 'json' });
-  }
-
-  getGiftCardsByCategory(category: string): Observable<KinguinGiftCard[]> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
-    const params = new HttpParams().set('genre', category);
-
-    return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/filter`, { headers, params }).pipe(
-      tap((giftCards: KinguinGiftCard[]) => {
-        this.updateGiftCardsModel(giftCards);
-      })
-    );
-  }
-
 }

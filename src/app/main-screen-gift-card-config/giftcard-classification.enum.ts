@@ -1,5 +1,3 @@
-// giftcard-classification.enum.ts
-
 export enum GiftcardClassification {
   GAMES = 'GAMES',
   ENTERTAINMENT = 'ENTERTAINMENT',
@@ -8,5 +6,6 @@ export enum GiftcardClassification {
   EDUCATION = 'EDUCATION',
   TRAVEL = 'TRAVEL',
   FOOD = 'FOOD',
-  OTHER = 'OTHER'
+  OTHER = 'OTHER',
+  OPEN_WORLD = 'OPEN_WORLD',
 }
