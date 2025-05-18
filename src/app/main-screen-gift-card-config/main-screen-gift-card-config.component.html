@@ -1,109 +1,119 @@
 <div class="gift-card-dashboard">
-  <!-- Barra superior con el título y los botones -->
   <div class="header">
     <h1>Configuración de Tarjetas de Regalo</h1>
 
-    <!-- Botón para cambiar la vista -->
     <button (click)="toggleViewMode()" class="toggle-view-btn">
-      <i class="fas"
-         [ngClass]="{
-           'fa-th-large': !isListView,
-           'fa-list': isListView
-         }"></i>
+      <i class="fas" [ngClass]="{ 'fa-th-large': !isListView, 'fa-list': isListView }"></i>
       Vista: {{ isListView ? 'Lista' : 'Tarjetas' }}
-    </button>
-
-    <button class="save-btn" (click)="save()">
-      <i class="fas fa-save"></i> Guardar Cambios
     </button>
   </div>
 
-  <!-- Contenedor principal -->
   <div class="main-content">
-    <!-- Panel izquierdo: Resultados de búsqueda -->
     <div class="left-panel">
-      <!-- Barra de búsqueda -->
       <div class="search-bar-container">
-        <app-search-bar (searchResults)="handleSearchResults($event)" class="search-bar"></app-search-bar>
+        <app-search-bar
+          (searchResults)="handleSearchResults($event)"
+          class="search-bar">
+        </app-search-bar>
       </div>
 
       <h2>Resultados de Búsqueda</h2>
 
-      <!-- Vista GRID (tarjetas) para giftCards (resultados de búsqueda) -->
-      <div class="gift-cards-container" *ngIf="!isListView">
-        <div *ngFor="let card of giftCards" class="gift-card">
-          <div class="gift-card-image-container">
-            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-            <!-- Botón para añadir a los destacados -->
-            <button class="add-gift-card-btn" (click)="addToGiftCards(card)">
-              <i class="fas fa-plus-circle"></i>
-            </button>
-          </div>
-          <div class="gift-card-content">
-            <h3 class="gift-card-title">{{ card.name }}</h3>
-            <div class="gift-card-price">
-              <span>{{ card.price | currency }}</span>
+      @if (!isListView) {
+        <div class="gift-cards-container">
+          @for (card of giftCards; track giftCards.values()) {
+            <div class="gift-card">
+              <div class="gift-card-image-container">
+                <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+                <button class="add-gift-card-btn" (click)="addToGiftCards(card)">
+                  <i class="fas fa-plus-circle"></i>
+                </button>
+              </div>
+              <div class="gift-card-content">
+                <h3 class="gift-card-title">{{ card.name }}</h3>
+                <div class="gift-card-price">
+                  <span>{{ card.price | currency }}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
-      </div>
-
-      <!-- Vista LISTA para giftCards -->
-      <div class="gift-cards-list" *ngIf="isListView">
-        <div *ngFor="let card of giftCards; let i = index" class="list-item">
-          <div class="list-index">#{{ i + 1 }}</div>
-          <div class="list-name">{{ card.name }}</div>
-          <div class="list-price">{{ card.price | currency }}</div>
-          <button class="list-add-btn" (click)="addToGiftCards(card)">
-            <i class="fas fa-plus-circle"></i>
-          </button>
+      } @else {
+        <div class="gift-cards-list">
+          @for (card of giftCards; let i = $index; track giftCards.values()) {
+            <div class="list-item">
+              <div class="list-index">#{{ i + 1 }}</div>
+              <div class="list-name">{{ card.name }}</div>
+              <div class="list-price">{{ card.price | currency }}</div>
+              <button class="list-add-btn" (click)="addToGiftCards(card)">
+                <i class="fas fa-plus-circle"></i>
+              </button>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
 
-    <!-- Panel derecho: Tarjetas añadidas a los destacados -->
     <div class="right-panel">
       <h2>Mis Tarjetas de Regalo Destacadas</h2>
 
-      <!-- Vista GRID (tarjetas) para currentGiftCards -->
-      <div class="gift-cards-container" *ngIf="!isListView">
-        <div *ngFor="let card of currentGiftCards" class="gift-card">
-          <div class="gift-card-image-container">
-            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-            <!-- Botón para eliminar de los destacados -->
-            <button class="remove-gift-card-btn" (click)="removeFromGiftCards(card)">
-              <i class="fas fa-minus-circle"></i>
-            </button>
-          </div>
-          <div class="gift-card-content">
-            <h3 class="gift-card-title">{{ card.name }}</h3>
-            <div class="gift-card-price">
-              <span>{{ card.price | currency }}</span>
+      @if (!isListView) {
+        <div class="gift-cards-container">
+          @for (card of currentGiftCards; track currentGiftCards.values()) {
+            <div class="gift-card">
+              <div class="gift-card-image-container">
+                <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+                <button class="remove-gift-card-btn" (click)="removeFromGiftCards(card)">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
+              </div>
+              <div class="gift-card-content">
+                <h3 class="gift-card-title">{{ card.name }}</h3>
+                <div class="gift-card-price">
+                  <span>{{ card.price | currency }}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          }
         </div>
-      </div>
-
-      <!-- Vista LISTA para currentGiftCards -->
-      <div class="gift-cards-list" *ngIf="isListView">
-        <div *ngFor="let card of currentGiftCards; let i = index" class="list-item">
-          <div class="list-index">#{{ i + 1 }}</div>
-          <div class="list-name">{{ card.name }}</div>
-          <div class="list-price">{{ card.price | currency }}</div>
-          <button class="list-remove-btn" (click)="removeFromGiftCards(card)">
-            <i class="fas fa-minus-circle"></i>
-          </button>
+      } @else {
+        <div class="gift-cards-list">
+          @for (card of currentGiftCards; let i = $index; track currentGiftCards.values()) {
+            <div class="list-item">
+              <div class="list-index">#{{ i + 1 }}</div>
+              <div class="list-name">{{ card.name }}</div>
+              <div class="list-price">{{ card.price | currency }}</div>
+              <button class="list-remove-btn" (click)="removeFromGiftCards(card)">
+                <i class="fas fa-minus-circle"></i>
+              </button>
+            </div>
+          }
         </div>
-      </div>
+      }
     </div>
 
     <div class="pagination">
       <button class="pagination-btn" (click)="onPrevPage()">Anterior</button>
       <span class="pagination-info">
-      Página {{ currentPage + 1 }} de {{ totalPages }}
-    </span>
+        Página {{ currentPage + 1 }} de {{ totalPages }}
+      </span>
       <button class="pagination-btn" (click)="onNextPage()">Siguiente</button>
     </div>
-
   </div>
+
+  @if (showClassificationModal) {
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <h2>Selecciona una Clasificación</h2>
+      <select [(ngModel)]="selectedClassification">
+        @for (key of classificationKeys; track classificationKeys.values()) {
+          <option [value]="key">{{ key }}</option>
+        }
+      </select>
+      <div class="modal-actions">
+        <button class="modal-btn confirm" (click)="confirmClassification()">Confirmar y Guardar</button>
+        <button class="modal-btn cancel" (click)="cancelClassification()">Cancelar</button>
+      </div>
+    </div>
+  }
 </div>

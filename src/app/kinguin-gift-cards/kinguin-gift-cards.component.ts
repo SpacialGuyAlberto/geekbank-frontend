@@ -1,25 +1,35 @@
-import { AfterViewInit, ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { KinguinGiftCard } from "./KinguinGiftCard";
-import { KinguinService } from "./kinguin.service";
-import {NavigationEnd, Router} from '@angular/router';
-import { FormsModule } from "@angular/forms";
-import { CurrencyService } from "../services/currency.service";
-import {async, forkJoin, of, Subscription} from "rxjs";
-import { UIStateServiceService } from "../services/uistate-service.service";
-import { AuthService } from "../services/auth.service";
-import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
-import { MainScreenGiftCardService } from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
-import { Store } from "@ngrx/store";
-import { MainScreenGiftCardItemDTO } from "../main-screen-gift-card-config/MainScreenGiftCardItem";
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { SharedService} from "../services/shared.service";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {KinguinGiftCard} from "./KinguinGiftCard";
+import {KinguinService} from "./kinguin.service";
+import {Router} from '@angular/router';
+import {FormsModule} from "@angular/forms";
+import {CurrencyService} from "../services/currency.service";
+import {Subscription} from "rxjs";
+import {UIStateServiceService} from "../services/uistate-service.service";
+import {AuthService} from "../services/auth.service";
+import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
+import {MainScreenGiftCardService} from "../main-screen-gift-card-config/main-screen-gift-card-service.service";
+import {Store} from "@ngrx/store";
+import {MainScreenGiftCardItemDTO} from "../main-screen-gift-card-config/MainScreenGiftCardItem";
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {SharedService} from "../services/shared.service";
 import {DeeplService} from "../deepl.service";
 import {PricingService} from "../pricing/pricing.service";
-import {catchError, filter, map, switchMap, tap} from "rxjs/operators";
 import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
-
+import {GiftcardClassification} from "../main-screen-gift-card-config/giftcard-classification.enum";
 
 @Component({
   selector: 'app-kinguin-gift-cards',
@@ -37,7 +47,7 @@ import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.p
   encapsulation: ViewEncapsulation.None
 })
 export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
-  @Input() giftCardsInput: KinguinGiftCard[] | null = null; // Renombrado para evitar conflicto
+  @Input() giftCardsInput: KinguinGiftCard[] | null = null;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('mainPaginator') mainPaginator!: MatPaginator;
 
@@ -63,12 +73,22 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
 
   private navSub!: Subscription;
 
+  classificationList: GiftcardClassification[] = Object.keys(GiftcardClassification)
+    .filter(key => isNaN(Number(key))) // filtra claves numéricas si enum es mixto
+    .map(key => GiftcardClassification[key as keyof typeof GiftcardClassification]);
+
+
+  giftCardsByClass = new Map<GiftcardClassification, KinguinGiftCard[]>();
+  classifications: GiftcardClassification[]=[
+    GiftcardClassification.UTILITIES,
+    GiftcardClassification.OPEN_WORLD,
+  ];
+
   constructor(
     private authService: AuthService,
     private kinguinService: KinguinService,
     private router: Router,
     private currencyService: CurrencyService,
-    private deepl: DeeplService,
     private cd: ChangeDetectorRef,
     private uiStateService: UIStateServiceService,
     private mainGiftCards: MainScreenGiftCardService,
@@ -84,24 +104,22 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     });
 
     if (this.giftCardsInput && this.giftCardsInput.length > 0) {
-      this.isLoading = true; // Iniciar carga si hay input
+      this.isLoading = true;
       this.giftCards = this.giftCardsInput;
       this.totalItems = this.giftCards.length;
       this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
       this.updateDisplayedGiftCards();
       this.isSearchMode = true;
-      this.isLoading = false; // Finalizar carga
+      this.isLoading = false;
     } else {
       this.isShearch = this.sharedService.isSearchMode$.subscribe(value => {
         this.isSearchMode = value;
       });
-
-      this.fetchGiftCards();
     }
 
     this.uiStateService.showHighlights$.subscribe(show => {
       if (show) {
-        this.fetchMainGiftCard();
+        this.classificationList.forEach(c => this.fetchMainGiftCardByClassification(c));
         this.isSearchMode = false;
       } else {
         this.isSearchMode = true;
@@ -111,9 +129,15 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.fetchCurrencyExchange();
   }
 
+  ngAfterViewInit(): void {
+    this.displayedGiftCards.forEach(item => {
+      item.wished = true;
+    });
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['giftCardsInput']) {
-      this.isLoading = true; // Iniciar carga
+      this.isLoading = true;
       const newGiftCards = changes['giftCardsInput'].currentValue;
       if (newGiftCards && newGiftCards.length > 0) {
         this.giftCards = newGiftCards;
@@ -122,7 +146,7 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
         this.currentPage = 1;
         this.updateDisplayedGiftCards();
         this.isSearchMode = true;
-        this.isLoading = false; // Finalizar carga
+        this.isLoading = false;
         this.cd.detectChanges();
       } else {
         this.isSearchMode = false;
@@ -130,6 +154,14 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
         this.fetchGiftCards();
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.navSub?.unsubscribe();
+    if (this.giftCardsSubscription) {
+      this.giftCardsSubscription.unsubscribe();
+    }
+    this.isSearchMode = false;
   }
 
 fetchMainGiftCard(page: number = 0, size: number = 14): void {
@@ -187,33 +219,95 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
     );
   }
 
+  fetchMainGiftCardByClassification(classification: GiftcardClassification): void {
+    this.isLoading = true;
+    this.mainGiftCards.getGiftcardsByClassification(classification).subscribe(
+      async (res: any) => {
+        try {
+          let content: MainScreenGiftCardItemDTO[] = [];
+
+          if (Array.isArray(res)) {
+            content = res;
+            this.totalItemsMain = content.length;
+            this.totalPagesMain = 1;
+            this.currentPageMain = 0;
+          } else if (res && Array.isArray(res.content)) {
+            content = res.content;
+            this.currentPageMain = res.number; // 0-based
+            this.pageSizeMain = res.size;
+            this.totalPagesMain = res.totalPages;
+            this.totalItemsMain = res.totalElements ?? content.length;
+          }
+
+          const newGiftCards = await Promise.all(
+            content.map(async dto => {
+              const gc = dto.giftcard;
+              gc.coverImageOriginal =
+                gc.coverImageOriginal ||
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                (await this.getBestImageUrl(gc));
+
+              gc.coverImage =
+                gc.images.cover?.thumbnail ||
+                gc.coverImage ||
+                '';
+
+              gc.randomDiscount = this.pricingService.generatePersistentDiscount(gc.name);
+              return gc;
+            })
+          );
+
+          this.giftCards = newGiftCards;
+          this.displayedGiftCards = this.giftCards;
+          this.giftCardsByClass.set(classification, newGiftCards);
+          this.isLoading = false;
+        } catch (error) {
+          this.showSnackBar('Error al procesar las gift cards principales.');
+          this.isLoading = false;
+        }
+      },
+      () => {
+        this.showSnackBar('Error al cargar las gift cards principales.');
+        this.isLoading = false;
+      }
+    );
+  }
+
   onPageChangeMain(event: PageEvent): void {
-    this.currentPageMain = event.pageIndex; // 0-based
+    this.currentPageMain = event.pageIndex;
     this.pageSizeMain = event.pageSize;
     this.fetchMainGiftCard(this.currentPageMain, this.pageSizeMain);
   }
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
+    const imageSources: Array<{ key: string, value: any }> = [
+      { key: 'coverImageOriginal', value: card.coverImageOriginal },
+      { key: 'images.cover.thumbnail', value: card.images.cover?.thumbnail },
+      { key: 'coverImage', value: card.coverImage },
+      { key: 'images.screenshots', value: card.images.screenshots },
+      { key: 'screenshots', value: card.screenshots }
+    ];
+
     const imageUrls: string[] = [];
 
-    if (card.coverImageOriginal) {
-      imageUrls.push(card.coverImageOriginal);
-    }
+    for (const source of imageSources) {
+      switch (source.key) {
+        case 'coverImageOriginal':
+        case 'images.cover.thumbnail':
+        case 'coverImage':
+          if (source.value) {
+            imageUrls.push(source.value);
+          }
+          break;
 
-    if (card.images.cover?.thumbnail) {
-      imageUrls.push(card.images.cover.thumbnail);
-    }
-
-    if (card.coverImage) {
-      imageUrls.push(card.coverImage);
-    }
-
-    if (card.images.screenshots && card.images.screenshots.length > 0) {
-      imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url));
-    }
-
-    if (card.screenshots && card.screenshots.length > 0) {
-      imageUrls.push(...card.screenshots.map(screenshot => screenshot.url));
+        case 'images.screenshots':
+        case 'screenshots':
+          if (Array.isArray(source.value) && source.value.length > 0) {
+            imageUrls.push(...source.value.map((s: any) => s.url));
+          }
+          break;
+      }
     }
 
     const uniqueImageUrls = Array.from(new Set(imageUrls));
@@ -224,9 +318,7 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
           url,
           resolution: res.width * res.height,
         }))
-        .catch(err => {
-          return { url, resolution: 0 };
-        })
+        .catch(() => ({ url, resolution: 0 }))
     );
 
     const results = await Promise.all(promises);
@@ -248,7 +340,7 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
   }
 
   async fetchGiftCards(): Promise<void> {
-    this.isLoading = true; // Iniciar la carga
+    this.isLoading = true;
     this.kinguinService.getGiftCardsModel().subscribe(async (data: KinguinGiftCard[]) => {
       try {
         const updatedCardsPromises = data.map(async card => {
@@ -265,7 +357,7 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
         this.currentPage = 1;
         this.updateDisplayedGiftCards();
-        this.isLoading = false; // Finalizar la carga
+        this.isLoading = false;
         this.cd.detectChanges();
       } catch (error) {
         this.showSnackBar('Error al procesar las gift cards.');
@@ -273,7 +365,7 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
       }
     }, error => {
       this.showSnackBar('Error al cargar las gift cards.');
-      this.isLoading = false; // Finalizar la carga en caso de error
+      this.isLoading = false;
     });
   }
 
@@ -288,7 +380,6 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
     this.currentPage = event.pageIndex + 1;
     this.updateDisplayedGiftCards();
   }
-
 
   viewDetails(card: KinguinGiftCard): void {
     this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {});
@@ -307,23 +398,9 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
     );
   }
 
-  ngOnDestroy(): void {
-    this.navSub?.unsubscribe();
-    if (this.giftCardsSubscription) {
-      this.giftCardsSubscription.unsubscribe();
-    }
-    this.isSearchMode = false;
-  }
-
   showSnackBar(message: string): void {
     this.snackBar.open(message, 'Cerrar', {
       duration: 3000,
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.displayedGiftCards.forEach(item => {
-      item.wished = true;
     });
   }
 
@@ -338,27 +415,6 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
     this.pageSizeMain = 14;
     this.totalPagesMain = 0;
     this.hasMoreItems = true;
-  }
-
-  resetSearch(): void {
-    this.currentPage = 1;
-    this.totalItems = this.giftCards.length;
-    this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-    this.updateDisplayedGiftCards();
-  }
-
-  translate(text: string): string {
-    let translation = "";
-    this.deepl.translateText(text, 'DE').subscribe(
-      (response) => {
-        translation= response.translations[0].text;
-      },
-      (error) => {
-        console.error('Error en la traducción:', error);
-      }
-    );
-    console.log(translation)
-    return translation;
   }
 }
 

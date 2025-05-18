@@ -1,10 +1,13 @@
-import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
+import { GiftcardClassification } from "./giftcard-classification.enum";
 
 export interface MainScreenGiftCardItem {
-  id: number;
+  id?: number;
   productId: number;
+  classification?: GiftcardClassification;
+  createdAt?: Date;
 }
 export interface MainScreenGiftCardItemDTO {
-  hihlightItem: MainScreenGiftCardItem;
+  mainScreenGiftCardItem: MainScreenGiftCardItem;
   giftcard: KinguinGiftCard;
 }

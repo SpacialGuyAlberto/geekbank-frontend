@@ -1,13 +1,15 @@
 // src/app/services/main-screen-gift-card.service.ts
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Observable, of, throwError} from 'rxjs';
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import { MainScreenGiftCardItem, MainScreenGiftCardItemDTO } from './MainScreenGiftCardItem';
 import { environment } from '../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
 import {Page} from "../models/Page.model";
+import {GiftcardClassification} from "./giftcard-classification.enum";
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,16 @@ export class MainScreenGiftCardService {
 
   constructor(private http: HttpClient) { }
 
-  getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO>> {
+  getMainScreenGiftCardItems(page: number, size: number): Observable<Page<MainScreenGiftCardItemDTO[]>> {
     const url = `${this.baseUrl}?page=${page}&size=${size}`;
-    return this.http.get<Page<MainScreenGiftCardItemDTO>>(url);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.get<Page<MainScreenGiftCardItemDTO[]>>(url, {
+      headers,
+      withCredentials: true
+    });
   }
+
   /**
    * Agrega nuevos elementos de tarjetas de regalo para la pantalla principal.
    *
@@ -36,6 +44,38 @@ export class MainScreenGiftCardService {
       catchError(this.handleError<MainScreenGiftCardItem[]>('addMainScreenGiftCardItems', []))
     );
   }
+
+  addtoMainScreenGiftCards(giftcardItemDTO: MainScreenGiftCardItemDTO): Observable<MainScreenGiftCardItem> {
+    return this.http.post<MainScreenGiftCardItem>(
+      `${this.baseUrl}`,
+      giftcardItemDTO,
+      {
+        withCredentials: true,
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      }
+    ).pipe(
+      tap((newItem: MainScreenGiftCardItem) => console.log(`Added ${newItem.productId} main screen gift card items`)),
+      catchError(this.handleError<MainScreenGiftCardItem>('addtoMainScreenGiftCards'))
+    );
+  }
+
+
+  getGiftcardsByClassification(classification: GiftcardClassification): Observable<MainScreenGiftCardItemDTO[]> {
+    const params = new HttpParams().set('classification', classification);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    return this.http.get<MainScreenGiftCardItemDTO[]>(this.baseUrl, {
+      params,
+      headers,
+      withCredentials: true
+    }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al obtener giftcards por clasificación:', error);
+        return throwError(() => new Error('No se pudieron cargar las tarjetas de regalo por clasificación.'));
+      })
+    );
+  }
+
 
   /**
    * Elimina elementos de tarjetas de regalo para la pantalla principal basados en una lista de productIds.
@@ -51,6 +91,11 @@ export class MainScreenGiftCardService {
     );
   }
 
+  removeGiftCardItem(card: KinguinGiftCard): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${card.kinguinId}`, {
+      withCredentials: true
+    });
+  }
   /**
    * Maneja los errores de las operaciones HTTP.
    *
@@ -60,8 +105,8 @@ export class MainScreenGiftCardService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(`${operation} failed: ${error.message}`); // Log al consola
-      // Aquí puedes implementar notificaciones al usuario, etc.
+      console.error(`${operation} failed: ${error.message}`);
+
       return of(result as T);
     };
   }
