@@ -60,7 +60,7 @@ export class PasswordModalComponent {
 
       this.userService.updateDetails(this.detailsBody).subscribe(
         response => {
-          console.log('Detalles actualizados exitosamente', response);
+
           this.isLoading = false;
           this.onConfirm.emit(true);
           this.notificationService.addNotification('Your information was succesfully updated', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png')

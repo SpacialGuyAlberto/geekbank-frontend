@@ -38,7 +38,7 @@ export class WishlistComponent implements OnInit {
     const userIdString = sessionStorage.getItem("userId");
     if (userIdString) {
       this.userId = parseInt(userIdString, 10);
-      console.log('USER ID : ' + this.userId);
+
     } else {
       console.warn('No se encontró el userId en sessionStorage.');
     }
@@ -48,7 +48,7 @@ export class WishlistComponent implements OnInit {
     this.wishListService.getWishItems().subscribe(
       data => {
         this.wishedItems = data;
-        console.log("Loaded wish items: ", data);
+
       },
       error => {
         console.error("Error al cargar los ítems de la lista de deseos:", error);
@@ -57,7 +57,7 @@ export class WishlistComponent implements OnInit {
   }
 
   removeFromWishlist(itemId: number): void {
-    console.log(itemId)
+
     let element = this.wishedItems.find( item => item.wishedItem.id === itemId);
 
     this.wishListService.removeWishItem(itemId).subscribe(() => {
@@ -78,12 +78,12 @@ export class WishlistComponent implements OnInit {
   }
 
   viewDetails(card: KinguinGiftCard): void {
-    console.log('CARD ID: ' + card.productId);
+
     this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
       if (success) {
-        console.log('Navigation successful');
+
       } else {
-        console.log('Navigation failed');
+
       }
     });
   }

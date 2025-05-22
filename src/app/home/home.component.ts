@@ -77,7 +77,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.searchSubscription = this.searchStateService.isFreeFireSearch$
       .subscribe(isFreeFire => {
         this.showFreeFireComponent = isFreeFire;
-        console.log('Estado de búsqueda de Free Fire:', isFreeFire);
+
       });
 
     this.route.queryParams.subscribe(params => {

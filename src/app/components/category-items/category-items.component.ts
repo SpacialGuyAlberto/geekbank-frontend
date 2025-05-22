@@ -87,7 +87,7 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching gift cards by genre:', error);
+
         this.giftCards = [];
         this.displayedGiftCards = [];
         this.isLoading = false;
@@ -96,12 +96,12 @@ export class CategoryItemsComponent implements OnInit, OnChanges {
   }
 
   viewDetails(card: KinguinGiftCard): void {
-    console.log('CARD ID: ' + card.productId);
+
     this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
       if (success) {
-        console.log('Navigation successful');
+
       } else {
-        console.log('Navigation failed');
+
       }
     });
   }

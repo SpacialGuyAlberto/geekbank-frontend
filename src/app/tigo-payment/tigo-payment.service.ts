@@ -56,7 +56,7 @@ export class TigoPaymentService implements PaymentMethod {
     this.showSpinnerSubject.next(true);
     this.tigoService.placeOrderForVerifiedPayment(orderDetails).subscribe(
       (transaction: Transaction) => {
-        console.log('Transaction received:', transaction);
+
         this.transactionSubject.next(transaction);
         this.showSpinnerSubject.next(false);
       },

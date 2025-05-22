@@ -283,7 +283,7 @@ export class CartService {
    */
   isItemInCart(kinguinId: number): Observable<boolean> {
     if (this.authService.isAuthenticated()) {
-       console.log("IS ITEM IN CART BEING EXECUTTED");
+
       return this.getCartItemsFromServer().pipe(
         map(cartItems => {
           console.log("IS ITEM IN CART SERVICE: " + cartItems.some(item => parseInt(String(item.cartItem.productId)) === kinguinId ))

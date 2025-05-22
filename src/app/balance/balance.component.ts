@@ -61,9 +61,8 @@ export class BalanceComponent implements OnInit {
     this.store.dispatch(loadUserFromSession());
     // this.user$.subscribe(data => this.balance = data?.account.balance)
     this.balance$.subscribe((balance) => {
-      console.log('Balance in Account:', balance);
+
     });
-    console.log("BALANCE IN ACCOUNT" + this.balance)
 
   }
 

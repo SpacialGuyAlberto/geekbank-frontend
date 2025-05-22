@@ -40,7 +40,7 @@ export class SetPasswordComponent implements OnInit {
 
     this.userService.setPassword(this.token, this.password).subscribe({
       next: (response: HttpResponse<any>) => {
-        console.log('Respuesta:', response);
+
         if (response.status === 200) {
           this.message = 'Contraseña establecida exitosamente. Ahora puedes iniciar sesión.';
           this.messageClass = 'success-message';

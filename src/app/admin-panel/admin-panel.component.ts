@@ -138,7 +138,6 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   handleCustomersChange(newCustomers: number) {
     this.customers = newCustomers;
-    console.log('Número de customers recibidos del componente hijo:', this.customers);
   }
 
   ngAfterViewInit() {

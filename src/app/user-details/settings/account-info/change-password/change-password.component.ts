@@ -38,7 +38,7 @@ export class ChangePasswordComponent {
         this.changePasswordForm.get('newPassword')
       ).subscribe(
         response => {
-          console.log('Password updated successfully', response);
+
         },
         error => {
           console.error('Error updating password', error);

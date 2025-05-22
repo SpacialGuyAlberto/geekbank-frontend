@@ -17,7 +17,7 @@ export class GiftCardDropdownComponent {
 
   @Input() set giftCards(value: KinguinGiftCard[]) {
     this._giftCards = value;
-    console.log('Gift Cards recibidas en Dropdown:', this._giftCards);
+
   }
 
   get giftCards(): KinguinGiftCard[] {

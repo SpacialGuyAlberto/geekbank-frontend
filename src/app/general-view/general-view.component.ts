@@ -52,9 +52,6 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnChanges() {
-    console.log('Total customers actualizado:', this.totalCustomers);
-  }
 
   fetchCompletedTTransactions(){
     this.transactionService.getTransactions().subscribe( (data => {
@@ -166,8 +163,7 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
   getSalesMetrics(){
     this.salesMetricService.getCurrentMetrics().subscribe(data => {
       this.salesMetrics = data;
-      console.log('SALES COUNT ' + data.totalSalesCount);
-      console.log('TOTAL PROFIT ' + data.totalProfit);
+
     })
   }
 }

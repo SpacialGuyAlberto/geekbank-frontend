@@ -195,12 +195,12 @@ export class RecommendationsComponent implements OnInit {
   }
 
   viewDetails(card: KinguinGiftCard): void {
-    console.log('CARD ID: ' + card.productId);
+
     this.router.navigate(['/gift-card-details', card.kinguinId]).then(success => {
       if (success) {
-        console.log('Navigation successful');
+
       } else {
-        console.log('Navigation failed');
+
       }
     });
   }

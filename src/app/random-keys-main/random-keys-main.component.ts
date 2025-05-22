@@ -60,7 +60,7 @@ export class RandomKeysMainComponent implements OnInit{
           key.coverImage = key.images.cover?.thumbnail || '';
           return key;
         });
-        console.log('Large Keys:', this.keys); // Para depuración
+
         this.isLoadingLarge = false;
       },
       error: (err) => {

@@ -162,7 +162,7 @@ export class PurchaseConfirmationComponent implements OnInit {
   }
 
   viewDetails(card: KinguinGiftCard): void {
-    console.log('Navegar a detalle de la gift card ID: ', card.productId);
+
     this.router.navigate(['/gift-card-details', card.kinguinId]);
   }
 

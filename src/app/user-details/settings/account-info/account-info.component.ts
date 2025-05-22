@@ -131,7 +131,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
     this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED: " + value))
+    this.isAuthenticated$.subscribe(value => {})
   }
 
 // account-info.component.ts
@@ -175,16 +175,16 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
     if (isValid && Object.keys(updatedFields).length > 0) {
       this.showPasswordModal = true;
-      console.log('Información personal válida y lista para actualizar.');
+
     } else if (isValid && Object.keys(updatedFields).length === 0) {
       this.generalErrorMessage = 'No hay cambios para actualizar.';
-      console.log('No hay cambios para actualizar.');
+
     } else {
       this.generalErrorMessage = 'Por favor, corrige los errores en el formulario.';
-      console.log('Validación fallida.');
+
     }
 
-    console.log('Details Body: ' + JSON.stringify(this.detailsBody));
+
   }
 
 

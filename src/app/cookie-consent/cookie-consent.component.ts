@@ -76,7 +76,7 @@ export class CookieConsentComponent implements OnInit {
     this.saveCookieConsent();
     this.showBanner = false;
     this.showCustomizeModal = false;
-    console.log('Todas las cookies aceptadas');
+
   }
 
   rejectAllCookies(): void {
@@ -89,14 +89,14 @@ export class CookieConsentComponent implements OnInit {
     this.saveCookieConsent();
     this.showBanner = false;
     this.showCustomizeModal = false;
-    console.log('Todas las cookies rechazadas');
+
   }
 
   savePreferences(): void {
     this.saveCookieConsent();
     this.showCustomizeModal = false;
     this.showBanner = false;
-    console.log('Preferencias de cookies guardadas:', this.cookiePreferences);
+
   }
 
   private saveCookieConsent(): void {

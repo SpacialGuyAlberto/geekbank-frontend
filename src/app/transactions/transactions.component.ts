@@ -81,7 +81,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.userService.getUsers()
       .subscribe(data => {
         this.users = data;
-        console.log(' THESE ARE THE USERS: ' + this.users);
+
       })
   }
 
