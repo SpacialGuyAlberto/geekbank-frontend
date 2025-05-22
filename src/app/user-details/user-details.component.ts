@@ -40,9 +40,9 @@ export class UserDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getUserDetails().subscribe(data => {
       this.user = data;
-      console.log(data.email)
+
       sessionStorage.setItem("email", data.email)
-      console.log(this.user);
+
     });
     this.selectSection('account-details');
     this.isSmallScreen = window.innerWidth <= 768;
@@ -50,7 +50,6 @@ export class UserDetailsComponent implements OnInit {
   }
 
   selectSection(section: string) {
-    console.log('Sección seleccionada:', section);  // Verificar la selección
     this.selectedSection = section;
     if (this.isSmallScreen) {
       this.isCollapsed = false;  // Cambiar a false para ocultar el modal

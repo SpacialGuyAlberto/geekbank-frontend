@@ -71,13 +71,13 @@ export class NotificationBellComponent implements OnInit, OnDestroy { // Impleme
 
   openNotification(notif: Notification) {
     this.notificationService.markAsRead(notif.id);
-    console.log('Abrir notificación:', notif.message);
+
   }
 
   goToTransaction(transactionId?: number) {
     if (transactionId !== undefined) {
       this.router.navigate(['/transactions', transactionId]).then(() => {
-        console.log(`Navegando a la transacción: ${transactionId}`);
+
       });
     } else {
       console.warn('No se proporcionó transactionId para esta notificación.');
@@ -87,7 +87,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy { // Impleme
   goToProduct(productId?: number) {
     if (productId !== undefined) {
       this.router.navigate(['/gift-card-details', productId]).then(() => {
-        console.log(`Navegando al producto: ${productId}`);
+
       });
     } else {
       console.warn('No se proporcionó productId para esta notificación.');

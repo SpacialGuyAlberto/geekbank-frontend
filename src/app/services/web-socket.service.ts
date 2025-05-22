@@ -37,7 +37,7 @@ export class WebSocketService {
       heartbeatOutgoing: 4000,
       debug: (str) => { console.log(str); },
       onConnect: (frame) => {
-        console.log('Connected to WebSocket');
+
         this.connectedSubject.next(true);
         this.subscribeToManualVerifications();
         this.subscribeToManualVerificationQueue();
@@ -48,7 +48,7 @@ export class WebSocketService {
         this.connectedSubject.next(false);
       },
       onWebSocketClose: () => {
-        console.log('WebSocket connection closed');
+
         this.connectedSubject.next(false);
       }
     });
@@ -63,9 +63,9 @@ export class WebSocketService {
 
   reconnect(): void {
     setTimeout(() => {
-      console.log('Reconnecting to WebSocket...');
-      this.connect(); // Intentar reconectar después de un tiempo
-    }, 5000); // Intentar reconectar después de 5 segundos
+
+      this.connect();
+    }, 5000);
   }
   /**
    * Método para suscribirse al tópico de estado de la transacción
@@ -124,7 +124,7 @@ export class WebSocketService {
   private subscribeToManualVerifications(): void {
     const subscription: StompSubscription = this.client.subscribe('/topic/manual-verifications', (message: IMessage) => {
       const parsedMessage: ManualVerificationTransactionDto = JSON.parse(message.body);
-      console.log('Received manual verification:', parsedMessage);
+
       this.manualVerificationTransactionSubject.next(parsedMessage);
     });
   }
@@ -135,7 +135,7 @@ export class WebSocketService {
   private subscribeToManualVerificationQueue(): void {
     const subscription: StompSubscription = this.client.subscribe('/topic/manual-verifications-queue', (message: IMessage) => {
       const parsedMessage: ManualVerificationTransactionDto[] = JSON.parse(message.body);
-      console.log('Received manual verification queue:', parsedMessage);
+
       this.manualVerificationQueueSubject.next(parsedMessage);
     });
   }
@@ -154,7 +154,7 @@ export class WebSocketService {
   disconnect(): void {
     if (this.client) {
       this.client.deactivate();
-      console.log('Disconnected from WebSocket');
+
     }
   }
 }

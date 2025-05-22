@@ -106,7 +106,7 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
         .subscribe({
           next: (response: any) => {
             const txNumber = response?.transactionNumber ?? paymentIntent.id;
-            console.log('[CardPay] Orden registrada. Tx:', txNumber);
+
             this.paymentSuccess.emit(txNumber);         // notifica al padre
           },
           error: err => {

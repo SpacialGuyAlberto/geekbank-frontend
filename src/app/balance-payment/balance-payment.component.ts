@@ -58,15 +58,14 @@ export class BalancePaymentComponent implements OnInit, OnDestroy {
       this.userId = this.benutzerId;
       this.loadAccount();
     }
-    console.log('Received product ID:', this.productId?.toString());
-    console.log('Received total price: ', this.totalPrice);
+
   }
 
   loadAccount(): void {
     if (this.authService.isLoggedIn()){
       this.authService.getUserDetails().subscribe(data => {
         this.account = data.account;
-        console.log(data.email)
+
         sessionStorage.setItem("email", data.email)
       });
     }

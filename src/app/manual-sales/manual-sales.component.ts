@@ -52,7 +52,7 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
     this.connectionSubscription = this.webSocketService.connected$.subscribe(connected => {
       this.isConnected = connected;
       if (connected) {
-        console.log('WebSocket connected, subscribing to topics.');
+
       } else {
         console.warn('Not connected to WebSocket.');
       }
@@ -60,12 +60,12 @@ export class ManualSalesComponent implements OnInit, OnDestroy {
 
     this.manualVerificationSubscription = this.webSocketService.getManualVerificationTransaction().subscribe(transaction => {
       this.pendingSales.push(transaction);
-      console.log('Transaction added to pending sales:', transaction);
+
     });
 
     this.manualVerificationQueueSubscription = this.webSocketService.getManualVerificationQueue().subscribe(queue => {
       this.pendingSales = queue;
-      console.log('Full transaction queue received:', queue);
+
     });
   }
 

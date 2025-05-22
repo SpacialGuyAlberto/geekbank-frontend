@@ -95,7 +95,7 @@ export class RandomKeyMostSoldComponent implements OnInit, AfterViewInit {
           key.coverImage = key.images.cover?.thumbnail || '';
           return key;
         });
-        console.log('Large Keys:', this.keys); // Para depuración
+
         this.isLoadingLarge = false;
         this.updateDisplayedKeys();
       },
@@ -123,14 +123,14 @@ export class RandomKeyMostSoldComponent implements OnInit, AfterViewInit {
       this.updateDisplayedKeys();
       if (this.displayLimit === this.keys.length) {
         this.isExpanded = true;
-        console.log('Todos los elementos están ahora visibles.');
+
       }
     } else {
       // Reinicia el límite a la visualización inicial
       this.displayLimit = this.initialDisplayLimit;
       this.isExpanded = false;
       this.updateDisplayedKeys();
-      console.log('Se ha restablecido la visualización inicial.');
+
     }
     this.updateBannerColor();
   }

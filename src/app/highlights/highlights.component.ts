@@ -39,7 +39,7 @@ export class HighlightsComponent implements OnInit {
       const data = await firstValueFrom(this.highlightService.getHighlights());
       this.displayedHighlights = data;
       data.map( value => {
-        console.log("CARD PRODUCT ID: " + value.productId)
+
       })
 
       if (!data || !Array.isArray(data)) {

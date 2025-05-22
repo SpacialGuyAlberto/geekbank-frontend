@@ -69,7 +69,7 @@ export class OrdersComponent implements OnInit {
     this.isLoading = true;
     this.errorMessage = '';
     try {
-      console.log('USER ID IN TRANSACTIONS  : ' + this.user.id)
+
       const data = await firstValueFrom(this.transactionService.getTransactionsById(this.user.id));
 
       if (!data || !Array.isArray(data)) {
@@ -240,14 +240,14 @@ export class OrdersComponent implements OnInit {
   }
 
   viewOrderDetails(order: Order): void {
-    console.log('Ver detalles del pedido', order);
+
   }
 
   trackShipment(order: Order): void {
-    console.log('Rastrear envío del pedido', order);
+
   }
 
   reorder(order: Order): void {
-    console.log('Recomprar pedido', order);
+
   }
 }

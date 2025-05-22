@@ -68,6 +68,6 @@ export class AuthModalComponent {
   }
 
   onRegister() {
-    console.log("registering");
+
   }
 }

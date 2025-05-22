@@ -76,8 +76,7 @@ export class PaymentMethodsComponent implements OnInit {
   }
 
   loadPaymentMethods(): void {
-    // Simulación de métodos de pago cargados
-    console.log('Métodos de pago cargados', this.paymentMethods);
+
   }
 
   addPaymentMethod(): void {
@@ -121,17 +120,15 @@ export class PaymentMethodsComponent implements OnInit {
     ];
 
 
-    console.log('Método de pago añadido', this.paymentMethods);
+
   }
 
   editPaymentMethod(paymentMethod: PaymentMethod): void {
-    // Lógica para editar un método de pago existente
-    console.log('Editar método de pago', paymentMethod);
   }
 
   removePaymentMethod(paymentMethod: PaymentMethod): void {
     // Filtrar los métodos para eliminar el seleccionado
     this.paymentMethods = this.paymentMethods.filter(p => p !== paymentMethod);
-    console.log('Método de pago eliminado', paymentMethod);
+
   }
 }

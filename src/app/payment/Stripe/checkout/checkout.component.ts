@@ -51,7 +51,7 @@ export class CheckoutComponent implements AfterViewInit {
       if (error) {
         this.error = error.message ?? 'Error desconocido';
       } else if (paymentIntent) {
-        console.log('Pago confirmado:', paymentIntent.id);
+
         // Aquí puedes navegar al componente de resultado y pasar datos
       }
     } catch (e: any) {

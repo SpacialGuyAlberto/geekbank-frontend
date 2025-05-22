@@ -71,7 +71,7 @@ export class PaymentComponent implements OnInit{
       case 'Tigo Money':
         this.selectedMethodComponent = TigoPaymentComponent;
         this.injector = this.createInjector();
-        console.log('Injector' + this.injector);
+
         break;
       case 'paypal':
         // this.selectedMethodComponent = PaypalPaymentComponent;
@@ -85,7 +85,7 @@ export class PaymentComponent implements OnInit{
       case 'balance':
         this.selectedMethodComponent = BalancePaymentComponent;
         this.injector = this.createInjector();
-        console.log('Injector' + this.injector);
+
         break;
       default:
         this.selectedMethodComponent = null;

@@ -45,7 +45,7 @@ export class FreeFireDetailsComponent {
 
   selectOption(product: FreeFireDiamondProduct) {
     this.selectedOption = product;
-    console.log(this.selectedOption);
+
   }
 
   extractDiamonds(name: string): string {
@@ -77,7 +77,7 @@ export class FreeFireDetailsComponent {
     if (method === 'Tigo Money') {
       this.isTigoPaymentModalOpen = true;
     }
-    console.log(`Método de pago seleccionado: ${method}`);
+
   }
 
   closeTigoPaymentModal() {

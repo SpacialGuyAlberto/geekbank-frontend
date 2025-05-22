@@ -113,7 +113,7 @@ export class AppComponent implements OnInit {
 
   registerVisit() {
     this.visitService.registerVisit(this.sessionId).subscribe(() => {
-      console.log('Visita registrada');
+
     }, error => {
       console.error('Error al registrar la visita', error);
     });

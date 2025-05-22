@@ -11,7 +11,7 @@ export class PricingService {
 
       let conversion = parseFloat((basePrice * exchangeRate).toFixed(2));
       let ceilRounding = Math.ceil(conversion)
-      console.log("MATH CEIL ROUNDED NUMBER " + ceilRounding)
+
       let porcentage = ceilRounding * 0.10;
       return Math.ceil(ceilRounding + porcentage);
 

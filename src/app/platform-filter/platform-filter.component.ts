@@ -220,7 +220,7 @@ export class PlatformFilterComponent implements OnInit {
     this.router.navigate(['/gift-card-details', card.kinguinId])
       .then(success => {
         if (!success) {
-          console.log('Fallo la navegación a detalles.');
+
         }
       });
   }

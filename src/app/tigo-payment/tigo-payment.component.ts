@@ -521,11 +521,11 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   requestRefund(): void {
-    console.log('Solicitando reembolso...');
+
   }
 
   combineWithNewPayment(): void {
-    console.log('Combinando con un nuevo pago...');
+
   }
 
   applyBalance(): Promise<void> {
@@ -567,15 +567,15 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   }
 
   returnDifference(): void {
-    console.log('Devolviendo la diferencia...');
+
   }
 
   adjustPayment(): void {
-    console.log('Ajustando el pago al monto esperado...');
+
   }
 
   retryPayment() {
-    console.log('Reintentando el pago...');
+
   }
 
   // ─────────────────────────────────────────────────────

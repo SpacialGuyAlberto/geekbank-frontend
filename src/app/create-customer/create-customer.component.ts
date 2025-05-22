@@ -40,7 +40,7 @@ export class CreateCustomerComponent implements OnInit, AfterViewInit {
 
     this.authService.registerClientAsAdmin(this.email, this.name).subscribe({
       next: (response: HttpResponse<any>) => {
-        console.log('Respuesta completa:', response);
+
         if (response.status === 200) {
           this.message = 'Cliente registrado exitosamente.';
           this.messageClass = 'success-message';

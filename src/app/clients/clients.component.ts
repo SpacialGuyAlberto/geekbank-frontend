@@ -65,7 +65,6 @@ export class ClientsComponent implements OnInit, AfterViewInit{
       this.users = data;
       this.customers = this.countCustomers();
       console.log('CUSTOMERS: ' + this.customers);
-
       this.customersChange.emit(this.customers);
     })
   }

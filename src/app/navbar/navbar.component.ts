@@ -185,13 +185,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     // Suscripción adicional (si es necesario)
     this.subscriptions.add(
-      this.isAuthenticated$.subscribe(value => console.log("THE USER IS AUTHENTICATED NAVBAR: " + value))
     );
   }
 
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
-    console.log('Evento window:load detectado en navbar');
     this.countCartItems();
   }
 

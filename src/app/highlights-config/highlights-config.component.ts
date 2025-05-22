@@ -56,7 +56,7 @@ export class HighlightsConfigComponent implements OnInit {
 
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
-    console.log('Search Results in Gift Cards Component: ', this.giftCards);
+
   }
 
   addToHighlights(card: KinguinGiftCard): void {
@@ -111,11 +111,11 @@ export class HighlightsConfigComponent implements OnInit {
 
     this.highlightService.removeHighlights([]).subscribe(
       () => {
-        console.log('Previous highlights removed successfully!');
+
         this.showSnackBar("Changes saved successfully.")
         this.highlightService.addHighlights(currentHighlights).subscribe(
           () => {
-            console.log('Highlights saved successfully!');
+
             this.showSnackBar("Changes saved successfully.")
           },
           (error) => {
