@@ -164,61 +164,6 @@ export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, 
     this.isSearchMode = false;
   }
 
-fetchMainGiftCard(page: number = 0, size: number = 14): void {
-    this.isLoading = true;
-    this.mainGiftCards.getMainScreenGiftCardItems(page, size).subscribe(
-      async (res: any) => {
-        try {
-          let content: MainScreenGiftCardItemDTO[] = [];
-
-          if (Array.isArray(res)) {
-            content = res;
-            this.totalItemsMain = content.length;
-            this.totalPagesMain = 1;
-            this.currentPageMain = 0;
-          } else if (res && Array.isArray(res.content)) {
-            content = res.content;
-            this.currentPageMain = res.number; // 0-based
-            this.pageSizeMain = res.size;
-            this.totalPagesMain = res.totalPages;
-            this.totalItemsMain = res.totalElements ?? content.length;
-          }
-
-          const newGiftCards = await Promise.all(
-            content.map(async dto => {
-              const gc = dto.giftcard;
-              gc.coverImageOriginal =
-                gc.coverImageOriginal ||
-                gc.images.cover?.thumbnail ||
-                gc.coverImage ||
-                (await this.getBestImageUrl(gc));
-
-              gc.coverImage =
-                gc.images.cover?.thumbnail ||
-                gc.coverImage ||
-                '';
-
-              gc.randomDiscount = this.pricingService.generatePersistentDiscount(gc.name);
-              return gc;
-            })
-          );
-
-          this.giftCards = newGiftCards;
-          this.displayedGiftCards = this.giftCards;
-
-          this.isLoading = false;
-        } catch (error) {
-          this.showSnackBar('Error al procesar las gift cards principales.');
-          this.isLoading = false;
-        }
-      },
-      () => {
-        this.showSnackBar('Error al cargar las gift cards principales.');
-        this.isLoading = false;
-      }
-    );
-  }
-
   fetchMainGiftCardByClassification(classification: GiftcardClassification): void {
     this.isLoading = true;
     this.mainGiftCards.getGiftcardsByClassification(classification).subscribe(
@@ -277,7 +222,6 @@ fetchMainGiftCard(page: number = 0, size: number = 14): void {
   onPageChangeMain(event: PageEvent): void {
     this.currentPageMain = event.pageIndex;
     this.pageSizeMain = event.pageSize;
-    this.fetchMainGiftCard(this.currentPageMain, this.pageSizeMain);
   }
 
   async getBestImageUrl(card: KinguinGiftCard): Promise<string> {
