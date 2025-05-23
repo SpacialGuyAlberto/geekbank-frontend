@@ -72,7 +72,7 @@ export class RecommendationsComponent implements OnInit {
           }
         );
     } else {
-      this.recommendationsService.getMostPopular(1)
+      this.recommendationsService.getMostPopular(4)
         .subscribe(async (data: KinguinGiftCard[]) => {
 
             for (const card of data) {
