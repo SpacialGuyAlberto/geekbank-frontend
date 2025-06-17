@@ -71,7 +71,7 @@ import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 })
 export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   cartItems: CartItemWithGiftcard[] = [];
-  exchangeRate: number = 0;
+  exchangeRate: number = 1;
   showDialog: boolean = false
   protected showPaymentModal: boolean = false;
   cartItemCount: number = 0;
@@ -451,15 +451,6 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  openPaymentModal(): void {
-    if (this.cartItems.length === 0) {
-      this.snackBar.open('No hay items en el carrito.', 'Cerrar', {
-        duration: 3000,
-      });
-      return;
-    }
-    this.showPaymentModal = true;
-  }
 
   closeDialog(): void {
     this.showDialog = false;

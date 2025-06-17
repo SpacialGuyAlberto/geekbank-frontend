@@ -11,7 +11,7 @@ export class StripeService {
   private baseUrl = `${this.apiUrl}/payments`;
 
   constructor(private http: HttpClient) {
-    this.stripePromise = loadStripe('pk_test_51RFhDrFw1cEgaazIof8waOHo2T4xXIXMTWbFeblcwBOad2U0OzDo4JNFM7BkD4DaYbkg6OQpfrGNRDt1WI0JSfzD00qUHX0WP6');
+    this.stripePromise = loadStripe('pk_live_51RFhDhFjikDIxOfHEgc4MAHnitgb6AebPsYsNvdyJwid4ekGA7pxW0NVd3mQAS1gIN5YY3jZHGOEFkYPWd8D4yoU00IikKIuqo');
   }
 
   createPaymentIntent(amountCents: number): Observable<{ clientSecret: string }> {

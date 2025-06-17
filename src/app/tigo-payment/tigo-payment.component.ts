@@ -49,6 +49,7 @@ import { switchMap } from "rxjs/operators";
 export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   cartItems = inject(CART_ITEMS, { optional: true }) || [];
+  @Input() cartItemsFromCartComponent: CartItemWithGiftcard[] = [];
   totalPrice = inject(TOTAL_PRICE, { optional: true }) || 0;
   productId = inject(PRODUCT_ID, { optional: true });
   gameUserId = inject(GAME_USER_ID, { optional: true });
@@ -130,6 +131,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
 
   // Recibimos un totalAmount si fuera necesario
   @Input() totalAmount!: number;
+  @Input() amountHNL = 0;
   @Input() promo_code: string | null = "Muster";
 
   // ─────────────────────────────────────────────────────
@@ -161,7 +163,7 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadExchangeRate();
     // Guardar total en paymentDetails
-    this.paymentDetails.total = this.totalPrice;
+    this.paymentDetails.total = this.amountHNL;
 
     // Ver si el usuario está logueado
     if (this.authService.isLoggedIn()) {
@@ -278,6 +280,12 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
     const phoneNumber = this.paymentDetails.phoneNumber;
     let orderDetails: OrderRequest;
 
+    const computedAmount = this.cartItems.length
+      ? this.cartItems.reduce(
+        (tot, i) => tot + i.giftcard.priceHNL * i.cartItem.quantity, 0)
+      : this.amountHNL;
+
+
     // Si existe productId => un solo producto
     if (this.productId !== null) {
       orderDetails = {
@@ -285,13 +293,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
         guestId: this.guestId,
         email: this.userEmail || this.emailForKey,
         phoneNumber: phoneNumber,
-        products: [{
-          kinguinId: this.productId,
-          qty: 1,
-          price: this.totalAmount ? this.totalAmount : this.totalPrice,
-          name: 'Producto'
-        }],
-        amount: this.totalAmount ? this.totalAmount : this.totalPrice,
+        products: this.cartItems.map(item => ({
+          kinguinId: item.cartItem.productId,
+          qty: item.cartItem.quantity,
+          price: item.giftcard.price,
+          name: item.giftcard.name
+        })),
+        amount: this.amountHNL,
         manual: this.isManualTransaction,
         sendKeyToSMS: this.wantsSMSKey,
         sendKeyToWhatsApp: this.wantsSMSKey,
@@ -311,13 +319,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.priceHNL,
-            name: 'Producto'
+            price: item.giftcard.price,
+            name: item.giftcard.name
           })),
-          amount: this.cartItems.reduce(
-            (total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity,
-            0
-          ),
+          amount: this.amountHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
@@ -332,13 +337,13 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           userId: this.userId,
           phoneNumber: phoneNumber,
           email: this.userEmail || this.emailForKey,
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
+          products: this.cartItems.map(item => ({
+            kinguinId: item.cartItem.productId,
+            qty: item.cartItem.quantity,
+            price: item.cartItem.price,
+            name: item.giftcard.name
+          })),
+          amount: this.amountHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
@@ -359,13 +364,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           products: this.cartItems.map(item => ({
             kinguinId: item.cartItem.productId,
             qty: item.cartItem.quantity,
-            price: item.giftcard.priceHNL,
-            name: 'Producto'
+            price: item.giftcard.price,
+            name: item.giftcard.name
           })),
-          amount: this.cartItems.reduce(
-            (total, item) => total + item.giftcard.priceHNL * item.cartItem.quantity,
-            0
-          ),
+          amount: this.amountHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,
@@ -383,10 +385,10 @@ export class TigoPaymentComponent implements OnInit, OnDestroy {
           products: [{
             kinguinId: -1,
             qty: 1,
-            price: this.totalPrice,
+            price: 1,
             name: 'Balance'
           }],
-          amount: this.totalAmount ? this.totalAmount : this.totalPrice,
+          amount: this.amountHNL,
           manual: this.isManualTransaction,
           sendKeyToSMS: this.wantsSMSKey,
           sendKeyToWhatsApp: this.wantsSMSKey,

@@ -21,6 +21,7 @@ import {SyncComponent} from "../sync/sync.component";
 import {
   MainScreenGiftCardConfigComponent
 } from "../main-screen-gift-card-config/main-screen-gift-card-config.component";
+import {TournamentConfigComponent} from "../tournament-announcement/tournament-config/tournament-config.component";
 
 @Component({
   selector: 'app-admin-panel',
@@ -44,6 +45,7 @@ import {
     PromotionSenderComponent,
     SyncComponent,
     MainScreenGiftCardConfigComponent,
+    TournamentConfigComponent,
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
