@@ -2,12 +2,10 @@
   <div class="banner">
 <!--    <img src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg" alt="Tournament Banner" class="banner-img">-->
     <picture>
-      <!-- Para pantallas hasta 768px, usa la imagen vertical -->
       <source
         media="(max-width: 768px)"
         srcset="assets/colliseum-vertical.webp"
       />
-      <!-- Imagen por defecto (pantallas grandes) -->
       <img
         src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg" alt="Tournament Banner" class="banner-img"
         alt="Tournament Banner"
@@ -15,13 +13,9 @@
       />
     </picture>
     <div class="offers-over-banner">
-      <!-- Sección de Ofertas Pequeñas y Textos -->
       <div class="other-offers-container">
-        <!-- Texto "Colliseum" -->
         <h1 class="colliseum-title">Colliseum</h1>
-        <!-- Texto "Premios a ganar" -->
         <h2 class="premios-a-ganar">Premios a ganar</h2>
-        <!-- Otras ofertas pequeñas -->
         <div class="other-offers">
           <div class="offer">
             <img src="https://www.vollversion-kaufen.de/tpl/images/produkte/RESTRICTEDVSBUTTERFLYKNIFERandomCS2SkinCaseDroplandnetKey.webp" alt="Oferta 1">
@@ -42,11 +36,14 @@
         </div>
       </div>
 
-      <!-- Oferta Principal -->
+
       <div class="main-offer">
         <div class="tournament-info">
-          <!-- Cronómetro sobre la imagen -->
           <div class="timer">
+            <div>
+              <span>{{ days }}</span>
+              <div class="timer-label">Dias</div>
+            </div>
             <div>
               <span>{{ hours }}</span>
               <div class="timer-label">Horas</div>
@@ -60,20 +57,16 @@
               <div class="timer-label">Segundos</div>
             </div>
           </div>
-          <!-- Imagen principal -->
           <div class="tournament-img-container">
             <img src="/assets/Call-of-duty-mobile---button-sm00-1552980373997.webp" alt="Oferta Principal">
           </div>
-          <!-- Título debajo de la imagen -->
           <h2 class="tournament-title">Gran Torneo de Call of Duty: Mobile</h2>
-          <!-- Información de stock -->
-          <p class="stock-info">Quedan {{ itemsLeft }} - Vendido {{ totalSold }}</p>
+          <p class="stock-info">Quedan {{ itemsLeft }} - Ocupados {{ totalSold }}</p>
           <div class="progress-bar-container">
             <div class="progress-bar" [ngStyle]="{'width': (totalSold / totalStock * 100) + '%'}"></div>
           </div>
-          <!-- Botones de acción -->
           <div class="buttons-container">
-            <button class="buy-button">Únete</button>
+            <button class="buy-button" routerLink="/signup">Únete</button>
           </div>
         </div>
       </div>

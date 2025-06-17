@@ -131,8 +131,9 @@
       <ng-container>
         <app-tigo-payment
           *ngIf="showPaymentModal"
-          [totalAmount]="totalHNL"
+          [amountHNL]="totalHNL"
           [promo_code]="promoCode"
+          [cartItemsFromCartComponent]="cartItems"
         ></app-tigo-payment>
         <div *ngIf="showCardButton">
           <app-card-payment

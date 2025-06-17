@@ -26,6 +26,8 @@ import {OfferComponent} from "./offer/offer.component";
 import {PlatformFilterComponent} from "./platform-filter/platform-filter.component";
 import {ResultComponent} from "./payment/Stripe/result/result.component";
 import {CheckoutComponent} from "./payment/Stripe/checkout/checkout.component";
+import {TournamentSignupComponent} from "./tournament-announcement/tournament-signup/tournament-signup.component";
+
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
@@ -46,6 +48,7 @@ export const routes: Routes = [
   { path: 'free-fire-details', component: FreeFireDetailsComponent },
   { path: 'random-keys', component: RandomKeysComponent },
   { path: 'tournament', component: TournamentAnnouncementComponent },
+  { path: 'signup', component: TournamentSignupComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'payment-methods', component: PaymentMethodsComponent },
   { path: 'wish-list', component: WishlistComponent },

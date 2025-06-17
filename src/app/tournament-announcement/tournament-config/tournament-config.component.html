@@ -1,0 +1,42 @@
+<div class="promotion-sender">
+  <h2><i class="fas fa-bullhorn"></i> Create Tournament </h2>
+
+  <form (ngSubmit)="submitTournament()" #promotionForm="ngForm">
+
+    <div class="form-group">
+      <label for="title">Tournament Name</label>
+      <input type="text" id="title" name="title" [(ngModel)]="tournamentName" required />
+    </div>
+
+    <div class="form-group">
+      <label for="content">Tournament Description</label>
+      <textarea id="content" name="content" [(ngModel)]="tournamentDescription" rows="5" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="startDate">Start Date</label>
+      <input type="date" id="startDate" name="startDate" [(ngModel)]="startDate" required />
+    </div>
+
+    <div class="form-group">
+      <label for="endDate">End Date</label>
+      <input type="date" id="endDate" name="endDate" [(ngModel)]="endDate" required />
+    </div>
+
+    <!-- 🌟 Dropdown de moderadores -->
+    <div class="form-group">
+      <label for="moderator">Select Moderator</label>
+      <select id="moderator" name="moderator" [(ngModel)]="moderator" required>
+        <option [ngValue]="null" disabled selected>Select a moderator</option>
+        <option *ngFor="let mod of moderators" [ngValue]="mod">
+          {{ mod.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" [disabled]="!promotionForm.form.valid"><i class="fas fa-paper-plane"></i> Create Tournament</button>
+      <button type="button" (click)="resetForm()"><i class="fas fa-undo"></i> Restart Form</button>
+    </div>
+  </form>
+</div>

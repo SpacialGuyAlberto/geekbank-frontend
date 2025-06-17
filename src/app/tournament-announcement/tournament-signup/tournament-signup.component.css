@@ -1,0 +1,171 @@
+/* Reutilizamos las mismas variables que ya tienes */
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+
+:root {
+  --primary-color: #0B0D19;
+  --text-color: #FFFFFF;
+  --transition-speed: 0.3s;
+}
+
+/* --- LA MISMA ESTRUCTURA DE CONTENEDORES DEL ANUNCIO --- */
+.tournament-container {
+  width: 100%;
+  position: relative;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.banner {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  overflow: hidden;
+}
+
+.banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  pointer-events: none;
+}
+
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px);
+}
+
+/* --- Overlay (mismo contenedor flex que offers-over-banner) --- */
+.signup-over-banner {
+  position: absolute;
+  inset: 0;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* --- Tarjeta del formulario (inspirada en .main-offer) --- */
+.signup-card {
+  background: rgba(0, 0, 0, 0.75);
+  padding: 2rem 2.5rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 500px;
+  color: var(--text-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signup-card h2 {
+  font-family: 'Saira Stencil One', cursive;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.signup-card label {
+  display: block;
+  font-size: 0.95rem;
+}
+
+.signup-card input,
+.signup-card textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.35rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.signup-card textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.signup-card .checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buy-button {
+  background: #ff9800;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background var(--transition-speed) ease;
+}
+
+.buy-button:hover {
+  background: #fb8c00;
+}
+
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-with-icon input {
+  flex: 1;
+}
+
+.input-with-icon .icon {
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.invalid-icon {
+  color: #e74c3c; /* rojo */
+}
+
+.valid-icon {
+  color: #2ecc71; /* verde */
+}
+
+input.invalid {
+  border: 2px solid #e74c3c;
+  background-color: #fdecea;
+}
+
+input.valid {
+  border: 2px solid #2ecc71;
+  background-color: #e8f5e9;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .signup-card {
+    padding: 1.5rem;
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-card {
+    padding: 1.25rem;
+  }
+
+  .signup-card h2 {
+    font-size: 1.5rem;
+  }
+}

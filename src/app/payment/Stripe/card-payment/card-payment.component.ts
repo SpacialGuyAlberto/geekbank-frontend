@@ -75,7 +75,7 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
 
     try {
       const { clientSecret } = await firstValueFrom(
-        this.stripeSvc.createPaymentIntent(this.amount)
+        this.stripeSvc.createPaymentIntent(65)
       );
 
       const { error, paymentIntent } =

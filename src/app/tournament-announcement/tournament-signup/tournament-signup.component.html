@@ -1,0 +1,100 @@
+<!-- Contenedor general con el mismo patrón de banner -->
+<div class="tournament-container signup-container">
+  <div class="banner">
+    <!-- Versión horizontal y vertical de la imagen, exactamente igual que el anuncio -->
+    <picture>
+      <source
+        media="(max-width: 768px)"
+        srcset="assets/colliseum-vertical.webp"
+      />
+      <img
+        src="assets/zombie-lion-battle-arena-otherworldly-coliseum-spectral-audience-3d-animation-gloriously_574957-5861.jpg"
+        alt="Tournament Banner"
+        class="banner-img"
+      />
+    </picture>
+
+    <!-- Overlay: aquí va la tarjeta con el formulario -->
+    <div class="offers-over-banner signup-over-banner">
+      <div class="signup-card">
+        <h2>Formulario de inscripción</h2>
+
+        <form (ngSubmit)="onSubmit()" #signupForm="ngForm">
+
+          <label>
+            Apodo / Gamer Tag
+            <input
+              type="text"
+              [(ngModel)]="player.gamerTag"
+              name="gamerTag"
+              required
+            />
+          </label>
+
+          <label>
+            Correo electrónico
+            <div class="input-with-icon">
+              <input
+                type="email"
+                [(ngModel)]="player.email"
+                name="email"
+                required
+                (input)="validateEmail()"
+                [class.invalid]="emailValid === false"
+                [class.valid]="emailValid === true"
+              />
+              <span *ngIf="emailValid === false" class="icon invalid-icon">❌</span>
+              <span *ngIf="emailValid === true" class="icon valid-icon">✅</span>
+            </div>
+            <small
+              *ngIf="emailValid === false"
+              class="error-message"
+            >
+              Por favor, ingresa un correo electrónico válido.
+            </small>
+          </label>
+
+
+          <label>
+            ID de jugador
+            <input
+              type="text"
+              [(ngModel)]="player.gameId"
+              name="gameId"
+              required
+            />
+          </label>
+
+
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              [(ngModel)]="player.acceptRules"
+              name="acceptRules"
+              required
+            />
+            Acepto las reglas del torneo
+          </label>
+
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              [(ngModel)]="player.acceptMedia"
+              name="acceptMedia"
+            />
+            Acepto el uso de mi imagen en transmisiones / redes
+          </label>
+
+          <button
+            class="buy-button"
+            type="submit"
+            [disabled]="!signupForm.form.valid"
+            (click)="onSubmit()"
+          >
+            Enviar inscripción
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
