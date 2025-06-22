@@ -206,6 +206,8 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
     if (this.giftCard) {
       this.giftCard.coverImageOriginal = this.giftCard.images.cover?.thumbnail || '';
       this.giftCard.coverImage = this.giftCard.images.cover?.thumbnail || '';
+      this.displayedDescription = this.giftCard.description;
+      this.displayedActivationDetails = this.giftCard.activationDetails;
       if (this.giftCard.images.screenshots.length > 0) {
         this.images = this.giftCard.images.screenshots.map(screenshot => screenshot.url);
         this.currentImage = this.images[this.currentImageIndex];
@@ -216,7 +218,10 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
       this.kinguinService.getGiftCardInformation(this.giftCard.kinguinId.toString()).subscribe({
         next: (giftcard: KinguinGiftCard) => {
           this.displayedActivationDetails = giftcard.activationDetails || 'Detalles de activación no disponibles.';
-          this.displayedDescription = giftcard.description || 'Descripcion de producto no encontrada.'
+          if (this.displayedDescription && this.displayedDescription?.length > 0){
+            this.displayedDescription = giftcard.description || 'Descripcion de producto no encontrada.'
+          }
+
           this.activationVideoUrl = '';
         },
         error: (err) => {
@@ -228,12 +233,6 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           })
         }
       });
-
-      this.activationDetailsService.getDetails(this.giftCard.kinguinId).subscribe({
-        next: (details: ActivationDetails) => {
-          this.displayedActivationDetails = details.textDetails || 'Contacte a nuestro servicio al cliente para los servicios de activacion.';
-        }
-      })
     }
   }
 
