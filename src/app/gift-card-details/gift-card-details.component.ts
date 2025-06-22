@@ -220,8 +220,12 @@ export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
           this.activationVideoUrl = '';
         },
         error: (err) => {
-          this.displayedActivationDetails = 'No se pudieron cargar los detalles de activación adicionales.';
-          this.activationVideoUrl = '';
+          if (this.giftCard)
+          this.activationDetailsService.getDetails(this.giftCard.kinguinId).subscribe({
+            next: (details: ActivationDetails) => {
+              this.displayedActivationDetails = details.textDetails || 'Contacte a nuestro servicio al cliente para los servicios de activacion.';
+            }
+          })
         }
       });
 
