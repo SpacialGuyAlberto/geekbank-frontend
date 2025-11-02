@@ -36,14 +36,12 @@ export const routes: Routes = [
   { path: 'activate', component: ActivationComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'gift-card-details/:id', component: GiftCardDetailsComponent },
-  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Solo una ruta vacía
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'user-details', component: AccountInfoComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
   { path: 'tigo-payment', component: TigoPaymentComponent },
   { path: 'admin-panel', component: AdminPanelComponent },
   { path: 'set-password', component: SetPasswordComponent },
-  // Opción 1: Si defines '/payment'
-  // { path: 'payment', component: PaymentComponent },
   { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
   { path: 'free-fire-details', component: FreeFireDetailsComponent },
   { path: 'random-keys', component: RandomKeysComponent },
