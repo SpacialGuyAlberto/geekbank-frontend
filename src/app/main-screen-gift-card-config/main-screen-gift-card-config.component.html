@@ -25,7 +25,7 @@
           @for (card of giftCards; track giftCards.values()) {
             <div class="gift-card">
               <div class="gift-card-image-container">
-                <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
+                <img [src]="bestImageUrls[card.kinguinId] || card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
                 <button class="add-gift-card-btn" (click)="addToGiftCards(card)">
                   <i class="fas fa-plus-circle"></i>
                 </button>
@@ -75,7 +75,9 @@
           @for (item of filteredMainScreenGiftCardItems; track item.mainScreenGiftCardItem.id) {
             <div class="gift-card">
               <div class="gift-card-image-container">
-                <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="gift-card-image" />
+                <img [src]="bestImageUrls[item.giftcard.kinguinId] || item.giftcard.coverImage"
+                     alt="{{ item.giftcard.name }}"
+                     class="gift-card-image" />
                 <button class="remove-gift-card-btn" (click)="removeFromGiftCards(item.giftcard)">
                   <i class="fas fa-minus-circle"></i>
                 </button>
