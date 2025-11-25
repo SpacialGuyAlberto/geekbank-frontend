@@ -147,6 +147,7 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-bottom: -10rem;
 }
 
 /* Estilo para el contenedor del Free Fire Gift Card */
@@ -169,7 +170,6 @@ body, html {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.125rem;
   width: 100%;
-  margin-top: 5rem; /* Ajusta el valor para mover el contenedor hacia arriba */
 }
 
 /* Botón de Filtros para Móvil */

@@ -18,6 +18,7 @@ import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
 import {SearchStateService} from "../services/search-state.service";
 import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.component";
+import {FlashSaleComponent} from "../flash-sale/flash-sale.component";
 
 
 @Component({
@@ -35,7 +36,8 @@ import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.compon
     FiltersComponent,
     BannerComponent,
     OffersBannerComponent,
-    InferiorFilterComponent
+    InferiorFilterComponent,
+    FlashSaleComponent
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {

@@ -1,0 +1,214 @@
+/* ----------------------------------------------------- */
+/* 🟦 DASHBOARD LAYOUT                                   */
+/* ----------------------------------------------------- */
+.dashboard {
+  background-color: #1c1c1c;
+  color: #fff;
+  padding: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;   /* 👉 hijos (tabs + contenido) uno debajo del otro */
+  gap: 1.5rem;
+}
+
+/* Left Column */
+.left-panel {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Right Column */
+.dashboard-summary {
+  flex: 1.4;
+  padding: 2rem;
+  background-color: #333;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ----------------------------------------------------- */
+/* 🟪 TABS                                                */
+/* ----------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #555;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.8rem 1.2rem;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  color: #ddd;
+  transition: 0.2s ease;
+}
+
+.tab.active {
+  color: #ffcc00;
+  border-bottom-color: #ffcc00;
+}
+
+.tab:hover {
+  color: #ffe066;
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* ----------------------------------------------------- */
+/* 🟩 GIFT CARDS GRID                                     */
+/* ----------------------------------------------------- */
+
+.gift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+
+.gift-card {
+  background-color: #3a3a3a;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gift-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.gift-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.gift-card-content {
+  padding: 1rem;
+  text-align: center;
+}
+
+/* ----------------------------------------------------- */
+/* 🟧 FORMULARIO AVANZADO (GRID + SECCIONES)              */
+/* ----------------------------------------------------- */
+
+.flash-form {
+  background-color: #444;
+  padding: 2rem;
+  border-radius: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: -1rem;
+  color: #ffcc00;
+}
+
+/* Grid de 2 columnas */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  color: #ddd;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.form-group input,
+.form-group select {
+  background-color: #555;
+  border: 1px solid #666;
+  padding: 0.7rem;
+  border-radius: 0.3rem;
+  color: #fff;
+}
+
+/* Descuento preview */
+.discount-preview {
+  grid-column: span 2;
+  padding: 1rem;
+  background-color: #222;
+  border-left: 4px solid #ffcc00;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  color: #ffd966;
+}
+
+/* ----------------------------------------------------- */
+/* 🟥 BOTÓN                                               */
+/* ----------------------------------------------------- */
+.btn-save {
+  align-self: flex-start;
+  background-color: #ffcc00;
+  padding: 0.8rem 1.5rem;
+  border-radius: 0.4rem;
+  color: #333;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.btn-save:hover {
+  background-color: #ffe066;
+}
+
+/* ----------------------------------------------------- */
+/* 🟦 FLASH OFFER CARDS                                   */
+/* ----------------------------------------------------- */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.summary-card {
+  background-color: #444;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-7px);
+}
+
+/* ----------------------------------------------------- */
+/* 📱 RESPONSIVE                                          */
+/* ----------------------------------------------------- */
+
+@media (max-width: 900px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

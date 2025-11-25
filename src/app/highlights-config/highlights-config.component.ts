@@ -25,18 +25,14 @@ import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 export class HighlightsConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
-  highlightItems: HighlightItemWithGiftcard[] = [];
   currentHighlights: KinguinGiftCard[] = [];
-  displayedHighlights: HighlightItem[] = [];
   highlightList: HighlightItem[] = [];
   currentHighlightItem: HighlightItem | undefined = undefined;
   modalVisible: boolean = false;
-  showSpinner: boolean = true;
   currentSelectedCard: KinguinGiftCard | undefined = undefined;
   currectSelectedCardImages: string[] = [];
   currentImage: string = "";
   protected currentImageIndex: number = 0;
-  selectedImage: string = "";
 
   constructor(
     private highlightService: HighlightService,
@@ -56,7 +52,6 @@ export class HighlightsConfigComponent implements OnInit {
 
   handleSearchResults(results: KinguinGiftCard[]): void {
     this.giftCards = results;
-
   }
 
   addToHighlights(card: KinguinGiftCard): void {

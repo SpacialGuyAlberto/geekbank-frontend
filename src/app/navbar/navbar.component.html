@@ -100,14 +100,14 @@
     </div>
 
 
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'random-keys'}"
-      (click)="[navigateToRandomKeys(), selectCategory('random-keys')]"
-      aria-label="Claves Aleatorias"
-    >
-      <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias
-    </button>
+<!--    <button-->
+<!--      class="tab-button"-->
+<!--      [ngClass]="{'active': selectedCategory === 'random-keys'}"-->
+<!--      (click)="[navigateToRandomKeys(), selectCategory('random-keys')]"-->
+<!--      aria-label="Claves Aleatorias"-->
+<!--    >-->
+<!--      <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
+<!--    </button>-->
     <button
       class="tab-button"
       (click)="navigateToPurchaseConfirmation()"
@@ -214,11 +214,11 @@
           </ul>
 
         </li>
-        <li>
-          <a routerLink="/random-keys" class="menu-link">
-            <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias
-          </a>
-        </li>
+<!--        <li>-->
+<!--          <a routerLink="/random-keys" class="menu-link">-->
+<!--            <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
+<!--          </a>-->
+<!--        </li>-->
         <li>
           <a class="menu-link"[routerLink]="['/filtered/Software']">
             <i class="fas fa-laptop-code" aria-hidden="true"></i> Software

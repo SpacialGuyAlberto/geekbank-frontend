@@ -9,6 +9,7 @@
   </div>
 
   <div class="main-content">
+    <!-- ========== PANEL IZQUIERDO (BUSCADOR / RESULTADOS) ========== -->
     <div class="left-panel">
       <div class="search-bar-container">
         <app-search-bar
@@ -54,36 +55,55 @@
       }
     </div>
 
+    <!-- ========== PANEL DERECHO (DESTACADAS / CLASIFICACIÓN) ========== -->
     <div class="right-panel">
-      <h2>Mis Tarjetas de Regalo Destacadas</h2>
+      <div class="right-panel-header">
+        <h2>Mis Tarjetas de Regalo Destacadas</h2>
+
+        <!-- Filtro por clasificación -->
+        <select [(ngModel)]="selectedFilter" class="classification-filter">
+          <option [ngValue]="'ALL'">Todas</option>
+          @for (key of classificationKeys; track classificationKeys.values()) {
+            <option [ngValue]="key">{{ key }}</option>
+          }
+        </select>
+      </div>
 
       @if (!isListView) {
+        <!-- Vista GRID usando DTOs filtrados -->
         <div class="gift-cards-container">
-          @for (card of currentGiftCards; track currentGiftCards.values()) {
+          @for (item of filteredMainScreenGiftCardItems; track item.mainScreenGiftCardItem.id) {
             <div class="gift-card">
               <div class="gift-card-image-container">
-                <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-                <button class="remove-gift-card-btn" (click)="removeFromGiftCards(card)">
+                <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="gift-card-image" />
+                <button class="remove-gift-card-btn" (click)="removeFromGiftCards(item.giftcard)">
                   <i class="fas fa-minus-circle"></i>
                 </button>
               </div>
               <div class="gift-card-content">
-                <h3 class="gift-card-title">{{ card.name }}</h3>
+                <h3 class="gift-card-title">{{ item.giftcard.name }}</h3>
                 <div class="gift-card-price">
-                  <span>{{ card.price | currency }}</span>
+                  <span>{{ item.giftcard.price | currency }}</span>
+                </div>
+                <div class="gift-card-classification">
+                  Clasificación: {{ item.mainScreenGiftCardItem.classification }}
                 </div>
               </div>
             </div>
           }
         </div>
       } @else {
+        <!-- Vista LISTA usando DTOs filtrados -->
         <div class="gift-cards-list">
-          @for (card of currentGiftCards; let i = $index; track currentGiftCards.values()) {
+          @for (item of filteredMainScreenGiftCardItems; let i = $index; track item.mainScreenGiftCardItem.id) {
             <div class="list-item">
               <div class="list-index">#{{ i + 1 }}</div>
-              <div class="list-name">{{ card.name }}</div>
-              <div class="list-price">{{ card.price | currency }}</div>
-              <button class="list-remove-btn" (click)="removeFromGiftCards(card)">
+              <div class="list-name">{{ item.giftcard.name }}</div>
+              <div class="list-price">{{ item.giftcard.price | currency }}</div>
+              <div class="list-classification">
+                {{ item.mainScreenGiftCardItem.classification }}
+              </div>
+              <button class="list-remove-btn" (click)="removeFromGiftCards(item.giftcard)">
                 <i class="fas fa-minus-circle"></i>
               </button>
             </div>
@@ -92,6 +112,7 @@
       }
     </div>
 
+    <!-- ========== PAGINACIÓN ========== -->
     <div class="pagination">
       <button class="pagination-btn" (click)="onPrevPage()">Anterior</button>
       <span class="pagination-info">
@@ -101,6 +122,7 @@
     </div>
   </div>
 
+  <!-- ========== MODAL DE CLASIFICACIÓN ========== -->
   @if (showClassificationModal) {
     <div class="modal-backdrop"></div>
     <div class="modal">

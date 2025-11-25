@@ -17,9 +17,6 @@
       </div>
       <h2>Resultados de Búsqueda</h2>
       <div class="gift-cards-container">
-        <!-- Lista de tarjetas obtenidas de la búsqueda -->
-
-
         <div *ngFor="let card of giftCards" class="gift-card">
           <div class="gift-card-image-container">
             <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
@@ -42,22 +39,6 @@
     <div class="right-panel">
       <h2>Mis Destacados</h2>
       <div class="gift-cards-container">
-        <!-- Lista de tarjetas en los highlights actuales -->
-<!--        <div *ngFor="let card of currentHighlights" class="gift-card">-->
-<!--          <div class="gift-card-image-container">-->
-<!--            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />-->
-<!--            &lt;!&ndash; Botón para eliminar de los highlights &ndash;&gt;-->
-<!--            <button class="remove-highlight-btn" (click)="removeFromHighlights(card)">-->
-<!--              <i class="fas fa-minus-circle"></i>-->
-<!--            </button>-->
-<!--          </div>-->
-<!--          <div class="gift-card-content">-->
-<!--            <h3 class="gift-card-title">{{ card.name }}</h3>-->
-<!--            <div class="gift-card-price">-->
-<!--              <span>{{ card.price | currency }}</span>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
 
         <div *ngFor="let item of highlightList">
           <div class="gift-card-image-container">

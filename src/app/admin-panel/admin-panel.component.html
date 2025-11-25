@@ -1,10 +1,8 @@
 <div class="admin-dashboard">
-  <!-- Botón de menú hamburguesa solo visible en pantallas pequeñas -->
   <button class="hamburger-button" (click)="toggleModal()" aria-label="Abrir Menú">
     <i class="fas fa-bars"></i>
   </button>
 
-  <!-- Modal del Menú en Pantallas Pequeñas -->
   <div class="modal" *ngIf="isModalOpen">
     <div class="modal-content">
       <span class="close-button" (click)="toggleModal()">&times;</span>
@@ -90,7 +88,7 @@
       <li><a (click)="selectSection('statistics')" [class.active]="selectedSection === 'statistics'"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
       <li><a (click)="selectSection('highlights')" [class.active]="selectedSection === 'highlights'"><i class="fas fa-lightbulb"></i> Highlights</a></li>
       <li><a (click)="selectSection('feedbacks')" [class.active]="selectedSection === 'feedbacks'" ><i class="fa-solid fa-comment"></i> Comment Section</a></li>
-      <li><a (click)="selectSection('tournament')" [class.active]="selectedSection === 'tournament'" > <i class="fa-brands fa-battle-net"></i> Tournament</a></li>
+      <li><a (click)="selectSection('flash-sales')" [class.active]="selectedSection === 'flash-sales'" > <i class="fa-brands fa-battle-net"></i> Flash Sales</a></li>
       <li><a (click)="selectSection('wallet')" [class.active]="selectedSection === 'wallet'"><i class="fa-solid fa-wallet"></i> My Wallet</a>
       <li><a><i class="fa-brands fa-telegram"></i> Message List</a></li>
       <li><a (click)="selectSection('billing')" [class.active]="selectedSection === 'billing'"><i class="fa-solid fa-file-excel"></i> Billing</a></li>
@@ -134,8 +132,8 @@
       <div *ngIf="selectedSection === 'billing'">
         <app-financial-dashboard></app-financial-dashboard>
       </div>
-      <div *ngIf="selectedSection === 'tournament'">
-        <app-tournament-config></app-tournament-config>
+      <div *ngIf="selectedSection === 'flash-sales'">
+        <app-flash-sales-config></app-flash-sales-config>
       </div>
     </main>
   </div>

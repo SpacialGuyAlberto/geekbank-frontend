@@ -1,16 +1,12 @@
-<!-- home.component.html -->
 <div class="graph-container">
   <canvas id="graphCanvas"></canvas>
 </div>
 
-<!-- Contenedor del Banner -->
 <div [ngClass]="{ 'banner' : showHighlightsAndRecommendations, '': !showHighlightsAndRecommendations}">
 </div>
 
 <div class="home-container">
   <div class="gift-cards-wrapper">
-
-    <!-- Sección de Destacados y Recomendaciones -->
     <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
       <div class="highlights-section">
         <app-highlights></app-highlights>
@@ -21,15 +17,10 @@
     </div>
 
     <app-banner class="app-banner" *ngIf="showHighlightsAndRecommendations"></app-banner>
-
-    <!-- Tarjetas principales -->
     <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
       <app-kinguin-gift-cards></app-kinguin-gift-cards>
     </div>
-
-    <!-- Filtros y Resultados -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-      <!-- Filtros para pantallas grandes -->
       <div *ngIf="!isSmallScreen" class="filter-section">
         <app-filters
           (filteredResults)="handleFilteredResults($event)"
@@ -38,8 +29,6 @@
         >
         </app-filters>
       </div>
-
-      <!-- Botón y Modal de Filtros para pantallas pequeñas -->
       <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
         <span class="material-symbols-outlined">tune</span>
       </button>
@@ -53,8 +42,6 @@
           </app-filters>
         </div>
       </div>
-
-      <!-- Indicador de Carga -->
       <div *ngIf="isLoading" class="loading-indicator">
         <div class="bars">
           <div class="bar bar1"></div>
@@ -64,14 +51,16 @@
           <div class="bar bar5"></div>
         </div>
       </div>
-
       <div class="giftcard-section" *ngIf="!isLoading">
         <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
           <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
         </div>
       </div>
+
     </div>
   </div>
+  <app-flash-sale></app-flash-sale>
   <app-offers-banner *ngIf="showHighlightsAndRecommendations"></app-offers-banner>
   <app-inferior-filter></app-inferior-filter>
+
 </div>

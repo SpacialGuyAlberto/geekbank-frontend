@@ -38,6 +38,7 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
   showClassificationModal = false;
   selectedCardToClassify: KinguinGiftCard | null = null;
   selectedClassification: GiftcardClassification | undefined  = undefined;
+  selectedFilter: GiftcardClassification | 'ALL' = 'ALL';
 
   constructor(
     private mainScreenGiftCardService: MainScreenGiftCardService,
@@ -69,13 +70,22 @@ export class MainScreenGiftCardConfigComponent implements OnInit {
       id: 23456,
       productId: card.kinguinId,
       createdAt: new Date(),
-      classification: this.selectedClassification
+      classification: classification
     };
     const dto: MainScreenGiftCardItemDTO = {
       mainScreenGiftCardItem: item,
       giftcard: card,
     };
     return dto;
+  }
+
+  get filteredMainScreenGiftCardItems(): MainScreenGiftCardItemDTO[] {
+    if (this.selectedFilter === 'ALL') {
+      return this.mainScreenGiftCardItems;
+    }
+    return this.mainScreenGiftCardItems.filter(
+      dto => dto.mainScreenGiftCardItem.classification === this.selectedFilter
+    );
   }
 
   confirmClassification(): void {
