@@ -1,15 +1,25 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {FlashSale} from "./FlashSale";
+import {environment} from "../../../environments/environment";
+import {catchError} from "rxjs/operators";
+
 
 @Injectable({ providedIn: 'root' })
 export class FlashSaleService {
-  private apiUrl = 'http://localhost:7070/api/flash-offers';
+  private apiUrl = environment.apiUrl
+  private baseUrl = `${this.apiUrl}/flash-offers`;
 
   constructor(private http: HttpClient) {}
 
-  getAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getAll(): Observable<FlashSale[]> {
+    return this.http.get<FlashSale[]>(`${this.baseUrl}`).pipe(
+      catchError(error => {
+        console.error('Error al obtener los Flash Offers', error);
+        return of([]);
+      })
+    );
   }
 
   create(data: any): Observable<any> {

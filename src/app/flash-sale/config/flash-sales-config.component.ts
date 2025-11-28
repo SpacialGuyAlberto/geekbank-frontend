@@ -4,35 +4,7 @@ import { FlashSaleService} from "./flash-sale.service";
 import {CurrencyPipe, DatePipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 import {SearchBarComponent} from "../../search-bar/search-bar.component";
 import {KinguinGiftCard} from "../../kinguin-gift-cards/KinguinGiftCard";
-import {HighlightItem} from "../../highlights-config/HighlightItem";
-
-interface FlashOffer {
-  id?: number;
-  productId: number;
-
-  // Precios
-  originalPrice: number;
-  temporaryPrice: number;
-
-  // Fechas
-  startDate: string;
-  limitDate: string;
-
-  // Límites
-  stockLimit?: number;
-  userLimit?: number;
-
-  // Visibilidad
-  visibility: 'public' | 'hidden' | 'restricted';
-  allowedCountries?: string;
-
-  // Marketing
-  badge?: string;
-  bannerUrl?: string;
-
-  // Estado
-  status: 'scheduled' | 'active' | 'paused';
-}
+import { FlashSale} from "./FlashSale";
 
 
 @Component({
@@ -53,9 +25,8 @@ interface FlashOffer {
 export class FlashSalesConfigComponent implements OnInit {
   giftCards: KinguinGiftCard[] = [];
   flashForm!: FormGroup;
-  flashOffers: FlashOffer[] = []
   activeTab: 'search' | 'config' = 'search';
-
+  flashSales: FlashSale[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -71,11 +42,11 @@ export class FlashSalesConfigComponent implements OnInit {
       startDate: ['', Validators.required],
       limitDate: ['', Validators.required],
 
-      stockLimit: [''],          // opcional
-      userLimit: [''],           // opcional
+      stockLimit: [''],
+      userLimit: [''],
 
       visibility: ['public', Validators.required],
-      allowedCountries: [''],    // solo si visibility == restricted
+      allowedCountries: [''],
 
       badge: ['none'],
       bannerUrl: [''],
@@ -89,7 +60,7 @@ export class FlashSalesConfigComponent implements OnInit {
 
   loadFlashOffers() {
     this.flashSaleService.getAll().subscribe({
-      next: (data) => (this.flashOffers = data),
+      next: (data) => (this.flashSales = data),
       error: (err) => console.error(err),
     });
   }

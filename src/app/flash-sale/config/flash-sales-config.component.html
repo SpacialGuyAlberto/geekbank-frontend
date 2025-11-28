@@ -174,11 +174,11 @@
 
       <!-- LISTA DE OFERTAS -->
       <div class="summary-cards">
-        <div class="summary-card" *ngFor="let offer of flashOffers">
+        <div class="summary-card" *ngFor="let offer of flashSales">
           <div class="card-content">
             <h3>Producto #{{ offer.productId }}</h3>
             <p>{{ offer.temporaryPrice | currency:'EUR' }}</p>
-            <small>Desde {{ offer.startDate | date:'short' }}</small><br />
+            <small>Desde {{ offer.createdAt | date:'short' }}</small><br />
             <small>Hasta {{ offer.limitDate | date:'short' }}</small>
           </div>
 

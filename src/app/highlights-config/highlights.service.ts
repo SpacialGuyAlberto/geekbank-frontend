@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {Observable, of} from 'rxjs';
-import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
-import {CartItemWithGiftcard} from "../cart/CartItem";
-import {HighlightItemWithGiftcard} from "./HighlightItem";
 import {environment} from "../../environments/environment";
 import {catchError} from "rxjs/operators";
 import {HighlightItem} from "./HighlightItem";
