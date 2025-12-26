@@ -6,6 +6,7 @@ import {FlashSale} from "./config/models/FlashSale";
 import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
 import { NgOptimizedImage } from '@angular/common';
+import {FlashOfferProduct} from "./config/models/FlashOfferProduct";
 
 
 @Component({
@@ -29,6 +30,7 @@ export class FlashSaleComponent implements OnInit {
   totalStock: number = 41;
   itemsLeft: number = 9;
   totalSold: number = this.totalStock - this.itemsLeft;
+  productIds: number[] = [];
 
   constructor(
     private flashSaleService: FlashSaleService,
@@ -38,6 +40,8 @@ export class FlashSaleComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFlashSale();
+    this.loadOfferProducts();
+    console.log("PRODUCTOS ID: " + this.productIds);
   }
 
   startTimer(item: FlashSale | null): void {
@@ -94,13 +98,15 @@ export class FlashSaleComponent implements OnInit {
   }
 
   loadGiftCard() {
-    const productId = '883456'
+
+    const productId = this.productIds[0];
+
     if (!productId) {
       console.warn('No hay productId, no se puede cargar giftCard');
       return;
     }
 
-    this.kinguin.getGiftCardDetails(productId).subscribe({
+    this.kinguin.getGiftCardDetails(productId.toString()).subscribe({
       next: data => {
         console.log('Respuesta Kinguin:', data);
         this.giftCard = data;
@@ -110,6 +116,14 @@ export class FlashSaleComponent implements OnInit {
         console.error('Error cargando giftCard', err);
       }
     });
+  }
+
+  loadOfferProducts(){
+    this.flashSaleService.getFlashOffersProducts().subscribe({
+      next: data => {
+       data.map((item: FlashOfferProduct) => { item.productId})
+      }
+    })
   }
 
   ngOnDestroy(): void {

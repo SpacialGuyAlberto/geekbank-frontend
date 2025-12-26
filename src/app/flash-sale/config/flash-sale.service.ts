@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { FlashSale } from "./models/FlashSale";
 import { environment } from "../../../environments/environment";
 import { catchError } from "rxjs/operators";
+import {FlashOfferProduct, FlashOfferProductWithGiftCard} from "./models/FlashOfferProduct";
 
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +21,16 @@ export class FlashSaleService {
         return of([]);
       })
     );
+  }
+
+  getFlashOffersProducts(): Observable<FlashOfferProduct[]> {
+    return this.http.get<FlashOfferProduct[]>(`${this.baseUrl}/products`).pipe(
+      catchError(err => {
+        console.error("Error al obtener los id de los productos", err);
+        return of([]);
+      })
+    );
+
   }
 
   create(data: any): Observable<any> {
