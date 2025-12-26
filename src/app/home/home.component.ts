@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HomeService } from "./home.service";
@@ -16,9 +16,10 @@ import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { GiftCard } from "../models/GiftCard";
 import { BannerComponent } from "../banner/banner.component";
 import { OffersBannerComponent } from "../offers-banner/offers-banner.component";
-import {SearchStateService} from "../services/search-state.service";
-import {InferiorFilterComponent} from "../inferior-filter/inferior-filter.component";
-import {FlashSaleComponent} from "../flash-sale/flash-sale.component";
+import { SearchStateService } from "../services/search-state.service";
+import { InferiorFilterComponent } from "../inferior-filter/inferior-filter.component";
+import { FlashSaleComponent } from "../flash-sale/flash-sale.component";
+import { CombosComponent } from '../combos/combos.component';
 
 
 @Component({
@@ -37,7 +38,8 @@ import {FlashSaleComponent} from "../flash-sale/flash-sale.component";
     BannerComponent,
     OffersBannerComponent,
     InferiorFilterComponent,
-    FlashSaleComponent
+    FlashSaleComponent,
+    CombosComponent
   ]
 })
 export class HomeComponent implements OnInit, OnDestroy {

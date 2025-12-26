@@ -10,14 +10,15 @@ import { OrdersComponent } from "../orders/orders.component";
 import { AuthService } from "../../../services/auth.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
 import { WishlistComponent } from "../wishlist/wishlist.component";
-import {Observable, of, Subscription} from "rxjs";
+import { Observable, of, Subscription } from "rxjs";
 import { SharedService } from "../../../services/shared.service";
 import { filter } from "rxjs/operators";
 
-import {Store} from "@ngrx/store";
-import {selectUser, selectIsAuthenticated} from "../../../state/auth/auth.selectors";
-import {AppState} from "../../../app.state";
-import {User} from "../../User";
+import { Store } from "@ngrx/store";
+import { selectUser, selectIsAuthenticated } from "../../../state/auth/auth.selectors";
+import { AppState } from "../../../app.state";
+import { User } from "../../User";
+import { UserService } from '../../user.service';
 
 export interface DetailsBody {
   name?: string;
@@ -58,14 +59,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     email: 'john.doe@example.com',
     phone: '1234567890',
     balance: 350.75,
-    addresses: [
-      { street: '123 Main St', city: 'New York' },
-      { street: '456 Oak St', city: 'San Francisco' }
-    ],
-    paymentMethods: [
-      { type: 'Visa', lastFourDigits: '4242' },
-      { type: 'MasterCard', lastFourDigits: '1234' }
-    ],
+    addresses: [],
+    paymentMethods: [],
     preferences: {
       promotions: true,
       orderUpdates: true
@@ -101,8 +96,9 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private sharedService: SharedService,
-    private store: Store<AppState>
-  ) {}
+    private store: Store<AppState>,
+    private userService: UserService
+  ) { }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -114,6 +110,17 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       this.user = data;
       this.balance = data.account.balance;
       this.user.phone = data.phoneNumber;
+
+      // Initialize arrays if they don't exist
+      if (!this.user.addresses) this.user.addresses = [];
+      if (!this.user.paymentOptions) this.user.paymentOptions = [];
+
+      // Initialize preferences from user data
+      this.user.preferences = {
+        promotions: this.user.receivePromotions ?? true,
+        orderUpdates: this.user.receiveOrderUpdates ?? true
+      };
+
       sessionStorage.setItem('currentUserEmail', this.user.email);
 
       this.controlSubscription = this.sharedService.selectedTable$.subscribe(tab => {
@@ -124,24 +131,38 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
-      window.scrollTo(0, 0);  // Desplazarse al tope de la página
+      window.scrollTo(0, 0);
     });
 
     this.isSmallScreen = window.innerWidth <= 768;
 
     this.user$ = this.store.select(selectUser);
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
-    this.isAuthenticated$.subscribe(value => {})
+    this.isAuthenticated$.subscribe(value => { })
   }
 
-// account-info.component.ts
+  deleteAccount() {
+    if (confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) {
+      this.userService.deleteUser(this.user.id).subscribe({
+        next: () => {
+          alert('Tu cuenta ha sido eliminada.');
+          this.authService.logout();
+          this.router.navigate(['/home']);
+        },
+        error: (err) => {
+          console.error('Error eliminando cuenta', err);
+          this.generalErrorMessage = 'Error al eliminar la cuenta. Por favor intenta más tarde.';
+        }
+      });
+    }
+  }
 
   async updatePersonalInfo() {
     this.validationErrors = {};
     this.generalErrorMessage = '';
 
     let isValid = true;
-    let updatedFields: DetailsBody = {email: "", name: "", phoneNumber: ""};
+    let updatedFields: DetailsBody = { email: "", name: "", phoneNumber: "" };
 
     if (this.editingName) {
       const isNameValid = this.validateName(this.detailsBody.name);
@@ -214,10 +235,8 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
   closeAccountInfo(): void {
     this.isVisible = false;
-    // Implementa la lógica para cerrar el componente
   }
 
-  // Función para seleccionar la pestaña
   selectTab(tab: string) {
     this.selectedTab = tab;
   }
@@ -234,7 +253,6 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       if (this.validationErrors.name) {
         delete this.validationErrors.name;
       }
-      console.log('Name after editing: ' + this.detailsBody.name)
     } else if (field === 'email') {
       this.editingEmail = !this.editingEmail;
       if (this.editingEmail) {
@@ -260,42 +278,84 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     }
   }
 
-  editAddress(address: any) {
-    console.log('Editar dirección:', address);
+  // Address Management
+  addNewAddress() {
+    const street = prompt('Ingrese la calle:');
+    const city = prompt('Ingrese la ciudad:');
+    const country = prompt('Ingrese el país:', 'USA'); // Default
+    const zipCode = prompt('Ingrese el código postal:');
+
+    if (street && city && country && zipCode) {
+      const newAddress = { street, city, country, zipCode };
+      this.userService.addAddress(this.user.id, newAddress).subscribe({
+        next: (updatedUser: any) => {
+          this.user.addresses = updatedUser.addresses;
+        },
+        error: (err) => console.error('Error adding address', err)
+      });
+    }
   }
 
   deleteAddress(address: any) {
-    this.user.addresses = this.user.addresses.filter((a: any) => a !== address);
-    console.log('Dirección eliminada:', address);
+    if (confirm('¿Eliminar esta dirección?')) {
+      this.userService.removeAddress(this.user.id, address.id).subscribe({
+        next: (updatedUser: any) => {
+          this.user.addresses = updatedUser.addresses;
+        },
+        error: (err) => console.error('Error removing address', err)
+      });
+    }
   }
 
-  addNewAddress() {
-    const newAddress = { street: 'Nueva Calle', city: 'Nueva Ciudad' };
-    this.user.addresses.push(newAddress);
-    console.log('Nueva dirección agregada:', newAddress);
+  editAddress(address: any) {
+    // For simplicity, reusing prompt or just alerting
+    alert('Edición de dirección no implementada completamente. Elimine y cree una nueva.');
   }
 
-  editPaymentMethod(payment: any) {
-    console.log('Editar método de pago:', payment);
+  // Payment Management
+  addNewPaymentMethod() {
+    const type = prompt('Tipo de tarjeta (VISA, MASTERCARD, PAYPAL):');
+    const lastFourDigits = prompt('Últimos 4 dígitos:', '1234');
+    const provider = prompt('Proveedor (Bank Name, etc):', 'Generic Bank');
+
+    if (type && lastFourDigits && provider) {
+      const newPayment = { type, lastFourDigits, provider };
+      this.userService.addPaymentOption(this.user.id, newPayment).subscribe({
+        next: (updatedUser: any) => {
+          this.user.paymentOptions = updatedUser.paymentOptions;
+        },
+        error: (err) => console.error('Error adding payment option', err)
+      });
+    }
   }
 
   deletePaymentMethod(payment: any) {
-    this.user.paymentMethods = this.user.paymentMethods.filter((p: any) => p !== payment);
-    console.log('Método de pago eliminado:', payment);
+    if (confirm('¿Eliminar este método de pago?')) {
+      this.userService.removePaymentOption(this.user.id, payment.id).subscribe({
+        next: (updatedUser: any) => {
+          this.user.paymentOptions = updatedUser.paymentOptions;
+        },
+        error: (err) => console.error('Error removing payment option', err)
+      });
+    }
   }
 
-  addNewPaymentMethod() {
-    const newPayment = { type: 'Amex', lastFourDigits: '5678' };
-    this.user.paymentMethods.push(newPayment);
-    console.log('Nuevo método de pago agregado:', newPayment);
+  editPaymentMethod(payment: any) {
+    alert('Edición de método de pago no implementada. Elimine y agregue de nuevo.');
   }
 
+  // Preferences
   updateCommunicationPreferences() {
-    console.log('Preferencias de comunicación actualizadas:', this.user.preferences);
-    this.showSuccessMessage = true;
-    setTimeout(() => {
-      this.showSuccessMessage = false;
-    }, 5000);
+    this.userService.updatePreferences(this.user.id, {
+      receivePromotions: this.user.preferences.promotions,
+      receiveOrderUpdates: this.user.preferences.orderUpdates
+    }).subscribe({
+      next: (updatedUser: any) => {
+        this.showSuccessMessage = true;
+        setTimeout(() => this.showSuccessMessage = false, 3000);
+      },
+      error: (err) => console.error('Error updating preferences', err)
+    });
   }
 
   // Validaciones
@@ -321,7 +381,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
 
   closeSidebarOnMobile() {
     if (this.isSmallScreen) {
-      this.isCollapsed = false; // Asegúrate de que se cierra el modal en vista móvil
+      this.isCollapsed = false;
     }
   }
 

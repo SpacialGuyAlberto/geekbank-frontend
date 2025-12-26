@@ -1,14 +1,19 @@
 import {Component, OnInit} from '@angular/core';
-import {NgStyle} from "@angular/common";
+import {NgIf, NgStyle} from "@angular/common";
 import {  FlashSaleService } from "./config/flash-sale.service";
 import {HttpClient} from "@angular/common/http";
-import {FlashSale} from "./config/FlashSale";
+import {FlashSale} from "./config/models/FlashSale";
+import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
+import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
+import { NgOptimizedImage } from '@angular/common';
+
 
 @Component({
   selector: 'app-flash-sale',
   standalone: true,
   imports: [
-    NgStyle
+    NgStyle,
+    NgIf
   ],
   templateUrl: './flash-sale.component.html',
   styleUrl: './flash-sale.component.css'
@@ -19,6 +24,7 @@ export class FlashSaleComponent implements OnInit {
   seconds: string = '22';
   interval: any;
   flashSale: FlashSale | null = null;
+  giftCard: KinguinGiftCard | null = null;
 
   totalStock: number = 41;
   itemsLeft: number = 9;
@@ -26,13 +32,12 @@ export class FlashSaleComponent implements OnInit {
 
   constructor(
     private flashSaleService: FlashSaleService,
-    private http: HttpClient
+    private http: HttpClient,
+    private kinguin: KinguinService
   ) {}
 
   ngOnInit(): void {
     this.loadFlashSale();
-
-
   }
 
   startTimer(item: FlashSale | null): void {
@@ -80,6 +85,7 @@ export class FlashSaleComponent implements OnInit {
         console.log('Flash sale cargada:', this.flashSale);
 
         this.startTimer(this.flashSale);
+        this.loadGiftCard();
       },
       error: err => {
         console.error('Error cargando flash sale', err);
@@ -87,16 +93,23 @@ export class FlashSaleComponent implements OnInit {
     });
   }
 
-  parsePostgresTimestamp(s: string): Date {
-    const [datePart, timePart] = s.split(" ");
+  loadGiftCard() {
+    const productId = '883456'
+    if (!productId) {
+      console.warn('No hay productId, no se puede cargar giftCard');
+      return;
+    }
 
-    const [year, month, day] = datePart.split("-").map(Number);
-
-    const [time, fraction = "0"] = timePart.split(".");
-    const [hours, minutes, seconds] = time.split(":").map(Number);
-    const millis = Number((fraction + "000").slice(0, 3)); // "210574" → "210" → 210 ms
-
-    return new Date(year, month - 1, day, hours, minutes, seconds, millis);
+    this.kinguin.getGiftCardDetails(productId).subscribe({
+      next: data => {
+        console.log('Respuesta Kinguin:', data);
+        this.giftCard = data;
+        console.log('Gift Card en componente:', this.giftCard?.coverImageOriginal);
+      },
+      error: err => {
+        console.error('Error cargando giftCard', err);
+      }
+    });
   }
 
   ngOnDestroy(): void {

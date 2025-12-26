@@ -1,33 +1,32 @@
 import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
 import { FormsModule } from "@angular/forms";
+import { CommonModule, NgIf } from "@angular/common";
 import { GeneralViewComponent } from "../general-view/general-view.component";
-import { NgIf } from "@angular/common";
 import { ClientsComponent } from '../clients/clients.component';
 import { ProductsComponent } from '../products/products.component';
 import { HighlightsConfigComponent } from '../highlights-config/highlights-config.component';
 import { TransactionsComponent } from '../transactions/transactions.component';
 import { StatisticsComponent } from '../statistics/statistics.component';
-import { TransactionMonitorComponent } from "../transaction-monitor/transaction-monitor.component";
-// @ts-ignore
-import { Chart } from 'chart.js';
-import { BackgroundAnimationService } from "../services/background-animation.service";
 import { ManualSalesComponent } from "../manual-sales/manual-sales.component";
+import { FeedbackListComponent } from "../feedback-list/feedback-list.component";
+import { EmployeeDashboardComponent } from "../employee-dashboard/employee-dashboard.component";
+import { FinancialDashboardComponent } from "../financial-dashboard/financial-dashboard.component";
+import { MainScreenGiftCardConfigComponent } from "../main-screen-gift-card-config/main-screen-gift-card-config.component";
+import { TournamentConfigComponent } from "../tournament-announcement/tournament-config/tournament-config.component";
+import { FlashSaleComponent } from "../flash-sale/flash-sale.component";
+import { FlashSalesConfigComponent } from "../flash-sale/config/flash-sales-config.component";
+import { SyncComponent } from '../sync/sync.component';
+import { CombosConfigComponent } from '../combos/config/combos-config.component';
+import { BackgroundAnimationService } from "../services/background-animation.service";
+import { Chart } from 'chart.js';
 import { interval } from 'rxjs';
-import {FeedbackListComponent} from "../feedback-list/feedback-list.component";
-import {EmployeeDashboardComponent} from "../employee-dashboard/employee-dashboard.component";
-import {FinancialDashboardComponent} from "../financial-dashboard/financial-dashboard.component";
-import {
-  MainScreenGiftCardConfigComponent
-} from "../main-screen-gift-card-config/main-screen-gift-card-config.component";
-import {TournamentConfigComponent} from "../tournament-announcement/tournament-config/tournament-config.component";
-import {FlashSaleComponent} from "../flash-sale/flash-sale.component";
-import {FlashSalesConfigComponent} from "../flash-sale/config/flash-sales-config.component";
 
 @Component({
   selector: 'app-admin-panel',
   standalone: true,
   imports: [
     FormsModule,
+    CommonModule,
     GeneralViewComponent,
     ClientsComponent,
     ProductsComponent,
@@ -43,6 +42,8 @@ import {FlashSalesConfigComponent} from "../flash-sale/config/flash-sales-config
     TournamentConfigComponent,
     FlashSaleComponent,
     FlashSalesConfigComponent,
+    SyncComponent,
+    CombosConfigComponent
   ],
   templateUrl: './admin-panel.component.html',
   styleUrls: ['./admin-panel.component.css']
@@ -58,7 +59,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
     role: 'ADMIN',
   };
 
-  constructor(private animation: BackgroundAnimationService) {}
+  constructor(private animation: BackgroundAnimationService) { }
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -87,7 +88,7 @@ export class AdminPanelComponent implements OnInit, AfterViewInit {
 
   createDynamicChart() {
     const ctx = document.getElementById('salesChart') as HTMLCanvasElement;
-    if(ctx){
+    if (ctx) {
       new Chart(ctx, {
         type: 'line',
         data: {

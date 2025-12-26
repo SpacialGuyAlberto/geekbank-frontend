@@ -22,11 +22,8 @@
     </div>
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
       <div *ngIf="!isSmallScreen" class="filter-section">
-        <app-filters
-          (filteredResults)="handleFilteredResults($event)"
-          (filtersApplied)="applyFilters()"
-          [searchQuery]="searchQuery"
-        >
+        <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()"
+          [searchQuery]="searchQuery">
         </app-filters>
       </div>
       <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
@@ -36,9 +33,7 @@
       <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
         <div class="modal-content">6
           <span class="close" (click)="closeFilterModal()">&times;</span>
-          <app-filters
-            (filteredResults)="handleFilteredResults($event)"
-            (filtersApplied)="applyFilters()">
+          <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()">
           </app-filters>
         </div>
       </div>
@@ -59,6 +54,7 @@
 
     </div>
   </div>
+  <app-combos></app-combos>
   <app-flash-sale></app-flash-sale>
   <app-offers-banner *ngIf="showHighlightsAndRecommendations"></app-offers-banner>
   <app-inferior-filter></app-inferior-filter>

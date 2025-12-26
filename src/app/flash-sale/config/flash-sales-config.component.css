@@ -19,6 +19,12 @@
   gap: 1.5rem;
 }
 
+
+.manage-layout {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
 /* Right Column */
 .dashboard-summary {
   flex: 1.4;
@@ -211,4 +217,110 @@
   .form-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 18, 0.85); /* Fondo semitransparente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+  padding: 1rem; /* Espacio adicional alrededor del contenido */
+  overflow: hidden; /* Evita el scroll en todo el modal */
+}
+
+/* Animación de entrada */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #2b2b2b;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  padding: 2rem;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+  text-align: left;
+  position: relative;
+  animation: slideIn 0.3s ease;
+  max-height: 80vh; /* Limitar la altura máxima */
+  overflow-y: auto; /* Hacer el contenido desplazable */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Animación de contenido */
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Scrollbar personalizado para modal-content */
+.modal-content::-webkit-scrollbar {
+  width: 0.75rem; /* Ancho de la barra */
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background: #1e1e1e; /* Fondo de la pista */
+  border-radius: 0.625rem; /* Bordes redondeados */
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: #f9c74f; /* Color del pulgar */
+  border-radius: 0.625rem;
+  border: 0.1875rem solid #1e1e1e; /* Espacio entre pulgar y pista */
+}
+
+.modal-content::-webkit-scrollbar-thumb:hover {
+  background-color: #ffc107; /* Cambio de color al pasar el mouse */
+}
+
+/* Compatibilidad con Firefox */
+.modal-content {
+  scrollbar-width: thin; /* Scrollbar delgada */
+  scrollbar-color: #f9c74f #1e1e1e; /* Pulgar y pista */
+}
+/* Modal Close Button */
+.close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: #ffcc00;
+}
+
+/* Botón de cierre */
+.modal-content .close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: color 0.2s;
 }
