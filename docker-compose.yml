@@ -1,0 +1,16 @@
+
+
+services:
+  geekbank-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    container_name: geekbank-frontend
+    # Volume mounting is disabled to prevent ExFAT freeze
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    ports:
+      - "4200:4200"
+    command: npm start -- --host 0.0.0.0 --poll 2000 --disable-host-check
