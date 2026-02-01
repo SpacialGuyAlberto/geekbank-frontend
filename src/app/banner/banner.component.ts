@@ -52,7 +52,7 @@ export class BannerComponent implements OnInit {
 
   viewDetails(): void {
 
-    this.router.navigate(['/tournament']).then(success => {
+    this.router.navigate(['/offer/Call%2520of%2520duty']).then(success => {
     });
   }
 
