@@ -21,14 +21,23 @@
             </div>
           </div>
           <!-- Imagen principal -->
-          <div class="flash-sale-img-container">
-            <img src="https://media.steampowered.com/apps/csgo/blog/images/fb_image.png?v=6" alt="Oferta Principal">
+          <div class="flash-sale-img-container" *ngIf="giftCard as card">
+            <img
+              ngOptimizedImage
+              [src]="card.images.cover.thumbnail"
+              [alt]="card.name || 'Oferta Principal'"
+              loading="lazy"
+              decoding="async"
+              width="300"
+              height="400"
+            >
           </div>
-          <!-- Título debajo de la imagen -->
-          <h2 class="flash-sale-title">Counter Strike 2 RANDOM COVERT VS. KNIFE SKIN BY DROPLAND.NET</h2>
+
+          <h2 class="flash-sale-title">{{ giftCard?.name }}</h2>
+
           <!-- Precio -->
           <div class="price-box">
-            <p class="price-offer">$7.61 <span class="original-price">$9.04</span> <span class="discount">-16%</span></p>
+            <p class="price-offer">{{giftCard?.price}} <span class="original-price">{{flashSale?.temporaryPrice}}</span> <span class="discount">-16%</span></p>
           </div>
           <!-- Información de stock -->
           <p class="stock-info">Quedan {{ itemsLeft }} - Vendido {{ totalSold }}</p>

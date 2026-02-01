@@ -7,22 +7,27 @@
   --font-primary: 'Roboto', sans-serif;
   --font-secondary: 'VT323', monospace;
   --transition-speed: 0.3s;
-  --scale-factor: 0.75; /* 75% del tamaño original */
+  --scale-factor: 0.75;
+  /* 75% del tamaño original */
 }
 
 /* Box-Sizing Global */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 /* Estilos Globales */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: var(--font-primary);
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: var(--text-color);
-  overflow-x: hidden; /* Evita el desplazamiento horizontal */
+  overflow-x: hidden;
+  /* Evita el desplazamiento horizontal */
 }
 
 .graph-container {
@@ -41,15 +46,18 @@ body, html {
 }
 
 .home-container {
-  max-width: 90rem; /* O el valor que hayas elegido */
+  max-width: 90rem;
+  /* O el valor que hayas elegido */
   margin: 0 auto;
-  padding: 6rem 1.5rem 2rem; /* Añadido 6rem de padding-top (equivalente a la altura de la navbar + espacio adicional) */
+  padding: 6rem 1.5rem 2rem;
+  /* Añadido 6rem de padding-top (equivalente a la altura de la navbar + espacio adicional) */
 }
 
 /* Estilos del Banner */
 .banner {
   width: 100%;
-  height: 400px; /* Ajusta la altura según tus necesidades */
+  height: 400px;
+  /* Ajusta la altura según tus necesidades */
   background-image: url('/assets/adventure2.webp');
   background-size: cover;
   background-position: center;
@@ -70,7 +78,8 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
+  background: rgba(0, 0, 0, 0.5);
+  /* Superposición para mejorar la legibilidad del texto */
 }
 
 .banner h1 {
@@ -97,20 +106,24 @@ body, html {
   gap: 1.5rem;
   position: relative;
   z-index: 2;
-  margin-top: -20rem; /* Ajusta este valor según sea necesario */
-  margin-bottom: -10rem; /* Ajusta este valor según sea necesario */
+  margin-top: -20rem;
+  /* Ajusta este valor según sea necesario */
+  margin-bottom: -10rem;
+  /* Ajusta este valor según sea necesario */
 }
 
 .app-banner {
   margin-top: 8rem;
   margin-bottom: 1rem;
   margin-left: -1.5rem;
-  z-index: 2/* Ajusta este valor según tus necesidades */
+  z-index: 2
+    /* Ajusta este valor según tus necesidades */
 }
 
 .highlights-section,
 .recommendations-section {
-  flex: 0.75; /* Reducción proporcional en flex */
+  flex: 0.75;
+  /* Reducción proporcional en flex */
 }
 
 .highlights-section {
@@ -122,7 +135,8 @@ body, html {
 .recommendations-section {
   display: flex;
   justify-content: center;
-  margin-left: -1.5rem; /* Mueve la sección 1.5rem hacia la izquierda */
+  margin-left: -1.5rem;
+  /* Mueve la sección 1.5rem hacia la izquierda */
 }
 
 /* Tarjetas principales */
@@ -135,7 +149,8 @@ body, html {
 /* Filtros y Tarjetas Filtradas */
 .filter-giftcard-container {
   display: flex;
-  gap: 1.5rem; /* Reducción de 2rem a 1.5rem */
+  gap: 1.5rem;
+  /* Reducción de 2rem a 1.5rem */
 }
 
 .filter-section {
@@ -147,6 +162,7 @@ body, html {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  margin-bottom: -10rem;
 }
 
 /* Estilo para el contenedor del Free Fire Gift Card */
@@ -169,7 +185,6 @@ body, html {
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.125rem;
   width: 100%;
-  margin-top: 5rem; /* Ajusta el valor para mover el contenedor hacia arriba */
 }
 
 /* Botón de Filtros para Móvil */
@@ -185,14 +200,18 @@ body, html {
 @media (max-width: 768px) {
 
   .banner {
-    width: 100vw; /* Abarca todo el ancho de la ventana */
+    width: 100vw;
+    /* Abarca todo el ancho de la ventana */
     height: 250px;
-    margin: 0; /* El
+    margin: 0;
+    /* El
     imina cualquier margen */
-    padding: 0; /* Elimina cualquier padding */
+    padding: 0;
+    /* Elimina cualquier padding */
     left: 50%;
     right: 50%;
-    transform: translateX(-50%); /* Centra el banner */
+    transform: translateX(-50%);
+    /* Centra el banner */
   }
 
   .highlights-section {
@@ -209,21 +228,28 @@ body, html {
   }
 
   .app-banner {
-    width: 120vw; /* 1200px */
+    width: 120vw;
+    /* 1200px */
     /*max-height: 40rem;*/
 
   }
 
   app-offers-banner {
-    margin-top: 2rem; /* Ajusta según sea necesario */
-    margin-bottom: 2rem; /* Ajusta según sea necesario */
+    margin-top: 2rem;
+    /* Ajusta según sea necesario */
+    margin-bottom: 2rem;
+    /* Ajusta según sea necesario */
   }
+
   .highlight-recommendations {
     flex-direction: column;
     align-items: center;
-    margin-top: -10rem; /* Elimina márgenes negativos */
-    margin-bottom: 0; /* Elimina márgenes negativos */
-    padding: 1rem 0; /* Añade padding para espaciar */
+    margin-top: -10rem;
+    /* Elimina márgenes negativos */
+    margin-bottom: 0;
+    /* Elimina márgenes negativos */
+    padding: 1rem 0;
+    /* Añade padding para espaciar */
   }
 
   .filter-giftcard-container {
@@ -281,11 +307,13 @@ body, html {
   /* Ajustes adicionales para evitar superposición */
   .main-gift-cards,
   .gift-cards-grid {
-    margin-top: 2rem; /* Añade margen superior para separar del banner */
+    margin-top: 2rem;
+    /* Añade margen superior para separar del banner */
   }
 
   .app-banner {
-    margin-top: 2rem; /* Asegura que el banner no se superponga */
+    margin-top: 2rem;
+    /* Asegura que el banner no se superponga */
     margin-bottom: 1rem;
   }
 }

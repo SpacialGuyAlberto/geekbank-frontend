@@ -33,13 +33,13 @@ export class OffersBannerComponent implements OnInit {
       link: '#'
     },
     {
-      imageUrl: 'https://static.kinguin.net/media/images/products/_dragonballsparkingzeroUltimate-173.jpeg',
-      title: 'Dragon ball: Sparking',
+      imageUrl: 'https://static.kinguin.net/media/images/products/_A1fWQYTIc3L._FMwebp_.jpg',
+      title: 'Roblox',
       link: '#'
     },
     {
       imageUrl: 'https://storage.googleapis.com/api-ecommerce/ea-sports-fc-25_cover_original.jpg',
-      title: 'FC 25',
+      title: 'FC 26',
       link: '#'
     },
     {

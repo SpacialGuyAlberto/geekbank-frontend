@@ -6,7 +6,26 @@ export interface User {
   role: string;
   enabled: boolean;
   phoneNumber: number;
+  addresses?: Address[];
+  paymentOptions?: PaymentOption[];
+  receivePromotions?: boolean;
+  receiveOrderUpdates?: boolean;
   account: Account;
+}
+
+export interface Address {
+  id?: number;
+  street: string;
+  city: string;
+  country: string;
+  zipCode: string;
+}
+
+export interface PaymentOption {
+  id?: number;
+  type: string;
+  lastFourDigits: string;
+  provider: string;
 }
 
 export interface Account {

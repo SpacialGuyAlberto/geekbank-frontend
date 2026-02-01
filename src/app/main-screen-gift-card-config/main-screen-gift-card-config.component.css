@@ -82,6 +82,28 @@
   text-align: center;
 }
 
+.right-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.classification-filter {
+  background-color: #444;
+  color: #ffcc00;
+  border: none;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.3rem;
+}
+
+.gift-card-classification,
+.list-classification {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #ffcc00;
+  opacity: 0.9;
+}
 
 .search-bar-container {
   margin-bottom: 1.5rem;

@@ -31,7 +31,7 @@
   grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
   gap: calc(1.5rem * var(--scale-factor));
   width: 90%;
-  margin: 0 auto 5rem auto; /* Centra horizontalmente y margen inferior */
+  margin: 0 auto 5rem auto;
 }
 
 

@@ -2,12 +2,12 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
-import {Transaction} from "../transactions/transaction.model";
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Transaction } from "../transactions/transaction.model";
 import { User } from './User';
-import {environment} from "../../environments/environment";
+import { environment } from "../../environments/environment";
 import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
-import {DetailsBody} from '../models/details-body'
+import { DetailsBody } from '../models/details-body'
 
 @Injectable({
   providedIn: 'root'
@@ -107,4 +107,28 @@ export class UserService {
   // getTransactions(): Observable<Transaction[]> {
   //   return this.http.get<Transaction[]>(`${this.baseUrl}/transactions`);
   // }
+
+  deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${userId}`);
+  }
+
+  addAddress(userId: number, address: any): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/${userId}/addresses`, address);
+  }
+
+  removeAddress(userId: number, addressId: number): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/${userId}/addresses/${addressId}`);
+  }
+
+  addPaymentOption(userId: number, paymentOption: any): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/${userId}/payment-options`, paymentOption);
+  }
+
+  removePaymentOption(userId: number, paymentId: number): Observable<User> {
+    return this.http.delete<User>(`${this.baseUrl}/${userId}/payment-options/${paymentId}`);
+  }
+
+  updatePreferences(userId: number, preferences: any): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/${userId}/preferences`, preferences);
+  }
 }

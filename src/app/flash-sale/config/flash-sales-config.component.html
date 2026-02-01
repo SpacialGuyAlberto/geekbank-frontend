@@ -1,0 +1,178 @@
+<div class="dashboard">
+
+  <!-- ================= TABS ================= -->
+  <div class="tabs">
+    <div
+      class="tab"
+      [class.active]="activeTab === 'preview'"
+      (click)="activeTab = 'preview'">
+      Lista de Flashsales
+    </div>
+
+    <div
+      class="tab"
+      [class.active]="activeTab === 'config'"
+      (click)="activeTab = 'config'">
+      🔍⚡ Buscador & Configuración
+    </div>
+  </div>
+
+  <!-- ================= TAB PREVIEW ================= -->
+  <div class="tab-content" [class.active]="activeTab === 'preview'">
+    <div class="summary-cards" *ngIf="flashSales?.length; else noSales">
+      <div class="summary-card" *ngFor="let offer of flashSales">
+        <div class="card-content">
+          <p>{{ offer.temporaryPrice | currency:'EUR' }}</p>
+          <small>Desde {{ offer.createdAt | date:'short' }}</small><br />
+          <small>Hasta {{ offer.limitDate | date:'short' }}</small>
+        </div>
+
+        <button class="btn-save" (click)="editOffer(offer)">Editar</button>
+        <button (click)="deleteOffer(offer.id!)">Eliminar</button>
+      </div>
+    </div>
+
+    <ng-template #noSales>
+      <p>No hay Flash Sales creadas</p>
+    </ng-template>
+  </div>
+
+  <!-- ================= TAB CONFIG ================= -->
+  <div class="tab-content" [class.active]="activeTab === 'config'">
+    <div class="manage-layout">
+
+      <!-- ========== LEFT: SEARCH ========= -->
+      <div class="left-panel">
+        <h2>🔍 Buscador de Gift Cards</h2>
+
+        <app-search-bar
+          (searchResults)="handleSearchResults($event)">
+        </app-search-bar>
+
+        <div class="gift-cards-container">
+          <div *ngFor="let card of giftCards" class="gift-card">
+            <img [src]="card.coverImage" class="gift-card-image" />
+            <h3>{{ card.name }}</h3>
+            <span>{{ card.price | currency }}</span>
+
+            <button class="btn-save" (click)="addToFlashOffer(card)">
+              Agregar a Flash Sale
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== RIGHT: FORM ========= -->
+      <div class="dashboard-summary">
+        <h2>⚡ Configuración de Flash Sales</h2>
+
+        <form [formGroup]="flashForm" (ngSubmit)="saveOffer()">
+
+          <!-- Fechas -->
+          <div class="section-title">Fechas</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Inicio</label>
+              <input type="datetime-local" formControlName="startDate" />
+            </div>
+
+            <div class="form-group">
+              <label>Fin</label>
+              <input type="datetime-local" formControlName="limitDate" />
+            </div>
+          </div>
+
+          <!-- Límites -->
+          <div class="section-title">Límites</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Stock límite</label>
+              <input type="number" formControlName="stockLimit" />
+            </div>
+
+            <div class="form-group">
+              <label>Límite por usuario</label>
+              <input type="number" formControlName="userLimit" />
+            </div>
+          </div>
+
+          <!-- Visibilidad -->
+          <div class="section-title">Visibilidad</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <select formControlName="visibility">
+                <option value="public">Público</option>
+                <option value="hidden">Oculto</option>
+                <option value="restricted">Restringido</option>
+              </select>
+            </div>
+
+            <div class="form-group"
+                 *ngIf="flashForm.value.visibility === 'restricted'">
+              <input
+                formControlName="allowedCountries"
+                placeholder="US, DE, FR" />
+            </div>
+          </div>
+
+          <!-- Marketing -->
+          <div class="section-title">Marketing</div>
+          <div class="form-grid">
+            <div class="form-group">
+              <select formControlName="badge">
+                <option value="none">Ninguno</option>
+                <option value="hot">🔥 Hot</option>
+                <option value="limited">⏳ Limitado</option>
+                <option value="exclusive">⭐ Exclusivo</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <input
+                formControlName="bannerUrl"
+                placeholder="https://..." />
+            </div>
+          </div>
+
+          <!-- Estado -->
+          <div class="section-title">Estado</div>
+          <select formControlName="status">
+            <option value="scheduled">Programado</option>
+            <option value="active">Activo</option>
+            <option value="paused">Pausado</option>
+          </select>
+
+          <!-- BOTÓN FINAL -->
+          <button
+            type="submit"
+            class="btn-save"
+            [disabled]="flashForm.invalid">
+            {{ editingFlashSaleId ? 'Actualizar Flash Sale' : 'Guardar Flash Sale' }}
+          </button>
+        </form>
+
+        <!-- Productos -->
+        <h3>Productos añadidos</h3>
+        <div *ngFor="let p of flashSalesObjects">
+          {{ p.KinguinGiftCard.name }} –
+          {{ p.FlashOfferProduct.temporaryPrice | currency }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL ================= -->
+  <div *ngIf="showModal" class="modal">
+    <div class="modal-content" [formGroup]="modalForm">
+      <span class="close" (click)="closeModal()">×</span>
+
+      <label>Precio nuevo</label>
+      <input type="number" formControlName="newPrice" />
+
+      <button class="btn-save" (click)="addProductToFlashSale()">
+        Confirmar
+      </button>
+    </div>
+  </div>
+
+</div>

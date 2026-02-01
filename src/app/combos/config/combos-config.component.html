@@ -1,0 +1,105 @@
+<div class="dashboard">
+  <div class="header">
+    <h2>🧩 Gestión de Combos</h2>
+    <div class="actions">
+      <button 
+        [class.active]="activeTab === 'list'" 
+        (click)="activeTab = 'list'; initForm()">
+        Ver Lista
+      </button>
+      <button 
+        [class.active]="activeTab === 'create'" 
+        (click)="activeTab = 'create'">
+        {{ isEditMode ? 'Editar Combo' : 'Nuevo Combo' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- VISTA DE LISTA -->
+  <div *ngIf="activeTab === 'list'" class="list-container">
+    <div class="combo-grid">
+      <div *ngFor="let combo of combos" class="combo-card">
+        <div class="card-image" *ngIf="combo.imageUrl">
+          <img [src]="combo.imageUrl" [alt]="combo.name">
+        </div>
+        <div class="card-content">
+          <h3>{{ combo.name }}</h3>
+          <p class="price">{{ combo.price | currency:'EUR' }}</p>
+          <span class="status" [class.active]="combo.isActive">
+            {{ combo.isActive ? 'Activo' : 'Inactivo' }}
+          </span>
+          <p class="products-count">{{ combo.productIds?.length || 0 }} productos</p>
+          
+          <div class="card-actions">
+            <button (click)="editCombo(combo)" class="btn-edit">✏️</button>
+            <button (click)="deleteCombo(combo.id!)" class="btn-delete">🗑️</button>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="combos.length === 0" class="empty-state">
+        <p>No hay combos creados.</p>
+        <button (click)="activeTab = 'create'">Crear el primero</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA DE CREACIÓN / EDICIÓN -->
+  <div *ngIf="activeTab === 'create'" class="form-container">
+    <form [formGroup]="comboForm" (ngSubmit)="saveCombo()">
+      <div class="form-group">
+        <label>Nombre del Combo</label>
+        <input formControlName="name" type="text" placeholder="Ej. Pack Gamer Inicio" />
+      </div>
+
+      <div class="form-group">
+        <label>Descripción</label>
+        <textarea formControlName="description" rows="3"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Precio (€)</label>
+          <input formControlName="price" type="number" step="0.01" />
+        </div>
+
+        <div class="form-group box-check">
+          <label>
+            <input formControlName="isActive" type="checkbox" />
+            Activo
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>URL de Imagen</label>
+        <input formControlName="imageUrl" type="text" placeholder="https://..." />
+      </div>
+
+      <!-- SECCIÓN PRODUCTOS -->
+      <div class="products-section">
+        <h3>Productos Incluidos</h3>
+        <div class="add-product-row">
+          <input #prodIdInput type="number" placeholder="ID de Producto" />
+          <button type="button" (click)="addProductId(prodIdInput.value); prodIdInput.value = ''">
+            + Agregar ID
+          </button>
+        </div>
+
+        <ul class="product-list">
+          <li *ngFor="let pid of selectedProducts; let i = index">
+            Producto ID: <strong>{{ pid }}</strong>
+            <button type="button" (click)="removeProductId(i)">&times;</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" (click)="activeTab = 'list'" class="btn-cancel">Cancelar</button>
+        <button type="submit" [disabled]="comboForm.invalid" class="btn-save">
+          {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
