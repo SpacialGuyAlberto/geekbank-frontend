@@ -1,33 +1,31 @@
-# Stage 1: Build/Dev
-FROM node:20-alpine AS build
+# Etapa 1: Build
+FROM node:18-alpine AS build
 WORKDIR /app
 
-# Install system dependencies for canvas and other native modules
+# 1. Instalamos las dependencias necesarias para compilar librerías nativas (como canvas)
 RUN apk add --no-cache \
-    build-base \
+    python3 \
+    make \
     g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    giflib-dev \
+    pkgconfig \
     pixman-dev \
-    pangomm-dev \
+    cairo-dev \
+    pango-dev \
     libjpeg-turbo-dev \
-    freetype-dev
+    giflib-dev
 
-
-# Install dependencies first (caching)
 COPY package*.json ./
+
+# 2. Instalamos las dependencias de node
 RUN npm install
 
-# Copy the rest of the code
 COPY . .
+RUN npm run build --configuration=production
 
-# Build the Angular application
-RUN npm run build --prod
-
-# Stage 2: Production Nginx (Optional, for 'docker build' usage)
-FROM nginx:alpine AS production
-COPY --from=build /app/dist/geekbank-frontend/browser /usr/share/nginx/html
+# Etapa 2: Servidor Nginx (Esta se mantiene igual y ligera)
+FROM nginx:alpine
+# Ajusta 'geekbank-frontend' al nombre real de tu carpeta en /dist
+COPY --from=build /app/dist/geekbank-frontend /usr/share/nginx/html
+RUN echo 'server { listen 80; location / { root /usr/share/nginx/html; index index.html; try_files $uri $uri/ /index.html; } location /api/ { proxy_pass http://app:8080; } }' > /etc/nginx/conf.d/default.conf
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
