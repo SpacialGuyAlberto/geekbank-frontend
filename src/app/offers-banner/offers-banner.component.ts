@@ -38,7 +38,7 @@ export class OffersBannerComponent implements OnInit {
       link: '#'
     },
     {
-      imageUrl: 'https://storage.googleapis.com/api-ecommerce/ea-sports-fc-25_cover_original.jpg',
+      imageUrl: 'https://static.kinguin.net/media/images/products/000_202507170847_ea-sports-fc-26-173.jpg',
       title: 'FC 26',
       link: '#'
     },
