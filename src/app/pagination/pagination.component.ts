@@ -2,13 +2,12 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import {NgForOf} from "@angular/common";
 
 @Component({
-  selector: 'app-pagination',
-  standalone: true,
-  imports: [
-    NgForOf
-  ],
-  templateUrl: './pagination.component.html',
-  styleUrl: './pagination.component.css'
+    selector: 'app-pagination',
+    imports: [
+        NgForOf
+    ],
+    templateUrl: './pagination.component.html',
+    styleUrl: './pagination.component.css'
 })
 export class PaginationComponent {
   @Input() totalPages: number = 0;

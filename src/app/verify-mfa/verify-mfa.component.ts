@@ -5,13 +5,12 @@ import { UserService } from '../user-details/user.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-verify-mfa',
-  templateUrl: './verify-mfa.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  styleUrls: ['./verify-mfa.component.css']
+    selector: 'app-verify-mfa',
+    templateUrl: './verify-mfa.component.html',
+    imports: [
+        ReactiveFormsModule
+    ],
+    styleUrls: ['./verify-mfa.component.css']
 })
 export class VerifyMfaComponent {
   verifyForm: FormGroup;

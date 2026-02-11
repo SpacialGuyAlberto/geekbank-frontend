@@ -19,11 +19,10 @@ import {AuthService} from "../services/auth.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  standalone: true,
-  imports: [NgClass, NgIf, FormsModule],
-  styleUrls: ['./login.component.css'],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    imports: [NgClass, NgIf, FormsModule],
+    styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 

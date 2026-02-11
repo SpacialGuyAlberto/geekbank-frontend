@@ -11,16 +11,15 @@ import {UserService} from "../user-details/user.service";
 import {user} from "@angular/fire/auth";
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
-  imports: [
-    FormsModule,
-    HttpClientModule,
-    RouterModule,
-    CommonModule // Asegúrate de importar CommonModule
-  ],
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.css'],
+    imports: [
+        FormsModule,
+        HttpClientModule,
+        RouterModule,
+        CommonModule // Asegúrate de importar CommonModule
+    ]
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
   @Input() isAdmin: boolean = false;

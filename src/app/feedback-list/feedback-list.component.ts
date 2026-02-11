@@ -5,16 +5,15 @@ import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 
 @Component({
-  selector: 'app-feedback-list',
-  templateUrl: './feedback-list.component.html',
-  standalone: true,
-  imports: [
-    NgClass,
-    FormsModule,
-    NgForOf,
-    NgIf
-  ],
-  styleUrls: ['./feedback-list.component.css']
+    selector: 'app-feedback-list',
+    templateUrl: './feedback-list.component.html',
+    imports: [
+        NgClass,
+        FormsModule,
+        NgForOf,
+        NgIf
+    ],
+    styleUrls: ['./feedback-list.component.css']
 })
 export class FeedbackListComponent implements OnInit {
   feedbacks: Feedback[] = [];

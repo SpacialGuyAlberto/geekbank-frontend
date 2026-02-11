@@ -25,22 +25,21 @@ import {loadUserFromSession} from "./state/auth/auth.actions";
 import {VisitService} from "./admin-panel/visit.service";
 
 @Component({
-  standalone: true,
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
-  imports: [
-    RegisterComponent,
-    RouterOutlet,
-    RouterModule,
-    NavbarComponent,
-    CommonModule,
-    HttpClientModule,
-    TranslateModule,
-    FooterComponent,
-    CookieConsentComponent
-  ],
-  providers: [ HttpClient]
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.css'],
+    imports: [
+        RegisterComponent,
+        RouterOutlet,
+        RouterModule,
+        NavbarComponent,
+        CommonModule,
+        HttpClientModule,
+        TranslateModule,
+        FooterComponent,
+        CookieConsentComponent
+    ],
+    providers: [HttpClient]
 })
 
 export class AppComponent implements OnInit {

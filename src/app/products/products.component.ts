@@ -7,19 +7,18 @@ import { CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf } from "@angular/common"
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  standalone: true,
-  imports: [
-    NgClass,
-    CurrencyPipe,
-    DatePipe,
-    FormsModule,
-    MatSnackBarModule,
-    NgForOf,
-    NgIf
-  ],
-  styleUrls: ['./products.component.css']
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    imports: [
+        NgClass,
+        CurrencyPipe,
+        DatePipe,
+        FormsModule,
+        MatSnackBarModule,
+        NgForOf,
+        NgIf
+    ],
+    styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
 

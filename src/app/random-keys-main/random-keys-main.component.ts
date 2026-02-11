@@ -7,15 +7,14 @@ import {GiftCardDetailsComponent} from "../gift-card-details/gift-card-details.c
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-random-keys-main',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgClass,
-    NgIf
-  ],
-  templateUrl: './random-keys-main.component.html',
-  styleUrl: './random-keys-main.component.css'
+    selector: 'app-random-keys-main',
+    imports: [
+        NgForOf,
+        NgClass,
+        NgIf
+    ],
+    templateUrl: './random-keys-main.component.html',
+    styleUrl: './random-keys-main.component.css'
 })
 export class RandomKeysMainComponent implements OnInit{
 

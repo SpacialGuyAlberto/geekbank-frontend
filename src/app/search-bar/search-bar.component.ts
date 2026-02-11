@@ -9,13 +9,12 @@ import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/
 import {SharedService} from "../services/shared.service";
 
 @Component({
-  selector: 'app-search-bar',
-  standalone: true,
-  templateUrl: './search-bar.component.html',
-  imports: [
-    FormsModule
-  ],
-  styleUrls: ['./search-bar.component.css']
+    selector: 'app-search-bar',
+    templateUrl: './search-bar.component.html',
+    imports: [
+        FormsModule
+    ],
+    styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() searchResults = new EventEmitter<KinguinGiftCard[]>();

@@ -13,11 +13,10 @@ import { Router } from '@angular/router';
 import {CART_ITEMS, GAME_USER_ID, IS_MANUAL_TRANSACTION, PRODUCT_ID, TOTAL_PRICE} from "../payment/payment.token";
 
 @Component({
-  selector: 'app-balance-payment',
-  standalone: true,
-  imports: [FormsModule, NgIf, CurrencyPipe, NgForOf],
-  templateUrl: './balance-payment.component.html',
-  styleUrls: ['./balance-payment.component.css'],
+    selector: 'app-balance-payment',
+    imports: [FormsModule, NgIf, CurrencyPipe, NgForOf],
+    templateUrl: './balance-payment.component.html',
+    styleUrls: ['./balance-payment.component.css']
 })
 export class BalancePaymentComponent implements OnInit, OnDestroy {
   @Input() userId: number | null = null;

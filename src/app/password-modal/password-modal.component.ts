@@ -3,13 +3,12 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import {FormsModule} from "@angular/forms";
 
 @Component({
-  selector: 'app-password-modal',
-  templateUrl: './password-modal.component.html',
-  standalone: true,
-  imports: [
-    FormsModule
-  ],
-  styleUrls: ['./password-modal.component.css']
+    selector: 'app-password-modal',
+    templateUrl: './password-modal.component.html',
+    imports: [
+        FormsModule
+    ],
+    styleUrls: ['./password-modal.component.css']
 })
 export class PasswordModalComponent {
   @Output() passwordSubmitted = new EventEmitter<string | null>();

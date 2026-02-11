@@ -13,13 +13,12 @@ import {ChangePasswordComponent} from "./settings/account-info/change-password/c
 
 
 @Component({
-  selector: 'app-user-details',
-  standalone: true,
-  templateUrl: './user-details.component.html',
-  styleUrls: ['./user-details.component.css'],
-  imports: [CommonModule,
-            AdminPanelComponent,
-            AccountInfoComponent, OrdersComponent, PaymentMethodsComponent, AdminPanelComponent, RouterOutlet, ChangePasswordComponent]
+    selector: 'app-user-details',
+    templateUrl: './user-details.component.html',
+    styleUrls: ['./user-details.component.css'],
+    imports: [CommonModule,
+        AdminPanelComponent,
+        AccountInfoComponent, OrdersComponent, PaymentMethodsComponent, AdminPanelComponent, RouterOutlet, ChangePasswordComponent]
 })
 export class UserDetailsComponent implements OnInit {
   user: User | any;

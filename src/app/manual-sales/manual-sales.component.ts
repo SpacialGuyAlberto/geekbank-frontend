@@ -12,16 +12,15 @@ import {OrderService} from "../services/order.service";
 import {Order} from "../models/order.model";
 
 @Component({
-  selector: 'app-manual-sales',
-  standalone: true,
-  imports: [
-    NgForOf,
-    CurrencyPipe,
-    DatePipe,
-    NgIf
-  ],
-  templateUrl: './manual-sales.component.html',
-  styleUrls: ['./manual-sales.component.css']
+    selector: 'app-manual-sales',
+    imports: [
+        NgForOf,
+        CurrencyPipe,
+        DatePipe,
+        NgIf
+    ],
+    templateUrl: './manual-sales.component.html',
+    styleUrls: ['./manual-sales.component.css']
 })
 export class ManualSalesComponent implements OnInit, OnDestroy {
   order: Order | null = null;

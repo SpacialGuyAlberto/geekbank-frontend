@@ -34,17 +34,16 @@ import { Account, User } from "../user-details/User";
 import { switchMap } from "rxjs/operators";
 
 @Component({
-  selector: 'app-tigo-payment',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgIf,
-    NgClass,
-    NgForOf,
-    AuthModalComponent
-  ],
-  templateUrl: './tigo-payment.component.html',
-  styleUrls: ['./tigo-payment.component.css']
+    selector: 'app-tigo-payment',
+    imports: [
+        FormsModule,
+        NgIf,
+        NgClass,
+        NgForOf,
+        AuthModalComponent
+    ],
+    templateUrl: './tigo-payment.component.html',
+    styleUrls: ['./tigo-payment.component.css']
 })
 export class TigoPaymentComponent implements OnInit, OnDestroy {
 

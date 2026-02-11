@@ -5,11 +5,10 @@ import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-inferior-filter',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './inferior-filter.component.html',
-  styleUrls: ['./inferior-filter.component.css']
+    selector: 'app-inferior-filter',
+    imports: [CommonModule],
+    templateUrl: './inferior-filter.component.html',
+    styleUrls: ['./inferior-filter.component.css']
 })
 export class InferiorFilterComponent {
   /**

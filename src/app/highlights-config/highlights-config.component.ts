@@ -10,17 +10,16 @@ import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
 import {MatSnackBar, MatSnackBarModule} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-highlights-config',
-  standalone: true,
-  imports: [
-    SearchBarComponent,
-    CurrencyPipe,
-    NgForOf,
-    MatSnackBarModule,
-    NgIf
-  ],
-  templateUrl: './highlights-config.component.html',
-  styleUrls: ['./highlights-config.component.css']
+    selector: 'app-highlights-config',
+    imports: [
+        SearchBarComponent,
+        CurrencyPipe,
+        NgForOf,
+        MatSnackBarModule,
+        NgIf
+    ],
+    templateUrl: './highlights-config.component.html',
+    styleUrls: ['./highlights-config.component.css']
 })
 
 export class HighlightsConfigComponent implements OnInit {

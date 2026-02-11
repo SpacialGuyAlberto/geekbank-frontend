@@ -30,18 +30,17 @@ interface Product {
   // Agrega otros campos relevantes
 }
 @Component({
-  selector: 'app-promotion-sender',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    // ... otros módulos
-  ],
-  templateUrl: './promotion-sender.component.html',
-  styleUrls: ['./promotion-sender.component.css']
+    selector: 'app-promotion-sender',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        // ... otros módulos
+    ],
+    templateUrl: './promotion-sender.component.html',
+    styleUrls: ['./promotion-sender.component.css']
 })
 export class PromotionSenderComponent implements OnInit {
   // Datos del formulario

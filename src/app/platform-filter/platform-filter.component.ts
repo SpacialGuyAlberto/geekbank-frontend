@@ -15,18 +15,17 @@ import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.p
 
 
 @Component({
-  selector: 'app-platform-filter',
-  standalone: true,
-  imports: [
-    NgStyle,
-    NgIf,
-    CurrencyPipe,
-    NgForOf,
-    ConvertToHnlPipe,
-    DisplayPersistentDiscount
-  ],
-  templateUrl: './platform-filter.component.html',
-  styleUrls: ['./platform-filter.component.css']
+    selector: 'app-platform-filter',
+    imports: [
+        NgStyle,
+        NgIf,
+        CurrencyPipe,
+        NgForOf,
+        ConvertToHnlPipe,
+        DisplayPersistentDiscount
+    ],
+    templateUrl: './platform-filter.component.html',
+    styleUrls: ['./platform-filter.component.css']
 })
 export class PlatformFilterComponent implements OnInit {
   isLoading: boolean = false;

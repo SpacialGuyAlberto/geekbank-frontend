@@ -8,18 +8,17 @@ import { FlashSale } from './models/FlashSale';
 import { FlashOfferProduct, FlashOfferProductWithGiftCard } from './models/FlashOfferProduct';
 
 @Component({
-  selector: 'app-flash-sales-config',
-  templateUrl: './flash-sales-config.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CurrencyPipe,
-    DatePipe,
-    NgForOf,
-    NgIf,
-    SearchBarComponent,
-  ],
-  styleUrls: ['./flash-sales-config.component.css'],
+    selector: 'app-flash-sales-config',
+    templateUrl: './flash-sales-config.component.html',
+    imports: [
+        ReactiveFormsModule,
+        CurrencyPipe,
+        DatePipe,
+        NgForOf,
+        NgIf,
+        SearchBarComponent,
+    ],
+    styleUrls: ['./flash-sales-config.component.css']
 })
 export class FlashSalesConfigComponent implements OnInit {
 

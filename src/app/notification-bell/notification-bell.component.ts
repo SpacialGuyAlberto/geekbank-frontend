@@ -7,16 +7,15 @@ import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router, NavigationEnd} from "@angular/router";
 
 @Component({
-  selector: 'app-notification-bell',
-  templateUrl: './notification-bell.component.html',
-  standalone: true,
-  imports: [
-    DatePipe,
-    NgIf,
-    NgForOf,
-    NgClass
-  ],
-  styleUrls: ['./notification-bell.component.css']
+    selector: 'app-notification-bell',
+    templateUrl: './notification-bell.component.html',
+    imports: [
+        DatePipe,
+        NgIf,
+        NgForOf,
+        NgClass
+    ],
+    styleUrls: ['./notification-bell.component.css']
 })
 export class NotificationBellComponent implements OnInit, OnDestroy { // Implementa OnDestroy
   notifications: Notification[] = [];

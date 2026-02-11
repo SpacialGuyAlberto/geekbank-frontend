@@ -9,20 +9,19 @@ import { MatProgressSpinner } from "@angular/material/progress-spinner";
 import Vibrant from 'node-vibrant';
 
 @Component({
-  selector: 'app-random-key-most-sold',
-  templateUrl: './random-key-most-sold.component.html',
-  styleUrls: ['./random-key-most-sold.component.css'],
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    NgForOf,
-    NgClass,
-    MatProgressSpinner,
-    NgIf,
-    JsonPipe,
-    NgStyle,
-  ],
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-random-key-most-sold',
+    templateUrl: './random-key-most-sold.component.html',
+    styleUrls: ['./random-key-most-sold.component.css'],
+    imports: [
+        CurrencyPipe,
+        NgForOf,
+        NgClass,
+        MatProgressSpinner,
+        NgIf,
+        JsonPipe,
+        NgStyle,
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class RandomKeyMostSoldComponent implements OnInit, AfterViewInit {
 

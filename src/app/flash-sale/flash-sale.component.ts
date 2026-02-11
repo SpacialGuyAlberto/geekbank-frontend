@@ -10,14 +10,13 @@ import {FlashOfferProduct} from "./config/models/FlashOfferProduct";
 
 
 @Component({
-  selector: 'app-flash-sale',
-  standalone: true,
-  imports: [
-    NgStyle,
-    NgIf
-  ],
-  templateUrl: './flash-sale.component.html',
-  styleUrl: './flash-sale.component.css'
+    selector: 'app-flash-sale',
+    imports: [
+        NgStyle,
+        NgIf
+    ],
+    templateUrl: './flash-sale.component.html',
+    styleUrl: './flash-sale.component.css'
 })
 export class FlashSaleComponent implements OnInit {
   hours: string = '00';

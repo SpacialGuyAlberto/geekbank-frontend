@@ -6,7 +6,6 @@ import {Combo} from "../flash-sale/config/models/Combo"; // Adjust import path i
 
 @Component({
     selector: 'app-combos',
-    standalone: true,
     imports: [CommonModule],
     template: `
     <div class="combos-container" *ngIf="combos.length > 0">

@@ -8,19 +8,18 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @Component({
-  selector: 'app-promotions',
-  standalone: true,
-  imports: [
-    NgIf,
-    FormsModule,
-    DatePipe,
-    CurrencyPipe,
-    NgForOf,
-    MatSnackBarModule,
-    NgOptimizedImage
-  ],
-  templateUrl: './promotions.component.html',
-  styleUrl: './promotions.component.css'
+    selector: 'app-promotions',
+    imports: [
+        NgIf,
+        FormsModule,
+        DatePipe,
+        CurrencyPipe,
+        NgForOf,
+        MatSnackBarModule,
+        NgOptimizedImage
+    ],
+    templateUrl: './promotions.component.html',
+    styleUrl: './promotions.component.css'
 })
 export class PromotionsComponent {
   isEditMode: boolean = false;

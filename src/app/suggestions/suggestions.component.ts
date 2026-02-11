@@ -8,19 +8,18 @@ import {Router} from '@angular/router';
 
 
 @Component({
-  selector: 'app-suggestions',
-  templateUrl: './suggestions.component.html',
-  standalone: true,
-  imports: [
-    NgClass,
-    AsyncPipe,
-    CurrencyPipe,
-    NgForOf,
-    NgIf,
-    DecimalPipe
-  ],
-  styleUrls: ['./suggestions.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-suggestions',
+    templateUrl: './suggestions.component.html',
+    imports: [
+        NgClass,
+        AsyncPipe,
+        CurrencyPipe,
+        NgForOf,
+        NgIf,
+        DecimalPipe
+    ],
+    styleUrls: ['./suggestions.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SuggestionsComponent implements OnInit {
   @Input() kinguinId: number = 0;

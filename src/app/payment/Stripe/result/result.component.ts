@@ -3,13 +3,12 @@ import {NgIf} from "@angular/common";
 import { Location } from '@angular/common';
 
 @Component({
-  selector: 'app-result',
-  standalone: true,
-  imports: [
-    NgIf
-  ],
-  templateUrl: './result.component.html',
-  styleUrl: './result.component.css'
+    selector: 'app-result',
+    imports: [
+        NgIf
+    ],
+    templateUrl: './result.component.html',
+    styleUrl: './result.component.css'
 })
 export class ResultComponent {
   data: any;

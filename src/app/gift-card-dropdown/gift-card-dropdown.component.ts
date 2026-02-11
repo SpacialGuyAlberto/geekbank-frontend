@@ -3,14 +3,13 @@ import { KinguinGiftCard } from '../kinguin-gift-cards/KinguinGiftCard';
 import { CurrencyPipe, NgForOf } from '@angular/common';
 
 @Component({
-  selector: 'app-gift-card-dropdown',
-  standalone: true,
-  imports: [
-    NgForOf,
-    CurrencyPipe
-  ],
-  templateUrl: './gift-card-dropdown.component.html',
-  styleUrls: ['./gift-card-dropdown.component.css']
+    selector: 'app-gift-card-dropdown',
+    imports: [
+        NgForOf,
+        CurrencyPipe
+    ],
+    templateUrl: './gift-card-dropdown.component.html',
+    styleUrls: ['./gift-card-dropdown.component.css']
 })
 export class GiftCardDropdownComponent {
   private _giftCards: KinguinGiftCard[] = [];

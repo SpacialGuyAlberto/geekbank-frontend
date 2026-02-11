@@ -23,24 +23,23 @@ import { CombosComponent } from '../combos/combos.component';
 
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
-  imports: [
-    RouterModule,
-    CommonModule,
-    FreeFireGiftCardComponent,
-    KinguinGiftCardsComponent,
-    HighlightsComponent,
-    RecommendationsComponent,
-    FiltersComponent,
-    BannerComponent,
-    OffersBannerComponent,
-    InferiorFilterComponent,
-    FlashSaleComponent,
-    CombosComponent
-  ]
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
+    imports: [
+        RouterModule,
+        CommonModule,
+        FreeFireGiftCardComponent,
+        KinguinGiftCardsComponent,
+        HighlightsComponent,
+        RecommendationsComponent,
+        FiltersComponent,
+        BannerComponent,
+        OffersBannerComponent,
+        InferiorFilterComponent,
+        FlashSaleComponent,
+        CombosComponent
+    ]
 })
 export class HomeComponent implements OnInit, OnDestroy {
   showFreeFireComponent: boolean = false;

@@ -21,8 +21,8 @@ import { OrderRequest } from '../models/order-request.model';
 import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-paypal-button',
-  template: `
+    selector: 'app-paypal-button',
+    template: `
     <div id="paypal-button-container"></div>
 
     <!-- Card Fields UI (solo cuando paymentSource === 'card') -->
@@ -42,8 +42,7 @@ import { NgIf } from '@angular/common';
       <button id="card-field-submit-button">Pagar</button>
     </div>
   `,
-  standalone: true,
-  imports: [NgIf],
+    imports: [NgIf]
 })
 export class PayPalButtonComponent implements OnInit, OnDestroy {
   /* ----------------- Inputs ----------------- */

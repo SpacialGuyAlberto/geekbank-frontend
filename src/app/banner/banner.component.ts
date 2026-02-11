@@ -7,16 +7,15 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  selector: 'app-banner',
-  templateUrl: './banner.component.html',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    NgIf,
-    NgForOf,
-    NgStyle
-  ],
-  styleUrls: ['./banner.component.css']
+    selector: 'app-banner',
+    templateUrl: './banner.component.html',
+    imports: [
+        CurrencyPipe,
+        NgIf,
+        NgForOf,
+        NgStyle
+    ],
+    styleUrls: ['./banner.component.css']
 })
 export class BannerComponent implements OnInit {
   productId: string = '243839';

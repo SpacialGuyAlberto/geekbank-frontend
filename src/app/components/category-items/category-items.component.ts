@@ -7,16 +7,15 @@ import { RouterLink } from '@angular/router';
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-category-items',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgIf,
-    CurrencyPipe,
-    RouterLink
-  ],
-  templateUrl: './category-items.component.html',
-  styleUrls: ['./category-items.component.css']
+    selector: 'app-category-items',
+    imports: [
+        NgForOf,
+        NgIf,
+        CurrencyPipe,
+        RouterLink
+    ],
+    templateUrl: './category-items.component.html',
+    styleUrls: ['./category-items.component.css']
 })
 export class CategoryItemsComponent implements OnInit, OnChanges {
   @Input() selectedCategory: string | null = null;

@@ -12,23 +12,22 @@ import {RandomKeysMainComponent} from "../random-keys-main/random-keys-main.comp
 import {FlashSaleComponent} from "../flash-sale/flash-sale.component";
 
 @Component({
-  selector: 'app-random-keys',
-  templateUrl: './random-keys.component.html',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    MatDialogModule,
-    MatProgressSpinner,
-    NgForOf,
-    NgIf,
-    OffersBannerComponent,
-    NgClass,
-    RandomKeyMostSoldComponent,
-    RandomKeysMainComponent,
-    FlashSaleComponent,
-    // otros módulos que uses en el template
-  ],
-  styleUrls: ['./random-keys.component.css']
+    selector: 'app-random-keys',
+    templateUrl: './random-keys.component.html',
+    imports: [
+        CurrencyPipe,
+        MatDialogModule,
+        MatProgressSpinner,
+        NgForOf,
+        NgIf,
+        OffersBannerComponent,
+        NgClass,
+        RandomKeyMostSoldComponent,
+        RandomKeysMainComponent,
+        FlashSaleComponent,
+        // otros módulos que uses en el template
+    ],
+    styleUrls: ['./random-keys.component.css']
 })
 export class RandomKeysComponent implements OnInit {
 

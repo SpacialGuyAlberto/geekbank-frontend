@@ -11,13 +11,12 @@ import {SalesMetrics} from "../models/salesMetrics.model";
 import {SalesMetricsService} from "../services/sales-metrics.service";
 
 @Component({
-  selector: 'app-general-view',
-  standalone: true,
-  imports: [
-    CurrencyPipe
-  ],
-  templateUrl: './general-view.component.html',
-  styleUrl: './general-view.component.css'
+    selector: 'app-general-view',
+    imports: [
+        CurrencyPipe
+    ],
+    templateUrl: './general-view.component.html',
+    styleUrl: './general-view.component.css'
 })
 export class GeneralViewComponent implements OnInit, AfterViewInit {
   @Input() totalCustomers: number = 0;

@@ -5,14 +5,13 @@ import {CurrencyPipe, NgIf} from "@angular/common";
 import {firstValueFrom} from "rxjs";
 
 @Component({
-  selector: 'app-checkout',
-  templateUrl: './checkout.component.html',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    NgIf
-  ],
-  styleUrls: ['./checkout.component.css']
+    selector: 'app-checkout',
+    templateUrl: './checkout.component.html',
+    imports: [
+        CurrencyPipe,
+        NgIf
+    ],
+    styleUrls: ['./checkout.component.css']
 })
 export class CheckoutComponent implements AfterViewInit {
   amount = 5000; // céntimos

@@ -34,19 +34,18 @@ interface Language {
 }
 
 @Component({
-  selector: 'app-gift-card-details',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    CommonModule,
-    MatSnackBarModule,
-    FormsModule,
-    SuggestionsComponent,
-    MatProgressSpinnerModule,
-    ConvertToHnlPipe,
-  ],
-  templateUrl: './gift-card-details.component.html',
-  styleUrls: ['./gift-card-details.component.css']
+    selector: 'app-gift-card-details',
+    imports: [
+        CurrencyPipe,
+        CommonModule,
+        MatSnackBarModule,
+        FormsModule,
+        SuggestionsComponent,
+        MatProgressSpinnerModule,
+        ConvertToHnlPipe,
+    ],
+    templateUrl: './gift-card-details.component.html',
+    styleUrls: ['./gift-card-details.component.css']
 })
 export class GiftCardDetailsComponent implements OnInit, AfterViewInit {
 

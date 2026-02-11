@@ -10,19 +10,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-tigo-payment-admin',
-  templateUrl: './tigo-payment-admin.component.html',
-  styleUrls: ['./tigo-payment-admin.component.css'],
-  standalone: true,
-  imports: [
-    NgIf,
-    FormsModule,
-    DatePipe,
-    CurrencyPipe,
-    NgForOf,
-    MatSnackBarModule,
-    NgOptimizedImage
-  ]
+    selector: 'app-tigo-payment-admin',
+    templateUrl: './tigo-payment-admin.component.html',
+    styleUrls: ['./tigo-payment-admin.component.css'],
+    imports: [
+        NgIf,
+        FormsModule,
+        DatePipe,
+        CurrencyPipe,
+        NgForOf,
+        MatSnackBarModule,
+        NgOptimizedImage
+    ]
 })
 export class TigoPaymentAdminComponent implements OnInit {
 

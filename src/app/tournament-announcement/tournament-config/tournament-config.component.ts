@@ -11,14 +11,13 @@ import {UserService} from "../../user-details/user.service";
 import {User} from "../../user-details/User";
 
 @Component({
-  selector: 'app-tournament-config',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf
-  ],
-  templateUrl: './tournament-config.component.html',
-  styleUrl: './tournament-config.component.css'
+    selector: 'app-tournament-config',
+    imports: [
+        FormsModule,
+        NgForOf
+    ],
+    templateUrl: './tournament-config.component.html',
+    styleUrl: './tournament-config.component.css'
 })
 export class TournamentConfigComponent implements OnInit {
 

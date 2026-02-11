@@ -32,19 +32,18 @@ import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.p
 import {GiftcardClassification} from "../main-screen-gift-card-config/giftcard-classification.enum";
 
 @Component({
-  selector: 'app-kinguin-gift-cards',
-  templateUrl: './kinguin-gift-cards.component.html',
-  standalone: true,
-  styleUrls: ['./kinguin-gift-cards.component.css'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatSnackBarModule,
-    MatPaginator,
-    ConvertToHnlPipe,
-    DisplayPersistentDiscount,
-  ],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-kinguin-gift-cards',
+    templateUrl: './kinguin-gift-cards.component.html',
+    styleUrls: ['./kinguin-gift-cards.component.css'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatSnackBarModule,
+        MatPaginator,
+        ConvertToHnlPipe,
+        DisplayPersistentDiscount,
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class KinguinGiftCardsComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
   @Input() giftCardsInput: KinguinGiftCard[] | null = null;

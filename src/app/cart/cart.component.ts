@@ -25,49 +25,48 @@ import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 
 
 @Component({
-  selector: 'app-cart',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgIf,
-    TigoPaymentComponent,
-    FormsModule,
-    MatIcon,
-    RecommendationsComponent,
-    DecimalPipe,
-    CardPaymentComponent,
-    ConvertToHnlPipe
-  ],
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css'],
-  providers: [
-    {
-      provide: CART_ITEMS,
-      useFactory: (component: CartComponent) => component.cartItems,
-      deps: [CartComponent]
-    },
-    {
-      provide: TOTAL_PRICE,
-      useFactory: (component: CartComponent) => component.getTotalPrice(),
-      deps: [CartComponent]
-    },
-    {
-      provide: PRODUCT_ID,
-      useValue: null
-    },
-    {
-      provide: GAME_USER_ID,
-      useValue: null
-    },
-    {
-      provide: IS_MANUAL_TRANSACTION,
-      useValue: false
-    },
-    {
-      provide: PROMO_CODE,
-      useValue: null
-    }
-  ]
+    selector: 'app-cart',
+    imports: [
+        NgForOf,
+        NgIf,
+        TigoPaymentComponent,
+        FormsModule,
+        MatIcon,
+        RecommendationsComponent,
+        DecimalPipe,
+        CardPaymentComponent,
+        ConvertToHnlPipe
+    ],
+    templateUrl: './cart.component.html',
+    styleUrls: ['./cart.component.css'],
+    providers: [
+        {
+            provide: CART_ITEMS,
+            useFactory: (component: CartComponent) => component.cartItems,
+            deps: [CartComponent]
+        },
+        {
+            provide: TOTAL_PRICE,
+            useFactory: (component: CartComponent) => component.getTotalPrice(),
+            deps: [CartComponent]
+        },
+        {
+            provide: PRODUCT_ID,
+            useValue: null
+        },
+        {
+            provide: GAME_USER_ID,
+            useValue: null
+        },
+        {
+            provide: IS_MANUAL_TRANSACTION,
+            useValue: false
+        },
+        {
+            provide: PROMO_CODE,
+            useValue: null
+        }
+    ]
 })
 export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   cartItems: CartItemWithGiftcard[] = [];

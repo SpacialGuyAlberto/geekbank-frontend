@@ -7,15 +7,14 @@ import {Subscription} from "rxjs";
 import {SharedService} from "../services/shared.service";
 
 @Component({
-  selector: 'app-filters',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgForOf,
-    NgClass
-  ],
-  templateUrl: './filters.component.html',
-  styleUrls: ['./filters.component.css']
+    selector: 'app-filters',
+    imports: [
+        FormsModule,
+        NgForOf,
+        NgClass
+    ],
+    templateUrl: './filters.component.html',
+    styleUrls: ['./filters.component.css']
 })
 export class FiltersComponent implements OnInit{
   @Output() filteredResults = new EventEmitter<KinguinGiftCard[]>();

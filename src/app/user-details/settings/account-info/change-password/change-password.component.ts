@@ -3,13 +3,12 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {AuthService} from "../../../../services/auth.service";
 import {Auth} from "@angular/fire/auth";
 @Component({
-  selector: 'app-change-password',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.css'
+    selector: 'app-change-password',
+    imports: [
+        ReactiveFormsModule
+    ],
+    templateUrl: './change-password.component.html',
+    styleUrl: './change-password.component.css'
 })
 export class ChangePasswordComponent {
 

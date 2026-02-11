@@ -14,11 +14,10 @@ import { KinguinService } from '../kinguin-gift-cards/kinguin.service';
 import { FormsModule } from "@angular/forms";
 
 @Component({
-  selector: 'app-purchase-confirmation',
-  standalone: true,
-  imports: [NgIf, NgForOf, FormsModule, CurrencyPipe, DatePipe, NgClass],
-  templateUrl: './purchase-confirmation.component.html',
-  styleUrls: ['./purchase-confirmation.component.css']
+    selector: 'app-purchase-confirmation',
+    imports: [NgIf, NgForOf, FormsModule, CurrencyPipe, DatePipe, NgClass],
+    templateUrl: './purchase-confirmation.component.html',
+    styleUrls: ['./purchase-confirmation.component.css']
 })
 export class PurchaseConfirmationComponent implements OnInit {
 

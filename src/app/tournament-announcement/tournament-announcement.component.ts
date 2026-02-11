@@ -3,14 +3,13 @@ import {NgStyle} from "@angular/common";
 import {RouterLink} from "@angular/router";
 
 @Component({
-  selector: 'app-tournament-announcement',
-  standalone: true,
-  imports: [
-    NgStyle,
-    RouterLink
-  ],
-  templateUrl: './tournament-announcement.component.html',
-  styleUrl: './tournament-announcement.component.css'
+    selector: 'app-tournament-announcement',
+    imports: [
+        NgStyle,
+        RouterLink
+    ],
+    templateUrl: './tournament-announcement.component.html',
+    styleUrl: './tournament-announcement.component.css'
 })
 export class TournamentAnnouncementComponent {
   days: string = '00';

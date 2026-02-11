@@ -12,20 +12,19 @@ import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
 import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
 
 @Component({
-  selector: 'app-filtered-page',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NgForOf,
-    NgIf,
-    CurrencyPipe,
-    RouterLink,
-    CategoryItemsComponent,
-    ConvertToHnlPipe,
-    DisplayPersistentDiscount
-  ],
-  templateUrl: './filtered-page.component.html',
-  styleUrls: ['./filtered-page.component.css']
+    selector: 'app-filtered-page',
+    imports: [
+        CommonModule,
+        NgForOf,
+        NgIf,
+        CurrencyPipe,
+        RouterLink,
+        CategoryItemsComponent,
+        ConvertToHnlPipe,
+        DisplayPersistentDiscount
+    ],
+    templateUrl: './filtered-page.component.html',
+    styleUrls: ['./filtered-page.component.css']
 })
 export class FilteredPageComponent implements OnInit {
   selectedCategory: string | null = null;

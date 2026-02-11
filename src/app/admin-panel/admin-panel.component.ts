@@ -22,31 +22,30 @@ import { Chart } from 'chart.js';
 import { interval } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-panel',
-  standalone: true,
-  imports: [
-    FormsModule,
-    CommonModule,
-    GeneralViewComponent,
-    ClientsComponent,
-    ProductsComponent,
-    ManualSalesComponent,
-    HighlightsConfigComponent,
-    TransactionsComponent,
-    StatisticsComponent,
-    NgIf,
-    FeedbackListComponent,
-    EmployeeDashboardComponent,
-    FinancialDashboardComponent,
-    MainScreenGiftCardConfigComponent,
-    TournamentConfigComponent,
-    FlashSaleComponent,
-    FlashSalesConfigComponent,
-    SyncComponent,
-    CombosConfigComponent
-  ],
-  templateUrl: './admin-panel.component.html',
-  styleUrls: ['./admin-panel.component.css']
+    selector: 'app-admin-panel',
+    imports: [
+        FormsModule,
+        CommonModule,
+        GeneralViewComponent,
+        ClientsComponent,
+        ProductsComponent,
+        ManualSalesComponent,
+        HighlightsConfigComponent,
+        TransactionsComponent,
+        StatisticsComponent,
+        NgIf,
+        FeedbackListComponent,
+        EmployeeDashboardComponent,
+        FinancialDashboardComponent,
+        MainScreenGiftCardConfigComponent,
+        TournamentConfigComponent,
+        FlashSaleComponent,
+        FlashSalesConfigComponent,
+        SyncComponent,
+        CombosConfigComponent
+    ],
+    templateUrl: './admin-panel.component.html',
+    styleUrls: ['./admin-panel.component.css']
 })
 export class AdminPanelComponent implements OnInit, AfterViewInit {
   selectedSection: string = 'general';

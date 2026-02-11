@@ -7,15 +7,14 @@ import {MatDialog} from "@angular/material/dialog";
 
 
 @Component({
-  selector: 'app-footer',
-  standalone: true,
-  imports: [
-    NgClass,
-    NgIf,
-    TermsAndConditionsComponent
-  ],
-  templateUrl: './footer.component.html',
-  styleUrl: './footer.component.css'
+    selector: 'app-footer',
+    imports: [
+        NgClass,
+        NgIf,
+        TermsAndConditionsComponent
+    ],
+    templateUrl: './footer.component.html',
+    styleUrl: './footer.component.css'
 })
 export class FooterComponent implements OnInit, OnDestroy{
   footerClass: string = '';

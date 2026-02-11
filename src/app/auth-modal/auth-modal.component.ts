@@ -6,14 +6,13 @@ import {Account, User} from "../user-details/User";
 
 
 @Component({
-  selector: 'app-auth-modal',
-  templateUrl: './auth-modal.component.html',
-  standalone: true,
-  imports: [
-    FormsModule,
-    NgIf
-  ],
-  styleUrls: ['./auth-modal.component.css']
+    selector: 'app-auth-modal',
+    templateUrl: './auth-modal.component.html',
+    imports: [
+        FormsModule,
+        NgIf
+    ],
+    styleUrls: ['./auth-modal.component.css']
 })
 export class AuthModalComponent {
   @Output() close = new EventEmitter<void>();

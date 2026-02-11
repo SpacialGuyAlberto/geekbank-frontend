@@ -15,14 +15,13 @@ import {OrderService} from "../../../services/order.service";
 import {environment} from "../../../../environments/environment";
 
 @Component({
-  selector: 'app-card-payment',
-  standalone: true,
-  imports: [
-    NgIf,
-    CurrencyPipe
-  ],
-  templateUrl: './card-payment.component.html',
-  styleUrl: './card-payment.component.css'
+    selector: 'app-card-payment',
+    imports: [
+        NgIf,
+        CurrencyPipe
+    ],
+    templateUrl: './card-payment.component.html',
+    styleUrl: './card-payment.component.css'
 })
 export class CardPaymentComponent implements OnInit, AfterViewInit {
   @Input() totalOrderAmountHNL!: number;

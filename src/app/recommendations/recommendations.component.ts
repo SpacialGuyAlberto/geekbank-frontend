@@ -10,18 +10,17 @@ import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.p
 import {CurrencyService} from "../services/currency.service";
 
 @Component({
-  selector: 'app-recommendations',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgOptimizedImage,
-    CurrencyPipe,
-    NgClass,
-    ConvertToHnlPipe,
-    DisplayPersistentDiscount
-  ],
-  templateUrl: './recommendations.component.html',
-  styleUrls: ['./recommendations.component.css']
+    selector: 'app-recommendations',
+    imports: [
+        NgForOf,
+        NgOptimizedImage,
+        CurrencyPipe,
+        NgClass,
+        ConvertToHnlPipe,
+        DisplayPersistentDiscount
+    ],
+    templateUrl: './recommendations.component.html',
+    styleUrls: ['./recommendations.component.css']
 })
 export class RecommendationsComponent implements OnInit {
 

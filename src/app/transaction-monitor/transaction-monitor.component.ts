@@ -10,13 +10,12 @@ interface Transaction {
 }
 
 @Component({
-  selector: 'app-transaction-monitor',
-  templateUrl: './transaction-monitor.component.html',
-  standalone: true,
-  imports: [
-    NgClass
-  ],
-  styleUrls: ['./transaction-monitor.component.css']
+    selector: 'app-transaction-monitor',
+    templateUrl: './transaction-monitor.component.html',
+    imports: [
+        NgClass
+    ],
+    styleUrls: ['./transaction-monitor.component.css']
 })
 export class TransactionMonitorComponent implements OnInit, OnDestroy {
 

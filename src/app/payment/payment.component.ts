@@ -9,15 +9,14 @@ import {TigoPaymentService} from "../tigo-payment/tigo-payment.service";
 import {BalancePaymentComponent} from "../balance-payment/balance-payment.component";
 
 @Component({
-  selector: 'app-payment',
-  templateUrl: './payment.component.html',
-  standalone: true,
-  imports: [
-    PaymentOptionsComponent,
-    NgComponentOutlet,
-    NgIf
-  ],
-  styleUrls: ['./payment.component.css']
+    selector: 'app-payment',
+    templateUrl: './payment.component.html',
+    imports: [
+        PaymentOptionsComponent,
+        NgComponentOutlet,
+        NgIf
+    ],
+    styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit{
   selectedMethod: string | null = null;

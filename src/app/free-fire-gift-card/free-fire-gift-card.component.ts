@@ -6,16 +6,15 @@ import {FreeFireDetailsComponent} from "../free-fire-details/free-fire-details.c
 import {RouterModule, Router} from "@angular/router";
 
 @Component({
-  selector: 'app-free-fire-gift-card',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    CommonModule,
-    FreeFireDetailsComponent
-  ],
-  templateUrl: './free-fire-gift-card.component.html',
-  styleUrl: './free-fire-gift-card.component.css',
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-free-fire-gift-card',
+    imports: [
+        CurrencyPipe,
+        CommonModule,
+        FreeFireDetailsComponent
+    ],
+    templateUrl: './free-fire-gift-card.component.html',
+    styleUrl: './free-fire-gift-card.component.css',
+    encapsulation: ViewEncapsulation.None
 })
 
 export class FreeFireGiftCardComponent implements OnInit{

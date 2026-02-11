@@ -30,26 +30,25 @@ import {Transaction} from "../transactions/transaction.model";
 
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [
-    RouterLink,
-    NgIf,
-    MatIconModule,
-    FormsModule,
-    RouterModule,
-    TranslateModule,
-    SearchBarComponent,
-    NgClass,
-    NotificationBellComponent,
-    BalanceComponent,
-    AsyncPipe,
-    NgForOf,
-    CategoryItemsComponent,
-    CurrencyPipe,
-  ],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+    selector: 'app-navbar',
+    imports: [
+        RouterLink,
+        NgIf,
+        MatIconModule,
+        FormsModule,
+        RouterModule,
+        TranslateModule,
+        SearchBarComponent,
+        NgClass,
+        NotificationBellComponent,
+        BalanceComponent,
+        AsyncPipe,
+        NgForOf,
+        CategoryItemsComponent,
+        CurrencyPipe,
+    ],
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;

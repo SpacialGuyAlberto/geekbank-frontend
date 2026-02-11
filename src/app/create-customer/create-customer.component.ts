@@ -5,11 +5,10 @@ import {NgClass, NgIf} from "@angular/common";
 import {HttpResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'app-create-customer',
-  templateUrl: './create-customer.component.html',
-  styleUrls: ['./create-customer.component.css'],
-  standalone: true,
-  imports: [FormsModule, NgClass, NgIf],
+    selector: 'app-create-customer',
+    templateUrl: './create-customer.component.html',
+    styleUrls: ['./create-customer.component.css'],
+    imports: [FormsModule, NgClass, NgIf]
 })
 export class CreateCustomerComponent implements OnInit, AfterViewInit {
   @ViewChild('nameInput') nameInput!: ElementRef;

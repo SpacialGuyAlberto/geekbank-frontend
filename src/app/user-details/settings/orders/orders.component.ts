@@ -14,18 +14,17 @@ interface Order {
 }
 
 @Component({
-  selector: 'app-orders',
-  templateUrl: './orders.component.html',
-  standalone: true,
-  imports: [
-    CurrencyPipe,
-    NgIf,
-    NgForOf,
-    FormsModule,
-    NgClass,
-    DatePipe
-  ],
-  styleUrls: ['./orders.component.css']
+    selector: 'app-orders',
+    templateUrl: './orders.component.html',
+    imports: [
+        CurrencyPipe,
+        NgIf,
+        NgForOf,
+        FormsModule,
+        NgClass,
+        DatePipe
+    ],
+    styleUrls: ['./orders.component.css']
 })
 export class OrdersComponent implements OnInit {
   recentOrders: Order[] = [];

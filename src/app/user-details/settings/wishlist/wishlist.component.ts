@@ -10,17 +10,16 @@ import {async} from "rxjs";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-wishlist',
-  standalone: true,
-  imports: [
-    NgIf,
-    NgForOf,
-    CurrencyPipe,
-    MatIcon,
-    MatSnackBarModule
-  ],
-  templateUrl: './wishlist.component.html',
-  styleUrls: ['./wishlist.component.css'] // Corregido a 'styleUrls'
+    selector: 'app-wishlist',
+    imports: [
+        NgIf,
+        NgForOf,
+        CurrencyPipe,
+        MatIcon,
+        MatSnackBarModule
+    ],
+    templateUrl: './wishlist.component.html',
+    styleUrls: ['./wishlist.component.css'] // Corregido a 'styleUrls'
 })
 export class WishlistComponent implements OnInit {
 

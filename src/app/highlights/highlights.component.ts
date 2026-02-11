@@ -7,14 +7,13 @@ import { Router } from '@angular/router';
 import { firstValueFrom } from "rxjs";
 
 @Component({
-  selector: 'app-highlights',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgOptimizedImage
-  ],
-  templateUrl: './highlights.component.html',
-  styleUrls: ['./highlights.component.css']
+    selector: 'app-highlights',
+    imports: [
+        NgForOf,
+        NgOptimizedImage
+    ],
+    templateUrl: './highlights.component.html',
+    styleUrls: ['./highlights.component.css']
 })
 export class HighlightsComponent implements OnInit {
   highlightItems: HighlightItemWithGiftcard[] = [];

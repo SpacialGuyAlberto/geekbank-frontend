@@ -11,11 +11,12 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/geekbank-frontend",
+            "outputPath": {
+              "base": "dist/geekbank-frontend"
+            },
             "index": "src/index.html",
-            "main": "src/main.ts",
             "polyfills": [
               "zone.js",
               "src/polyfills.ts"
@@ -33,7 +34,8 @@
             ],
             "scripts": [],
             "serviceWorker": false,
-            "inlineStyleLanguage": "scss"
+            "inlineStyleLanguage": "scss",
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
@@ -73,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "geekbank-frontend:build:production"
+              "buildTarget": "geekbank-frontend:build:production"
             },
             "development": {
-              "browserTarget": "geekbank-frontend:build:development"
+              "buildTarget": "geekbank-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -84,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "geekbank-frontend:build"
+            "buildTarget": "geekbank-frontend:build"
           }
         },
         "test": {

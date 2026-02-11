@@ -9,22 +9,21 @@ import {
 import {MatButton} from "@angular/material/button";
 
 @Component({
-  selector: 'app-alert-dialog',
-  template: `
+    selector: 'app-alert-dialog',
+    template: `
     <h1 mat-dialog-title>{{ data.title }}</h1>
     <div mat-dialog-content>{{ data.message }}</div>
     <div mat-dialog-actions>
       <button mat-button mat-dialog-close>OK</button>
     </div>
   `,
-  imports: [
-    MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatButton,
-    MatDialogClose
-  ],
-  standalone: true
+    imports: [
+        MatDialogTitle,
+        MatDialogContent,
+        MatDialogActions,
+        MatButton,
+        MatDialogClose
+    ]
 })
 export class AlertDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: any) { }

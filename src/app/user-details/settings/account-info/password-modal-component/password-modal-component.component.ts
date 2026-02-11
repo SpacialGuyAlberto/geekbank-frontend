@@ -11,11 +11,10 @@ import {NotificationService} from "../../../../services/notification.service";
 import {MatSnackBarModule, MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-password-modal',
-  standalone: true,
-  imports: [FormsModule, NgIf],
-  templateUrl: './password-modal-component.component.html',
-  styleUrls: ['./password-modal-component.component.css']
+    selector: 'app-password-modal',
+    imports: [FormsModule, NgIf],
+    templateUrl: './password-modal-component.component.html',
+    styleUrls: ['./password-modal-component.component.css']
 })
 // password-modal-component.component.ts
 

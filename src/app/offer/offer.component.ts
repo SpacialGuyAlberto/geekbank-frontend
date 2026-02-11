@@ -10,11 +10,10 @@ import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.p
 import {CurrencyService} from "../services/currency.service";
 
 @Component({
-  selector: 'app-offer',
-  templateUrl: './offer.component.html',
-  standalone: true,
-  imports: [NgIf, NgForOf, CurrencyPipe, NgClass, NgStyle, ConvertToHnlPipe, DisplayPersistentDiscount],
-  styleUrls: ['./offer.component.css']
+    selector: 'app-offer',
+    templateUrl: './offer.component.html',
+    imports: [NgIf, NgForOf, CurrencyPipe, NgClass, NgStyle, ConvertToHnlPipe, DisplayPersistentDiscount],
+    styleUrls: ['./offer.component.css']
 })
 export class OfferComponent implements OnInit {
   offerTitle: string = '';

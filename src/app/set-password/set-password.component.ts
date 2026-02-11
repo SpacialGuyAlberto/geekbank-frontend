@@ -7,11 +7,10 @@ import { UserService } from "../user-details/user.service";
 import {HttpResponse} from "@angular/common/http";
 
 @Component({
-  selector: 'app-set-password',
-  templateUrl: './set-password.component.html',
-  styleUrls: ['./set-password.component.css'],
-  standalone: true,
-  imports: [FormsModule, NgClass, NgIf],
+    selector: 'app-set-password',
+    templateUrl: './set-password.component.html',
+    styleUrls: ['./set-password.component.css'],
+    imports: [FormsModule, NgClass, NgIf]
 })
 export class SetPasswordComponent implements OnInit {
   password: string = '';

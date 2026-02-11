@@ -10,11 +10,10 @@ import {PaymentComponent} from "../payment/payment.component";
 
 
 @Component({
-  selector: 'app-free-fire-details',
-  standalone: true,
-  imports: [FormsModule, CommonModule, PaymentOptionsComponent, TigoPaymentComponent, PaymentComponent],
-  templateUrl: './free-fire-details.component.html',
-  styleUrls: ['./free-fire-details.component.css']
+    selector: 'app-free-fire-details',
+    imports: [FormsModule, CommonModule, PaymentOptionsComponent, TigoPaymentComponent, PaymentComponent],
+    templateUrl: './free-fire-details.component.html',
+    styleUrls: ['./free-fire-details.component.css']
 })
 export class FreeFireDetailsComponent {
   products: FreeFireDiamondProduct[] = [];

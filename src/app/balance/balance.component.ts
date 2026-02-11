@@ -14,21 +14,20 @@ import {loadUserFromSession} from "../state/auth/auth.actions";
 import {map} from "rxjs/operators";
 
 @Component({
-  selector: 'app-balance',
-  standalone: true,
-  imports: [
-    DatePipe,
-    NgForOf,
-    NgIf,
-    NgClass,
-    FormsModule,
-    CurrencyPipe,
-    TigoPaymentComponent,
-    PaymentComponent,
-    AsyncPipe
-  ],
-  templateUrl: './balance.component.html',
-  styleUrls: ['./balance.component.css']
+    selector: 'app-balance',
+    imports: [
+        DatePipe,
+        NgForOf,
+        NgIf,
+        NgClass,
+        FormsModule,
+        CurrencyPipe,
+        TigoPaymentComponent,
+        PaymentComponent,
+        AsyncPipe
+    ],
+    templateUrl: './balance.component.html',
+    styleUrls: ['./balance.component.css']
 })
 export class BalanceComponent implements OnInit {
   isDropdownVisible = false;

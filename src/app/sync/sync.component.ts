@@ -10,15 +10,14 @@ import {NgIf} from "@angular/common";
 import {MatProgressBar} from "@angular/material/progress-bar";
 
 @Component({
-  selector: 'app-sync',
-  templateUrl: './sync.component.html',
-  standalone: true,
-  imports: [
-    MatIcon,
-    NgIf,
-    MatProgressBar
-  ],
-  styleUrls: ['./sync.component.css']
+    selector: 'app-sync',
+    templateUrl: './sync.component.html',
+    imports: [
+        MatIcon,
+        NgIf,
+        MatProgressBar
+    ],
+    styleUrls: ['./sync.component.css']
 })
 export class SyncComponent implements OnInit, OnDestroy {
 

@@ -5,13 +5,12 @@ import { OrderDetails } from '../models/order-details.model';
 import { AuthService } from "../services/auth.service";
 
 @Component({
-  selector: 'app-payment-options',
-  standalone: true,
-  imports: [
-    NgIf
-  ],
-  templateUrl: './payment-options.component.html',
-  styleUrl: './payment-options.component.css'
+    selector: 'app-payment-options',
+    imports: [
+        NgIf
+    ],
+    templateUrl: './payment-options.component.html',
+    styleUrl: './payment-options.component.css'
 })
 export class PaymentOptionsComponent implements OnInit {
   @Input() BuyingBalance: boolean = false;

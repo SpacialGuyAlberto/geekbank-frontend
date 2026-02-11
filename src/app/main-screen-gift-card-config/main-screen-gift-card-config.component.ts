@@ -11,19 +11,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { GiftcardClassification } from "./giftcard-classification.enum";
 
 @Component({
-  selector: 'app-main-screen-gift-card-config',
-  standalone: true,
-  imports: [
-    SearchBarComponent,
-    CurrencyPipe,
-    NgForOf,
-    FormsModule,
-    MatButtonModule,
-    NgIf,
-    NgClass,
-  ],
-  templateUrl: './main-screen-gift-card-config.component.html',
-  styleUrls: ['./main-screen-gift-card-config.component.css']
+    selector: 'app-main-screen-gift-card-config',
+    imports: [
+        SearchBarComponent,
+        CurrencyPipe,
+        NgForOf,
+        FormsModule,
+        MatButtonModule,
+        NgIf,
+        NgClass,
+    ],
+    templateUrl: './main-screen-gift-card-config.component.html',
+    styleUrls: ['./main-screen-gift-card-config.component.css']
 })
 export class MainScreenGiftCardConfigComponent implements OnInit {
 

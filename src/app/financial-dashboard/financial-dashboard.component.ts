@@ -3,17 +3,16 @@ import { Chart } from 'chart.js';
 import {CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-financial-dashboard',
-  standalone: true,
-  imports: [
-    NgClass,
-    NgIf,
-    CurrencyPipe,
-    DatePipe,
-    NgForOf
-  ],
-  templateUrl: './financial-dashboard.component.html',
-  styleUrls: ['./financial-dashboard.component.css']
+    selector: 'app-financial-dashboard',
+    imports: [
+        NgClass,
+        NgIf,
+        CurrencyPipe,
+        DatePipe,
+        NgForOf
+    ],
+    templateUrl: './financial-dashboard.component.html',
+    styleUrls: ['./financial-dashboard.component.css']
 })
 export class FinancialDashboardComponent implements AfterViewInit {
 

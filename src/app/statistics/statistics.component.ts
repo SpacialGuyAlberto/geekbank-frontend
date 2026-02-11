@@ -4,14 +4,13 @@ import { Chart } from 'chart.js';
 import {NgClass, NgIf} from "@angular/common";
 
 @Component({
-  selector: 'app-statistics',
-  templateUrl: './statistics.component.html',
-  standalone: true,
-  imports: [
-    NgClass,
-    NgIf
-  ],
-  styleUrls: ['./statistics.component.css']
+    selector: 'app-statistics',
+    templateUrl: './statistics.component.html',
+    imports: [
+        NgClass,
+        NgIf
+    ],
+    styleUrls: ['./statistics.component.css']
 })
 export class StatisticsComponent implements AfterViewInit {
   selectedChart: string = 'ventasMensuales';

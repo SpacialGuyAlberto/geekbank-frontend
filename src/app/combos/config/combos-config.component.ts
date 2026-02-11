@@ -9,7 +9,6 @@ import {Combo} from "../../flash-sale/config/models/Combo";
 @Component({
     selector: 'app-combos-config',
     templateUrl: './combos-config.component.html',
-    standalone: true,
     imports: [
         ReactiveFormsModule,
         CurrencyPipe,

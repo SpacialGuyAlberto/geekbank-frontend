@@ -5,11 +5,10 @@ import { TournamentService } from '../tournament.service';
 import { TournamentInscriptionDTO } from '../model/tournamentInscriptionDto.model';
 
 @Component({
-  selector: 'app-tournament-signup',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './tournament-signup.component.html',
-  styleUrls: ['./tournament-signup.component.css']
+    selector: 'app-tournament-signup',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './tournament-signup.component.html',
+    styleUrls: ['./tournament-signup.component.css']
 })
 export class TournamentSignupComponent {
   player = {

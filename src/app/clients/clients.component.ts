@@ -11,23 +11,22 @@ import {RegisterComponent} from "../register/register.component";
 import {Transaction} from "../transactions/transaction.model";
 
 @Component({
-  selector: 'app-clients',
-  templateUrl: './clients.component.html',
-  standalone: true,
-  imports: [
-    FormsModule,
-    DatePipe,
-    CurrencyPipe,
-    NgOptimizedImage,
-    NgForOf,
-    NgIf,
-    NgClass,
-    UpperCasePipe,
-    TransactionsComponent,
-    CreateCustomerComponent,
-    RegisterComponent
-  ],
-  styleUrls: ['./clients.component.css']
+    selector: 'app-clients',
+    templateUrl: './clients.component.html',
+    imports: [
+        FormsModule,
+        DatePipe,
+        CurrencyPipe,
+        NgOptimizedImage,
+        NgForOf,
+        NgIf,
+        NgClass,
+        UpperCasePipe,
+        TransactionsComponent,
+        CreateCustomerComponent,
+        RegisterComponent
+    ],
+    styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit, AfterViewInit{
   editMode: { [key: string]: boolean } = {};

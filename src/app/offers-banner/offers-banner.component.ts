@@ -10,14 +10,13 @@ interface Offer {
 }
 
 @Component({
-  selector: 'app-offers-banner',
-  templateUrl: './offers-banner.component.html',
-  standalone: true,
-  imports: [
-    NgForOf,
-    NgIf
-  ],
-  styleUrls: ['./offers-banner.component.css']
+    selector: 'app-offers-banner',
+    templateUrl: './offers-banner.component.html',
+    imports: [
+        NgForOf,
+        NgIf
+    ],
+    styleUrls: ['./offers-banner.component.css']
 })
 export class OffersBannerComponent implements OnInit {
 

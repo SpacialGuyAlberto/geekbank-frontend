@@ -7,16 +7,15 @@ import {ChartData, ChartOptions} from "chart.js";
 // @ts-ignore
 import {Chart} from "chart.js";
 @Component({
-  selector: 'app-employee-dashboard',
-  templateUrl: './employee-dashboard.component.html',
-  standalone: true,
-  imports: [
-    DatePipe,
-    DecimalPipe,
-    FormsModule,
-    NgxChartsModule
-  ],
-  styleUrls: ['./employee-dashboard.component.css']
+    selector: 'app-employee-dashboard',
+    templateUrl: './employee-dashboard.component.html',
+    imports: [
+        DatePipe,
+        DecimalPipe,
+        FormsModule,
+        NgxChartsModule
+    ],
+    styleUrls: ['./employee-dashboard.component.css']
 })
 export class EmployeeDashboardComponent implements AfterViewInit {
 
