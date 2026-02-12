@@ -1,25 +1,25 @@
-import {Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input} from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {HttpClientModule, HttpResponse} from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
 import { AuthService } from '../services/auth.service';
-import {BackgroundAnimationService} from "../services/background-animation.service";
-import {After} from "node:v8";
-import {response} from "express";
-import {UserService} from "../user-details/user.service";
-import {user} from "@angular/fire/auth";
+import { BackgroundAnimationService } from "../services/background-animation.service";
+
+
+import { UserService } from "../user-details/user.service";
+import { user } from "@angular/fire/auth";
 
 @Component({
-    selector: 'app-register',
-    templateUrl: './register.component.html',
-    styleUrls: ['./register.component.css'],
-    imports: [
-        FormsModule,
-        HttpClientModule,
-        RouterModule,
-        CommonModule // Asegúrate de importar CommonModule
-    ]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
+  imports: [
+    FormsModule,
+
+    RouterModule,
+    CommonModule // Asegúrate de importar CommonModule
+  ]
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
   @Input() isAdmin: boolean = false;

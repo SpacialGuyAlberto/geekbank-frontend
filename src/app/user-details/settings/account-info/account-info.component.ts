@@ -28,25 +28,25 @@ export interface DetailsBody {
 }
 
 @Component({
-    selector: 'app-account-info',
-    imports: [
-        FormsModule,
-        ChangePasswordComponent,
-        NgClass,
-        NgForOf,
-        PasswordModalComponent,
-        NgIf,
-        DatePipe,
-        CurrencyPipe,
-        PaymentMethodsComponent,
-        StatisticsComponent,
-        ProductsComponent,
-        OrdersComponent,
-        WishlistComponent,
-        RouterModule
-    ],
-    templateUrl: './account-info.component.html',
-    styleUrls: ['./account-info.component.css']
+  selector: 'app-account-info',
+  imports: [
+    FormsModule,
+    ChangePasswordComponent,
+    NgClass,
+    NgForOf,
+    PasswordModalComponent,
+    NgIf,
+    DatePipe,
+    CurrencyPipe,
+    PaymentMethodsComponent,
+    StatisticsComponent,
+    ProductsComponent,
+    OrdersComponent,
+    WishlistComponent,
+    RouterModule
+  ],
+  templateUrl: './account-info.component.html',
+  styleUrls: ['./account-info.component.css']
 })
 export class AccountInfoComponent implements OnInit, OnDestroy {
   isVisible: boolean = false;
@@ -385,7 +385,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('document:keydown.escape', ['$event'])
-  onKeydownHandler(event: KeyboardEvent) {
+  onKeydownHandler(event: Event) {
     if (this.showPasswordModal) {
       this.showPasswordModal = false;
     }

@@ -14,15 +14,15 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from '../app.state';
 import { login } from '../state/auth/auth.actions';
 import { selectIsAuthenticated } from '../state/auth/auth.selectors';
-import {FormsModule} from "@angular/forms";
-import {AuthService} from "../services/auth.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import { FormsModule } from "@angular/forms";
+import { AuthService } from "../services/auth.service";
+
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    imports: [NgClass, NgIf, FormsModule],
-    styleUrls: ['./login.component.css']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  imports: [NgClass, NgIf, FormsModule],
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -45,9 +45,9 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('passwordInput') passwordInput!: ElementRef;
 
   constructor(private router: Router,
-              private store: Store<AppState>,
-              private authService: AuthService
-              ) {
+    private store: Store<AppState>,
+    private authService: AuthService
+  ) {
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 

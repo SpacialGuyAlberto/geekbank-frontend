@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComboService } from '../flash-sale/config/combo.service';
-import {Combo} from "../flash-sale/config/models/Combo"; // Adjust import path if needed
+import { Combo } from "../flash-sale/config/models/Combo"; // Adjust import path if needed
 
 
 @Component({
-    selector: 'app-combos',
-    imports: [CommonModule],
-    template: `
+  selector: 'app-combos',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="combos-container" *ngIf="combos.length > 0">
       <h2 class="section-title">Combos & Deals</h2>
       <div class="combos-grid">
@@ -27,7 +28,7 @@ import {Combo} from "../flash-sale/config/models/Combo"; // Adjust import path i
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .combos-container {
       padding: 20px;
       background-color: rgba(255, 255, 255, 0.05);
@@ -104,18 +105,18 @@ import {Combo} from "../flash-sale/config/models/Combo"; // Adjust import path i
   `]
 })
 export class CombosComponent implements OnInit {
-    combos: Combo[] = [];
+  combos: Combo[] = [];
 
-    constructor(private comboService: ComboService) { }
+  constructor(private comboService: ComboService) { }
 
-    ngOnInit(): void {
-        this.comboService.getAll().subscribe({
-            next: (data) => {
-                // Filter only active combos if needed, though backend currently returns all.
-                // Assuming backend might implement filtering or we filter here.
-                this.combos = data.filter(c => c.isActive);
-            },
-            error: (err) => console.error('Error loading combos', err)
-        });
-    }
+  ngOnInit(): void {
+    this.comboService.getAll().subscribe({
+      next: (data) => {
+        // Filter only active combos if needed, though backend currently returns all.
+        // Assuming backend might implement filtering or we filter here.
+        this.combos = data.filter(c => c.isActive);
+      },
+      error: (err) => console.error('Error loading combos', err)
+    });
+  }
 }

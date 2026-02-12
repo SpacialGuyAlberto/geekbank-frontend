@@ -1,72 +1,72 @@
-import {AfterViewInit, Component, HostListener, input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {CartService} from "./cart.service";
-import {DecimalPipe, NgForOf, NgIf} from "@angular/common";
-import {Event, Router, RouterLink} from "@angular/router";
+import { AfterViewInit, Component, HostListener, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { CartService } from "./cart.service";
+import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
+import { Event as RouterEvent, Router, RouterLink } from "@angular/router";
 import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import {CartItemWithGiftcard} from "./CartItem";
-import {CurrencyService} from "../services/currency.service";
-import {FormsModule, NgModel} from "@angular/forms";
+import { CartItemWithGiftcard } from "./CartItem";
+import { CurrencyService } from "../services/currency.service";
+import { FormsModule, NgModel } from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
-import {AuthService} from "../services/auth.service";
+import { AuthService } from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { RecommendationsComponent } from "../recommendations/recommendations.component";
-import {Observable, Subject, takeUntil} from "rxjs";
+import { Observable, Subject, takeUntil } from "rxjs";
 import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
-import {GuestService} from "../services/guest.service";
-import {User} from "../user-details/User";
-import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
-import {PromotionsService} from "../promotions/promotions.service";
-import {Promotion} from "../promotions/Promotion.model";
+import { GuestService } from "../services/guest.service";
+import { User } from "../user-details/User";
+import { TermsAndConditionsComponent } from "../terms-and-conditions/terms-and-conditions.component";
+import { PromotionsService } from "../promotions/promotions.service";
+import { Promotion } from "../promotions/Promotion.model";
 import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
-import {PricingService} from "../pricing/pricing.service";
-import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import { PricingService } from "../pricing/pricing.service";
+import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
 
 
 @Component({
-    selector: 'app-cart',
-    imports: [
-        NgForOf,
-        NgIf,
-        TigoPaymentComponent,
-        FormsModule,
-        MatIcon,
-        RecommendationsComponent,
-        DecimalPipe,
-        CardPaymentComponent,
-        ConvertToHnlPipe
-    ],
-    templateUrl: './cart.component.html',
-    styleUrls: ['./cart.component.css'],
-    providers: [
-        {
-            provide: CART_ITEMS,
-            useFactory: (component: CartComponent) => component.cartItems,
-            deps: [CartComponent]
-        },
-        {
-            provide: TOTAL_PRICE,
-            useFactory: (component: CartComponent) => component.getTotalPrice(),
-            deps: [CartComponent]
-        },
-        {
-            provide: PRODUCT_ID,
-            useValue: null
-        },
-        {
-            provide: GAME_USER_ID,
-            useValue: null
-        },
-        {
-            provide: IS_MANUAL_TRANSACTION,
-            useValue: false
-        },
-        {
-            provide: PROMO_CODE,
-            useValue: null
-        }
-    ]
+  selector: 'app-cart',
+  imports: [
+    NgForOf,
+    NgIf,
+    TigoPaymentComponent,
+    FormsModule,
+    MatIcon,
+    RecommendationsComponent,
+    DecimalPipe,
+    CardPaymentComponent,
+    ConvertToHnlPipe
+  ],
+  templateUrl: './cart.component.html',
+  styleUrls: ['./cart.component.css'],
+  providers: [
+    {
+      provide: CART_ITEMS,
+      useFactory: (component: CartComponent) => component.cartItems,
+      deps: [CartComponent]
+    },
+    {
+      provide: TOTAL_PRICE,
+      useFactory: (component: CartComponent) => component.getTotalPrice(),
+      deps: [CartComponent]
+    },
+    {
+      provide: PRODUCT_ID,
+      useValue: null
+    },
+    {
+      provide: GAME_USER_ID,
+      useValue: null
+    },
+    {
+      provide: IS_MANUAL_TRANSACTION,
+      useValue: false
+    },
+    {
+      provide: PROMO_CODE,
+      useValue: null
+    }
+  ]
 })
 export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   cartItems: CartItemWithGiftcard[] = [];
@@ -126,7 +126,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private pricing: PricingService
-  ) {}
+  ) { }
 
   @HostListener('window:load', ['$event'])
   onLoad(event: Event) {
@@ -203,9 +203,9 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
         await this.recalcTotals();
 
-        this.totalAmountUSD       = +(this.totalHNL / 26).toFixed(2);
+        this.totalAmountUSD = +(this.totalHNL / 26).toFixed(2);
         this.totalAmountUSDString = this.totalAmountUSD.toString();
-        this.totalAmountString    = this.totalHNL.toString();
+        this.totalAmountString = this.totalHNL.toString();
       });
   }
 
@@ -374,7 +374,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
       /* ---- Si todo está bien, ya podemos mostrar el botón de Stripe ---- */
       this.selectedOption = null;      // ← mover AQUÍ (después de validar)
-      this.showCardButton  = true;
+      this.showCardButton = true;
     }
     else if (this.selectedOption === 'TIGO MONEY') {
       this.selectedOption = null;
@@ -463,7 +463,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cartService.updateCartItemCount();
   }
 
-  countCartItems(){
+  countCartItems() {
     this.cartService.cartItemCount$
       .pipe(takeUntil(this.destroy$))
       .subscribe(count => {
@@ -607,25 +607,25 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
 
   checkIfCodeExists(code: string): Observable<boolean> {
 
-    this.promotionService.promotionCodeExist(code).subscribe( value => {
+    this.promotionService.promotionCodeExist(code).subscribe(value => {
       this.codeExist = value;
       this.codeExistBlueprint = value;
-      if (value){
+      if (value) {
         this.fetchPromoWithCode(code);
       }
     });
     return this.promotionService.promotionCodeExist(code);
   }
 
-  fetchPromoWithCode(code: string ){
-    if (this.codeExistBlueprint){
+  fetchPromoWithCode(code: string) {
+    if (this.codeExistBlueprint) {
       this.promotionService.fetchPromotionWithCode(code).subscribe(
         (value) => {
           this.promo = value;
           this.discountReceived = value ? `You have received ${this.promo.discountPorcentage} of discount` : "You have not received discount";
-          if (this.promo && !this.discountApplied){
+          if (this.promo && !this.discountApplied) {
             let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
-            this.totalHNL =  parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
+            this.totalHNL = parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
             this.promoCode = value.code;
           }
         });
@@ -649,7 +649,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   checkInput() {
-    if (this.emailForKey){
+    if (this.emailForKey) {
       this.emailErrorMessage = true;
     }
   }

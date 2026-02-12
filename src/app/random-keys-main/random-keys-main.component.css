@@ -5,8 +5,10 @@
 
 
 :root {
-  --font-size-base: 1rem; /* 16px */
-  --scale-factor: 0.85; /* Factor de escala para responsividad */
+  --font-size-base: 1rem;
+  /* 16px */
+  --scale-factor: 0.85;
+  /* Factor de escala para responsividad */
   --primary-color: #0B0D19;
   --secondary-color: #021526;
   --text-color: #FFFFFF;
@@ -14,7 +16,8 @@
   --accent-color: #88D66C;
   --font-primary: 'Roboto', sans-serif;
   --font-secondary: 'VT323', monospace;
-  --font-impact: 'Rubik Iso', sans-serif; /* Cambiado a 'Anton' */
+  --font-impact: 'Rubik Iso', sans-serif;
+  /* Cambiado a 'Anton' */
   --transition-speed: 0.3s;
 }
 
@@ -58,7 +61,7 @@
 
 /* Banner para Claves Grandes */
 .large-banner {
-  background-image: url('src/assets/fortnite.png');
+  background-image: url('../../assets/fortnite.png');
   background-size: cover;
   background-position: center;
 }
@@ -76,10 +79,13 @@
 
 /* Contenedor Principal del Encabezado */
 .header-container {
-  text-align: left; /* Alineamos a la izquierda */
+  text-align: left;
+  /* Alineamos a la izquierda */
   color: #FFFFFF;
-  padding-left: 2rem; /* Añadimos un poco de padding izquierdo */
-  margin-top: 5rem; /* Increased from 2rem to create more space between banner and text */
+  padding-left: 2rem;
+  /* Añadimos un poco de padding izquierdo */
+  margin-top: 5rem;
+  /* Increased from 2rem to create more space between banner and text */
   animation: fadeIn 1.5s ease-in-out;
   z-index: 2;
 }
@@ -95,24 +101,29 @@
   text-transform: uppercase;
   font-family: 'Anton', sans-serif;
   text-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.3), /* Sombra sutil */
+    0 4px 6px rgba(0, 0, 0, 0.3),
+    /* Sombra sutil */
     0 0 10px #00ffe5,
     0 0 20px #00ffe5,
-    0 0 30px rgba(0, 0, 0, 0.5); /* Efecto de resplandor */
+    0 0 30px rgba(0, 0, 0, 0.5);
+  /* Efecto de resplandor */
 }
 
 /* Resaltado animado */
 .header-container h1 .highlight {
   font-size: 2.2rem;
-  color: #ff6ec7; /* Color vibrante */
+  color: #ff6ec7;
+  /* Color vibrante */
   display: block;
   font-weight: 700;
   animation: colorChange 3s infinite alternate;
   font-family: 'Anton', sans-serif;
   text-shadow:
-    0 2px 5px rgba(0, 0, 0, 0.4), /* Sombra más ligera */
+    0 2px 5px rgba(0, 0, 0, 0.4),
+    /* Sombra más ligera */
     0 0 8px #ff6ec7,
-    0 0 15px #ff00ff; /* Resplandor para el resaltado */
+    0 0 15px #ff00ff;
+  /* Resplandor para el resaltado */
 }
 
 
@@ -125,10 +136,13 @@
   margin-top: 0.5rem;
   letter-spacing: 0.05rem;
   text-shadow:
-    0px 3px 5px rgba(0, 0, 0, 0.3), /* Sombra ligera */
-    0px 0px 8px #00bfff; /* Resplandor azul claro */
+    0px 3px 5px rgba(0, 0, 0, 0.3),
+    /* Sombra ligera */
+    0px 0px 8px #00bfff;
+  /* Resplandor azul claro */
   animation: bounce 2s infinite;
-  font-family: 'Kanit', sans-serif; /* Fuente juvenil */
+  font-family: 'Kanit', sans-serif;
+  /* Fuente juvenil */
 }
 
 
@@ -138,12 +152,14 @@
   font-size: 5rem;
   letter-spacing: 0.2rem;
   text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
-  font-family: var(--font-podio); /* Aplicamos Anton */
+  font-family: var(--font-podio);
+  /* Aplicamos Anton */
 }
 
 
 .banner-text h1 {
-  font-size: 5rem; /* Aumentamos el tamaño */
+  font-size: 5rem;
+  /* Aumentamos el tamaño */
   letter-spacing: 0.2rem;
   text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff, 0 0 30px #ff00ff;
   font-family: var(--font-podio)
@@ -173,7 +189,8 @@
   align-items: flex-start;
   width: 100%;
   max-width: 75rem;
-  margin: 5rem auto; /* Añadimos margen superior para separar del banner */
+  margin: 5rem auto;
+  /* Añadimos margen superior para separar del banner */
   transition: height var(--transition-speed) ease;
 }
 
@@ -182,7 +199,8 @@
   /*background: url('src/assets/240_F_864018435_alqn1YWwNfEpG1Ktnk7WTbQoLEtwK1D7.jpg') repeat;*/
   /*padding: 1.5rem;*/
   border-radius: 0.3125rem;
-  flex: 1 1 calc(25% - 1rem); /* Cuatro tarjetas por fila */
+  flex: 1 1 calc(25% - 1rem);
+  /* Cuatro tarjetas por fila */
   min-width: 12rem;
   max-width: 16rem;
   flex-grow: 1;
@@ -237,7 +255,7 @@
 }
 
 /* Efecto de zoom al hover en la imagen */
-.offer-image-container:hover{
+.offer-image-container:hover {
   transform: scale(1.1);
 }
 
@@ -269,7 +287,8 @@
 /* Responsividad */
 @media (max-width: 1024px) {
   .offer-card-container {
-    flex: 1 1 calc(33.333% - 1rem); /* Tres tarjetas por fila */
+    flex: 1 1 calc(33.333% - 1rem);
+    /* Tres tarjetas por fila */
     max-width: calc(33.333% - 1rem);
   }
 
@@ -288,7 +307,8 @@
   }
 
   .offer-card-container {
-    flex: 1 1 calc(50% - 1rem); /* Dos tarjetas por fila */
+    flex: 1 1 calc(50% - 1rem);
+    /* Dos tarjetas por fila */
     max-width: calc(50% - 1rem);
   }
 
@@ -339,7 +359,8 @@
   }
 
   .offer-card-container {
-    flex: 1 1 100%; /* Una tarjeta por fila */
+    flex: 1 1 100%;
+    /* Una tarjeta por fila */
     max-width: 100%;
   }
 

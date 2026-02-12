@@ -1,6 +1,8 @@
 :root {
-  --font-size-base: 1rem; /* 16px */
-  --scale-factor: 0.85; /* Factor de escala para responsividad */
+  --font-size-base: 1rem;
+  /* 16px */
+  --scale-factor: 0.85;
+  /* Factor de escala para responsividad */
   --primary-color: #0B0D19;
   --secondary-color: #021526;
   --text-color: #FFFFFF;
@@ -20,13 +22,16 @@
 
 /* Contenedor Principal del Dashboard */
 .random-keys-most-sold-dashboard {
-  position: relative; /* Necesario para posicionar las capas internas */
+  position: relative;
+  /* Necesario para posicionar las capas internas */
   display: flex;
   flex-direction: column;
   align-items: center;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  padding: 0; /* Sin padding */
-  overflow: hidden; /* Evita desbordamientos */
+  padding: 0;
+  /* Sin padding */
+  overflow: hidden;
+  /* Evita desbordamientos */
 }
 
 /* Capa de Fondo Desenfocada */
@@ -37,9 +42,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('src/assets/fracture-fortnite.jpg') center/cover no-repeat;
+  background: url('../../assets/fracture-fortnite.jpg') center/cover no-repeat;
   filter: blur(5px);
-  transform: scale(1.1); /* Aumenta ligeramente para cubrir áreas después del blur */
+  transform: scale(1.1);
+  /* Aumenta ligeramente para cubrir áreas después del blur */
   z-index: 1;
 }
 
@@ -50,8 +56,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Superposición semi-transparente */
-  backdrop-filter: blur(5px); /* Aplica el desenfoque al contenido detrás */
+  background: rgba(0, 0, 0, 0.4);
+  /* Superposición semi-transparente */
+  backdrop-filter: blur(5px);
+  /* Aplica el desenfoque al contenido detrás */
   z-index: 2;
 }
 
@@ -62,45 +70,57 @@
   background-size: cover;
   background-position: center;
   display: flex;
-  flex-direction: column; /* Para alinear verticalmente los elementos internos */
+  flex-direction: column;
+  /* Para alinear verticalmente los elementos internos */
   align-items: center;
   justify-content: center;
-  border-radius: 0.3125rem; /* 5px */
+  border-radius: 0.3125rem;
+  /* 5px */
   overflow: hidden;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2); /* Sombra */
-  z-index: 3; /* Asegura que esté por encima de la capa de fondo */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  /* Sombra */
+  z-index: 3;
+  /* Asegura que esté por encima de la capa de fondo */
 }
 
 /* Banner para Claves Grandes */
 .large-banner {
-  height: 31.25rem; /* 500px */
-  background-image: url('src/assets/fracture-fortnite.jpg'); /* Asegúrate de que la ruta sea correcta */
+  height: 31.25rem;
+  /* 500px */
+  background-image: url('../../assets/fracture-fortnite.jpg');
+  /* Asegúrate de que la ruta sea correcta */
 }
 
 /* Contenedor de Ofertas */
 .offers-wrapper {
   position: relative;
-  z-index: 4; /* Asegura que esté por encima de todas las capas */
+  z-index: 4;
+  /* Asegura que esté por encima de todas las capas */
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem; /* 20px */
+  gap: 1.25rem;
+  /* 20px */
   justify-content: center;
   align-items: center;
   width: 90%;
   margin-top: 1rem;
-  overflow: hidden; /* Asegura que el contenido no sobresalga */
+  overflow: hidden;
+  /* Asegura que el contenido no sobresalga */
   transition: max-height var(--transition-speed) ease;
-  max-height: 15rem; /* Altura inicial equivalente a 3 elementos (ajusta según sea necesario) */
+  max-height: 15rem;
+  /* Altura inicial equivalente a 3 elementos (ajusta según sea necesario) */
 }
 
 /* Estado colapsado del contenedor de ofertas */
 .offers-wrapper.collapsed {
-  max-height: 15rem; /* Altura inicial */
+  max-height: 15rem;
+  /* Altura inicial */
 }
 
 /* Estado expandido del contenedor de ofertas */
 .offers-wrapper.expanded {
-  max-height: 2000px; /* Un valor suficientemente grande para acomodar todos los elementos */
+  max-height: 2000px;
+  /* Un valor suficientemente grande para acomodar todos los elementos */
 }
 
 /* Estilos Generales para las Tarjetas de Oferta */
@@ -111,19 +131,26 @@
   align-items: center;
   text-align: center;
   background: rgba(255, 255, 255, 0.1);
-  padding: 0; /* Sin padding */
-  border-radius: 0.3125rem; /* 5px */
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3); /* Sombra */
+  padding: 0;
+  /* Sin padding */
+  border-radius: 0.3125rem;
+  /* 5px */
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  /* Sombra */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
 
 /* Tarjetas Grandes */
 .offer-card.large {
-  width: calc(20% - 1rem); /* 20% del ancho menos el gap */
-  min-width: 7rem; /* 112px */
-  max-width: 10rem; /* 160px */
-  height: 15rem; /* 240px */
+  width: calc(20% - 1rem);
+  /* 20% del ancho menos el gap */
+  min-width: 7rem;
+  /* 112px */
+  max-width: 10rem;
+  /* 160px */
+  height: 15rem;
+  /* 240px */
 }
 
 /* Hover */
@@ -136,30 +163,38 @@
 .offer-image-container {
   position: relative;
   width: 100%;
-  height: 70%; /* 70% de la altura de la tarjeta */
-  overflow: hidden; /* Asegura que las imágenes no sobresalgan del contenedor */
-  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+  height: 70%;
+  /* 70% de la altura de la tarjeta */
+  overflow: hidden;
+  /* Asegura que las imágenes no sobresalgan del contenedor */
+  border-radius: 0.3125rem 0.3125rem 0 0;
+  /* Bordes superiores redondeados */
 }
 
 /* Imagen */
 .offer-image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Asegura que la imagen cubra el espacio sin distorsión */
-  border-radius: 0.3125rem 0.3125rem 0 0; /* Bordes superiores redondeados */
+  object-fit: cover;
+  /* Asegura que la imagen cubra el espacio sin distorsión */
+  border-radius: 0.3125rem 0.3125rem 0 0;
+  /* Bordes superiores redondeados */
 }
 
 /* Botón en las tarjetas de oferta */
 .offer-button {
   position: absolute;
-  bottom: 0.625rem; /* 10px */
+  bottom: 0.625rem;
+  /* 10px */
   left: 50%;
   transform: translateX(-50%);
   background-color: rgba(255, 106, 0, 0.8);
   color: #fff;
   border: none;
-  padding: 0.625rem 1.25rem; /* 10px 20px */
-  border-radius: 0.3125rem; /* 5px */
+  padding: 0.625rem 1.25rem;
+  /* 10px 20px */
+  border-radius: 0.3125rem;
+  /* 5px */
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -177,7 +212,8 @@
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  z-index: 5; /* Más alto que los otros elementos */
+  z-index: 5;
+  /* Más alto que los otros elementos */
 }
 
 /* Botón "Mostrar más" */
@@ -185,8 +221,10 @@
   background-color: #007BFF;
   color: #fff;
   border: none;
-  padding: 0.625rem 1.25rem; /* 10px 20px */
-  border-radius: 0.3125rem; /* 5px */
+  padding: 0.625rem 1.25rem;
+  /* 10px 20px */
+  border-radius: 0.3125rem;
+  /* 5px */
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -198,9 +236,12 @@
 }
 
 /* Responsividad */
-@media (max-width: 48rem) { /* 768px */
+@media (max-width: 48rem) {
+
+  /* 768px */
   .large-banner {
-    height: 25rem; /* 400px */
+    height: 25rem;
+    /* 400px */
   }
 
   .offers-wrapper {
@@ -210,12 +251,15 @@
   }
 
   .offer-card.large {
-    width: calc(45% - 0.75rem); /* Ajuste para pantallas medianas */
-    height: 16rem; /* Reducido para mejor apariencia */
+    width: calc(45% - 0.75rem);
+    /* Ajuste para pantallas medianas */
+    height: 16rem;
+    /* Reducido para mejor apariencia */
   }
 
   .offer-button {
-    padding: 0.5rem 1rem; /* 8px 16px */
+    padding: 0.5rem 1rem;
+    /* 8px 16px */
     font-size: 0.9rem;
   }
 
@@ -225,25 +269,33 @@
   }
 }
 
-@media (max-width: 30rem) { /* 480px */
+@media (max-width: 30rem) {
+
+  /* 480px */
   .large-banner {
-    height: 18.75rem; /* 300px */
+    height: 18.75rem;
+    /* 300px */
   }
 
   .offers-wrapper {
     flex-direction: column;
-    gap: 0.625rem; /* 10px */
+    gap: 0.625rem;
+    /* 10px */
   }
 
   .offer-card.large {
-    width: 100%; /* Una tarjeta por fila */
-    height: 12rem; /* Ajuste para pantallas pequeñas */
+    width: 100%;
+    /* Una tarjeta por fila */
+    height: 12rem;
+    /* Ajuste para pantallas pequeñas */
   }
 
   .offer-button {
-    padding: 0.375rem 0.75rem; /* 6px 12px */
+    padding: 0.375rem 0.75rem;
+    /* 6px 12px */
     font-size: 0.8rem;
-    bottom: 0.3125rem; /* 5px */
+    bottom: 0.3125rem;
+    /* 5px */
   }
 
   .show-more-button {
@@ -259,7 +311,8 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
-  color: #FFD700; /* Dorado */
+  color: #FFD700;
+  /* Dorado */
   margin-top: 2rem;
 }
 
