@@ -1,4 +1,3 @@
-
 :root {
   --primary-color: #0B0D19;
   --secondary-color: #31313b;
@@ -8,7 +7,8 @@
   --font-primary: 'Roboto', sans-serif;
   --font-secondary: 'VT323', monospace;
   --transition-speed: 0.3s;
-  --scale-factor: 0.75; /* 75% del tamaño original */
+  --scale-factor: 0.75;
+  /* 75% del tamaño original */
 
   /* Colores adicionales para botones */
   --button-add-bg: linear-gradient(45deg, #87add7, #d3a1e6);
@@ -23,7 +23,8 @@
 }
 
 /* Estilos Globales */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   font-family: var(--font-primary);
@@ -45,13 +46,15 @@ body, html {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%; /* Ocupará todo el contenido */
+  height: 100%;
+  /* Ocupará todo el contenido */
   z-index: -1;
 }
 
 #graphCanvas {
   width: 100%;
-  height: 100%; /* Dejar que el canvas ocupe la altura del contenido */
+  height: 100%;
+  /* Dejar que el canvas ocupe la altura del contenido */
   position: absolute;
   top: 0;
   left: 0;
@@ -83,25 +86,31 @@ body, html {
 
 
 .gift-card-details-container:hover {
-  transform: scale(1.02); /* Efecto de agrandamiento */
+  transform: scale(1.02);
+  /* Efecto de agrandamiento */
   /*background: rgba(10, 20, 40, 0.8); !* Cambio sutil de fondo al hacer hover *!*/
   /*box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.5); !* Aumento de sombra *!*/
 }
 
 .banner {
   width: 100%;
-  height: 500px; /* Ajusta la altura según tus necesidades */
+  height: 500px;
+  /* Ajusta la altura según tus necesidades */
   background-size: cover;
   background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-bottom: -150px; /* Superpone el banner con el contenido */
+  margin-bottom: -150px;
+  /* Superpone el banner con el contenido */
   z-index: 1;
-  filter: blur(3px); /* Aplica el blur */
-  border-radius: 0.125rem; /* Bordes redondeados */
-  overflow: hidden; /* Oculta cualquier desbordamiento */
+  filter: blur(3px);
+  /* Aplica el blur */
+  border-radius: 0.125rem;
+  /* Bordes redondeados */
+  overflow: hidden;
+  /* Oculta cualquier desbordamiento */
 }
 
 
@@ -113,7 +122,8 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
+  background: rgba(0, 0, 0, 0.5);
+  /* Superposición para mejorar la legibilidad del texto */
 }
 
 .banner-container {
@@ -122,7 +132,8 @@ body, html {
 
 .banner-content {
   position: relative;
-  z-index: 2; /* Asegura que el contenido esté por encima de la superposición */
+  z-index: 2;
+  /* Asegura que el contenido esté por encima de la superposición */
   text-align: center;
   color: var(--text-color);
 }
@@ -147,13 +158,15 @@ body, html {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+  background: rgba(0, 0, 0, 0.5);
+  /* Fondo semitransparente */
   border: none;
   color: white;
   padding: 0.5rem;
   cursor: pointer;
   border-radius: 50%;
-  z-index: 4; /* Asegura que las flechas estén por encima de otros elementos */
+  z-index: 4;
+  /* Asegura que las flechas estén por encima de otros elementos */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -161,26 +174,32 @@ body, html {
 }
 
 .arrow.left {
-  left: 10px; /* Posición a la izquierda */
+  left: 10px;
+  /* Posición a la izquierda */
 }
 
 .arrow.right {
-  right: 10px; /* Posición a la derecha */
+  right: 10px;
+  /* Posición a la derecha */
 }
 
 .arrow:hover {
-  background: rgba(0, 0, 0, 0.8); /* Fondo más oscuro al hacer hover */
-  transform: translateY(-50%) scale(1.1); /* Ligero aumento de tamaño al hacer hover */
+  background: rgba(0, 0, 0, 0.8);
+  /* Fondo más oscuro al hacer hover */
+  transform: translateY(-50%) scale(1.1);
+  /* Ligero aumento de tamaño al hacer hover */
 }
 
 
 .arrow .material-icons {
   font-size: 1.5rem;
 }
+
 .gift-card-image-container {
   flex: 1;
   max-width: 66%;
-  background-color: rgba(57, 255, 20, 0.1); /* Verde neón suave con transparencia */
+  background-color: rgba(57, 255, 20, 0.1);
+  /* Verde neón suave con transparencia */
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0.125rem;
   overflow: hidden;
@@ -195,7 +214,8 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0)); /* Añade un degradado suave */
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  /* Añade un degradado suave */
   pointer-events: none;
 }
 
@@ -219,7 +239,8 @@ body, html {
 .add-info-content {
   padding: 1rem;
   text-align: center;
-  background-color: rgba(10, 10, 35, 0.85); /* Fondo translúcido */
+  background-color: rgba(10, 10, 35, 0.85);
+  /* Fondo translúcido */
 }
 
 .add-info-title {
@@ -242,11 +263,13 @@ body, html {
    ======================================= */
 .gift-card-info-card {
   flex: 1;
-  background-color: rgba(10, 20, 40, 0.8); /* Fondo translúcido */
+  background-color: rgba(10, 20, 40, 0.8);
+  /* Fondo translúcido */
   border: 0.125rem solid rgba(255, 255, 255, 0.2);
   border-radius: 0.125rem;
   padding: 1rem;
-  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4); /* Sombra más ligera */
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.4);
+  /* Sombra más ligera */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -256,7 +279,8 @@ body, html {
 }
 
 .gift-card-info-card:hover {
-  background-color: rgba(10, 20, 40, 0.85); /* Cambio sutil de fondo al hacer hover */
+  background-color: rgba(10, 20, 40, 0.85);
+  /* Cambio sutil de fondo al hacer hover */
 }
 
 .gift-card-region {
@@ -268,13 +292,15 @@ body, html {
 }
 
 .check-icon {
-  color: var(--accent-green); /* Icono en verde claro */
+  color: var(--accent-green);
+  /* Icono en verde claro */
   margin-right: 0.5rem;
 }
 
 .gift-card-title {
   font-size: 1.5rem;
-  color: #A0E4FF; /* Azul claro suave */
+  color: #A0E4FF;
+  /* Azul claro suave */
   margin-bottom: 0.625rem;
   text-align: center;
   font-family: var(--font-secondary);
@@ -282,7 +308,8 @@ body, html {
 
 .gift-card-price {
   font-size: 2rem;
-  color: #7EC8E3; /* Azul suave retro */
+  color: #7EC8E3;
+  /* Azul suave retro */
   font-weight: bold;
   margin-bottom: 1rem;
   text-align: center;
@@ -328,7 +355,8 @@ body, html {
   background: var(--button-add-hover-bg);
   transform: translateY(-3px);
   box-shadow: 0 0.375rem 0.75rem rgba(57, 255, 20, 0.4);
-  background-position: right center; /* Cambio de posición del gradiente */
+  background-position: right center;
+  /* Cambio de posición del gradiente */
 }
 
 /* Botón Comprar Ahora con Linear Gradient */
@@ -341,88 +369,68 @@ body, html {
   background: var(--button-buy-hover-bg);
   transform: translateY(-3px);
   box-shadow: 0 0.375rem 0.75rem rgba(30, 144, 255, 0.4);
-  background-position: right center; /* Cambio de posición del gradiente */
+  background-position: right center;
+  /* Cambio de posición del gradiente */
 }
 
 .wishlist-button {
   position: relative;
   top: 0px;
   right: 0px;
-  background: none; /* Eliminamos el fondo */
-  border: none; /* Eliminamos el borde */
-  padding: 0; /* Eliminamos el padding para que el ícono sea el único visible */
+  background: none;
+  /* Eliminamos el fondo */
+  border: none;
+  /* Eliminamos el borde */
+  padding: 0;
+  /* Eliminamos el padding para que el ícono sea el único visible */
   cursor: pointer;
-  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease; /* Transición en color y escala */
+  transition: transform var(--transition-speed) ease, color var(--transition-speed) ease;
+  /* Transición en color y escala */
 }
 
 .wishlist-button:hover {
-  transform: scale(1.1); /* El ícono se agranda ligeramente en hover */
+  transform: scale(1.1);
+  /* El ícono se agranda ligeramente en hover */
 }
 
 .wishlist-button .material-icons {
-  color: rgba(255, 255, 255, 0.8); /* Color del ícono */
-  font-size: 1.5rem; /* Ajustamos el tamaño del ícono */
-  transition: color var(--transition-speed) ease; /* Suavizamos la transición del color */
+  color: rgba(255, 255, 255, 0.8);
+  /* Color del ícono */
+  font-size: 1.5rem;
+  /* Ajustamos el tamaño del ícono */
+  transition: color var(--transition-speed) ease;
+  /* Suavizamos la transición del color */
 }
+
 .wishlist-button.wished .material-icons {
-  color: red; /* Color rojo cuando el ítem está en la wishlist */
+  color: red;
+  /* Color rojo cuando el ítem está en la wishlist */
 }
 
 
 .wishlist-button:hover .material-icons {
-  color: var(--highlight-color); /* Cambiamos el color del ícono en hover */
+  color: var(--highlight-color);
+  /* Cambiamos el color del ícono en hover */
 }
 
 
-.suggestions-container{
-  margin-top: -7rem;
+.suggestions-container {
+  width: 100%;
+  margin-top: 4rem;
+  position: relative;
+  z-index: 10;
 }
 
-/* Estilos para el Encabezado de Sugerencias */
 .suggestions-header {
   text-align: center;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 2;
+  margin-bottom: 2rem;
 }
 
-.loading-text, .suggestions-text {
-  display: inline-flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-family: var(--font-primary);
-  color: var(--highlight-color);
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-/* Animación de Fade In */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Estilos para el Spinner de Carga */
-.loading-spinner {
-  width: 20px;
-  height: 20px;
-  margin-right: 0.5rem;
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top: 3px solid var(--highlight-color);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-/* Animación de Rotación para el Spinner */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Opcional: Estilos para "También te podría interesar" */
 .suggestions-text {
-  font-weight: bold;
-  color: var(--accent-color);
-  animation: fadeIn 0.5s ease-in-out;
+  font-size: 1.75rem;
+  font-weight: 860;
+  color: var(--text, #ffffff);
+  letter-spacing: -0.02em;
 }
 
 /* =======================================
@@ -441,12 +449,14 @@ body, html {
 
   .gift-card-image-container {
     max-width: 100%;
-    flex: 1.5; /* Aumenta la proporción para mantener la imagen más grande */
+    flex: 1.5;
+    /* Aumenta la proporción para mantener la imagen más grande */
   }
 
   .gift-card-info-card {
     max-width: 100%;
-    flex: 1; /* Reduce la proporción para el contenido */
+    flex: 1;
+    /* Reduce la proporción para el contenido */
   }
 
   .gift-card-title {
@@ -460,18 +470,23 @@ body, html {
   .check-icon {
     font-size: 1.5rem;
   }
+
   .feedback-section {
     position: absolute;
     max-width: calc(90% * var(--scale-factor));
-    top: 10px; /* Posición en la parte superior */
-    right: 10px; /* Alineado a la derecha */
+    top: 10px;
+    /* Posición en la parte superior */
+    right: 10px;
+    /* Alineado a la derecha */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(56, 56, 59, 0.9); /* Fondo oscuro translúcido */
+    background-color: rgba(56, 56, 59, 0.9);
+    /* Fondo oscuro translúcido */
     padding: 0.5rem;
     border-radius: 0.125rem;
-    z-index: 3; /* Asegurarse de que esté encima de la imagen */
+    z-index: 3;
+    /* Asegurarse de que esté encima de la imagen */
   }
 
   .button-container {
@@ -504,26 +519,33 @@ body, html {
 /* Contenedor para alinear los géneros en una fila en la parte superior de la imagen */
 .genre-container {
   position: absolute;
-  top: 10px; /* Posición en la parte superior */
+  top: 10px;
+  /* Posición en la parte superior */
   left: 10px;
   display: flex;
-  gap: 5px; /* Espacio entre los géneros */
-  z-index: 3; /* Asegura que esté sobre la imagen */
+  gap: 5px;
+  /* Espacio entre los géneros */
+  z-index: 3;
+  /* Asegura que esté sobre la imagen */
 }
 
 /* Estilo para cada género individual */
 .genre {
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo negro translúcido */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Fondo negro translúcido */
   padding: 0.3rem 0.6rem;
   border-radius: 0.125rem;
-  color: var(--text-color); /* Color del texto */
-  font-family: var(--font-secondary); /* Fuente secundaria */
+  color: var(--text-color);
+  /* Color del texto */
+  font-family: var(--font-secondary);
+  /* Fuente secundaria */
   font-size: 0.875rem;
   transition: background 0.3s ease;
 }
 
 .genre p {
-  margin: 0; /* Elimina el margen del párrafo */
+  margin: 0;
+  /* Elimina el margen del párrafo */
 }
 
 
@@ -531,15 +553,19 @@ body, html {
 
 .feedback-section {
   position: absolute;
-  top: 10px; /* Posición en la parte superior */
-  right: 10px; /* Alineado a la derecha */
+  top: 10px;
+  /* Posición en la parte superior */
+  right: 10px;
+  /* Alineado a la derecha */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: rgba(56, 56, 59, 0.9); /* Fondo oscuro translúcido */
+  background-color: rgba(56, 56, 59, 0.9);
+  /* Fondo oscuro translúcido */
   padding: 0.5rem;
   border-radius: 0.125rem;
-  z-index: 3; /* Asegurarse de que esté encima de la imagen */
+  z-index: 3;
+  /* Asegurarse de que esté encima de la imagen */
 }
 
 /* Modal de Feedback */
@@ -814,10 +840,13 @@ body, html {
 }
 
 @keyframes pulse-bars {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scaleY(1);
     opacity: 0.7;
   }
+
   50% {
     transform: scaleY(1.5);
     opacity: 1;
@@ -831,7 +860,7 @@ body, html {
     border-right: 2px solid var(--highlight-color);
   }
 
-  .gift-card-details-container{
+  .gift-card-details-container {
     margin-top: -25rem;
   }
 

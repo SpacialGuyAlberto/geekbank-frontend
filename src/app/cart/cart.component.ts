@@ -10,7 +10,6 @@ import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
 import { AuthService } from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { RecommendationsComponent } from "../recommendations/recommendations.component";
 import { Observable, Subject, takeUntil } from "rxjs";
 import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
 import { OrderRequest } from "../models/order-request.model";
@@ -21,6 +20,7 @@ import { PromotionsService } from "../promotions/promotions.service";
 import { Promotion } from "../promotions/Promotion.model";
 import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
 import { PricingService } from "../pricing/pricing.service";
+import { SuggestionsComponent } from "../suggestions/suggestions.component";
 import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
 
 
@@ -32,10 +32,11 @@ import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
     TigoPaymentComponent,
     FormsModule,
     MatIcon,
-    RecommendationsComponent,
     DecimalPipe,
     CardPaymentComponent,
-    ConvertToHnlPipe
+    ConvertToHnlPipe,
+    RouterLink,
+    SuggestionsComponent,
   ],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
@@ -273,10 +274,10 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
           phoneNumber: phoneNumber,
           email: this.emailForKey || '',
           products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId!,
+            kinguinId: item.giftcard.kinguinId || item.cartItem.productId || 0,
             qty: item.cartItem.quantity,
-            price: item.giftcard.priceHNL,
-            name: 'Producto'
+            price: item.giftcard.priceHNL || 0,
+            name: item.giftcard.name || 'Producto'
           })),
           amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
           manual: this.isManualTransaction,

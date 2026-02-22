@@ -2,14 +2,10 @@
   <div class="header">
     <h2>🧩 Gestión de Combos</h2>
     <div class="actions">
-      <button 
-        [class.active]="activeTab === 'list'" 
-        (click)="activeTab = 'list'; initForm()">
+      <button [class.active]="activeTab === 'list'" (click)="activeTab = 'list'; initForm()">
         Ver Lista
       </button>
-      <button 
-        [class.active]="activeTab === 'create'" 
-        (click)="activeTab = 'create'">
+      <button [class.active]="activeTab === 'create'" (click)="activeTab = 'create'">
         {{ isEditMode ? 'Editar Combo' : 'Nuevo Combo' }}
       </button>
     </div>
@@ -28,15 +24,15 @@
           <span class="status" [class.active]="combo.isActive">
             {{ combo.isActive ? 'Activo' : 'Inactivo' }}
           </span>
-          <p class="products-count">{{ combo.productIds?.length || 0 }} productos</p>
-          
+          <p class="products-count">{{ (combo.productIds ? combo.productIds.length : 0) }} productos</p>
+
           <div class="card-actions">
             <button (click)="editCombo(combo)" class="btn-edit">✏️</button>
             <button (click)="deleteCombo(combo.id!)" class="btn-delete">🗑️</button>
           </div>
         </div>
       </div>
-      
+
       <div *ngIf="combos.length === 0" class="empty-state">
         <p>No hay combos creados.</p>
         <button (click)="activeTab = 'create'">Crear el primero</button>

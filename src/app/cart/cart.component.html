@@ -3,57 +3,79 @@
   <canvas id="graphCanvas"></canvas>
 </div>
 
-<div class="cart-container">
-  <h2>Carrito de compras</h2>
-  <div class="cart-content">
+<div class="cart-wrapper">
+  <div class="cart-header">
+    <h2 class="cart-title">Carrito de compras</h2>
+    <p class="cart-subtitle" *ngIf="cartItems && (cartItems.length > 0)">Tienes {{ cartItems.length }} productos en tu
+      carrito</p>
+  </div>
 
-    <div class="cart-items">
-      <ng-container *ngIf="cartItems.length > 0; else emptyCart">
-        <ul>
-          <li *ngFor="let item of cartItems" class="cart-item">
-            <img [src]="item.giftcard.coverImageOriginal" alt="{{ item.giftcard.name }}" class="gift-card-image">
-            <div class="item-info">
-              <h3 class="item-title">{{ item.giftcard.name }}</h3>
-              <div class="item-quantity">
-                <button (click)="decreaseProductQuantity(item)" aria-label="Decrease Quantity">-</button>
-                <span class="quantity-display">{{ item.cartItem.quantity }}</span>
-                <button (click)="incrementProductQuantity(item)" aria-label="Increase Quantity">+</button>
+  <div class="cart-layout">
+    <div class="cart-items-section">
+      <ng-container *ngIf="cartItems && (cartItems.length > 0); else emptyCart">
+        <div class="cart-items-list">
+          <div *ngFor="let item of cartItems" class="cart-item-card">
+            <div class="item-visual">
+              <img [src]="item.giftcard.coverImageOriginal" [alt]="item.giftcard.name" class="item-thumb">
+            </div>
+
+            <div class="item-details">
+              <div class="item-header">
+                <span class="item-platform">{{ item.giftcard.platform }}</span>
+                <h3 class="item-name">{{ item.giftcard.name }}</h3>
               </div>
-              <p class="item-price">{{ ((item.giftcard.price * item.cartItem.quantity) | convertToHnl: exchangeRate) | number:'1.2-2' }} LPS</p>
+
+              <div class="item-controls">
+                <div class="quantity-picker">
+                  <button type="button" (click)="decreaseProductQuantity(item)" class="qty-btn"
+                    aria-label="Decrease Quantity">
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+                  <span class="qty-val">{{ item.cartItem.quantity }}</span>
+                  <button type="button" (click)="incrementProductQuantity(item)" class="qty-btn"
+                    aria-label="Increase Quantity">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+                </div>
+
+                <div class="item-pricing">
+                  <span class="price-val">
+                    {{ ((item.giftcard.price * item.cartItem.quantity) | convertToHnl: exchangeRate) | number:'1.2-2' }}
+                    LPS
+                  </span>
+                </div>
+              </div>
             </div>
+
             <div class="item-actions">
-              <mat-icon (click)="removeCartItem(Number(item.cartItem.productId))">delete</mat-icon>
+              <button type="button" class="remove-btn" (click)="removeCartItem(Number(item.cartItem.productId))"
+                title="Eliminar del carrito">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
-          </li>
-        </ul>
+          </div>
+        </div>
 
-        <div class="total-price-section">
-          <h3>Total Price: {{ totalHNL | number:'1.2-2' }} HNL</h3>
-
-          <div *ngIf="isLoading">
-            <p>Cargando tasa de cambio...</p>
+        <div class="total-summary-card">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ totalHNL | number:'1.2-2' }} HNL</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total a Pagar</span>
+            <span class="total-val">{{ totalHNL | number:'1.2-2' }} HNL</span>
           </div>
 
-          <div *ngIf="conversionError">
-            <p class="error">{{ conversionError }}</p>
-          </div>
-
-          <div class="payment-options">
-            <button
-              class="payment-option-button"
-              (click)="selectOption('TIGO MONEY')"
-              [class.selected]="selectedOption === 'TIGO MONEY'"
-            >
-              <i class="fas fa-mobile-alt fa-lg"></i>
+          <div class="payment-methods-grid">
+            <button type="button" class="method-btn" (click)="selectOption('TIGO MONEY')"
+              [class.active]="selectedOption === 'TIGO MONEY'">
+              <i class="fa-solid fa-mobile-screen-button"></i>
               <span>TIGO MONEY</span>
             </button>
 
-            <button
-              class="payment-option-button"
-              (click)="selectOption('card')"
-              [class.selected]="selectedOption === 'card'"
-            >
-              <i class="fas fa-credit-card fa-lg"></i>
+            <button type="button" class="method-btn" (click)="selectOption('card')"
+              [class.active]="selectedOption === 'card'">
+              <i class="fa-solid fa-credit-card"></i>
               <span>Tarjeta</span>
             </button>
           </div>
@@ -61,120 +83,77 @@
       </ng-container>
 
       <ng-template #emptyCart>
-        <p>Tu carrito está vacío.</p>
+        <div class="empty-state">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <p>Tu carrito está vacío.</p>
+          <a routerLink="/" class="aurora-btn aurora-btn-primary">Explorar Tienda</a>
+        </div>
       </ng-template>
     </div>
 
-    <div class="payment-info">
-      <h3>Información de Pago</h3>
-      <form>
-        <div class="form-group">
-          <label for="email">Correo Electrónico:</label>
-          <input id="email"
-                 name="email"
-                 type="email"
-                 [(ngModel)]="emailForKey"
-                 #emailCtrl="ngModel"
-                 [required]="selectedOption === 'card'"
-                 [pattern]="emailRegex"
-                 (blur)="emailCtrl.control.updateValueAndValidity()">
+    <!-- Checkout Sidebar -->
+    <div class="checkout-sidebar" *ngIf="cartItems && (cartItems.length > 0)">
+      <div class="checkout-card">
+        <h3>Información de Pago</h3>
 
-          <small *ngIf="selectedOption === 'card' &&
-              emailCtrl.touched &&
-              emailCtrl.errors?.['required']"
-                 class="error-message">
-            Ingrese un correo electronico para recibir las claves.
-          </small>
+        <form (ngSubmit)="continueWithOption()" class="checkout-form">
+          <div class="input-group">
+            <label for="email">Correo Electrónico</label>
+            <div class="input-wrapper">
+              <i class="fa-solid fa-envelope input-icon"></i>
+              <input id="email" name="email" type="email" placeholder="tu@correo.com" [(ngModel)]="emailForKey">
+            </div>
+          </div>
 
-          <small *ngIf="selectedOption === 'card' &&
-             !emailErrorMessage"
-                 class="error-message">
-           Escribe tu correo electronico para recibir las claves
-          </small>
-
-          <small *ngIf="selectedOption === 'card' &&
-              emailCtrl.touched &&
-              emailCtrl.errors?.['pattern']"
-                 class="error-message">
-            Formato de correo incorrecto
-          </small>
-
-        </div>
-
-        <form (ngSubmit)="continueWithOption()">
-          <button type="submit"
-                  class="payment-button"
-                  [disabled]="!isPaymentReady()"
-                  [class.ready]="isPaymentReady()"
-          >
-            Continuar con el Pago
+          <button type="submit" class="pay-btn" [disabled]="!isPaymentReady()" [class.can-pay]="isPaymentReady()">
+            Continuar al Pago
+            <i class="fa-solid fa-arrow-right"></i>
           </button>
         </form>
 
+        <div class="divider"></div>
 
-      </form>
-      <div class="discount-section">
-        <label for="discountCode">Código de Descuento:</label>
-        <input type="text" id="discountCode" name="discountCode" [(ngModel)]="promoCode">
-        <button class="discount-button" (click)="checkIfCodeExists(promoCode)">Aplicar Descuento</button>
-        <div *ngIf="!codeExist" >
-          <p
-            class="error-message"
-          >Codigo  de descuento no existe</p>
+        <div class="promo-section">
+          <label for="discountCode">¿Tienes un cupón?</label>
+          <div class="promo-input-group">
+            <input type="text" id="discountCode" name="discountCode" [(ngModel)]="promoCode" placeholder="CÓDIGO123">
+            <button type="button" class="promo-btn" (click)="checkIfCodeExists(promoCode)">Aplicar</button>
+          </div>
+          <p *ngIf="!codeExist && promoCode" class="error-msg">Código inválido</p>
+          <p *ngIf="codeExistBlueprint" class="success-msg">¡Descuento aplicado!</p>
         </div>
-        <div *ngIf="codeExistBlueprint" >
-          <p
-          >{{this.discountReceived}}</p>
+
+        <div class="checkout-footer">
+          <p class="terms-note">
+            Al pagar, aceptas nuestros
+            <a (click)="openTerms()" class="terms-link">Términos y condiciones</a>.
+          </p>
         </div>
       </div>
-
-      <ng-container>
-        <app-tigo-payment
-          *ngIf="showPaymentModal"
-          [amountHNL]="totalHNL"
-          [promo_code]="promoCode"
-          [cartItemsFromCartComponent]="cartItems"
-        ></app-tigo-payment>
-        <div *ngIf="showCardButton">
-          <app-card-payment
-            [totalOrderAmountHNL]="totalHNL"
-            [amount]="totalEUR"
-            [orderDetails]="orderDetails"
-            (paymentSuccess)="onPaymentSuccess($event)"
-            (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">
-          </app-card-payment>
-        </div>
-
-      </ng-container>
-
-      <p class="terms-text">
-        Al hacer clic en "Continuar con el pago" reconozco que he leído y aceptado los
-        <li (click)="openTerms()" sytel="cursor: pointer;"><a target="_blank">Terminos y condiciones de Astralisbank.com</a></li>
-      </p>
     </div>
   </div>
-</div>
 
-<div class="related-products-container">
-  <h2 class="related-products-title">También te pueden interesar</h2>
-  <app-recommendations></app-recommendations>
-</div>
-
-
-<div *ngIf="showDialog" class="dialog-overlay">
-  <div class="dialog">
-    <p>No more items in the cart.</p>
-    <button (click)="closeDialog()">OK</button>
+  <div class="related-section">
+    <h2 class="section-title">También te puede interesar</h2>
+    <app-suggestions></app-suggestions>
   </div>
 </div>
 
-<div class="modal" *ngIf="showCancelledModal">
-  <div class="modal-content">
-    <span class="close" (click)="showCancelledModal = false">&times;</span>
-    <h3>El producto no está disponible ahora.</h3>
-    <p>Trata de comprarlo en unos minutos con tu número de referencia.</p>
-    <button type="button" class="retry-button" (click)="showCancelledModal = false">
-      <i class="fa-solid fa-arrows-rotate"></i> Cerrar
-    </button>
+<app-tigo-payment *ngIf="showPaymentModal" [amountHNL]="totalHNL" [promo_code]="promoCode"
+  [cartItemsFromCartComponent]="cartItems"></app-tigo-payment>
+
+<div *ngIf="showCardButton">
+  <app-card-payment [totalOrderAmountHNL]="totalHNL" [amount]="totalEUR" [orderDetails]="orderDetails"
+    (paymentSuccess)="onPaymentSuccess($event)" (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">
+  </app-card-payment>
+</div>
+
+<div class="modal-overlay" *ngIf="showCancelledModal">
+  <div class="aurora-modal">
+    <span class="close-icon" (click)="showCancelledModal = false">&times;</span>
+    <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+    <h3>Producto no disponible</h3>
+    <p>La llave seleccionada se ha agotado. Intenta de nuevo en unos minutos.</p>
+    <button type="button" class="aurora-btn-primary" (click)="showCancelledModal = false">Entendido</button>
   </div>
 </div>

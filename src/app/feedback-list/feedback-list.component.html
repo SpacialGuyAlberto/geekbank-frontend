@@ -2,7 +2,7 @@
   <!-- Controles superiores -->
   <div class="top-controls">
     <div class="search-bar">
-<!--      <input type="text" placeholder="Buscar feedback..." [(ngModel)]="filterCriteria" (input)="filterFeedbacks()" />-->
+      <!--      <input type="text" placeholder="Buscar feedback..." [(ngModel)]="filterCriteria" (input)="filterFeedbacks()" />-->
       <i class="fas fa-search"></i>
     </div>
   </div>
@@ -13,18 +13,13 @@
     <div class="feedback-list" [ngClass]="{'full-grid': !selectedFeedback}">
       <h2>Feedbacks</h2>
       <div class="feedback-cards-list">
-        <div *ngFor="let feedback of feedbacks"
-             class="feedback-card"
-             (click)="selectFeedback(feedback)"
-             [ngClass]="{'selected' : feedback === selectedFeedback}">
+        <div *ngFor="let feedback of feedbacks" class="feedback-card" (click)="selectFeedback(feedback)"
+          [ngClass]="{'selected' : feedback === selectedFeedback}">
           <div class="feedback-avatar">
             <i class="fas fa-comments"></i>
           </div>
           <div class="feedback-info">
-            <h3 class="feedback-product">{{ feedback.giftCardId }}</h3>
-            <p>{{ feedback.message }}</p>
-            <p>Puntuación: {{ feedback.score }}</p>
-            <p>Usuario: {{ feedback.userId }}</p>
+            <p>Puntuación: {{ feedback['score'] }}</p>
           </div>
         </div>
       </div>
@@ -38,23 +33,19 @@
         <dl>
           <div class="detail-item">
             <dt>Producto:</dt>
-            <dd>{{ selectedFeedback?.giftCardId }}</dd>
+            <dd>{{ selectedFeedback['giftCardId'] }}</dd>
           </div>
           <div class="detail-item">
             <dt>Puntuación:</dt>
-            <dd>{{ selectedFeedback?.score }}</dd>
+            <dd>{{ selectedFeedback['score'] }}</dd>
           </div>
           <div class="detail-item">
             <dt>Mensaje:</dt>
-            <dd>{{ selectedFeedback?.message }}</dd>
-          </div>
-          <div class="detail-item">
-            <dt>Usuario:</dt>
-            <dd>{{ selectedFeedback?.userId }}</dd>
+            <dd>{{ selectedFeedback['message'] }}</dd>
           </div>
           <div class="detail-item">
             <dt>Fecha:</dt>
-<!--            <dd>{{ selectedFeedback?.createdAt | date:'short' }}</dd>-->
+            <!--            <dd>{{ selectedFeedback?.createdAt | date:'short' }}</dd>-->
           </div>
         </dl>
       </div>

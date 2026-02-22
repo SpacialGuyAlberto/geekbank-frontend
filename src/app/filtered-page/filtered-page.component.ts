@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {KinguinGiftCard} from "../kinguin-gift-cards/KinguinGiftCard";
-import {KinguinService} from "../kinguin-gift-cards/kinguin.service";
+import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
+import { KinguinService } from "../kinguin-gift-cards/kinguin.service";
 import { CurrencyPipe, CommonModule, NgForOf, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import {CategoryItemsComponent} from "../components/category-items/category-items.component";
+import { CategoryItemsComponent } from "../components/category-items/category-items.component";
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { CurrencyService} from "../services/currency.service";
-import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
-import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
+import { CurrencyService } from "../services/currency.service";
+import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
+import { DisplayPersistentDiscount } from "../pipes/calculate-displayed-discount.pipe";
 
 @Component({
-    selector: 'app-filtered-page',
-    imports: [
-        CommonModule,
-        NgForOf,
-        NgIf,
-        CurrencyPipe,
-        RouterLink,
-        CategoryItemsComponent,
-        ConvertToHnlPipe,
-        DisplayPersistentDiscount
-    ],
-    templateUrl: './filtered-page.component.html',
-    styleUrls: ['./filtered-page.component.css']
+  selector: 'app-filtered-page',
+  imports: [
+    CommonModule,
+    NgForOf,
+    NgIf,
+    CurrencyPipe,
+    CategoryItemsComponent,
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount
+  ],
+  templateUrl: './filtered-page.component.html',
+  styleUrls: ['./filtered-page.component.css']
 })
 export class FilteredPageComponent implements OnInit {
   selectedCategory: string | null = null;
@@ -82,7 +81,7 @@ export class FilteredPageComponent implements OnInit {
     private route: ActivatedRoute,
     private kinguinService: KinguinService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

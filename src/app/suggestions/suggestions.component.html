@@ -1,5 +1,5 @@
 <div class="recommendations-container">
-  <!-- Indicador de carga personalizado con barras multicolor neón -->
+  <!-- Loading Indicator -->
   <div *ngIf="isLoading" class="loading-indicator">
     <div class="bars">
       <div class="bar bar1"></div>
@@ -10,26 +10,25 @@
     </div>
   </div>
 
-  <!-- Contenido de recomendaciones que se muestra cuando no está cargando -->
-  <div *ngIf="!isLoading" class="recommendations">
-    <div class="recommendations-gift-cards-container">
-      <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+  <!-- Recommendations Grid -->
+  <div *ngIf="!isLoading" class="recommendations-grid">
+    <div *ngFor="let card of giftCards" class="gift-card" (click)="viewDetails(card)">
+      <div class="image-container">
+        <span class="discount-percentage">{{ card.randomDiscount || 25 }}% OFF</span>
         <img [src]="card.coverImageOriginal" alt="{{ card.name }}" class="gift-card-image">
-        <div class="gift-card-content">
-          <!-- Mostrar el descuento dinámico -->
-          <span class="discount-percentage">{{ card.randomDiscount}}% OFF</span>
-          <h3 class="gift-card-title">{{ card.name }}</h3>
-          <span class="platform">{{card.platform}}</span>
-          <div class="gift-card-price">
-            <!-- Precio original calculado -->
-            <span class="original-price">
-          {{ (card.priceHNL * (1 + (card.randomDiscount || 0) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
-            <!-- Precio con descuento -->
-            <span class="discounted-price">
-          {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
-        </span>
-          </div>
+      </div>
+
+      <div class="gift-card-content">
+        <span class="platform">{{ card.platform }}</span>
+        <h3 class="gift-card-title">{{ card.name }}</h3>
+
+        <div class="gift-card-price">
+          <span class="original-price">
+            {{ (card.priceHNL * (1 + (card.randomDiscount || 25) / 100)) | currency:'HNL':'symbol':'1.2-2' }}
+          </span>
+          <span class="discounted-price">
+            {{ card.priceHNL | currency:'HNL':'symbol':'1.2-2' }}
+          </span>
         </div>
       </div>
     </div>
