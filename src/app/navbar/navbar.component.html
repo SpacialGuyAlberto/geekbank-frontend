@@ -45,6 +45,12 @@
   </div>
 </nav>
 
+<!-- Mobile search bar – only visible on small screens -->
+<div class="mobile-search-bar" *ngIf="isSmallScreen && showNavbar" [class.is-scrolled]="isScrolled">
+  <app-search-bar (searchResults)="handleSearchResults($event)" (isFreeFireSearch)="handleFreeFireSearch($event)">
+  </app-search-bar>
+</div>
+
 <div class="navbar-categories" *ngIf="!isSmallScreen && showNavbar" [class.is-scrolled]="isScrolled">
   <div class="categories-content-wrapper">
     <div class="category-menu-container">

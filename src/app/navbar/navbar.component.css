@@ -288,3 +288,35 @@
     display: none;
   }
 }
+
+/* ─── Mobile Search Bar ──────────────────────────────────────────────── */
+.mobile-search-bar {
+  display: none;
+  /* hidden by default, shown only on mobile via media query */
+  position: fixed;
+  top: var(--topbarH, 76px);
+  left: 0;
+  right: 0;
+  z-index: 998;
+  padding: 8px 1rem;
+  background: rgba(10, 12, 20, 0.5);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid var(--stroke);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-search-bar.is-scrolled {
+  top: 0;
+  background: rgba(4, 5, 11, 0.88);
+}
+
+@media (max-width: 1024px) {
+  .mobile-search-bar {
+    display: flex;
+    align-items: center;
+  }
+
+  .mobile-search-bar app-search-bar {
+    flex: 1;
+  }
+}
