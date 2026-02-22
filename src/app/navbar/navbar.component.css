@@ -1,893 +1,290 @@
-/* src/app/components/navbar/navbar.component.css */
-
-/* Tamaño base de fuente para rem */
-html {
-  font-size: 16px; /* 1rem = 16px */
-}
+/* Navbar Refresh - Aurora Design System */
 
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem; /* 16px 32px */
-  background-color: #0a0a15;
-  border-bottom: 0.125rem solid #0e1c28; /* 2px */
-  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.7); /* 4px 20px */
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-sizing: border-box;
-  flex-direction: row;
-}
-
-/* Pestañas de navegación de categorías */
-.navbar-categories {
-  position: fixed; /* Mantener las pestañas fijas */
-  top: 4.5rem; /* Ajustar según la altura del navbar */
-  width: 100%;
-  background: rgba(6, 50, 50, 0.7); /* Fondo translúcido */
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  z-index: 999; /* Debe estar justo debajo del navbar */
-}
-
-.nav-category {
-  color: #a0e4ff;
-  font-size: 1rem; /* 16px */
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.nav-category:hover {
-  color: #99ccff;
-  transform: scale(1.1);
-}
-
-.tabs-menu {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 0.5rem 0;
-  gap: 0.5rem; /* Espacio entre pestañas */
-  border-radius: 0.5rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.tab-button {
-  background: transparent;
-  color: #B5CDE2FF; /* Color de texto claro */
-  padding: 0.75rem 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  border: none;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border-radius: 1rem;
-}
-
-.tab-button i {
-  font-size: 1.2rem;
-  margin-right: 0.5rem;
-  color:  #88D66C; /* Iconos con color amarillo */
-}
-
-.tab-button::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 3px;
-  background:
-
-  rgba(222, 218, 211, 0.8) 60%; /* Dark Goldenrod */
-  transition: width 0.3s ease, left 0.3s ease;
-}
-
-.tab-button.active::after {
-  width: 60%;
-  left: 20%;
-}
-
-.tab-button:hover {
-  background: rgba(255, 255, 255, 0.2); /* Hover translúcido */
-  color: #88D66C; /* Texto dorado en hover */
-  border-radius: 1rem;
-}
-
-.tab-button.active {
-  color:  #88D66C; /* Color activo dorado */
-}
-
-.nav-category {
-  display: none; /* Ocultar las pestañas antiguas */
-}
-
-/* Mostrar las pestañas mejoradas en el navbar */
-.navbar-categories .tabs-menu {
-  display: flex;
-}
-
-.navbar-categories .tab-button {
-  display: flex;
-}
-
-.navbar-user-details  {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem; /* 16px 32px */
-  background: var(--navbar-user-details-bg-color);
-  border-bottom: 0.125rem solid #0e1c28; /* 2px */
-  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.7); /* 4px 20px */
-  position: fixed;
-  width: 100%;
-  top: 0;
-  z-index: 1000;
-  box-sizing: border-box;
-}
-
-/* Logo */
-.navbar-brand {
-  flex: 0 0 auto;
-  font-size: 2rem; /* 32px */
-  color: #a0e4ff;
-  cursor: pointer;
-}
-
-.navbar-brand .app-name {
-  font-weight: bold;
-}
-
-/* Barra de búsqueda */
-.navbar-center {
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: center;
-}
-
-.navbar-center app-search-bar {
-  width: 100%;
-  max-width: 37.5rem; /* 600px */
-}
-
-/* Enlaces del Navbar */
-.navbar-links {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  gap: 1.5rem; /* 24px - increased spacing between elements */
-}
-
-.navbar-links a,
-.navbar-links i {
-  color: #a0e4ff;
-  font-size: 1.2rem; /* 19.2px */
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar-links a:hover,
-.navbar-links i:hover {
-  color: #99ccff;
-  transform: scale(1.5);
-}
-
-/* Specific rule for login and register links */
-.navbar-links a.nav-link:hover {
-  transform: scale(1.3);
-}
-
-/* Íconos */
-.clickable-icon {
-  cursor: pointer;
-  /*background: #E1E6F1;*/
-  /*-webkit-background-clip: text;*/
-  /*-webkit-text-fill-color: transparent;*/
-  /*text-decoration: none;*/
-  /*display: flex;*/
-  /*align-items: center;*/
-  /*width: 150%;*/
-  /*transition: transform 0.3s ease, bakground 1s ease;*/
-}
-
-.fa-magnifying-glass {
-  background: #E1E6F1;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  width: 150%;
-  transition: transform 0.3s ease, bakground 1s ease;
-}
-
-.clickable-icon:hover {
-  transform: scale(1.5);
-  background: var(--bell-icon-hover-default);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-/* Carrito */
-.cart-icon-container {
-  position: relative;
-  list-style: none;
-}
-
-.cart-icon-container a {
-  color: #a0e4ff;
-}
-
-.cart-icon-container a:hover {
-  color: #99ccff;
-}
-
-.none {
-  visibility: collapse;
-}
-
-.cart-count {
-  position: absolute;
-  top: -0.5rem; /* -8px */
-  right: -0.625rem; /* -10px */
-  background-color: #eb3678;
-  color: white;
-  font-size: 0.75rem; /* 12px */
-  padding: 0.125rem 0.375rem; /* 2px 6px */
-  border-radius: 50%;
-}
-
-/* Modal de búsqueda */
-.search-modal {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.search-modal-content {
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
-  padding: 2rem;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-}
-
-.close-modal {
-  position: absolute;
-  top: 0.625rem; /* 10px */
-  right: 0.9375rem; /* 15px */
-  color: #ffffff;
-  font-size: 2rem; /* 32px */
-  cursor: pointer;
-}
-
-/* Modal de menú */
-.menu-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro con opacidad */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  animation: fadeIn 0.3s ease; /* Animación de entrada */
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.menu-modal-content {
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
-  padding: 2rem;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
-  width: 90%;
-  max-width: 400px;
-  position: relative;
-}
-
-.menu-modal-content ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.menu-modal-content a {
-  color: #E1E6F1;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  transition: color 0.3s ease;
-}
-
-.menu-modal-content ul li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-}
-
-.menu-modal-content ul li a {
-  background: #E1E6F1;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  transition: transform 0.3s ease, bakground 1s ease;
-}
-
-.menu-modal-content ul li a:hover {
-  background: var(--bell-icon-hover-default);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.close-modal {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
-  color: #FFD700;
-  cursor: pointer;
-  transition: transform 0.5s ease, color 0.5s ease;
-}
-
-.close-modal:hover {
-  transform: scale(1.5);
-  color: red;
-}
-
-.menu-links {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem; /* 16px */
-  margin-top: 1rem;
-}
-
-.menu-link {
-  color: #a0e4ff;
-  font-size: 1.2rem; /* 19.2px */
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-  gap: 1rem;
-  display: flex;
-  align-items: center;
-}
-
-.sub-menu {
-  color: #a0e4ff;
-  font-size: 1.2rem; /* 19.2px */
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
-  gap: 1rem;
-  display: flex;
-  flex-direction: column; /* Apila el botón y el submenú verticalmente */
-  align-items: flex-start; /* Alinea el submenú a la izquierda */
-  width: 100%;
-
-  /* Hacerlo scrolleable */
-  max-height: 300px; /* Altura máxima antes de que aparezca el scroll */
-  overflow-y: auto; /* Activa el scroll vertical si es necesario */
-  scrollbar-width: thin; /* Estiliza el scroll en navegadores compatibles */
-  scrollbar-color: #a0e4ff transparent; /* Colores para el scroll */
-}
-
-/* Estilos para el scrollbar en navegadores basados en WebKit */
-.sub-menu::-webkit-scrollbar {
-  width: 8px; /* Ancho del scroll */
-}
-
-.sub-menu::-webkit-scrollbar-thumb {
-  background-color: #a0e4ff; /* Color del "pulgar" del scroll */
-  border-radius: 4px; /* Bordes redondeados */
-}
-
-.sub-menu::-webkit-scrollbar-track {
-  background-color: transparent; /* Fondo del track del scroll */
-}
-.menu-link:hover {
-  color: #99ccff;
-  animation: starGlow 3s infinite alternate;
-  transform: scale(1.3);
-}
-
-.sub-menu button {
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
-  color: #a0e4ff;
-  font-size: 1.2rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  width: 100%;
-  justify-content: space-between;
-}
-
-
-.sub-menu button[aria-expanded="true"] i.fa-chevron-up {
-  transform: rotate(180deg); /* Rotar el icono cuando el menú está expandido */
-}
-
-.submenu {
-  width: 100%;
-  margin-top: 0.5rem;
-  padding: 0; /* Sin padding adicional */
-  background: rgba(42, 40, 40, 0.1); /* Fondo translúcido */
-  color: #a0e4ff;
-  border-radius: 0.5rem;
-  flex-direction: column;
-}
-
-.submenu li {
-  padding: 0.5rem 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.submenu li:last-child {
-  border-bottom: none;
-}
-
-
-@keyframes starGlow {
-  0% {
-    color: #00d4ff;
-  }
-  100% {
-    color: #1E90FF;
-  }
-}
-/* Botón de hamburguesa */
-.navbar-hamburger {
-  display: none; /* Oculto por defecto */
-}
-
-.navbar-hamburger i {
-  color: #a0e4ff;
-  font-size: 1.5rem; /* 24px */
-  cursor: pointer;
-  transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar-hamburger i:hover {
-  color: #99ccff;
-  transform: scale(1.2);
-}
-
-.tab-button.dropdown-toggle {
-  background-color: rgba(6, 50, 50, 0.9); /* Fondo más oscuro */
-  color: #a0e4ff; /* Color de texto */
-  border-radius: 0.5rem; /* Bordes redondeados */
-  padding: 0.75rem 1.5rem;
-  position: relative;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde claro */
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-  width: auto;
-}
-
-.tab-button.dropdown-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.2); /* Fondo translúcido */
-  color: #88D66C; /* Color de texto en hover */
-  transform: scale(1.05); /* Efecto de crecimiento */
-}
-
-
-app-category-items {
-  position: absolute;
-  top: 100%; /* Justo debajo de la lista */
-  left: 0;
-  background-color: #111; /* Combina con el diseño */
-  border-radius: 5px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  margin-top: 5px; /* Espacio entre el dropdown y el cuadro */
-  z-index: 15;
-  padding: 10px;
-  min-width: 300px; /* Ajusta el ancho según el contenido */
-}
-
-app-category-items .card {
-  background-color: #222; /* Fondo oscuro para las tarjetas */
-  border: none;
-  border-radius: 5px;
-  margin: 10px 0;
-  padding: 10px;
-  color: #fff;
-}
-
-app-category-items .card img {
-  max-width: 100%;
-  border-radius: 5px;
-}
-
-app-category-items .card h3 {
-  font-size: 16px;
-  margin: 10px 0 5px;
-}
-
-app-category-items .card p {
-  font-size: 14px;
-  color: #aaa;
-}
-
-
-.cart-modal {
-  position: absolute;
-  top: 100%;
   right: 0;
-  background: rgba(43, 43, 43, 0.95); /* Fondo oscuro con transparencia */
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  width: 300px;
-  padding: 1rem;
-  margin-top: 0.5rem;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  height: var(--topbarH, 76px);
   z-index: 1000;
-}
-
-.cart-item {
   display: flex;
   align-items: center;
-  margin-bottom: 1rem;
-}
-
-.cart-item-image {
-  width: 60px;
-  height: 60px;
-  border-radius: 8px;
-  margin-right: 1rem;
-  object-fit: cover;
-  border: 1px solid #444;
-}
-
-.cart-item-details {
-  flex: 1;
-}
-
-.cart-item-details p {
-  margin: 0;
-  font-size: 0.875rem;
-}
-
-.cart-item-details p:first-child {
-  font-weight: bold;
-  font-size: 1rem;
-  color: #f0f0f0;
-}
-
-.cart-item-details p:last-child {
-  color: #b5b5b5;
-}
-
-.cart-modal-footer {
-  display: flex;
   justify-content: space-between;
+  padding: 0 2rem;
+  background: rgba(10, 12, 20, 0.4);
+  border-bottom: 1px solid var(--stroke);
+  backdrop-filter: blur(16px) saturate(1.2);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navbar.is-scrolled {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navbar-container {
+  width: 100%;
+  max-width: var(--max, 1220px);
+  margin: 0 auto;
+  display: flex;
   align-items: center;
-  margin-top: 1rem;
+  justify-content: space-between;
 }
 
-.btn-view-cart {
-  background: linear-gradient(45deg, #1e90ff, #00c3ff);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
+/* Brand styling */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.3s ease;
 }
 
-.btn-view-cart:hover {
-  background: linear-gradient(45deg, #0d4f8b, #00bfff);
-  transform: scale(1.05);
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: radial-gradient(14px 14px at 30% 30%, rgba(255, 255, 255, 0.34), transparent 60%),
+    radial-gradient(18px 18px at 70% 70%, rgba(10, 132, 255, 0.26), transparent 62%),
+    radial-gradient(26px 26px at 40% 80%, rgba(191, 90, 242, 0.22), transparent 62%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
 }
 
-.cart-total {
-  font-weight: bold;
-  color: #1fd166;
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-weight: 860;
+  letter-spacing: 0.2px;
+  color: var(--text);
   font-size: 1.25rem;
 }
 
-.empty-cart-message {
-  text-align: center;
-  font-size: 0.875rem;
-  color: #b5b5b5;
-  padding: 1rem 0;
+.brand-tag {
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.close-modal-btn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1.5rem;
+/* Navigation Links */
+.navbar-center {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.78);
+  padding: 10px 14px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+  font-weight: 500;
   cursor: pointer;
-  transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  background: transparent;
 }
 
-.close-modal-btn:hover {
-  color: #ff6f61;
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
 }
 
-
-/* Responsividad */
-@media (max-width: 48rem) { /* 768px */
-  .navbar-center {
-    display: none;
-  }
-
-  .bell-menu-container {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .navbar-links {
-    display: none;
-  }
-
-  .navbar-hamburger {
-    display: block;
-  }
-
-  .navbar {
-    padding: 0.5rem 1rem; /* 8px 16px */
-  }
-
-  .navbar-brand {
-    font-size: 1.5rem; /* 24px */
-  }
-
-  .navbar-categories {
-    top: 3.5rem; /* Reducir si el navbar es más pequeño */
-  }
-
-  .tabs-menu {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .tab-button {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 0.5rem 1rem;
-  }
-
-
-  .tab-button.dropdown-toggle {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
+.nav-link.active {
+  background: rgba(10, 132, 255, 0.1);
+  color: var(--blue);
+  border: 1px solid rgba(10, 132, 255, 0.2);
 }
 
-/* src/app/components/navbar/navbar.component.css */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
 
-/* ... otros estilos existentes ... */
+.icon-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--stroke);
+}
 
-/* Contenedor del dropdown con posición relativa */
+/* Right Section */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.btn-auth {
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 10px 18px;
+  border-radius: 16px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+}
+
+.btn-auth:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.btn-auth.primary {
+  border-color: rgba(10, 132, 255, 0.55);
+  background: radial-gradient(140% 180% at 20% 10%, rgba(10, 132, 255, 0.22), rgba(255, 255, 255, 0.05));
+}
+
+/* Sticky Categories Bar */
+.navbar-categories {
+  position: fixed;
+  top: var(--topbarH, 76px);
+  left: 0;
+  right: 0;
+  height: 4.5rem;
+  z-index: 999;
+  background: rgba(10, 12, 20, 0.3);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--stroke);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+}
+
+.navbar-categories.is-scrolled {
+  top: 0;
+  background: rgba(4, 5, 11, 0.85);
+  height: 4rem;
+  box-shadow: var(--shadow2);
+}
+
+.categories-content-wrapper {
+  width: 100%;
+  max-width: var(--max, 1220px);
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.category-menu-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sub-navbar-search {
+  flex: 1;
+  max-width: 500px;
+}
+
+/* Icons */
+.icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+/* Dropdown Refinements */
 .dropdown {
   position: relative;
 }
 
-/* Estilos del contenido del dropdown */
 .dropdown-content {
-  position: absolute;
-  top: 100%; /* Justo debajo del botón */
-  left: 0;
-  min-width: 400px; /* Asegura un ancho mínimo */
-  width: auto; /* Permite que el contenido interno defina el ancho */
-  background-color: #111; /* Fondo oscuro */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  display: flex; /* Flexbox para diseño horizontal */
-  flex-wrap: nowrap; /* Evita que los elementos bajen a una nueva línea */
-  padding: 15px;
-  box-sizing: border-box;
-  overflow: hidden; /* Evita que los elementos se desborden */
-}
-
-
-
-
-/* Contenedor Scrollable para las Categorías */
-.dropdown-items {
-  max-height: 300px; /* Altura máxima con scrollbar */
-  overflow-y: auto; /* Activa el scroll vertical */
-  flex: 0 0 200px; /* Fija el ancho a 200px */
-  padding-right: 15px; /* Espacio para el scrollbar */
-}
-
-
-/* Estilos de los enlaces dentro del dropdown */
-.dropdown-items a {
-  display: block;
-  padding: 8px 15px;
-  color: #B5CDE2FF;
-  text-decoration: none;
-  font-size: 14px;
-  transition: background-color 0.3s;
-  flex: 1;
-}
-
-.dropdown-items a:hover {
-  background-color: #444; /* Color de fondo al pasar el ratón */
-}
-
-/* Estilos para el componente de items de categoría */
-/* Contenedor de app-category-items */
-.app-category-items {
-  position: relative; /* Relativo al contenedor principal */
-  margin-left: 15px; /* Separación desde el scrollbar */
-  background-color: #111; /* Fondo oscuro */
-  border-radius: 5px;
-  padding: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 10;
-  min-width: 300px; /* Define un ancho mínimo */
-  flex: 1; /* Ocupa el espacio restante disponible */
-  display: block; /* Asegura que se renderice correctamente */
-}
-
-
-
-.dropdown-content:hover .app-category-items {
-  display: block;
-}
-
-
-
-.dropdown-items::-webkit-scrollbar {
-  width: 8px;
-}
-
-.dropdown-items::-webkit-scrollbar-track {
-  background: #2a2a2a;
-  border-radius: 4px;
-}
-
-.dropdown-items::-webkit-scrollbar-thumb {
-  background-color: #555;
-  border-radius: 4px;
-}
-
-
-.dropdown-content, .app-category-items {
-  box-sizing: border-box;
-}
-
-
-.app-category-items {
-
-  margin-top: 0;
-}
-
-/* src/app/components/navbar/navbar.component.css */
-
-/* Asegura que el contenedor de la barra de búsqueda es relativo para el posicionamiento absoluto del dropdown */
-.navbar-center {
-  position: relative;
-}
-
-/* Estilos adicionales para el dropdown */
-.search-results-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-  max-height: 400px;
-  overflow-y: auto;
+  min-width: 240px;
+  margin-top: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.search-results-dropdown .gift-card-item {
-  padding: 10px;
-  transition: background-color 0.3s;
+.dropdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.search-results-dropdown .gift-card-item:hover {
-  background-color: #f1f1f1;
+.dropdown-items .nav-link {
+  width: 100%;
+  justify-content: flex-start;
 }
 
-.no-results {
-  padding: 10px;
-  text-align: center;
-  color: #888;
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--pink);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #070b1b;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.icon-btn-wrapper {
+  position: relative;
+}
 
-
-
-@media (max-width: 30rem) { /* 480px */
-  .navbar-links a,
-  .navbar-links i {
-    font-size: 1rem; /* 16px */
-  }
-
-  .navbar-brand {
-    font-size: 1.2rem; /* 19.2px */
-  }
-
-  .badge {
-    top: -0.3125rem; /* -5px */
-    right: -0.625rem; /* -10px */
-    padding: 0.125rem 0.375rem; /* 2px 6px */
-    font-size: 0.75rem; /* 12px */
-  }
-
-  .menu-modal-content {
-    max-width: 20rem; /* 320px */
-  }
-
-  .menu-link {
-    font-size: 1rem; /* 16px */
-  }
-
-  .tab-button {
-    font-size: 0.9rem; /* Reducir tamaño de fuente */
-    padding: 0.5rem 1rem;
-  }
-
-  .tab-button i {
-    font-size: 1rem;
-    margin-right: 0.25rem;
-  }
-  .cart-icon-container {
-    position: relative;
-    list-style: none;
-    font-size: 1.3rem;
-  }
-
-  .fa-magnifying-glass {
-    font-size: 1.3rem;
-
-    background: #99ccff;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-decoration: none;
-    display: flex;
-    margin-bottom: 0.2rem;
-    align-items: center;
-    transition: transform 0.3s ease, bakground 1s ease;
+/* Mobile Responsive */
+@media (max-width: 1024px) {
+  .navbar-center {
+    display: none;
   }
 }

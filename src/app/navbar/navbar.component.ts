@@ -1,7 +1,7 @@
 // src/app/components/navbar/navbar.component.ts
-import {Component, OnInit, OnDestroy, HostListener} from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { Router, RouterLink, ActivatedRoute, RouterModule, NavigationEnd } from '@angular/router';
-import {AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf} from '@angular/common';
+import { AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { CartService } from '../cart/cart.service';
 import { FormsModule } from '@angular/forms';
@@ -16,45 +16,52 @@ import { NotificationBellComponent } from "../notification-bell/notification-bel
 import { SharedService } from "../services/shared.service";
 import { User } from "../user-details/User";
 import { BalanceComponent } from "../balance/balance.component";
-import {AuthService} from "../services/auth.service";
+import { AuthService } from "../services/auth.service";
 import { Store } from "@ngrx/store";
 import { selectUser, selectIsAuthenticated } from "../state/auth/auth.selectors";
 import { AppState } from "../app.state";
-import {loadUserFromSession, logout} from "../state/auth/auth.actions";
-import {user} from "@angular/fire/auth";
-import {loadUser} from "../state/user/user.actions";
-import {CategoryItemsComponent} from "../components/category-items/category-items.component";
-import {CartItemWithGiftcard} from "../cart/CartItem";
-import {SearchStateService} from "../services/search-state.service";
-import {Transaction} from "../transactions/transaction.model";
+import { loadUserFromSession, logout } from "../state/auth/auth.actions";
+import { user } from "@angular/fire/auth";
+import { loadUser } from "../state/user/user.actions";
+import { CategoryItemsComponent } from "../components/category-items/category-items.component";
+import { CartItemWithGiftcard } from "../cart/CartItem";
+import { SearchStateService } from "../services/search-state.service";
+import { Transaction } from "../transactions/transaction.model";
 
 
 @Component({
-    selector: 'app-navbar',
-    imports: [
-        RouterLink,
-        NgIf,
-        MatIconModule,
-        FormsModule,
-        RouterModule,
-        TranslateModule,
-        SearchBarComponent,
-        NgClass,
-        NotificationBellComponent,
-        BalanceComponent,
-        AsyncPipe,
-        NgForOf,
-        CategoryItemsComponent,
-        CurrencyPipe,
-    ],
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.css']
+  selector: 'app-navbar',
+  imports: [
+    RouterLink,
+    NgIf,
+    MatIconModule,
+    FormsModule,
+    RouterModule,
+    TranslateModule,
+    SearchBarComponent,
+    NgClass,
+    NotificationBellComponent,
+    BalanceComponent,
+    AsyncPipe,
+    NgForOf,
+    CategoryItemsComponent,
+    CurrencyPipe,
+  ],
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
+  isScrolled: boolean = false;
+
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 50;
+  }
+
   genres: { key: string; label: string, icon?: string }[] = [
-    { key: 'Action', label: 'Action', icon: "fa-solid fa-plane"},
-    { key: 'Adventure', label: 'Adventure', icon: "fa-brands fa-space-awesome"},
+    { key: 'Action', label: 'Action', icon: "fa-solid fa-plane" },
+    { key: 'Adventure', label: 'Adventure', icon: "fa-brands fa-space-awesome" },
     { key: 'Anime', label: 'Anime' },
     { key: 'Casual', label: 'Casual' },
     { key: 'Co-op', label: 'Co op' },
@@ -109,7 +116,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   selectedGenre: string | null = null;
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
-  role : string | undefined = '';
+  role: string | undefined = '';
   user$: Observable<User | null>;
   isAuthenticated$: Observable<boolean | null>;
   isDropdownHovered: boolean = false;
@@ -118,7 +125,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   cartItems: CartItemWithGiftcard[] = [];
   isFreeFireSearchActive: boolean = false;
   isSearchMode: boolean = false;
-  isSearch: Subscription | null =  null;
+  isSearch: Subscription | null = null;
 
   private subscriptions: Subscription = new Subscription();
   private currentTransaction: Transaction | undefined = undefined;
@@ -338,7 +345,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  countCartItems(){
+  countCartItems() {
     this.cartService.loadCartItemCountFromServer();
 
     // Escucha cambios en el conteo de ítems

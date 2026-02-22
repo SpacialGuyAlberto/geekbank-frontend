@@ -1,70 +1,76 @@
-/* Contenedor general */
+/* Search Bar Refresh - Aurora Design System */
+
 .search-bar {
-  position: relative;
   display: flex;
   align-items: center;
-  border-radius: 25px;
-  overflow: hidden;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.14));
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.88);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-  background: transparent; /* Fondo del contenedor principal transparente */
 }
 
-/* Fondo desenfocado en un elemento separado */
-.search-bar-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  background: rgba(255, 255, 255, 0.1);
-  z-index: -1; /* Se ubica detrás del input */
+.search-bar:focus-within {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(10, 132, 255, 0.35);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
-/* Estilos del input */
-.search-bar input[type="text"] {
+.search-input {
   flex: 1;
-  padding: 10px 20px;
+  background: transparent;
   border: none;
-  outline: none;
-
-  /* Fondo sólido o transparente sin desenfoque */
-  background: rgba(0, 0, 0, 0.5);
-  color: #ffffff; /* Texto blanco */
-  -webkit-text-fill-color: #ffffff; /* Forzar el color en iOS */
-
-  font-size: 1.2rem;
-  font-family: 'Courier New', monospace;
-  position: relative; /* Asegura que esté sobre el fondo desenfocado */
-  z-index: 1; /* Por encima del fondo */
-  border-radius: 25px;
-}
-
-.search-bar input[type="text"]::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
-}
-
-.search-bar input[type="text"]:focus {
-  border: none;
-  outline: none;
-}
-
-/* Botón de cerrar (limpiar texto) */
-.search-bar .close-button {
-  position: relative;
-  z-index: 1;
-  background: none;
-  border: none;
+  border-radius: 0;
+  padding: 8px 12px;
   color: #ffffff;
-  font-size: 1.2rem;
-  cursor: pointer;
-  margin-right: 10px;
+  font-size: 14.5px;
+  outline: none;
+  font-family: inherit;
 }
 
-.search-bar .close-button:hover {
-  color: rgba(255, 106, 0, 0.9);
+.search-input::placeholder {
+  color: var(--muted, rgba(255, 255, 255, 0.66));
+}
+
+.search-button {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(10, 132, 255, 0.55);
+  background: radial-gradient(140% 180% at 20% 10%, rgba(10, 132, 255, 0.22), rgba(255, 255, 255, 0.05));
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.search-button:hover {
+  background: radial-gradient(140% 180% at 20% 10%, rgba(10, 132, 255, 0.35), rgba(255, 255, 255, 0.08));
+  border-color: var(--blue, #0a84ff);
+  transform: scale(1.05);
+}
+
+/* Keyboard hint styling for premium feel */
+.kbd-hint {
+  display: flex;
+  gap: 6px;
+  opacity: 0.85;
+  margin-right: 8px;
+}
+
+.kbd {
+  font-size: 11px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(0, 0, 0, 0.22);
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }

@@ -1,58 +1,69 @@
-/* Layout Principal */
+/* Layout Principal (Snap Your Date Aesthetic) */
 .admin-dashboard {
   display: flex;
   height: 100vh;
   position: relative;
-  scrollbar-width: none;
+  background-color: var(--primary-bg-color);
 }
 
 .sidebar {
-  width: 15rem;
-  background-color: #333;
-  padding: 1.25rem;
+  width: 18rem;
+  background-color: var(--secondary-bg-color);
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
   z-index: 1000;
+  border-right: 1px solid var(--divider-color);
+  backdrop-filter: blur(10px);
 }
 
 .sidebar ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
-  margin: 1.25rem 0;
+  margin: 0.75rem 0;
 }
 
 .sidebar a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 1.125rem;
+  color: var(--text-subtle);
+  font-size: 0.95rem;
+  font-weight: 600;
   display: flex;
   align-items: center;
-  padding: 0.625rem;
-  border-radius: 0.3125rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  padding: 0.85rem 1.25rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .sidebar a i {
-  margin-right: 0.625rem;
-  font-size: 1.25rem;
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+  opacity: 0.7;
 }
 
 .sidebar a:hover {
-  background-color: #fbcf49;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
 }
 
 .sidebar a.active {
-  background: linear-gradient(90deg, rgba(255, 87, 34, 1) 0%, rgba(255, 193, 7, 1) 50%);
+  background-color: var(--accent-color);
   color: #ffffff;
-  box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-/* Contenedor de Contenido y Footer */
+.sidebar a.active i {
+  opacity: 1;
+}
+
+/* Contenedor de Contenido */
 .main-wrapper {
   display: flex;
   flex-direction: column;
@@ -62,173 +73,99 @@
 
 .main-content {
   flex-grow: 1;
-  padding: 1.25rem;
-  background-color: #333;
+  padding: 3rem;
+  background-color: var(--primary-bg-color);
   overflow-y: auto;
-  scrollbar-width: none;
 }
 
-/* Footer */
-.footer {
-  background-color: #222;
-  color: #E1E6F1;
-  text-align: center;
-  padding: 1rem;
-  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
-}
-
-/* Botón de Hamburguesa */
+/* Hamburger & Mobile */
 .hamburger-button {
-  display: none; /* Oculto por defecto */
-  background: transparent;
-  border: none;
-  color: #E1E6F1;
-  font-size: 1.5rem;
+  display: none;
+  background: var(--secondary-bg-color);
+  border: 1px solid var(--divider-color);
+  color: #ffffff;
+  padding: 0.75rem;
+  border-radius: 999px;
   cursor: pointer;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1100; /* Asegura que esté encima del modal */
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1100;
 }
 
-/* Modal del Menú */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 16rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger-button {
+    display: block;
+  }
+
+  .sidebar {
+    display: none;
+    /* In a real app, this would be a sliding menu */
+  }
+
+  .main-content {
+    padding: 1.5rem;
+  }
+}
+
+/* Glass Modals */
 .modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Fondo semi-transparente */
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2000;
 }
 
 .modal-content {
-  background: rgba(255, 255, 255, 0.1); /* Fondo translúcido */
-  padding: 2rem;
-  border-radius: 1rem;
-  backdrop-filter: blur(10px); /* Efecto vidrioso */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  padding: 2.5rem;
+  border-radius: 1.5rem;
   width: 90%;
-  max-width: 400px;
-  position: relative;
-}
-
-.close-button {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 1.5rem;
-  color: #FFD700;
-  cursor: pointer;
+  max-width: 440px;
+  box-shadow: var(--box-shadow-glass);
 }
 
 .modal-content h2 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #FF6EC7; /* Títulos en rosa psicodélico */
-  text-shadow: 0 0 10px rgba(255, 110, 199, 0.7); /* Sombra de texto brillante */
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  color: #ffffff;
+  letter-spacing: -0.01em;
 }
 
 .modal-content ul {
   list-style: none;
   padding: 0;
-  margin: 0;
 }
 
 .modal-content ul li {
-  padding: 0.75rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.modal-content ul li:last-child {
+  border-bottom: none;
 }
 
 .modal-content ul li a {
-  color: #E1E6F1;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  transition: color 0.3s ease;
+  color: var(--text-subtle);
+  padding: 1rem 0;
+  display: block;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .modal-content ul li a:hover {
-  color: #FFD700;
-}
-
-.modal-content ul li a i {
-  margin-right: 0.5rem;
-  color: #F4D35E; /* Iconos con color amarillo */
-}
-
-/* Responsividad */
-@media (max-width: 768px) {
-  /* Mostrar el botón de hamburguesa */
-  .hamburger-button {
-    display: block;
-  }
-
-  /* Ocultar la sidebar en pantallas pequeñas */
-  .sidebar {
-    display: none;
-  }
-
-  .main-wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .main-content {
-    padding: 1rem;
-  }
-}
-
-/* Animaciones y Transiciones */
-@keyframes starGlow {
-  0% {
-    color: #00d4ff;
-  }
-  100% {
-    color: #1E90FF;
-  }
-}
-
-@keyframes dividerMove {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
-/* Estilos para los iconos con degradado */
-.payment-methods .payment-icons i {
-  width: 40px;
-  margin-right: 0.75rem;
-  font-size: 1.5rem;
-  transition: transform 0.3s ease, filter 0.3s ease;
-  background: linear-gradient(45deg, #FF6EC7, #7873F5); /* Degradado */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Efecto hover para los iconos con degradado */
-.payment-methods .payment-icons i:hover {
-  transform: scale(1.5);
-  filter: brightness(1.3);
-}
-
-/* Ajustes adicionales para evitar superposición con el footer en móviles */
-.main-content {
-  padding-bottom: 3rem; /* Espacio suficiente para el footer */
-}
-
-@media (max-width: 768px) {
-  .main-content {
-    padding-bottom: 2rem; /* Ajusta según el tamaño del footer */
-  }
+  color: var(--accent-color);
+  padding-left: 8px;
 }

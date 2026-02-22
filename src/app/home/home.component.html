@@ -1,42 +1,53 @@
-<div class="graph-container">
-  <canvas id="graphCanvas"></canvas>
-</div>
-
-<div [ngClass]="{ 'banner' : showHighlightsAndRecommendations, '': !showHighlightsAndRecommendations}">
-</div>
-
 <div class="home-container">
+  <!-- Hero Section -->
+  <div class="banner" *ngIf="showHighlightsAndRecommendations">
+    <h1 class="snap-title">Premium Digital Marketplace</h1>
+    <p class="snap-subtitle">Get the best deals on gift cards, games, and software with instant delivery.</p>
+  </div>
+
   <div class="gift-cards-wrapper">
+    <!-- Featured Sections -->
     <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
       <div class="highlights-section">
+        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Weekly Highlights</h2>
         <app-highlights></app-highlights>
       </div>
       <div class="recommendations-section">
+        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Recommended for You</h2>
         <app-recommendations></app-recommendations>
       </div>
     </div>
 
+    <!-- Main Marketplace -->
     <app-banner class="app-banner" *ngIf="showHighlightsAndRecommendations"></app-banner>
-    <div *ngIf="showHighlightsAndRecommendations" class="main-gift-cards">
-      <app-kinguin-gift-cards></app-kinguin-gift-cards>
+
+    <div *ngIf="showHighlightsAndRecommendations">
+      <h2 class="section-header snap-title" style="margin-left: 1rem;">Trending Now</h2>
+      <div class="main-gift-cards">
+        <app-kinguin-gift-cards></app-kinguin-gift-cards>
+      </div>
     </div>
+
+    <!-- Filtered Results -->
     <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
       <div *ngIf="!isSmallScreen" class="filter-section">
         <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()"
           [searchQuery]="searchQuery">
         </app-filters>
       </div>
+
       <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
         <span class="material-symbols-outlined">tune</span>
       </button>
 
       <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
-        <div class="modal-content">6
+        <div class="modal-content">
           <span class="close" (click)="closeFilterModal()">&times;</span>
           <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()">
           </app-filters>
         </div>
       </div>
+
       <div *ngIf="isLoading" class="loading-indicator">
         <div class="bars">
           <div class="bar bar1"></div>
@@ -46,17 +57,16 @@
           <div class="bar bar5"></div>
         </div>
       </div>
+
       <div class="giftcard-section" *ngIf="!isLoading">
+        <h2 class="section-header snap-title">Search Results</h2>
         <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
           <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
         </div>
       </div>
-
     </div>
   </div>
-<!--  <app-combos></app-combos>-->
-<!--  <app-flash-sale></app-flash-sale>-->
+
   <app-offers-banner *ngIf="showHighlightsAndRecommendations"></app-offers-banner>
   <app-inferior-filter></app-inferior-filter>
-
 </div>

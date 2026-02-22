@@ -1,830 +1,341 @@
-:root {
-  --scale-factor: 0.75; /* 75% del tamaño original */
-
-  --primary-color: #0B0D19;
-  --secondary-color: #021526;
-  --accent-color: #88D66C;
-  --text-color: #B5CDE2FF;
-  --highlight-color: #00d4ff;
-  --highlight-color-1: #ff5733; /* Añadido */
-  --highlight-color-2: #88D66C; /* Añadido */
-  --highlight-color-3: #ffbd33; /* Añadido */
-  --highlight-color-4: #33ff57; /* Añadido */
-  --discount-color: #FF5733; /* Definida */
-
-  --search-card-background: #5f575d;
-  --search-border-color: #5f575d;
-  --search-text-color: #333333;
-  --search-accent-color: #FF5733;
-
-  --shadow-color: rgba(0, 0, 0, 0.3);
-  --card-background-color: #203a43;
-
-  --font-primary: 'Roboto', sans-serif;
-  --font-secondary: 'VT323', monospace;
-
-  --transition-speed: 0.3s;
-}
+/* Kinguin Gift Cards Refresh - Aurora Design System */
 
 .gift-cards-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
-  gap: calc(1.5rem * var(--scale-factor));
-  width: 90%;
-  margin: 0 auto 5rem auto;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  width: 100%;
+  max-width: var(--max, 1220px);
+  margin: 0 auto 4rem auto;
+  padding: 1rem;
 }
-
 
 .gift-cards-container-search {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  width: 80%;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: var(--max, 1220px);
   margin: 0 auto;
-  padding: 20px;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-}
-
-.gift-cards-container-search-alt {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(150px * var(--scale-factor)), 1fr));
-  grid-auto-rows: 350px;
-  gap: calc(1rem * var(--scale-factor));
-  width: 60%;
-  margin: 0 auto;
-  overflow: visible;
-}
-
-.pagination-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 20px 0;
-}
-
-.bars {
-  display: flex;
-  align-items: flex-end;
-  gap: calc(4px * var(--scale-factor));
-}
-
-.platform {
-  display: inline-block;
-  background-color: #021526;
-  color: #ffffff;
-  font-size: calc(0.6rem * var(--scale-factor));
-  font-weight: bold;
-  padding: 4px 6px;
-  border-radius: 12px;
-  text-align: center;
-  text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  width: fit-content;
-  align-self: center;
-}
-
-.platform-search {
-  background-color: var(--secondary-color);
-  color: var(--text-color);
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  margin-top: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  align-self: flex-start;
+  padding: 1rem;
 }
 
 .gift-card {
+  border-radius: var(--rXL, 28px);
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.14));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(18px) saturate(1.2);
+  box-shadow: var(--shadow2, 0 16px 50px rgba(0, 0, 0, 0.42));
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  width: 100%;
-  max-width: calc(300px * var(--scale-factor));
-  background-color: var(--primary-color);
-  border: calc(0.125rem * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
-  border-radius: calc(0.5rem * var(--scale-factor));
-  padding: 0;
-  text-align: center;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
-  box-shadow: 0 calc(0.25rem * var(--scale-factor)) calc(1.25rem * var(--scale-factor)) rgba(0, 0, 0, 0.6);
-  position: relative;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
-  overflow: hidden;
-  min-height: calc(20rem * var(--scale-factor));
+  position: relative;
+  height: 100%;
 }
 
-.gift-card-search {
-  display: flex;
-  flex-direction: row;
-  color: #b5beb4;
-  padding: 0;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
-  box-shadow: 0 4px 10px var(--shadow-color);
+.gift-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 40%, rgba(10, 132, 255, 0.1));
+  opacity: 0.85;
+  mix-blend-mode: overlay;
+}
+
+.gift-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(10, 132, 255, 0.45);
+  box-shadow: var(--shadow, 0 28px 90px rgba(0, 0, 0, 0.58));
+}
+
+.image-container {
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background-color: #000;
+  position: relative;
+  border-bottom: 1px solid var(--stroke);
 }
 
 .gift-card-image {
   width: 100%;
-  height: calc(15rem * var(--scale-factor));
+  height: 100%;
   object-fit: cover;
-  border-top-left-radius: calc(0.5rem * var(--scale-factor));
-  border-top-right-radius: calc(0.5rem * var(--scale-factor));
-  display: block;
-  transition: transform var(--transition-speed) ease;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gift-card:hover .gift-card-image {
+  transform: scale(1.1);
+}
+
+.gift-card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.2));
+}
+
+.gift-card-title {
+  font-size: 1rem;
+  font-weight: 860;
+  color: var(--text, #ffffff);
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.8rem;
+}
+
+.platform {
+  font-size: 11px;
+  color: var(--blue, #0a84ff);
+  background: rgba(10, 132, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  width: fit-content;
+  margin-bottom: 1.25rem;
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(10, 132, 255, 0.2);
+}
+
+.gift-card-price {
+  margin-top: auto;
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.original-price {
+  font-size: 0.85rem;
+  color: var(--muted, rgba(255, 255, 255, 0.66));
+  text-decoration: line-through;
+}
+
+.discounted-price {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.discount-percentage {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--pink, #ff375f);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 900;
+  z-index: 10;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Search Mode Styles - Refined for Aurora */
+.gift-card-search {
+  flex-direction: row;
+  height: 180px;
+  border-radius: var(--rLG, 22px);
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(14px);
+  display: flex;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.gift-card-search:hover {
+  transform: translateX(8px);
+  border-color: var(--blue);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow3);
+}
+
+.image-container-search {
+  width: 280px;
+  height: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
+  background-color: #000;
+  border-right: 1px solid var(--stroke);
 }
 
 .gift-card-image-search {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  margin: 0;
-  padding: 0;
-  transition: transform var(--transition-speed) ease;
+  transition: transform 0.6s ease;
 }
 
-
-.gift-card-content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-  flex-grow: 1;
-  margin-top: calc(1rem * var(--scale-factor));
-  padding: calc(1rem * var(--scale-factor));
+.gift-card-search:hover .gift-card-image-search {
+  transform: scale(1.08);
 }
 
 .gift-card-content-search {
-  flex-grow: 1;
+  flex: 1;
+  padding: 1.5rem 2.5rem;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  padding: 2rem;
-}
-
-.gift-card-title {
-  font-size: calc(0.5rem * var(--scale-factor));
-  color: #dcd0d0;
-  text-transform: uppercase;
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  max-width: 100%;
-  line-height: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1));
 }
 
 .gift-card-title-search {
   font-size: 1.25rem;
-  /*color: var(--accent-color);*/
-  margin-bottom: 0.5rem;
-  font-family: var(--font-secondary);
+  font-weight: 860;
+  color: var(--text);
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+  padding-right: 2rem;
 }
 
-
-.gift-card-price {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: calc(1.1rem * var(--scale-factor));
-  color: #88D66C;
-  font-weight: bold;
-  margin-top: calc(1rem * var(--scale-factor));
+.platform-search {
+  font-size: 11px;
+  color: var(--blue);
+  background: rgba(10, 132, 255, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  font-weight: 800;
+  border: 1px solid rgba(10, 132, 255, 0.2);
+  margin-left: 1rem;
 }
 
 .gift-card-price-search {
-  text-align: right;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #B5CDE2FF;
-  margin-bottom: 4px;
-  font-size: calc(0.9rem * var(--scale-factor));
+  justify-content: center;
+  min-width: 140px;
 }
 
 .original-price-search {
+  font-size: 0.9rem;
+  color: var(--muted);
   text-decoration: line-through;
-  color: #ccc;
-  font-size: 1rem;
-  margin-bottom: 6px;
-}
-
-.discounted-price {
-  font-size: calc(1.5em * var(--scale-factor));
-  color: var(--accent-color);
+  margin-bottom: 0.25rem;
 }
 
 .discounted-price-search {
-  background-color: var(--card-background-color);
-  color: #fff;
-  padding: 4px 8px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.image-container-search {
-  width: 150px;
-  height: auto;
-  overflow: hidden;
-}
-
-.discount-percentage {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: var(--discount-color);
-  color: #fff;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: calc(0.75rem * var(--scale-factor));
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: #ffffff;
 }
 
 .discount-percentage-search {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: var(--search-accent-color);
-  color: #fff;
-  padding: 6px 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 2;
+  background: var(--pink);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-
-.gift-card:hover {
-  transform: translateY(calc(-5px * var(--scale-factor)));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-
-.gift-card-search:hover {
-  transform: scale(1.05);
-  z-index: 1;
-}
-
-.gift-card-search:hover .gift-card-title-search {
-  white-space: normal;
-  max-height: calc(3rem * var(--scale-factor));
-}
-
-.load-more-button:hover {
-  background-color: rgba(28, 29, 50, 0.4);
-  transform: translateY(-2px);
-}
-
-.load-more-button:active {
-  transform: translateY(0);
-}
-
-.load-more-button:hover .arrow {
-  transform: rotate(135deg);
-}
-
-
-h2 {
-  font-family: var(--font-primary);
-  font-size: calc(1.5rem * var(--scale-factor));
-  color: #F8F9FA;
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: calc(0.2rem * var(--scale-factor));
-  margin-bottom: calc(2rem * var(--scale-factor));
-  position: relative;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-}
-
-h2::before,
-h2::after {
-  position: absolute;
-  width: calc(4rem * var(--scale-factor));
-  height: calc(0.2rem * var(--scale-factor));
-  background: #F8F9FA;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-h2::before {
-  left: calc(-5rem * var(--scale-factor));
-}
-
-h2::after {
-  right: calc(-5rem * var(--scale-factor));
-}
-
-
-@keyframes animatedBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-
-@keyframes pulse-bars {
-  0%, 100% {
-    transform: scaleY(1);
-    opacity: 0.7;
-  }
-  50% {
-    transform: scaleY(1.5);
-    opacity: 1;
-  }
-}
-
-/* =========================================
-   Botones
-========================================= */
-
-.load-more-container {
+/* Paginator - Aurora Overrides */
+.pagination-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 3rem 0;
 }
 
-
-.load-more-button {
-  background: rgba(28, 29, 50, 0.4);
-  color: white;
-  height: 3rem;
-  border: none;
-  border-radius: 50px;
-  padding: 15px 30px;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s, transform 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-.arrow {
-  display: block;
-  width: 7px;
-  height: 7px;
-  border-left: 2px solid #B5CDE2FF;
-  border-bottom: 2px solid #B5CDE2FF;
-  transform: rotate(-45deg);
-  margin-top: 2px;
-  transition: transform 0.2s;
-}
-
-.text {
-  font-size: 12px;
-  letter-spacing: 1px;
-  color: var(--text-color);
-}
-
-/* =========================================
-   Indicadores de Carga
-========================================= */
-
-.bar {
-  width: calc(8px * var(--scale-factor));
-  height: calc(20px * var(--scale-factor));
-  background-color: var(--highlight-color);
-  border-radius: calc(4px * var(--scale-factor));
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
-  animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-}
-
-.bar1 {
-  background-color: var(--highlight-color-1);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-1);
-  animation-delay: -0.4s;
-}
-
-.bar2 {
-  background-color: var(--highlight-color-2);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-2);
-  animation-delay: -0.2s;
-}
-
-.bar3 {
-  background-color: var(--highlight-color-3);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-3);
-  animation-delay: 0s;
-}
-
-.bar4 {
-  background-color: var(--highlight-color-4);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color-4);
-  animation-delay: 0.2s;
-}
-
-.bar5 {
-  background-color: var(--highlight-color);
-  box-shadow: 0 0 calc(8px * var(--scale-factor)) var(--highlight-color);
-  animation-delay: 0.4s;
-}
-
-/* =========================================
-   Paginación de Angular Material
-========================================= */
-
-/* Aplica estilos directamente al paginador */
 ::ng-deep .mat-paginator {
-  background-color: transparent;
+  background: rgba(7, 11, 27, 0.6) !important;
+  backdrop-filter: blur(18px) saturate(1.2) !important;
+  border-radius: 999px !important;
+  border: 1px solid var(--stroke) !important;
+  color: var(--text) !important;
+  padding: 4px 24px !important;
+  box-shadow: var(--shadow3) !important;
 }
 
-::ng-deep .mat-paginator-range-actions {
-  display: flex;
-  align-items: center;
+::ng-deep .mat-paginator .mat-mdc-paginator-range-label {
+  color: var(--muted) !important;
+  font-weight: 600 !important;
 }
 
-::ng-deep .mat-paginator-page-size {
-  margin-right: 20px;
+::ng-deep .mat-paginator .mat-mdc-select-value-text {
+  color: var(--blue) !important;
+  font-weight: 700 !important;
 }
 
-.pagination-container mat-paginator {
-  color: #ffffff;
-  background-color: #1a3640;
-}
+/* Responsive */
+@media (max-width: 992px) {
+  .gift-card-search {
+    height: 160px;
+  }
 
-.pagination-container mat-paginator .mat-paginator-navigation-button {
-  color: #ffcc00;
+  .image-container-search {
+    width: 220px;
+  }
 }
-
-.pagination-container mat-paginator .mat-paginator-range-label {
-  color: #ffffff;
-}
-
-.pagination-container mat-paginator .mat-paginator-page-size-label {
-  color: #ffffff;
-}
-
-.pagination-container mat-paginator .mat-select-value-text {
-  color: #ffcc00;
-}
-
-/* =========================================
-   Media Queries
-========================================= */
 
 @media (max-width: 768px) {
-
   .gift-cards-container {
-    grid-template-columns: repeat(2, 1fr);
-    gap: calc(1.5rem * var(--scale-factor));
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 1.25rem;
+    padding: 0.75rem;
   }
-
 
   .gift-card-title {
-    font-size: calc(0.2rem * var(--scale-factor));
-    margin-top: -1.5rem;
+    font-size: 0.95rem;
+    height: 2.6rem;
   }
 
-
-  .gift-card-price {
-    font-size: calc(0.9rem * var(--scale-factor));
-  }
-
-
-  .gift-card-image {
-    height: calc(15rem * var(--scale-factor));
-    object-fit: cover;
-    border-top-left-radius: calc(0.5rem * var(--scale-factor));
-    border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: calc(0.625rem * var(--scale-factor));
-  }
-
-
-  h2 {
-    font-size: calc(2rem * var(--scale-factor));
-    margin-top: calc(1rem * var(--scale-factor));
-    letter-spacing: calc(0.1rem * var(--scale-factor));
-  }
-
-
-  .platform {
-    font-size: calc(0.6rem * var(--scale-factor));
-  }
-
-
-  .load-more-button {
-    padding: calc(0.6rem * var(--scale-factor));
-  }
-
-
-  .discount-percentage {
-    top: 8px;
-    left: 8px;
-    padding: 3px 6px;
-    font-size: calc(0.7rem * var(--scale-factor));
-  }
-}
-
-@media (max-width: 480px) {
-
-  *, *::before, *::after {
-    box-sizing: border-box;
-  }
-
-  .gift-cards-container-search {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 10px;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    box-sizing: border-box;
+  .discounted-price {
+    font-size: 1.35rem;
   }
 
   .gift-card-search {
-    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    width: 100%;
-    max-width: none;
-    padding: 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    border-radius: calc(0.5rem * var(--scale-factor));
-    overflow: hidden;
-    position: relative;
+    height: auto;
+    border-radius: var(--rMD);
   }
-
 
   .image-container-search {
     width: 100%;
-    height: 250px;
-    position: relative;
-    overflow: hidden;
+    aspect-ratio: 16/9;
+    border-right: none;
+    border-bottom: 1px solid var(--stroke);
   }
 
-  .gift-card-image-search {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-top-left-radius: calc(0.5rem * var(--scale-factor));
-    border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: 0;
-  }
-
-  /* =========================================
-     Ajustes para el Contenido de la Tarjeta en Búsqueda
-  ========================================= */
   .gift-card-content-search {
-    padding: 8px;
-    gap: 6px;
-    width: 100%;
-    align-items: center;
-    text-align: center;
-    box-sizing: border-box;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.5rem;
   }
 
-  /* =========================================
-     Ajustes para el Título de la Tarjeta en Búsqueda
-  ========================================= */
   .gift-card-title-search {
+    padding-right: 0;
+    margin-bottom: 1rem;
     font-size: 1.1rem;
-    margin-bottom: 4px;
-    font-family: var(--font-secondary);
-    width: 100%;
-    word-wrap: break-word;
   }
 
-  /* =========================================
-     Ajustes para el Precio de la Tarjeta en Búsqueda
-  ========================================= */
   .gift-card-price-search {
-    font-size: 1.2rem;
-    text-align: center;
-    width: 100%;
-    /* Ocupar todo el ancho disponible
-       color: var(--accent-color);
-     }
+    align-items: flex-start;
+    min-width: auto;
+    margin-top: 1rem;
+  }
 
-     /* =========================================
-        Ajustes para el Precio Original y con Descuento en Búsqueda
-     ========================================= */
-
-    .original-price-search {
-      font-size: 0.9rem;
-      margin-bottom: 4px;
-      text-decoration: line-through;
-      color: #ccc;
-    }
-
-    .discounted-price-search {
-      font-size: 1.3rem;
-      padding: 3px 6px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      background-color: var(--accent-color);
-      color: #fff;
-      border-radius: 4px;
-      display: inline-block;
-    }
-
-    /* =========================================
-       Ajustes para el Porcentaje de Descuento en Búsqueda
-    ========================================= */
-
-    .discount-percentage-search {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      padding: 3px 6px;
-      font-size: 0.9rem;
-      background-color: var(--discount-color);
-      color: #fff;
-      border-radius: 4px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-      z-index: 2;
-    }
-
-    /* =========================================
-       Ajustes para la Plataforma en Búsqueda
-    ========================================= */
-
-    .platform-search {
-      font-size: 0.85rem;
-      padding: 4px 8px;
-      margin-top: 6px;
-      background-color: #021526;
-      color: #fff;
-      border-radius: 12px;
-      display: inline-block;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    /* =========================================
-       Ajustes para el Botón de Cargar Más en Búsqueda
-    ========================================= */
-
-    .load-more-button {
-      padding: 12px 20px;
-      height: auto;
-      font-size: 1.3rem;
-      width: 100%;
-      box-sizing: border-box;
-      border-radius: 25px;
-      background: rgba(28, 29, 50, 0.4);
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: background-color 0.3s, transform 0.3s;
-    }
-
-    .load-more-button:hover {
-      background-color: rgba(28, 29, 50, 0.6); /* Cambiar fondo al pasar el mouse */
-      transform: translateY(-2px); /* Levantar ligeramente el botón */
-    }
-
-    .load-more-button:active {
-      transform: translateY(0);
-    }
-
-    .arrow {
-      display: block;
-      width: 7px;
-      height: 7px;
-      border-left: 2px solid #B5CDE2FF;
-      border-bottom: 2px solid #B5CDE2FF;
-      transform: rotate(-45deg);
-      transition: transform 0.2s;
-    }
-
-    .load-more-button:hover .arrow {
-      transform: rotate(135deg);
-    }
-
-    .text {
-      font-size: 12px;
-      letter-spacing: 1px;
-      color: var(--text-color);
-    }
-
-    /* =========================================
-       Ajustes para el Título Principal (h2) en Búsqueda
-    ========================================= */
-
-    h2 {
-      font-size: 1.6rem;
-      margin-bottom: 1.5rem;
-      letter-spacing: 0.1rem;
-      text-align: center;
-      color: #F8F9FA;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-      position: relative;
-    }
-
-    h2::before,
-    h2::after {
-      position: absolute;
-      content: '';
-      height: 0.15rem;
-      background: #F8F9FA;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    h2::before {
-      left: -3rem;
-      width: 3rem;
-    }
-
-    h2::after {
-      right: -3rem;
-      width: 3rem;
-    }
-
-
-    .loading-indicator {
-      margin: 10px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .bars {
-      display: flex;
-      align-items: flex-end;
-      gap: calc(2px * var(--scale-factor));
-    }
-
-    .bar,
-    .bar1,
-    .bar2,
-    .bar3,
-    .bar4,
-    .bar5 {
-      width: calc(6px * var(--scale-factor));
-      height: calc(15px * var(--scale-factor));
-      background-color: var(--highlight-color);
-      border-radius: calc(4px * var(--scale-factor));
-      animation: pulse-bars 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-    }
-
-    .bar1 {
-      background-color: var(--highlight-color-1);
-      animation-delay: -0.4s;
-    }
-
-    .bar2 {
-      background-color: var(--highlight-color-2);
-      animation-delay: -0.2s;
-    }
-
-    .bar3 {
-      background-color: var(--highlight-color-3);
-      animation-delay: 0s;
-    }
-
-    .bar4 {
-      background-color: var(--highlight-color-4);
-      animation-delay: 0.2s;
-    }
-
-    .bar5 {
-      background-color: var(--highlight-color);
-      animation-delay: 0.4s;
-    }
-
-    /* =========================================
-       Animaciones
-    ========================================= */
-    @keyframes pulse-bars {
-      0%, 100% {
-        transform: scaleY(1);
-        opacity: 0.7;
-      }
-      50% {
-        transform: scaleY(1.5);
-        opacity: 1;
-      }
-    }
+  .platform-search {
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
 }
-
-
-
-

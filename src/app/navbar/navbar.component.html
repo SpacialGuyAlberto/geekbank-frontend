@@ -1,138 +1,80 @@
-<!-- src/app/components/navbar/navbar.component.html -->
-
-<nav [ngClass]="navbarClass" *ngIf="showNavbar">
-  <div class="navbar-brand">
-    <span class="app-name" (click)="goToHome()">Astralis</span>
-  </div>
-
-  <div class="navbar-center" *ngIf="!isSmallScreen">
-    <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
-  </div>
-
-  <div class="navbar-links">
-    <li class="cart-icon-container" (mouseenter)="onCartHover()">
-      <a routerLink="/cart">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
-      </a>
-      <!-- Modal que permanece visible -->
-      <div class="cart-modal-backdrop" (click)="closeCartModal()">
-      <div class="cart-modal" *ngIf="showCartModal"  (click)="$event.stopPropagation()">
-        <button class="close-modal-btn" (click)="closeCartModal()">×</button>
-        <div *ngIf="cartItems.length > 0; else emptyCart">
-          <div *ngFor="let item of cartItems" class="cart-item">
-            <img [src]="item.giftcard.coverImage" alt="{{ item.giftcard.name }}" class="cart-item-image" />
-            <div class="cart-item-details">
-              <p>{{ item.giftcard.name }}</p>
-              <p>{{ item.cartItem.quantity }} x {{ item.giftcard.priceHNL | currency:'HNL' +
-              '' }}</p>
-            </div>
-          </div>
-          <div class="cart-modal-footer">
-<!--            <p class="cart-total">Total: {{  | currency:'USD' }}</p>-->
-            <button (click)="goToCart()" class="btn-view-cart">Ver carrito</button>
-          </div>
+<nav [ngClass]="navbarClass" *ngIf="showNavbar" [class.is-scrolled]="isScrolled" class="navbar">
+  <div class="navbar-container">
+    <div class="navbar-left">
+      <div class="brand" (click)="goToHome()">
+        <div class="brand-logo">
+          <!-- Placeholder logo gradient or actual image if provided -->
+          <img src="assets/logo.png" alt="Astralis" onerror="this.style.display='none'">
+          <span *ngIf="true" style="font-weight: 900; font-size: 1.2rem; color: #fff;">A</span>
         </div>
-        <ng-template #emptyCart>
-          <p class="empty-cart-message">Tu carrito está vacío.</p>
-        </ng-template>
+        <div class="brand-text">
+          <span class="brand-name">Astralis</span>
+          <span class="brand-tag">Premium Marketplace</span>
+        </div>
       </div>
+    </div>
+
+    <div class="navbar-center" *ngIf="!isSmallScreen">
+      <!-- Primary nav links if any -->
+    </div>
+
+    <div class="navbar-right">
+      <div class="nav-actions">
+        <!-- Auth Links -->
+        <ng-container *ngIf="!(isAuthenticated$ | async)">
+          <a (click)="goToLogin()" class="nav-link">Iniciar sesión</a>
+          <a routerLink="/register" class="nav-link">Registrarse</a>
+        </ng-container>
+
+        <!-- User Menu / Cart -->
+        <div class="icon-group">
+          <div class="icon-btn-wrapper" (mouseenter)="onCartHover()">
+            <a routerLink="/cart" class="icon-btn">
+              <i class="fa-solid fa-cart-shopping"></i>
+              <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+            </a>
+          </div>
+
+          <!-- Add other user icons here as needed -->
+          <button *ngIf="(isAuthenticated$ | async)" (click)="logout()" class="icon-btn" title="Cerrar sesión">
+            <i class="fa-solid fa-sign-out-alt"></i>
+          </button>
+        </div>
       </div>
-    </li>
-
-
-    <a *ngIf="!(isAuthenticated$ | async)" (click)="goToLogin()" class="nav-link">Iniciar sesión</a>
-    <a *ngIf="!(isAuthenticated$ | async)" routerLink="/register" class="nav-link">Registrarse</a>
-    <i
-      *ngIf="isSmallScreen"
-      (click)="openSearchModal()"
-      class="fa-solid fa-magnifying-glass clickable-icon"
-    ></i>
-    <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
-    <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
-    <i
-      *ngIf="(isAuthenticated$ | async)"
-      (click)="router.navigate(['/user-details'])"
-      class="fa-solid fa-user clickable-icon"
-    ></i>
-    <i *ngIf="(isAuthenticated$ | async)" (click)="logout()" class="fa-solid fa-sign-out-alt clickable-icon"></i>
-  </div>
-
-  <div class="bell-menu-container" *ngIf="isSmallScreen">
-    <i
-      (click)="openSearchModal()"
-      class="fa-solid fa-magnifying-glass clickable-icon"
-    ></i>
-    <app-notification-bell *ngIf="(isAuthenticated$ | async)"></app-notification-bell>
-    <li class="cart-icon-container" (mouseenter)="onCartHover()">
-      <a routerLink="/cart">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span *ngIf="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
-      </a>
-    </li>
-    <div class="navbar-hamburger" *ngIf="isSmallScreen">
-      <i class="fa-solid fa-bars" (click)="openMenuModal()"></i>
     </div>
   </div>
 </nav>
 
-<div class="navbar-categories" *ngIf="!isSmallScreen && showNavbar">
-  <div class="tabs-menu">
-    <div class="dropdown" (mouseenter)="onDropdownMouseEnter()" (mouseleave)="onDropdownMouseLeave()">
-      <button class="tab-button dropdown-toggle" aria-haspopup="true" aria-expanded="undefined">
-        <i class="fas fa-th-list" aria-hidden="true"></i> Categorías
-      </button>
-      <div class="dropdown-content" role="menu" *ngIf="isDropdownHovered">
-        <!-- Lista de categorías -->
-        <div class="dropdown-items">
-          <a *ngFor="let genre of genres" (click)="onSelectGenre(genre.key)">
-            {{ genre.label }}
-          </a>
+<div class="navbar-categories" *ngIf="!isSmallScreen && showNavbar" [class.is-scrolled]="isScrolled">
+  <div class="categories-content-wrapper">
+    <div class="category-menu-container">
+      <div class="dropdown" (mouseenter)="onDropdownMouseEnter()" (mouseleave)="onDropdownMouseLeave()">
+        <button class="nav-link dropdown-toggle" aria-haspopup="true">
+          <i class="fas fa-th-list"></i> Categorías
+        </button>
+        <div class="dropdown-content aurora-card" role="menu" *ngIf="isDropdownHovered" style="z-index: 1001;">
+          <div class="dropdown-items">
+            <a *ngFor="let genre of genres" (click)="onSelectGenre(genre.key)" class="nav-link">
+              {{ genre.label }}
+            </a>
+          </div>
+          <app-category-items *ngIf="selectedGenre" [selectedCategory]="selectedGenre" class="app-category-items">
+          </app-category-items>
         </div>
-
-        <!-- Contenedor de elementos seleccionados -->
-        <app-category-items
-          *ngIf="selectedGenre"
-          [selectedCategory]="selectedGenre"
-          class="app-category-items">
-        </app-category-items>
       </div>
+
+      <button class="nav-link" (click)="navigateToPurchaseConfirmation()">
+        <i class="fa-solid fa-bag-shopping"></i> Mis compras
+      </button>
+
+      <button class="nav-link" [routerLink]="['/filtered/Software']" (click)="selectCategory('software')">
+        <i class="fas fa-laptop-code"></i> Software
+      </button>
     </div>
 
-
-<!--    <button-->
-<!--      class="tab-button"-->
-<!--      [ngClass]="{'active': selectedCategory === 'random-keys'}"-->
-<!--      (click)="[navigateToRandomKeys(), selectCategory('random-keys')]"-->
-<!--      aria-label="Claves Aleatorias"-->
-<!--    >-->
-<!--      <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
-<!--    </button>-->
-    <button
-      class="tab-button"
-      (click)="navigateToPurchaseConfirmation()"
-    >
-      <i class="fa-solid fa-bag-shopping"></i>
-      Mis compras
-    </button>
-
-    <button
-      class="tab-button"
-      [ngClass]="{'active': selectedCategory === 'software'}"
-      [routerLink]="['/filtered/Software']"
-      (click)="selectCategory('software')"
-      aria-label="Software"
-    >
-      <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
-    </button>
-<!--    <button-->
-<!--      class="tab-button"-->
-<!--      [ngClass]="{'active': selectedCategory === 'sensacion'}"-->
-<!--      (click)="selectCategory('sensacion')"-->
-<!--      aria-label="Sensación"-->
-<!--    >-->
-<!--      <i class="fas fa-music" aria-hidden="true"></i> Sensación-->
-<!--    </button>-->
+    <div class="sub-navbar-search">
+      <app-search-bar (searchResults)="handleSearchResults($event)"></app-search-bar>
+    </div>
   </div>
 </div>
 
@@ -140,11 +82,8 @@
 <div class="search-modal" *ngIf="showSearchModal">
   <div class="search-modal-content">
     <span class="close-modal" (click)="closeSearchModal()">&times;</span>
-    <app-search-bar
-      (searchResults)="[closeSearchModal(), handleSearchResults($event)]"
-      (isFreeFireSearch)="handleFreeFireSearch($event)"
-
-    ></app-search-bar>
+    <app-search-bar (searchResults)="[closeSearchModal(), handleSearchResults($event)]"
+      (isFreeFireSearch)="handleFreeFireSearch($event)"></app-search-bar>
     <p *ngIf="searchResultsMessage">{{ searchResultsMessage }}</p>
   </div>
 </div>
@@ -154,13 +93,15 @@
     <span class="close-modal" (click)="closeMenuModal()">&times;</span>
     <div class="menu-links">
       <ul>
-        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
+        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute"
+          (click)="closeMenuModal()">
           <a routerLink="/user-details" (click)="closeMenuModal()" class="menu-link">
             <i class="fa-solid fa-user clickable-icon"></i>
-           Informacion de Usuario
+            Informacion de Usuario
           </a>
         </li>
-        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute" (click)="closeMenuModal()">
+        <li [ngClass]="userMenu" *ngIf="(isAuthenticated$ | async) && isSmallScreen && !inUserDetailsRoute"
+          (click)="closeMenuModal()">
           <app-balance *ngIf="(isAuthenticated$ | async)"></app-balance>
         </li>
         <li [ngClass]="userMenu" *ngIf="isSmallScreen && inUserDetailsRoute">
@@ -171,11 +112,13 @@
           <ul class="submenu" *ngIf="tabsExpanded">
             <li><a href="/user-details" (click)="selectCategory('user-info'); closeMenuModal()">User Info</a></li>
             <li><a href="/address" (click)="selectCategory('address'); closeMenuModal()">Address</a></li>
-            <li><a href="/payment-methods" (click)="selectCategory('payment-methods'); closeMenuModal()">Payment method</a></li>
+            <li><a href="/payment-methods" (click)="selectCategory('payment-methods'); closeMenuModal()">Payment
+                method</a></li>
             <li><a href="/preferences" (click)="selectCategory('preferences'); closeMenuModal()">Preferences</a></li>
             <li><a href="/orders" (click)="selectCategory('orders'); closeMenuModal()">Transactions</a></li>
             <li><a href="/wish-list" (click)="selectCategory('wish-list'); closeMenuModal()">Wish List</a></li>
-            <li *ngIf="(isAuthenticated$ | async) && role === 'ADMIN'"><a href="/admin-panel" (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
+            <li *ngIf="(isAuthenticated$ | async) && role === 'ADMIN'"><a href="/admin-panel"
+                (click)="selectCategory('admin-panel'); closeMenuModal()">Admin Dashboard</a></li>
           </ul>
         </li>
         <li *ngIf="!(isAuthenticated$ | async)">
@@ -202,7 +145,8 @@
         <li class="sub-menu" *ngIf="isSmallScreen">
           <button (click)="toggleCategories()" [attr.aria-expanded]="categoriesExpanded">
             <i class="fas fa-th-list"></i> Categorías
-            <i class="fas" [ngClass]="{'fa-chevron-down': !categoriesExpanded, 'fa-chevron-up': categoriesExpanded}"></i>
+            <i class="fas"
+              [ngClass]="{'fa-chevron-down': !categoriesExpanded, 'fa-chevron-up': categoriesExpanded}"></i>
           </button>
           <ul class="submenu" *ngIf="categoriesExpanded">
             <li *ngFor="let category of genres">
@@ -214,13 +158,13 @@
           </ul>
 
         </li>
-<!--        <li>-->
-<!--          <a routerLink="/random-keys" class="menu-link">-->
-<!--            <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
-<!--          </a>-->
-<!--        </li>-->
+        <!--        <li>-->
+        <!--          <a routerLink="/random-keys" class="menu-link">-->
+        <!--            <i class="fas fa-random" aria-hidden="true"></i> Claves Aleatorias-->
+        <!--          </a>-->
+        <!--        </li>-->
         <li>
-          <a class="menu-link"[routerLink]="['/filtered/Software']">
+          <a class="menu-link" [routerLink]="['/filtered/Software']">
             <i class="fas fa-laptop-code" aria-hidden="true"></i> Software
           </a>
         </li>

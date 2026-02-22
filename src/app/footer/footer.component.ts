@@ -1,22 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterLink, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
-import {NgClass, NgIf} from "@angular/common";
-import {TermsAndConditionsComponent} from "../terms-and-conditions/terms-and-conditions.component";
-import {MatDialog} from "@angular/material/dialog";
+import { NgClass, NgIf } from "@angular/common";
+import { TermsAndConditionsComponent } from "../terms-and-conditions/terms-and-conditions.component";
+import { MatDialog } from "@angular/material/dialog";
 
 
 @Component({
-    selector: 'app-footer',
-    imports: [
-        NgClass,
-        NgIf,
-        TermsAndConditionsComponent
-    ],
-    templateUrl: './footer.component.html',
-    styleUrl: './footer.component.css'
+  selector: 'app-footer',
+  imports: [
+    NgClass,
+    NgIf,
+    TermsAndConditionsComponent,
+    RouterLink,
+    RouterModule
+  ],
+  templateUrl: './footer.component.html',
+  styleUrl: './footer.component.css'
 })
-export class FooterComponent implements OnInit, OnDestroy{
+export class FooterComponent implements OnInit, OnDestroy {
   footerClass: string = '';
   footerDivider: string = '';
   footerSection: string = '';
@@ -27,11 +29,11 @@ export class FooterComponent implements OnInit, OnDestroy{
   routerSubscription!: Subscription;
   termsAndConditions: boolean = false;
 
-  constructor(private router: Router, private dialog: MatDialog){}
+  constructor(private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.routerSubscription = this.router.events.subscribe( event => {
-      if (event instanceof NavigationEnd){
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
         this.updateFooterClass(event.urlAfterRedirects);
         this.updateIcons(this.router.url)
       }
@@ -45,7 +47,7 @@ export class FooterComponent implements OnInit, OnDestroy{
       this.footerClass = 'footer-user-details';
     } else if (url.includes('/admin-panel')) {
       this.footerClass = 'footer-admin-panel';
-    } else if (url.includes('/login') || url.includes('/register')){
+    } else if (url.includes('/login') || url.includes('/register')) {
       this.footerClass = 'footer-user-details';
     }
     else {

@@ -1,79 +1,92 @@
-
 <footer [ngClass]="footerClass">
-  <div class="footer-top">
+  <div class="footer-content">
     <div class="footer-container">
 
-      <div [ngClass]="footerSection">
-        <h2>Contacto</h2>
-        <p>Email: <a >info&#64;astralisbank.com</a></p>
-        <p>Whatsapp: <a>+50496597887</a></p>
-      </div>
-
-      <div [ngClass]="footerSection">
-        <h2>Enlaces Útiles</h2>
-        <ul>
-          <li><a href="/acerca-de">About us</a></li>
-          <li (click)="openTerms()" sytel="cursor: pointer;"><a >Términos y condiciones</a></li>
-          <div *ngIf="termsAndConditions">
-            <app-terms-and-conditions *ngIf="termsAndConditions"></app-terms-and-conditions>
-          </div>
-          <li><a href="/privacidad">Politica de privacidad</a></li>
-          <li><a href="/faq">Preguntas frequentes</a></li>
-        </ul>
-      </div>
-
-      <div [ngClass]="footerSection">
-        <h2>Categorías</h2>
-        <ul>
-
-          <li><a href="/categoria2">Software</a></li>
-        </ul>
-      </div>
-
-      <div [ngClass]="footerSection">
-        <h2>Siguenos</h2>
-        <div [ngClass]="socialClass">
-          <a href="https://www.facebook.com/profile.php?id=61562974481602" target="_blank" aria-label="Facebook">
-            <i class="fab fa-facebook-f facebook"></i>
-          </a>
-          <a href="https://telegram.org" target="_blank" aria-label="Telegram">
-            <i class="fa-brands fa-telegram telegram"></i>
-          </a>
-          <a href="https://instagram.com" target="_blank" aria-label="Instagram">
-            <i class="fab fa-instagram instagram"></i>
-          </a>
-          <a href="https://x.com" target="_blank" aria-label="X">
-            <i class="fa-brands fa-x-twitter twitter"></i>
-          </a>
-          <a href="https://wa.me/50494347052" target="_blank" aria-label="WhatsApp">
-            <i class="fa-brands fa-whatsapp whatsapp"></i>
-          </a>
+      <!-- Column 1: Contact -->
+      <div class="footer-section">
+        <h4 class="section-title">Contacto</h4>
+        <div class="contact-links">
+          <p>
+            <i class="fa-solid fa-envelope"></i>
+            <a href="mailto:info@astralisbank.com">info@astralisbank.com</a>
+          </p>
+          <p>
+            <i class="fa-brands fa-whatsapp"></i>
+            <a href="https://wa.me/50496597887" target="_blank">+504 9659-7887</a>
+          </p>
         </div>
       </div>
 
-      <div [ngClass]="footerSection">
-        <h2>Suscríbe</h2>
-        <form [ngClass]="newsletter">
-          <input type="email" placeholder="Tu correo electrónico" required>
-          <button type="submit">Suscribirse</button>
-        </form>
+      <!-- Column 2: Quick Links -->
+      <div class="footer-section">
+        <h4 class="section-title">Enlaces Útiles</h4>
+        <ul class="footer-links">
+          <li><a routerLink="/acerca-de">About us</a></li>
+          <li><span (click)="openTerms()" class="clickable-link">Términos y condiciones</span></li>
+          <li><a routerLink="/privacidad">Política de privacidad</a></li>
+          <li><a routerLink="/faq">Preguntas frecuentes</a></li>
+        </ul>
       </div>
 
-      <div [ngClass]="footerSection">
-        <h2>Forma de pago</h2>
-        <div [ngClass]="paymentClass">
-          <i class="fa-solid fa-credit-card credit-icon"></i>
-          <i class="fa-brands fa-cc-paypal paypal-icon"></i>
-          <i class="fa-solid fa-piggy-bank piggybank-icon"></i>
+      <!-- Column 3: Categories -->
+      <div class="footer-section">
+        <h4 class="section-title">Categorías</h4>
+        <ul class="footer-links">
+          <li><a [routerLink]="['/filtered/Software']">Software</a></li>
+        </ul>
+      </div>
+
+      <!-- Column 4: Social & Newsletter -->
+      <div class="footer-section">
+        <h4 class="section-title">Síguenos</h4>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/profile.php?id=61562974481602" target="_blank" class="social-btn facebook">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+          <a href="https://instagram.com" target="_blank" class="social-btn instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
+          <a href="https://x.com" target="_blank" class="social-btn twitter">
+            <i class="fa-brands fa-x-twitter"></i>
+          </a>
+          <a href="https://wa.me/50494347052" target="_blank" class="social-btn whatsapp">
+            <i class="fa-brands fa-whatsapp"></i>
+          </a>
+        </div>
+
+        <div class="newsletter-box">
+          <h4 class="section-title mini">Suscríbete</h4>
+          <form class="newsletter-form">
+            <div class="input-group">
+              <input type="email" placeholder="Tu correo electrónico" required>
+              <button type="submit">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Column 5: Payment -->
+      <div class="footer-section">
+        <h4 class="section-title">Formas de pago</h4>
+        <div class="payment-methods">
+          <i class="fa-brands fa-cc-visa"></i>
+          <i class="fa-brands fa-cc-mastercard"></i>
+          <i class="fa-brands fa-cc-paypal"></i>
+          <i class="fa-solid fa-building-columns"></i>
         </div>
       </div>
 
     </div>
   </div>
 
-  <div [ngClass]="footerDivider"></div>
-
   <div class="footer-bottom">
-    <p>&copy; 2024 Astralis. Todos los derechos reservados.</p>
+    <div class="footer-bottom-container">
+      <p>&copy; 2024 Astralis. Todos los derechos reservados.</p>
+      <div class="bottom-branding">
+        <span>Powered by Snap Your Date</span>
+      </div>
+    </div>
   </div>
 </footer>

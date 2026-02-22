@@ -1,19 +1,22 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 90vh;
-  display: flex;
+/* Login Refresh - Aurora Design System */
+
+:host {
+  display: flex !important;
   justify-content: center;
   align-items: center;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: #0B0D19;
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .graph-container {
-  position: relative;
+  position: fixed;
+  inset: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 #graphCanvas {
@@ -21,212 +24,178 @@ html, body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 80%;
-  z-index: 1;
+  height: 100%;
+  opacity: 0.4;
 }
 
 .login-container {
   position: relative;
-  margin: 15rem auto;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  background: rgba(10, 12, 20, 0.4);
+  backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.14));
+  border-radius: var(--rXL, 28px);
+  box-shadow: var(--shadow, 0 28px 90px rgba(0, 0, 0, 0.58));
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  width: auto;
-  max-width: 25rem; /* 400px to rem */
-  padding: 1.25rem; /* 20px to rem */
-  background-color: rgba(2, 21, 38, 0.8);
-  border: 0.125rem solid #1261A0; /* 2px to rem */
-  border-radius: 0.9375rem; /* 15px to rem */
-  color: #88D66C;
-  text-align: center;
-  box-shadow: 0 0.25rem 1.25rem rgba(0, 0, 0, 0.5); /* 4px to 20px converted to rem */
-  transition: height 0.5s ease-in-out;
-  z-index: 2;
+  gap: 1.5rem;
+  animation: loginFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes loginFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .login-title {
-  color: #00d4ff;
-  font-size: 1.5rem;
-  margin-bottom: 0.625rem; /* 10px to rem */
+  font-size: 1.75rem;
+  font-weight: 860;
+  color: var(--text, #ffffff);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.02em;
+  text-align: center;
+}
+
+.login-container p {
+  color: var(--muted, rgba(255, 255, 255, 0.66));
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: 0.5rem;
   width: 100%;
-  margin-bottom: 0.9375rem; /* 15px to rem */
 }
 
 .form-group label {
-  color: #88D66C;
-  font-size: 1rem;
-  margin-bottom: 0.3125rem; /* 5px to rem */
-  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .form-group input {
   width: 100%;
-  max-width: 18.75rem; /* 300px to rem */
-  padding: 0.75rem; /* 12px to rem */
-  border: 0.125rem solid #88D66C; /* 2px to rem */
-  background-color: #0B0D19 !important;
-  color: #88D66C !important;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.14));
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  color: #fff;
   font-size: 1rem;
+  transition: all 0.3s ease;
   outline: none;
-  margin-bottom: 1.25rem; /* 20px to rem */
-  border-radius: 0.625rem; /* 10px to rem */
-  box-sizing: border-box;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-group input::placeholder {
-  color: #88D66C;
 }
 
 .form-group input:focus {
-  border-color: #FB773C;
-  box-shadow: 0 0 0.625rem rgba(251, 119, 60, 0.7); /* 10px to rem */
-  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--blue, #0a84ff);
+  box-shadow: 0 0 15px rgba(10, 132, 255, 0.2);
 }
 
-button {
-  padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
-  background-color: transparent;
-  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px to rem */
-  color: rgba(255, 255, 255, 0.7);
+button[type="submit"] {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border-radius: 16px;
+  border: 1px solid rgba(10, 132, 255, 0.55);
+  background: radial-gradient(140% 180% at 20% 10%, rgba(10, 132, 255, 0.22), rgba(255, 255, 255, 0.05));
+  color: #fff;
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 0.625rem; /* 10px to rem */
-  display: block;
-  margin: 0 auto;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.5);
-  color: rgba(255, 255, 255, 1);
+button[type="submit"]:hover {
+  border-color: var(--blue, #0a84ff);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
 }
 
-button:active {
-  background-color: #12223C;
+button[type="submit"]:active {
+  transform: scale(0.98);
 }
 
-button:focus {
-  outline: none;
-  box-shadow: 0 0 0.3125rem rgba(255, 255, 255, 0.5); /* 5px to rem */
-}
-
-.success-message {
-  color: #88D66C;
-  margin-top: 0.9375rem; /* 15px to rem */
-}
-
-.error-message {
-  color: #EB3678;
-  margin-top: 0.9375rem; /* 15px to rem */
-}
-
-/* Estilos para dispositivos móviles y pantallas pequeñas */
-@media (max-width: 480px) {
-  .login-container {
-    width: 90%;
-    padding: 0.9375rem; /* 15px to rem */
-    margin: 12rem auto; /* Adjusted for smaller screens */
-  }
-
-  .login-title {
-    font-size: 1.2rem;
-  }
-
-  .form-group input {
-    font-size: 0.9rem;
-    padding: 0.625rem; /* 10px to rem */
-  }
-
-  button {
-    font-size: 0.9rem;
-    padding: 0.625rem 0.9375rem; /* 10px to 15px to rem */
-  }
-}
-
-/* Estilos para tablets */
-@media (min-width: 481px) and (max-width: 768px) {
-  .login-container {
-    width: 80%;
-    margin: 13rem auto; /* Adjusted for tablet screens */
-  }
-
-  .login-title {
-    font-size: 1.3rem;
-  }
-
-  .form-group input {
-    font-size: 1rem;
-    padding: 0.75rem; /* 12px to rem */
-  }
-
-  button {
-    font-size: 1rem;
-    padding: 0.75rem 1.25rem; /* 12px to 20px to rem */
-  }
-}
-
-/* Ajustar el espacio para el botón de Google */
+/* Google Sign-in Button Refinement */
 #google-signin-button {
-  margin-top: 1.25rem; /* 20px to rem */
+  width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
-  z-index: 3;
+  justify-content: center;
+  gap: 12px;
+  padding: 0.85rem;
+  border-radius: 16px;
+  border: 1px solid var(--stroke);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
 }
 
 #google-signin-button:hover {
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+  transform: translateY(-1px);
+}
+
+#google-signin-button img {
+  width: 20px;
+  height: 20px;
 }
 
 #google-signin-button::after {
   content: 'Continue with Google';
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
-  background-color: transparent;
-  margin-left: 0.625rem; /* 10px to rem */
-  display: inline-block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
 }
 
-/* Icono personalizado para Google */
-#google-signin-button img {
-  width: 1.5rem; /* 24px to rem */
-  height: 1.5rem;
-  margin-right: 0.625rem; /* 10px to rem */
+/* Response Message */
+.success-message {
+  color: var(--blue, #0a84ff);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }
 
-/* Añadir sombra para el botón de Google */
-#google-signin-button {
-  border: 0.125rem solid rgba(255, 255, 255, 0.3); /* 2px to rem */
-  padding: 0.625rem 1.25rem; /* 10px to 20px to rem */
-  border-radius: 0.625rem; /* 10px to rem */
-  background-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 0.9375rem rgba(0, 255, 255, 0.4); /* 15px to rem */
+.error-message {
+  color: var(--pink, #ff375f);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
 }
 
-#google-signin-button:hover {
-  box-shadow: 0 0 1.25rem rgba(0, 255, 255, 0.7); /* 20px to rem */
-}
-
-/* Para dispositivos móviles */
+/* Mobile Responsive */
 @media (max-width: 480px) {
-  #google-signin-button::after {
-    font-size: 0.9rem;
+  .login-container {
+    padding: 1.5rem;
+    max-width: 100%;
   }
-}
 
-@media (min-width: 481px) and (max-width: 768px) {
-  #google-signin-button::after {
-    font-size: 1rem;
+  .login-title {
+    font-size: 1.5rem;
   }
 }

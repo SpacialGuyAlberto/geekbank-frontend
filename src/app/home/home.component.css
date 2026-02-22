@@ -1,329 +1,135 @@
-:root {
-  --primary-color: #0B0D19;
-  --secondary-color: #021526;
-  --text-color: #FFFFFF;
-  --highlight-color: #00d4ff;
-  --accent-color: #88D66C;
-  --font-primary: 'Roboto', sans-serif;
-  --font-secondary: 'VT323', monospace;
-  --transition-speed: 0.3s;
-  --scale-factor: 0.75;
-  /* 75% del tamaño original */
-}
-
-/* Box-Sizing Global */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-/* Estilos Globales */
-body,
-html {
-  margin: 0;
-  padding: 0;
-  font-family: var(--font-primary);
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: var(--text-color);
-  overflow-x: hidden;
-  /* Evita el desplazamiento horizontal */
-}
-
-.graph-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-}
-
-#graphCanvas {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-}
-
 .home-container {
-  max-width: 90rem;
-  /* O el valor que hayas elegido */
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 6rem 1.5rem 2rem;
-  /* Añadido 6rem de padding-top (equivalente a la altura de la navbar + espacio adicional) */
+  padding: 9rem 2rem 4rem;
+  /* Increased top padding to clear fixed components */
 }
 
-/* Estilos del Banner */
+/* Banner / Hero Section */
 .banner {
   width: 100%;
-  height: 400px;
-  /* Ajusta la altura según tus necesidades */
-  background-image: url('/assets/adventure2.webp');
-  background-size: cover;
-  background-position: center;
+  height: 480px;
+  background: radial-gradient(circle at top right, #1d4ed8, transparent 40%),
+    radial-gradient(circle at bottom left, #0f172a, #020617);
+  border-radius: 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--text-color);
+  color: #ffffff;
   text-align: center;
   position: relative;
-  filter: blur(2px);
+  overflow: hidden;
+  margin-bottom: 4rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.banner::after {
+.banner::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  /* Superposición para mejorar la legibilidad del texto */
+  inset: 0;
+  background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+  opacity: 0.1;
+  pointer-events: none;
 }
 
 .banner h1 {
-  font-size: 3rem;
-  z-index: 1;
-  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  z-index: 10;
+  letter-spacing: -0.02em;
 }
 
 .banner p {
-  font-size: 1.5rem;
-  z-index: 2;
+  font-size: 1.25rem;
+  color: var(--text-subtle);
+  max-width: 600px;
+  z-index: 10;
+  margin: 0;
+}
+
+.section-header {
+  margin-bottom: 2.5rem;
+  text-align: left;
 }
 
 .gift-cards-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2.25rem;
+  gap: 4rem;
 }
 
-/* Sección de Destacados y Recomendaciones */
-
+/* Sección de Destacados */
 .highlight-recommendations {
-  display: flex;
-  gap: 1.5rem;
-  position: relative;
-  z-index: 2;
-  margin-top: -20rem;
-  /* Ajusta este valor según sea necesario */
-  margin-bottom: -10rem;
-  /* Ajusta este valor según sea necesario */
-}
-
-.app-banner {
-  margin-top: 8rem;
-  margin-bottom: 1rem;
-  margin-left: -1.5rem;
-  z-index: 2
-    /* Ajusta este valor según tus necesidades */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 .highlights-section,
 .recommendations-section {
-  flex: 0.75;
-  /* Reducción proporcional en flex */
+  background: var(--secondary-bg-color);
+  border: 1px solid var(--divider-color);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  backdrop-filter: blur(8px);
 }
 
-.highlights-section {
-  display: flex;
-  margin-left: 10%;
-  justify-content: center;
-}
-
-.recommendations-section {
-  display: flex;
-  justify-content: center;
-  margin-left: -1.5rem;
-  /* Mueve la sección 1.5rem hacia la izquierda */
-}
-
-/* Tarjetas principales */
-.main-gift-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-/* Filtros y Tarjetas Filtradas */
+/* Filters Layout */
 .filter-giftcard-container {
-  display: flex;
-  gap: 1.5rem;
-  /* Reducción de 2rem a 1.5rem */
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 3rem;
+  align-items: start;
 }
 
 .filter-section {
-  flex: 1;
+  position: sticky;
+  top: 9.5rem;
+  /* Matches main container padding + buffer */
 }
 
 .giftcard-section {
-  flex: 3;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: -10rem;
+  gap: 3rem;
 }
 
-/* Estilo para el contenedor del Free Fire Gift Card */
-.single-gift-card {
-  display: flex;
-  justify-content: center;
-}
-
-/* Estilo para el grid de Kinguin Gift Cards */
-.gift-cards-grid-small {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.125rem;
-  width: 100%;
-
-}
-
-.gift-cards-grid-big {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.125rem;
-  width: 100%;
-}
-
-/* Botón de Filtros para Móvil */
-.filter-button {
-  display: none;
-}
-
-.modal {
-  display: none;
-}
-
-/* Media Queries */
-@media (max-width: 768px) {
-
-  .banner {
-    width: 100vw;
-    /* Abarca todo el ancho de la ventana */
-    height: 250px;
-    margin: 0;
-    /* El
-    imina cualquier margen */
-    padding: 0;
-    /* Elimina cualquier padding */
-    left: 50%;
-    right: 50%;
-    transform: translateX(-50%);
-    /* Centra el banner */
-  }
-
-  .highlights-section {
-    margin-right: 25%;
-    width: 130%;
-  }
-
-  .banner h1 {
-    font-size: 2rem;
-  }
-
-  .banner p {
-    font-size: 1rem;
-  }
-
-  .app-banner {
-    width: 120vw;
-    /* 1200px */
-    /*max-height: 40rem;*/
-
-  }
-
-  app-offers-banner {
-    margin-top: 2rem;
-    /* Ajusta según sea necesario */
-    margin-bottom: 2rem;
-    /* Ajusta según sea necesario */
-  }
-
-  .highlight-recommendations {
-    flex-direction: column;
-    align-items: center;
-    margin-top: -10rem;
-    /* Elimina márgenes negativos */
-    margin-bottom: 0;
-    /* Elimina márgenes negativos */
-    padding: 1rem 0;
-    /* Añade padding para espaciar */
-  }
-
+/* Responsive */
+@media (max-width: 1024px) {
   .filter-giftcard-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    gap: 2rem;
   }
 
   .filter-section {
     display: none;
   }
 
-  .filter-button {
-    display: block;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: var(--accent-color);
-    color: var(--secondary-color);
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1000;
-  }
-
-  .modal {
-    display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .modal-content {
-    background-color: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-  }
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 2rem;
-    color: var(--text-color);
-    cursor: pointer;
-  }
-
-  /* Ajustes adicionales para evitar superposición */
-  .main-gift-cards,
-  .gift-cards-grid {
-    margin-top: 2rem;
-    /* Añade margen superior para separar del banner */
-  }
-
-  .app-banner {
-    margin-top: 2rem;
-    /* Asegura que el banner no se superponga */
-    margin-bottom: 1rem;
+  .highlight-recommendations {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (min-width: 769px) {
-  .modal {
-    display: none;
+@media (max-width: 768px) {
+  .home-container {
+    padding-top: 8rem;
   }
 
-  .filter-button {
-    display: none;
+  .banner {
+    height: 320px;
+    border-radius: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .banner h1 {
+    font-size: 2.25rem;
+  }
+
+  .banner p {
+    font-size: 1rem;
+    padding: 0 1rem;
   }
 }

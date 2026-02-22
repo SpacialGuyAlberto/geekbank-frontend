@@ -1,33 +1,18 @@
-:root {
-  --scale-factor: 0.80; /* 75% del tamaño original */
-  --primary-color: #0B0D19;
-  --secondary-color: #4f5252;
-  --text-color: #FFFFFF;
-  --highlight-color: #00d4ff;
-  --accent-color: #88D66C;
-  --font-primary: 'Roboto', sans-serif;
-  --font-secondary: 'VT323', monospace;
-  --transition-speed: 0.3s;
-}
+/* Recommendations (Snap Your Date Aesthetic) */
 
 .recommendations.home {
   display: grid;
-  grid-template-columns: repeat(2, minmax(calc(200px * var(--scale-factor)), 1fr)); /* Dos columnas con ancho mínimo escalado */
-  grid-gap: calc(0.8rem * var(--scale-factor));
-  row-gap: calc(0.8rem * var(--scale-factor));
-  width: calc(100% * var(--scale-factor)); /* Escalar el ancho total */
-  border-radius: calc(0.625rem * var(--scale-factor));
-  justify-items: center;
-  margin: 0 auto;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 100%;
 }
 
 .recommendations.cart {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(calc(200px * var(--scale-factor)), 1fr));
-  gap: calc(1.5rem * var(--scale-factor));
-  width: 70%;
-  margin: 0 auto; /* Centra el contenedor horizontalmente */
-  margin-bottom: 5rem
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  margin: 4rem 0;
 }
 
 .recommendations-gift-cards-container {
@@ -39,237 +24,89 @@
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  max-width: calc(300px * var(--scale-factor)); /* Ancho máximo escalado */
-  background: linear-gradient(135deg, rgba(39, 39, 57, 0.4), rgba(8, 64, 180, 0.4));
-  border: calc(0.125rem * var(--scale-factor)) solid rgba(173, 216, 230, 0.2);
-  border-radius: calc(0.5rem * var(--scale-factor));
+  background: var(--secondary-bg-color);
+  border: 1px solid var(--divider-color);
+  border-radius: 1.25rem;
   padding: 0;
-  text-align: center;
-  transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
-  box-shadow: 0 calc(0.25rem * var(--scale-factor)) calc(1.25rem * var(--scale-factor)) rgba(0, 0, 0, 0.6);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
   position: relative;
   cursor: pointer;
   overflow: hidden;
-  min-height: calc(20rem * var(--scale-factor));
-}
-
-.gift-card::before {
-  content: '';
-  position: absolute;
-  top: calc(-2px * var(--scale-factor));
-  left: calc(-2px * var(--scale-factor));
-  right: calc(-2px * var(--scale-factor));
-  bottom: calc(-2px * var(--scale-factor));
-  border-radius: calc(1px * var(--scale-factor));
-  background: linear-gradient(135deg,
-  rgba(139, 0, 139, 0.8) 20%, /* Dark Magenta */
-  rgba(75, 0, 130, 0.8) 20%, /* Indigo */
-  rgba(0, 128, 128, 0.8) 40%, /* Dark Cyan */
-  rgba(184, 134, 11, 0.8) 60%, /* Dark Goldenrod */
-  rgba(25, 25, 112, 0.8) 80%); /* Midnight Blue */
-  background-size: 300% 300%;
-  z-index: -1;
-  animation: animatedBorder 7s ease infinite;
-  filter: blur(calc(0px * var(--scale-factor)));
-}
-
-h2 {
-  font-family: var(--font-primary);
-  font-size: calc(1.5rem * var(--scale-factor));
-  color: #F8F9FA; /* Blanco ligeramente suave */
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: calc(0.2rem * var(--scale-factor));
-  margin-bottom: calc(2rem * var(--scale-factor));
-  position: relative;
-  text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-}
-
-h2::before,
-h2::after {
-  position: absolute;
-  width: calc(4rem * var(--scale-factor));
-  height: calc(0.2rem * var(--scale-factor));
-  background: #F8F9FA; /* Blanco ligeramente suave */
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-h2::before {
-  left: calc(-5rem * var(--scale-factor));
-}
-
-h2::after {
-  right: calc(-5rem * var(--scale-factor));
-}
-
-
-@keyframes animatedBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  backdrop-filter: blur(8px);
 }
 
 .gift-card:hover {
-  transform: translateY(calc(-0.625rem * var(--scale-factor)));
-  border-color: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 calc(1.875rem * var(--scale-factor)) rgba(255, 255, 255, 0.5);
+  transform: translateY(-8px);
+  border-color: var(--accent-color);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
 }
 
 .gift-card-image {
   width: 100%;
-  height: calc(15rem * var(--scale-factor));
+  aspect-ratio: 16/9;
   object-fit: cover;
-  border-top-left-radius: calc(0.5rem * var(--scale-factor));
-  border-top-right-radius: calc(0.5rem * var(--scale-factor));
   display: block;
-  transition: transform var(--transition-speed) ease;
+  transition: transform 0.5s ease;
+}
+
+.gift-card:hover .gift-card-image {
+  transform: scale(1.05);
 }
 
 .gift-card-content {
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
   flex-grow: 1;
-  margin-top: calc(1rem * var(--scale-factor));
-  padding: calc(1rem * var(--scale-factor));
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.4));
 }
 
 .gift-card-title {
-  font-size: calc(1rem * var(--scale-factor));
-  color: #dcd0d0;
-  margin-bottom: calc(0.625rem * var(--scale-factor));
-  text-transform: uppercase;
-  white-space: normal; /* Permite que el texto ajuste automáticamente */
-  overflow: visible; /* Evita recortar el texto */
-  text-overflow: clip; /* Deshabilita los puntos suspensivos */
-  max-width: 100%;
-  line-height: 1.2; /* Opcional: ajusta la separación entre líneas */
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  text-transform: none;
 }
 
-
-.gift-card:hover .gift-card-title {
-  white-space: normal; /* Permite que el texto se ajuste en varias líneas */
-  max-height: calc(5rem * var(--scale-factor)); /* Altura suficiente para mostrar el texto completo */
-}
 .gift-card-price {
   display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra los elementos horizontalmente */
-  font-size: calc(1.1rem * var(--scale-factor));
-  color: #88D66C;
-  font-weight: bold;
-  margin-top: calc(1rem * var(--scale-factor)); /* Espacio desde el título */
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-top: auto;
 }
 
-/* Precio original tachado */
 .original-price {
   text-decoration: line-through;
-  color: #B5CDE2FF; /* Ajusta el color según tu diseño */
-  margin-bottom: 4px; /* Espacio inferior */
-  font-size: calc(0.9rem * var(--scale-factor));
+  color: var(--text-subtle);
+  font-size: 0.8rem;
 }
 
-/* Precio con descuento */
 .discounted-price {
-  color: var(--text-color);
-  font-weight: bold;
-  font-size: calc(1.4rem * var(--scale-factor));
-  margin-bottom: 4px; /* Espacio inferior */
+  color: var(--accent-color);
+  font-weight: 800;
+  font-size: 1.25rem;
 }
+
 .discount-percentage {
   position: absolute;
-  top: 10px; /* Ajusta según tus necesidades */
-  left: 10px; /* Ajusta según tus necesidades */
-  background-color: var(--discount-color);
-  color: #fff;
+  top: 10px;
+  right: 10px;
+  background-color: var(--accent-color);
+  color: #ffffff;
   padding: 4px 8px;
   border-radius: 4px;
-  font-size: calc(0.75rem * var(--scale-factor));
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  z-index: 1; /* Por encima de otros elementos */
+  font-size: 0.75rem;
+  font-weight: 800;
+  z-index: 10;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-/* Ajustes para móviles */
+/* Responsive */
 @media (max-width: 768px) {
-  .recommendations {
-    grid-template-columns: repeat(2, 1fr);
-    gap: calc(1.5rem * var(--scale-factor));
-    margin: auto;
-    justify-content: center;
-  }
-
-  .gift-card {
-    width: 100%;
-    max-width: none;
-  }
-
-  .gift-card-image {
-    height: calc(15rem * var(--scale-factor));
-    object-fit: cover;
-    border-top-left-radius: calc(0.5rem * var(--scale-factor));
-    border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: calc(0.625rem * var(--scale-factor));
-  }
-
-  .gift-card-title {
-    font-size: calc(1rem * var(--scale-factor));
-  }
-
-  .gift-card-price {
-    font-size: calc(1.2rem * var(--scale-factor));
-  }
-
-  .h2 {
-    font-family: var(--font-primary);
-    font-size: calc(2.5rem * var(--scale-factor));
-    color: #F8F9FA; /* Blanco ligeramente suave */
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: calc(0.2rem * var(--scale-factor));
-    margin-bottom: calc(2rem * var(--scale-factor));
-    position: relative;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-  }
-}
-
-/* Ajustes adicionales para pantallas muy pequeñas */
-@media (max-width: 480px) {
-  .h2 {
-    font-family: var(--font-primary);
-    font-size: calc(2.5rem * var(--scale-factor));
-    color: #F8F9FA; /* Blanco ligeramente suave */
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: calc(0.2rem * var(--scale-factor));
-    margin-bottom: calc(2rem * var(--scale-factor));
-    position: relative;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6);
-  }
-
-  .recommendations {
-    grid-template-rows: repeat(2, 1fr);
-    grid-gap: calc(0.5rem * var(--scale-factor));
-    justify-content: center;
-  }
-
-  .gift-card {
-    width: 100%;
-  }
-
-  gift-card-image {
-    height: calc(15rem * var(--scale-factor));
-    object-fit: cover;
-    border-top-left-radius: calc(0.5rem * var(--scale-factor));
-    border-top-right-radius: calc(0.5rem * var(--scale-factor));
-    margin-bottom: calc(0.625rem * var(--scale-factor));
+  .recommendations.home {
+    grid-template-columns: 1fr;
   }
 }

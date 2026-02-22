@@ -1,99 +1,78 @@
-<div class="container">
-  <!-- Banner como fondo exclusivo -->
-  <div class="banner">
-    <div class="banner-overlay"></div>
-  </div>
-
-  <!-- Contenedor de Registro -->
-  <div class="register-container">
-    <h2 id="animated-text" class="register-title">Bienvenido</h2>
-    <p>Empecemos la aventura</p>
-
-    <form (ngSubmit)="onSubmit()">
-      <!-- Paso 1: Nombre -->
-      <div class="form-group" *ngIf="currentStep >= 1">
-        <label for="name">Ingresa tu nombre*</label>
-        <div class="input-container">
-          <input type="text" id="name" [(ngModel)]="name" name="name"
-                 (keydown.enter)="nextStep()" #nameInput required>
-        </div>
-      </div>
-
-      <!-- Paso 2: Email -->
-      <div class="form-group" *ngIf="currentStep >= 2">
-        <label for="email">Ingresa tu correo electrónico*</label>
-        <div class="input-container">
-          <input type="email" id="email" #emailInput [(ngModel)]="email" name="email"
-                 (blur)="onEmailBlur()"
-                 (keyup)="onEmailKeyUp()"
-                 (keydown.enter)="nextStep()"
-                 required>
-          <span *ngIf="emailTouched && emailValid && email.length > 0" class="valid-feedback">✔</span>
-          <span *ngIf="emailTouched && !emailValid && email.length > 0" class="invalid-feedback">✘</span>
-        </div>
-      </div>
-
-      <!-- Paso 3: Contraseña -->
-      <div class="form-group" *ngIf="currentStep >= 3">
-        <label for="password">Ingresa tu contraseña*</label>
-        <div class="input-container">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="password"
-            #passwordInput
-            [(ngModel)]="password"
-            name="password"
-            (blur)="onPasswordBlur()"
-            (keydown.enter)="nextStep()"
-            (keyup)="onPasswordKeyUp(); calculatePasswordStrength()"
-            required
-          >
-          <button
-            type="button"
-            class="toggle-password"
-            (click)="togglePasswordVisibility()"
-            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-          >
-            <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
-          </button>
-        </div>
-        <!-- Barra de fortaleza de la contraseña -->
-        <div *ngIf="password.length > 0" class="password-strength-container">
-          <div class="password-strength-bar" [ngClass]="passwordStrengthLevel"></div>
-          <p class="password-strength-text">{{ passwordStrengthText }}</p>
-        </div>
-      </div>
-
-
-
-      <!-- Paso 4: Confirmar Contraseña -->
-      <div class="form-group" *ngIf="currentStep >= 4">
-        <label for="confirmPassword">Confirma tu contraseña*</label>
-        <div class="input-container">
-          <input type="password" id="confirmPassword" #confirmPasswordInput [(ngModel)]="confirmPassword" name="confirmPassword"
-                 (blur)="onConfirmPasswordBlur()"
-                 (keyup)="onConfirmPasswordKeyUp()"
-                 (keydown.enter)="onSubmit()"
-                 required>
-          <span *ngIf="confirmPasswordTouched && confirmPasswordValid && confirmPassword.length > 0" class="valid-feedback">✔</span>
-          <span *ngIf="confirmPasswordTouched && !confirmPasswordValid && confirmPassword.length > 0" class="invalid-feedback">✘</span>
-        </div>
-      </div>
-
-      <!-- Botones de navegación -->
-      <div class="button-group">
-        <button type="button"
-                *ngIf="currentStep < 4"
-                (click)="nextStep()"
-                [disabled]="userExists">
-          Continuar
-        </button>
-        <button type="submit" *ngIf="currentStep === 4"  [disabled]="submitted" >Registrar</button>
-        <button type="button" *ngIf="currentStep > 1" (click)="previousStep()">Atrás</button>
-      </div>
-    </form>
-
-    <p *ngIf="currentStep === 4">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión →</a>.</p>
-    <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
-  </div>
+<div class="graph-container">
+  <canvas id="graphCanvas"></canvas>
 </div>
+
+<div class="register-container">
+  <h2 id="animated-text" class="register-title"></h2>
+  <p>Empecemos la aventura</p>
+
+  <form (ngSubmit)="onSubmit()">
+    <!-- Paso 1: Nombre -->
+    <div class="form-group" *ngIf="currentStep >= 1">
+      <label for="name">Ingresa tu nombre*</label>
+      <div class="input-wrapper">
+        <input type="text" id="name" [(ngModel)]="name" name="name" (keydown.enter)="nextStep()" #nameInput required
+          placeholder="Tu nombre completo">
+      </div>
+    </div>
+
+    <!-- Paso 2: Email -->
+    <div class="form-group" *ngIf="currentStep >= 2">
+      <label for="email">Ingresa tu correo electrónico*</label>
+      <div class="input-wrapper">
+        <input type="email" id="email" #emailInput [(ngModel)]="email" name="email" (blur)="onEmailBlur()"
+          (keyup)="onEmailKeyUp()" (keydown.enter)="nextStep()" required placeholder="nombre@ejemplo.com">
+        <span *ngIf="emailTouched && emailValid && email.length > 0" class="valid-feedback">✔</span>
+        <span *ngIf="emailTouched && !emailValid && email.length > 0" class="invalid-feedback">✘</span>
+      </div>
+    </div>
+
+    <!-- Paso 3: Contraseña -->
+    <div class="form-group" *ngIf="currentStep >= 3">
+      <label for="password">Ingresa tu contraseña*</label>
+      <div class="input-wrapper">
+        <input [type]="showPassword ? 'text' : 'password'" id="password" #passwordInput [(ngModel)]="password"
+          name="password" (blur)="onPasswordBlur()" (keydown.enter)="nextStep()"
+          (keyup)="onPasswordKeyUp(); calculatePasswordStrength()" required placeholder="••••••••">
+        <button type="button" class="toggle-password" (click)="togglePasswordVisibility()"
+          [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+          <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+        </button>
+      </div>
+      <!-- Barra de fortaleza de la contraseña -->
+      <div *ngIf="password.length > 0" class="password-strength-container">
+        <div class="password-strength-bar" [ngClass]="passwordStrengthLevel"></div>
+        <p class="password-strength-text">{{ passwordStrengthText }}</p>
+      </div>
+    </div>
+
+    <!-- Paso 4: Confirmar Contraseña -->
+    <div class="form-group" *ngIf="currentStep >= 4">
+      <label for="confirmPassword">Confirma tu contraseña*</label>
+      <div class="input-wrapper">
+        <input type="password" id="confirmPassword" #confirmPasswordInput [(ngModel)]="confirmPassword"
+          name="confirmPassword" (blur)="onConfirmPasswordBlur()" (keyup)="onConfirmPasswordKeyUp()"
+          (keydown.enter)="onSubmit()" required placeholder="••••••••">
+        <span *ngIf="confirmPasswordTouched && confirmPasswordValid && confirmPassword.length > 0"
+          class="valid-feedback">✔</span>
+        <span *ngIf="confirmPasswordTouched && !confirmPasswordValid && confirmPassword.length > 0"
+          class="invalid-feedback">✘</span>
+      </div>
+    </div>
+
+    <!-- Botones de navegación -->
+    <div class="button-group">
+      <button type="button" *ngIf="currentStep < 4" (click)="nextStep()" [disabled]="userExists" class="btn-primary">
+        Continuar
+      </button>
+      <button type="submit" *ngIf="currentStep === 4" [disabled]="submitted" class="btn-primary">Registrar</button>
+      <button type="button" *ngIf="currentStep > 1" (click)="previousStep()" class="btn-secondary">Atrás</button>
+    </div>
+  </form>
+
+  <p *ngIf="currentStep === 4" class="login-link-container">¿Ya tienes una cuenta? <a routerLink="/login">Inicia sesión
+      →</a></p>
+  <p *ngIf="message" [ngClass]="messageClass">{{ message }}</p>
+</div>
+
+<script src="animationScript.js"></script>
