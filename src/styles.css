@@ -149,3 +149,98 @@ a {
   font-size: 1.125rem;
   line-height: 1.5;
 }
+
+/* ════════════════════════════════════════════════════════════
+   Aurora  –  mat-paginator  (global override)
+   ════════════════════════════════════════════════════════════ */
+
+/* The host element itself becomes a glass card */
+mat-paginator {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 16px !important;
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+  color: rgba(255, 255, 255, 0.82) !important;
+  overflow: visible !important;
+}
+
+/* Inner container keeps transparent bg */
+.mat-mdc-paginator-container {
+  background: transparent !important;
+  min-height: 52px;
+}
+
+/* "Items per page" and "1–14 of 35" labels */
+.mat-mdc-paginator-page-size-label,
+.mat-mdc-paginator-range-label {
+  color: rgba(255, 255, 255, 0.55) !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.02em;
+}
+
+/* The page-size select widget */
+.mat-mdc-paginator-page-size-select .mat-mdc-form-field-flex {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 10px !important;
+  padding: 2px 8px !important;
+}
+
+.mat-mdc-paginator-page-size-select .mdc-line-ripple,
+.mat-mdc-paginator-page-size-select .mat-mdc-form-field-subscript-wrapper {
+  display: none !important;
+}
+
+.mat-mdc-paginator-page-size-select .mat-mdc-select-value,
+.mat-mdc-paginator-page-size-select .mat-mdc-select-arrow {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+/* Navigation < > arrow buttons */
+.mat-mdc-paginator .mat-mdc-icon-button {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  transition: all 0.2s ease !important;
+  margin: 0 2px !important;
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button:not([disabled]):hover {
+  background: rgba(10, 132, 255, 0.15) !important;
+  border-color: rgba(10, 132, 255, 0.5) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 132, 255, 0.25) !important;
+}
+
+.mat-mdc-paginator .mat-mdc-icon-button[disabled] {
+  opacity: 0.25 !important;
+}
+
+/* SVG icons inside buttons */
+.mat-mdc-paginator .mat-mdc-icon-button svg {
+  fill: currentColor !important;
+}
+
+/* Dropdown panel (floating select options) */
+.mat-mdc-select-panel {
+  background: rgba(10, 12, 25, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+.mat-mdc-option {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.mat-mdc-option:hover,
+.mat-mdc-option.mdc-list-item--selected {
+  background: rgba(10, 132, 255, 0.12) !important;
+  color: #fff !important;
+}

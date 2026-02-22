@@ -339,3 +339,93 @@
     margin-top: 0.5rem;
   }
 }
+
+/* ════════════════════════════════════════════════════════════
+   Aurora Paginator – mat-paginator override
+   ════════════════════════════════════════════════════════════ */
+
+/* Wrapper glass card */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem auto 2rem auto;
+  max-width: var(--max, 1220px);
+  padding: 0 1rem;
+}
+
+::ng-deep .pagination-container mat-paginator {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 16px;
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  padding: 0 0.5rem;
+}
+
+/* Remove Material's built-in white background from inner elements */
+::ng-deep .pagination-container .mat-mdc-paginator-container {
+  background: transparent !important;
+  min-height: 52px;
+}
+
+/* Label: "Items per page" */
+::ng-deep .pagination-container .mat-mdc-paginator-page-size-label,
+::ng-deep .pagination-container .mat-mdc-paginator-range-label {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+}
+
+/* Page size selector */
+::ng-deep .pagination-container .mat-mdc-paginator-page-size-select {
+  margin: 0 0.5rem;
+}
+
+::ng-deep .pagination-container .mat-mdc-select-value,
+::ng-deep .pagination-container .mat-mdc-select-arrow {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+::ng-deep .pagination-container .mat-mdc-form-field-flex {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 2px 8px !important;
+}
+
+::ng-deep .pagination-container .mdc-line-ripple {
+  display: none;
+}
+
+::ng-deep .pagination-container .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+/* Navigation arrow buttons */
+::ng-deep .pagination-container .mat-mdc-icon-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  transition: all 0.2s ease !important;
+  margin: 0 2px;
+}
+
+::ng-deep .pagination-container .mat-mdc-icon-button:not([disabled]):hover {
+  background: rgba(10, 132, 255, 0.14) !important;
+  border-color: rgba(10, 132, 255, 0.45) !important;
+  color: #fff !important;
+  transform: translateY(-1px);
+}
+
+::ng-deep .pagination-container .mat-mdc-icon-button[disabled] {
+  opacity: 0.25;
+}
+
+::ng-deep .pagination-container .mat-mdc-icon-button svg {
+  fill: currentColor;
+}
