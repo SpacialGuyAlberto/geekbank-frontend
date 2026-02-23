@@ -1,140 +1,133 @@
 <!-- src/app/purchase-confirmation/purchase-confirmation.component.html -->
-<div class="main-container">
-  <div class="transactions-container">
+<div class="purchase-page-wrapper">
+  <div class="purchase-container">
 
-    <!-- Formulario de Búsqueda Siempre Visible -->
-    <div class="transaction-input-container">
-      <h2 class="section-title">Buscar Transacción</h2>
-      <form (ngSubmit)="handleTransactionSearch()" class="search-form">
-        <input
-          type="text"
-          [(ngModel)]="transactionNumber"
-          name="transactionNumber"
-          placeholder="Número de transacción"
-          required
-          class="transaction-input"
-        />
-        <button type="submit" class="transaction-button">Refrescar estado de la Transaccion.</button>
+    <!-- Transaction Search Section -->
+    <div class="aurora-card search-card">
+      <div class="search-title-group">
+        <h2 class="aurora-text-gradient">Localizar Transacción</h2>
+        <p class="search-subtitle">Introduce tu número de referencia para consultar el estado actual.</p>
+      </div>
+
+      <form (ngSubmit)="handleTransactionSearch()" class="modern-search-form">
+        <div class="input-group">
+          <i class="fa-solid fa-receipt input-icon"></i>
+          <input type="text" [(ngModel)]="transactionNumber" name="transactionNumber"
+            placeholder="Ej: PI_3N... o Referencia de Tigo" required class="aurora-input" />
+        </div>
+        <button type="submit" class="aurora-btn-primary">
+          <i class="fa-solid fa-rotate"></i>
+          Consultar Estado
+        </button>
       </form>
     </div>
 
-    <!-- Mensaje de Agradecimiento -->
-    <h1 class="thank-you-message" *ngIf="recentTransaction">¡Gracias por tu compra!</h1>
-
-    <!-- Indicador de Carga -->
-    <div *ngIf="isLoading" class="loading-indicator">
-      <p>Cargando transacciones...</p>
-    </div>
-
-    <!-- Mensaje de Error -->
-    <div *ngIf="errorMessage" class="error-message">
-      <p>{{ errorMessage }}</p>
-    </div>
-
-    <!-- Tabla de Transacciones -->
-    <div class="transaction-table" *ngIf="recentTransaction && !isLoading && !errorMessage">
-      <!-- Encabezado de la Tabla -->
-      <div class="transaction-header">
-        <span class="header-image">Imagen</span>
-        <span class="header-name">Producto</span>
-        <span class="header-id">ID Transacción</span>
-        <span class="header-date">Fecha</span>
-        <span class="header-status">Estado</span>
-        <span class="header-amount">Monto</span>
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <!-- Thank You Message -->
+      <div class="welcome-banner" *ngIf="recentTransaction && !isLoading">
+        <h1 class="aurora-text-gradient">¡Gracias por tu compra!</h1>
+        <p>Tu orden ha sido procesada con éxito. A continuación encontrarás los detalles.</p>
       </div>
 
-      <!-- Filas de Transacción -->
-      <div *ngFor="let product of recentTransaction?.products" class="transaction-row">
-        <!-- Columna de Imagen -->
-        <span class="image-column">
-          <img
-            *ngIf="product.image"
-            [src]="product.image"
-            [alt]="product.name || 'Producto'"
-            class="product-image"
-            loading="lazy"
-          >
-        </span>
-
-        <!-- Nombre del Producto -->
-        <span class="name-column">{{ product.name || 'Nombre no disponible' }}</span>
-
-        <!-- ID de Transacción -->
-        <span class="id-column">{{ recentTransaction.transactionNumber }}</span>
-
-        <!-- Fecha -->
-        <span class="date-column">
-          {{ recentTransaction.timestamp | date:'dd-MM-yyyy HH:mm' }}
-        </span>
-
-        <!-- Estado -->
-        <span [ngClass]="'transaction-status ' + recentTransaction.status" class="status-column">
-          {{ recentTransaction.status }}
-        </span>
-
-        <!-- Monto -->
-        <span class="amount-column">
-          {{ recentTransaction.amount | currency: "Lps. " }}
-        </span>
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading" class="aurora-loading-container">
+        <div class="aurora-spinner"></div>
+        <p>Sincronizando con la red...</p>
       </div>
-    </div>
 
-    <!-- Botón para revelar keys si existen -->
-    <div *ngIf="(recentTransaction?.keys?.length ?? 0) > 0" class="keys-button-container">
-      <button (click)="openKeysModal()">Revelar claves</button>
-    </div>
-
-    <!-- Modal para mostrar las keys -->
-    <div class="modal-overlay" *ngIf="showKeysModal">
-      <div class="modal-content">
-        <h3 class="modal-title">Claves obtenidas</h3>
-        <ul>
-          <li *ngFor="let key of recentTransaction?.keys!">
-            {{ key }}
-          </li>
-        </ul>
-        <button class="close-button" (click)="closeKeysModal()">Cerrar</button>
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="aurora-card error-card">
+        <i class="fa-solid fa-circle-exclamation error-icon"></i>
+        <p>{{ errorMessage }}</p>
       </div>
-    </div>
 
-    <!-- Paginación -->
-    <div class="pagination" *ngIf="!isLoading && !errorMessage && totalPages > 1">
-      <button (click)="goToPage(1)" [disabled]="currentPage === 1">
-        <i class="fas fa-angle-double-left"></i>
-      </button>
-      <button (click)="previousPage()" [disabled]="currentPage === 1">
-        <i class="fas fa-angle-left"></i>
-      </button>
+      <!-- Transaction Details Display -->
+      <div class="transaction-details-group" *ngIf="recentTransaction && !isLoading && !errorMessage">
 
-      <span *ngFor="let page of getPageNumbers()">
-        <button (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</button>
-      </span>
+        <div class="aurora-card transaction-items-card">
+          <div class="card-header">
+            <h3>Productos en esta orden</h3>
+            <span class="transaction-badge" [ngClass]="recentTransaction.status">
+              {{ recentTransaction.status }}
+            </span>
+          </div>
 
-      <button (click)="nextPage()" [disabled]="currentPage === totalPages">
-        <i class="fas fa-angle-right"></i>
-      </button>
-      <button (click)="goToPage(totalPages)" [disabled]="currentPage === totalPages">
-        <i class="fas fa-angle-double-right"></i>
-      </button>
-    </div>
+          <div class="items-list">
+            <div *ngFor="let product of recentTransaction?.products" class="item-row">
+              <div class="item-image-box">
+                <img *ngIf="product.image" [src]="product.image" [alt]="product.name || 'Producto'" class="item-img">
+                <div class="placeholder-img" *ngIf="!product.image">
+                  <i class="fa-solid fa-gamepad"></i>
+                </div>
+              </div>
 
-    <!-- Sección de Recomendaciones en una sola fila -->
-    <div class="recommendations-section" *ngIf="!isLoading && !errorMessage && recommendedGiftCards.length > 0">
-      <h2 class="recommendations-title">También te podría interesar</h2>
-      <div class="recommendations">
-        <div class="recommendations-gift-cards-container">
-          <div *ngFor="let card of recommendedGiftCards" class="gift-card" (click)="viewDetails(card)">
-            <img [src]="card.coverImage" alt="{{ card.name }}" class="gift-card-image" />
-            <div class="gift-card-content">
-              <h3 class="gift-card-title">{{ card.name }}</h3>
-              <div class="gift-card-price">
-                <span>{{ card.priceHNL | currency: "HNL " }}</span>
+              <div class="item-info">
+                <h4 class="item-name">{{ product.name || 'Nombre no disponible' }}</h4>
+                <div class="item-meta">
+                  <span class="ref-num">ID: {{ recentTransaction.transactionNumber }}</span>
+                  <span class="date-stamp">{{ recentTransaction.timestamp | date:'dd MMM, yyyy HH:mm' }}</span>
+                </div>
+              </div>
+
+              <div class="item-price-box">
+                <span class="price-val">{{ recentTransaction.amount | currency: "HNL " }}</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <!-- Keys Section if available -->
+        <div *ngIf="(recentTransaction?.keys?.length ?? 0) > 0" class="keys-action-box">
+          <button class="aurora-btn-glow" (click)="openKeysModal()">
+            <i class="fa-solid fa-key"></i>
+            Revelar Claves del Producto
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Recommendations Section -->
+    <div class="recommendations-wrapper" *ngIf="!isLoading && recommendedGiftCards.length > 0">
+      <h2 class="aurora-text-gradient">También te podría interesar</h2>
+      <div class="aurora-cards-scroll">
+        <div *ngFor="let card of recommendedGiftCards" class="aurora-card mini-gift-card" (click)="viewDetails(card)">
+          <div class="card-img-wrapper">
+            <img [src]="card.coverImage" alt="{{ card.name }}" class="mini-card-img" />
+            <div class="card-overlay">
+              <span class="view-label">Ver Detalle</span>
+            </div>
+          </div>
+          <div class="mini-card-body">
+            <h3 class="mini-card-title">{{ card.name }}</h3>
+            <p class="mini-card-price">{{ card.priceHNL | currency: "HNL " }}</p>
           </div>
         </div>
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Key Reveal Modal (Aurora Style) -->
+<div class="aurora-modal-overlay" *ngIf="showKeysModal" (click)="closeKeysModal()">
+  <div class="aurora-modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="aurora-text-gradient">Tus Claves Digitales</h3>
+      <button class="close-btn" (click)="closeKeysModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="key-list">
+        <div *ngFor="let key of recentTransaction?.keys!" class="key-item">
+          <code>{{ key }}</code>
+          <button class="copy-btn" (click)="$event.stopPropagation()"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      </div>
+      <p class="modal-hint">Por seguridad, no compartas estas claves con nadie.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="aurora-btn-primary" (click)="closeKeysModal()">Entendido</button>
+    </div>
   </div>
 </div>
