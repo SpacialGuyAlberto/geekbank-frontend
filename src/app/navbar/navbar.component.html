@@ -59,13 +59,23 @@
           <i class="fas fa-th-list"></i> Categorías
         </button>
         <div class="dropdown-content aurora-card" role="menu" *ngIf="isDropdownHovered" style="z-index: 1001;">
-          <div class="dropdown-items">
-            <a *ngFor="let genre of genres" (click)="onSelectGenre(genre.key)" class="nav-link">
-              {{ genre.label }}
-            </a>
+          <div class="categories-dropdown-grid">
+            <div class="dropdown-items">
+              <a *ngFor="let genre of genres" (mouseenter)="onHoverGenre(genre.key)" (click)="onSelectGenre(genre.key)"
+                class="nav-link" [class.active]="selectedGenre === genre.key">
+                <i [class]="genre.icon || 'fa-solid fa-gamepad'"></i>
+                {{ genre.label }}
+              </a>
+            </div>
+            <div class="category-preview-panel">
+              <app-category-items *ngIf="selectedGenre" [selectedCategory]="selectedGenre" class="app-category-items">
+              </app-category-items>
+              <div class="preview-placeholder" *ngIf="!selectedGenre">
+                <i class="fa-solid fa-arrow-left"></i>
+                <p>Pasa el ratón sobre una categoría para ver destacados</p>
+              </div>
+            </div>
           </div>
-          <app-category-items *ngIf="selectedGenre" [selectedCategory]="selectedGenre" class="app-category-items">
-          </app-category-items>
         </div>
       </div>
 

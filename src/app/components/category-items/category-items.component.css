@@ -10,11 +10,12 @@
 /* Contenedor principal */
 .category-items-container {
   position: relative;
-  padding: 20px;
-  background-color: #111;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+  padding: 1rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  height: 100%;
 }
 
 /* Header con el título y el botón */
@@ -22,13 +23,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
 .selected-category-text {
-  font-size: 24px;
-  font-weight: bold;
-  color: #f0f0f0;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .show-all-link {
@@ -47,14 +50,18 @@
 /* Contenedor para scroll horizontal */
 .cards-wrapper {
   display: flex;
-  gap: 15px; /* Espacio entre tarjetas */
+  gap: 15px;
+  /* Espacio entre tarjetas */
   overflow-x: auto;
-  padding-bottom: 10px; /* Espacio inferior */
-  scroll-snap-type: x mandatory; /* Desplazamiento suave */
+  padding-bottom: 10px;
+  /* Espacio inferior */
+  scroll-snap-type: x mandatory;
+  /* Desplazamiento suave */
 }
 
 .cards-wrapper::-webkit-scrollbar {
-  height: 8px; /* Altura del scrollbar */
+  height: 8px;
+  /* Altura del scrollbar */
 }
 
 .cards-wrapper::-webkit-scrollbar-thumb {
@@ -65,10 +72,12 @@
 /* Tarjetas individuales */
 .category-item {
   flex: 0 0 auto;
-  width: 160px; /* Ancho reducido */
+  width: 160px;
+  /* Ancho reducido */
   background-color: #222;
   border-radius: 8px;
-  overflow: hidden; /* Elimina padding interno */
+  overflow: hidden;
+  /* Elimina padding interno */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   cursor: pointer;
@@ -83,14 +92,16 @@
 /* Imagen que cubre la parte superior de la tarjeta */
 .category-item-image-wrapper {
   width: 100%;
-  height: 100px; /* Altura fija */
+  height: 100px;
+  /* Altura fija */
   overflow: hidden;
 }
 
 .category-item-image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Cubre toda el área de la tarjeta */
+  object-fit: cover;
+  /* Cubre toda el área de la tarjeta */
   transition: transform 0.3s ease;
 }
 
@@ -153,10 +164,13 @@
 }
 
 @keyframes pulse-bars {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scaleY(1);
     opacity: 0.7;
   }
+
   50% {
     transform: scaleY(1.5);
     opacity: 1;
