@@ -1,16 +1,16 @@
-/* Contenedor del Carousel (Snap Your Date Aesthetic) */
 .highlights-carousel {
   position: relative;
   display: flex;
-  max-width: 100%;
-  height: 100%;
-  border-radius: 1.5rem;
+  width: 100%;
+  height: 460px;
+  /* Fixed height to prevent overflow and maintain harmony */
+  border-radius: var(--rXL);
   overflow: hidden;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
-  margin-left: auto;
-  border: 1px solid var(--divider-color);
+  box-shadow: var(--shadow);
+  margin: 0;
+  border: 1px solid var(--stroke);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  background: var(--secondary-bg-color);
+  background: var(--bg0);
 }
 
 .highlights-carousel:hover {
@@ -30,13 +30,12 @@
 .highlight-card {
   position: relative;
   min-width: 100%;
+  height: 100%;
   background: none;
-  border-radius: 1.5rem;
+  border: none;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  border: none;
 }
 
 /* Imagen del Carousel */
