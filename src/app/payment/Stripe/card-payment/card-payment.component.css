@@ -1,103 +1,254 @@
-/* === Agrupador y disposición === */
-.card-group{
-  display:flex;
-  flex-wrap:wrap;          /* permite que salten a la siguiente fila */
-  gap:12px;                /* separación entre campos */
-  margin:18px 0;
+/* Aurora Modal Overlay */
+.modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(4, 5, 11, 0.4);
+  backdrop-filter: blur(12px) saturate(1.8);
+  -webkit-backdrop-filter: blur(12px) saturate(1.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 1.5rem;
 }
 
-/* === Campo base === */
-.card-field{
-  min-height:46px;
-  padding:14px 16px;
-  border:2px solid #d1d5db;
-  border-radius:8px;
-  background:#fff;
-  font-size:1rem;
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
-  transition:border-color .25s,box-shadow .25s;
-  flex:1 1 120px;          /* valor genérico   */
+/* Modal Content - Aurora Glass Card */
+.modal-content {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  backdrop-filter: blur(24px) saturate(1.2);
+  -webkit-backdrop-filter: blur(24px) saturate(1.2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--rXL);
+  width: 100%;
+  max-width: 500px;
+  padding: 2.5rem;
+  box-shadow: var(--shadow);
+  position: relative;
+  animation: slideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ---------- NUEVO ---------- */
-/* primer campo (número) grande y en su propia línea */
-.card-field:first-child{
-  flex:0 0 100%;           /* ocupa el 100 % del ancho */
-  min-height:56px;         /* un poco más alto          */
-  font-size:1.125rem;      /* fuente ligeramente mayor  */
+.modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0) 40%, rgba(10, 132, 255, 0.05));
+  opacity: 0.8;
+  mix-blend-mode: overlay;
+  z-index: -1;
 }
 
-/* resto de campos (caducidad y CVC) más pequeños, mitad y mitad */
-.card-field:not(:first-child){
-  flex:1 1 calc(50% - 6px);   /* dos columnas con el gap descontado */
-  max-width:calc(50% - 6px);
+/* Close button */
+.close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--stroke);
+  border-radius: 50%;
+  font-size: 1.2rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-/* ==================== */
-/* Estados (sin cambios) */
-.card-field.StripeElement--focus   { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.25); }
-.card-field.StripeElement--invalid { border-color:#ef4444; }
-.card-field.StripeElement--complete{ border-color:#10b981; }
-
-/* Placeholder */
-.card-field ::placeholder{ color:#9ca3af; opacity:.8; }
-
-/* === Botón pagar (versión pro) === */
-.pay-btn{
-  /* layout */
-  width:100%;
-  padding:14px 0;
-  border:none;
-  border-radius:10px;
-
-  /* tipografía */
-  font-size:1.05rem;
-  font-weight:600;
-  letter-spacing:.03em;
-
-  /* fondo y color */
-  background:
-    linear-gradient(135deg,#6366f1 0%,#4f46e5 50%,#4338ca 100%);
-  color:#fff;
-
-  /* efectos */
-  box-shadow:0 6px 18px rgba(79,70,229,.35);
-  transition:
-    transform .15s cubic-bezier(.4,0,.2,1),
-    box-shadow .25s,
-    filter .25s,
-    background-position .35s;
-  background-size:200% 200%;       /* para animar gradiente */
-  background-position:0 50%;
-  cursor:pointer;
+.close:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
 }
 
-.pay-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 24px rgba(79,70,229,.45);
-  background-position:100% 50%;    /* barrido del gradiente */
-  filter:brightness(1.05);
+/* Titles */
+h2 {
+  color: #fff;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.pay-btn:active{
-  transform:translateY(0);
-  box-shadow:0 4px 14px rgba(79,70,229,.35);
+.summary-info {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--stroke);
 }
 
-.pay-btn[disabled]{
-  opacity:.55;
-  cursor:not-allowed;
-  filter:grayscale(.25);
-  box-shadow:none;
+.summary-info p {
+  color: var(--muted);
+  font-size: 0.95rem;
 }
 
-/* Spinner: sin cambios pero hereda el nuevo padding */
-.spinner{
-  width:18px;height:18px;
-  border:2px solid transparent;
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .75s linear infinite;
-  margin-right:8px;
+.total-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
 }
-@keyframes spin{ to{ transform:rotate(360deg);} }
+
+/* Stripe Fields */
+.card-group {
+  margin-bottom: 2rem;
+}
+
+.field-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.card-field {
+  background: rgba(4, 5, 11, 0.3);
+  border: 1px solid var(--stroke);
+  border-radius: var(--rMD);
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.card-field.StripeElement--focus {
+  border-color: rgba(10, 132, 255, 0.4);
+  background: rgba(4, 5, 11, 0.5);
+  box-shadow: 0 0 15px rgba(10, 132, 255, 0.1);
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.col {
+  flex: 1;
+}
+
+/* Error Message */
+.msg-error {
+  background: rgba(255, 55, 95, 0.1);
+  border: 1px solid rgba(255, 55, 95, 0.2);
+  color: #ff375f;
+  padding: 0.75rem 1rem;
+  border-radius: var(--rSM);
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Action Buttons */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 1rem;
+  background: radial-gradient(120% 120% at 50% 0%, rgba(10, 132, 255, 0.3), rgba(10, 132, 255, 0.15));
+  border: 1px solid rgba(10, 132, 255, 0.4);
+  border-radius: var(--rMD);
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+}
+
+.pay-btn:hover:not(:disabled) {
+  background: radial-gradient(120% 120% at 50% 0%, rgba(10, 132, 255, 0.4), rgba(10, 132, 255, 0.2));
+  border-color: var(--blue);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(10, 132, 255, 0.2);
+}
+
+.cancel-button {
+  width: 100%;
+  padding: 0.85rem;
+  background: transparent;
+  border: 1px solid var(--stroke);
+  border-radius: var(--rMD);
+  color: var(--muted);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-color: var(--muted);
+}
+
+.pay-btn:disabled,
+.cancel-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 0.8s linear infinite;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

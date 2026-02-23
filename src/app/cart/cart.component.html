@@ -144,7 +144,8 @@
 
 <div *ngIf="showCardButton">
   <app-card-payment [totalOrderAmountHNL]="totalHNL" [amount]="totalEUR" [orderDetails]="orderDetails"
-    (paymentSuccess)="onPaymentSuccess($event)" (paymentFailureKeysNotAvailable)="handleTransactionCancelled()">
+    (paymentSuccess)="onPaymentSuccess($event)" (paymentFailureKeysNotAvailable)="handleTransactionCancelled()"
+    (close)="showCardButton = false">
   </app-card-payment>
 </div>
 

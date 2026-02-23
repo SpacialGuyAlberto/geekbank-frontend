@@ -1,21 +1,42 @@
-<!-- checkout.component.html -->
-<div class="checkout">
-  <h2>Total Lempiras: {{ totalOrderAmountHNL | currency: 'HNL'}}</h2>
+<div class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="onClose()">&times;</span>
+    <h2>Pago con Tarjeta</h2>
 
-  <!-- Stripe Elements -->
-  <div class="card-group">
-    <div #cardNumber class="card-field"></div>
-    <div #cardExpiry class="card-field"></div>
-    <div #cardCvc    class="card-field"></div>
+    <div class="summary-info">
+      <p>Total a pagar:</p>
+      <span class="total-amount">{{ totalOrderAmountHNL | currency: 'HNL'}}</span>
+    </div>
+
+    <!-- Stripe Elements -->
+    <div class="card-group">
+      <label class="field-label">Número de Tarjeta</label>
+      <div #cardNumber class="card-field"></div>
+
+      <div class="row">
+        <div class="col">
+          <label class="field-label">Vencimiento</label>
+          <div #cardExpiry class="card-field"></div>
+        </div>
+        <div class="col">
+          <label class="field-label">CVC</label>
+          <div #cardCvc class="card-field"></div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="msg-error">
+      <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
+    </div>
+
+    <div class="button-group">
+      <button class="pay-btn" (click)="payCard()" [disabled]="loading">
+        <span *ngIf="loading" class="spinner"></span>
+        {{ loading ? 'Procesando…' : 'Confirmar Pago' }}
+      </button>
+      <button class="cancel-button" (click)="onClose()" [disabled]="loading">
+        Cancelar
+      </button>
+    </div>
   </div>
-
-  <div *ngIf="error" class="msg-error">
-    <i class="fa-solid fa-circle-exclamation"></i> {{ error }}
-  </div>
-
-  <button class="pay-btn" (click)="payCard()" [disabled]="loading">
-    <span *ngIf="loading" class="spinner"></span>
-    {{ loading ? 'Procesando…' : 'Pagar' }}
-  </button>
 </div>
-
