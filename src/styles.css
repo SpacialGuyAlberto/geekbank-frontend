@@ -151,6 +151,60 @@ a {
 }
 
 /* ════════════════════════════════════════════════════════════
+   Aurora – Full Material Theme Overrides
+   ════════════════════════════════════════════════════════════ */
+
+/* Form Fields & Inputs */
+.mat-mdc-form-field-appearance-fill .mat-mdc-form-field-flex {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border-radius: 12px 12px 0 0 !important;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-flex {
+  background: rgba(10, 132, 255, 0.08) !important;
+  border-bottom-color: var(--blue) !important;
+}
+
+.mat-mdc-form-field-label {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: var(--blue) !important;
+}
+
+/* Checkboxes & Radios */
+.mat-mdc-checkbox .mdc-checkbox__native-control:enabled:checked~.mdc-checkbox__background {
+  background-color: var(--blue) !important;
+  border-color: var(--blue) !important;
+}
+
+.mat-mdc-radio-button.mat-mdc-radio-checked .mdc-radio__background::after {
+  background-color: var(--blue) !important;
+}
+
+/* Buttons (elevated Aurora style) */
+.mat-mdc-button,
+.mat-mdc-raised-button,
+.mat-mdc-flat-button {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: var(--blue) !important;
+  box-shadow: 0 8px 24px rgba(10, 132, 255, 0.3) !important;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(10, 132, 255, 0.45) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
    Aurora  –  mat-paginator  (global override)
    ════════════════════════════════════════════════════════════ */
 
@@ -242,5 +296,47 @@ mat-paginator {
 .mat-mdc-option:hover,
 .mat-mdc-option.mdc-list-item--selected {
   background: rgba(10, 132, 255, 0.12) !important;
+  color: #fff !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   Aurora – Internal Dashboard Overrides (Force)
+   ════════════════════════════════════════════════════════════ */
+
+app-general-view .summary-card,
+app-clients .client-card,
+app-products .product-card {
+  background: var(--surface) !important;
+  backdrop-filter: blur(12px) saturate(1.2) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(1.2) !important;
+  border: 1px solid var(--stroke) !important;
+  border-radius: var(--rXL) !important;
+  box-shadow: var(--shadow3) !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+app-general-view .card-icon {
+  background: rgba(10, 132, 255, 0.1) !important;
+  color: var(--blue) !important;
+  border-radius: var(--rMD) !important;
+}
+
+app-general-view .card-content h3 {
+  color: var(--muted) !important;
+}
+
+app-general-view .card-content p {
+  color: #fff !important;
+}
+
+app-general-view .chart-container {
+  background: var(--surface) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--stroke) !important;
+  border-radius: var(--rXL) !important;
+  padding: 2.5rem !important;
+}
+
+app-general-view h3 {
   color: #fff !important;
 }

@@ -1,22 +1,22 @@
-import {AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 // @ts-ignore
 import { Chart } from 'chart.js';
-import {CurrencyPipe} from "@angular/common";
-import { TransactionsService} from "../transactions/transactions.service";
-import {UserService} from "../user-details/user.service";
-import {User} from "../user-details/User";
-import {Transaction} from "../transactions/transaction.model";
-import {VisitService} from "../admin-panel/visit.service";
-import {SalesMetrics} from "../models/salesMetrics.model";
-import {SalesMetricsService} from "../services/sales-metrics.service";
+import { CurrencyPipe } from "@angular/common";
+import { TransactionsService } from "../transactions/transactions.service";
+import { UserService } from "../user-details/user.service";
+import { User } from "../user-details/User";
+import { Transaction } from "../transactions/transaction.model";
+import { VisitService } from "../admin-panel/visit.service";
+import { SalesMetrics } from "../models/salesMetrics.model";
+import { SalesMetricsService } from "../services/sales-metrics.service";
 
 @Component({
-    selector: 'app-general-view',
-    imports: [
-        CurrencyPipe
-    ],
-    templateUrl: './general-view.component.html',
-    styleUrl: './general-view.component.css'
+  selector: 'app-general-view',
+  imports: [
+    CurrencyPipe
+  ],
+  templateUrl: './general-view.component.html',
+  styleUrl: './general-view.component.css'
 })
 export class GeneralViewComponent implements OnInit, AfterViewInit {
   @Input() totalCustomers: number = 0;
@@ -36,7 +36,7 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
     private transactionService: TransactionsService,
     private userService: UserService,
     private visitService: VisitService
-  ){}
+  ) { }
 
   ngOnInit(): void {
     this.fetchCompletedTTransactions();
@@ -52,17 +52,17 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
   }
 
 
-  fetchCompletedTTransactions(){
-    this.transactionService.getTransactions().subscribe( (data => {
-        this.completedTransactions = data.filter( transaction => transaction.status === 'COMPLETED').length;
-      })
+  fetchCompletedTTransactions() {
+    this.transactionService.getTransactions().subscribe((data => {
+      this.completedTransactions = data.filter(transaction => transaction.status === 'COMPLETED').length;
+    })
     )
   }
 
-  fetchCustomers(){
+  fetchCustomers() {
     this.userService.getUsers()
       .subscribe(data => {
-        this.totalCustomers = data.filter( customer => customer.role === 'CUSTOMER').length;
+        this.totalCustomers = data.filter(customer => customer.role === 'CUSTOMER').length;
       })
   }
 
@@ -76,9 +76,9 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
           datasets: [{
             label: 'Ventas Mensuales',
             data: [5000, 6000, 8000, 7000, 9000, 10000, 11000, 12000, 13000],
-            backgroundColor: '#ffcc00',
-            borderColor: '#ffcc00',
-            borderWidth: 1
+            backgroundColor: '#0a84ff',
+            borderColor: '#0a84ff',
+            borderWidth: 2
           }]
         },
         options: {
@@ -86,16 +86,19 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
           scales: {
             yAxes: [{
               gridLines: {
-                color: '#555'
+                color: 'rgba(255, 255, 255, 0.1)'
               },
               ticks: {
-                fontColor: '#fff',
+                fontColor: 'rgba(255, 255, 255, 0.6)',
                 beginAtZero: true,
               }
             }],
             xAxes: [{
+              gridLines: {
+                display: false
+              },
               ticks: {
-                fontColor: '#fff'
+                fontColor: 'rgba(255, 255, 255, 0.6)'
               }
             }]
           },
@@ -127,7 +130,7 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
         labels: ['Electrónica', 'Ropa', 'Hogar', 'Juguetes'],
         datasets: [{
           data: [35, 25, 20, 20],
-          backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0']
+          backgroundColor: ['#0a84ff', '#bf5af2', '#ff375f', '#ffd60a']
         }]
       },
       options: {
@@ -159,7 +162,7 @@ export class GeneralViewComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getSalesMetrics(){
+  getSalesMetrics() {
     this.salesMetricService.getCurrentMetrics().subscribe(data => {
       this.salesMetrics = data;
 

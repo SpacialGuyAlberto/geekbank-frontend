@@ -1,122 +1,187 @@
-/* Estilos Generales */
+/* ─────────────────────────────────────────────
+   Aurora – General View  (premium glass cards)
+   ───────────────────────────────────────────── */
+
 .dashboard-summary {
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  background-color: #333; /* Background actualizado */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #fff; /* Color de texto blanco para contraste */
-}
-
-/* Tarjetas Resumen */
-.summary-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.summary-card {
-  background-color: #444; /* Fondo más oscuro para las tarjetas */
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-  display: flex;
-  align-items: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.summary-card::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1), transparent 70%);
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.summary-card:hover::before {
-  opacity: 1;
-}
-
-.summary-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
-}
-
-.card-icon {
-  font-size: 2.5rem;
-  color: #ffcc00; /* Color de acento */
-  margin-right: 1rem;
-}
-
-.card-content h3 {
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  color: #ccc;
-}
-
-.card-content p {
-  font-size: 1.8rem;
-  font-weight: bold;
+  gap: 2.5rem;
   color: #fff;
 }
 
-/* Sección de Gráficos */
+/* ── Grid de tarjetas ── */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* ── Tarjeta de cristal ── */
+.summary-card {
+  /* cristal visible con gradiente sutil */
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(10, 132, 255, 0.06) 100%);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+
+  border: 1px solid rgba(10, 132, 255, 0.25);
+  border-radius: 24px;
+  padding: 1.6rem 2rem;
+
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  position: relative;
+  overflow: hidden;
+
+  /* sombra con tinte azul */
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.3s ease;
+}
+
+/* brillo superior */
+.summary-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      transparent 55%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.summary-card:hover {
+  transform: translateY(-7px) scale(1.02);
+  border-color: rgba(10, 132, 255, 0.6);
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(10, 132, 255, 0.20),
+    0 0 0 1px rgba(255, 255, 255, 0.09) inset;
+}
+
+/* ── Icono ── */
+.card-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: rgba(10, 132, 255, 0.15);
+  border: 1px solid rgba(10, 132, 255, 0.35);
+  color: #0a84ff;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover .card-icon {
+  background: #0a84ff;
+  color: #fff;
+  transform: rotate(6deg) scale(1.1);
+  box-shadow: 0 0 22px rgba(10, 132, 255, 0.55);
+}
+
+/* ── Texto ── */
+.card-content h3 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  margin-bottom: 0.35rem;
+}
+
+.card-content p {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+/* ── Sección de gráficos ── */
 .charts-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
   gap: 2rem;
 }
 
 .chart-container {
-  background-color: #444; /* Fondo más oscuro para los gráficos */
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.08) 0%,
+      rgba(10, 132, 255, 0.04) 100%);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+
+  border: 1px solid rgba(10, 132, 255, 0.20);
+  border-radius: 24px;
+  padding: 2.5rem;
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .chart-container::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent 70%);
-  transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.5s ease;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), transparent 50%);
+  pointer-events: none;
 }
 
-.chart-container:hover::before {
-  opacity: 1;
+.chart-container:hover {
+  border-color: rgba(10, 132, 255, 0.45);
+  box-shadow:
+    0 14px 50px rgba(0, 0, 0, 0.55),
+    0 0 18px rgba(10, 132, 255, 0.12);
 }
 
 .chart-container h3 {
-  text-align: center;
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  color: #ccc;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 1.8rem;
+  letter-spacing: -0.02em;
 }
 
-/* Estilos para las gráficas de Chart.js */
 canvas {
-  background-color: #555; /* Fondo para las gráficas */
-  border-radius: 0.3rem;
+  width: 100% !important;
+  height: auto !important;
+  max-height: 400px;
+  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.25));
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
+/* ── Responsividad ── */
+@media (max-width: 1024px) {
   .charts-section {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-summary {
+    padding: 0.5rem;
+  }
+
+  .summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .card-content p {
+    font-size: 1.7rem;
   }
 }
