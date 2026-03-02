@@ -35,10 +35,45 @@
             </a>
           </div>
 
-          <!-- Add other user icons here as needed -->
-          <button *ngIf="(isAuthenticated$ | async)" (click)="logout()" class="icon-btn" title="Cerrar sesión">
+          <!-- User Profile / Account Options -->
+          <div class="icon-btn-wrapper" *ngIf="(isAuthenticated$ | async)" (mouseenter)="toggleUserMenu()"
+            (mouseleave)="closeUserMenu()">
+            <button class="icon-btn user-profile-btn" [class.active]="isUserMenuOpen">
+              <i class="fa-solid fa-user"></i>
+            </button>
+
+            <div class="user-dropdown aurora-card" *ngIf="isUserMenuOpen">
+              <div class="user-dropdown-header">
+                <span class="user-name">{{ (user$ | async)?.name }}</span>
+                <app-balance></app-balance>
+              </div>
+              <div class="user-dropdown-divider"></div>
+              <ul class="user-dropdown-links">
+                <li><a routerLink="/user-details" (click)="closeUserMenu(true)"><i class="fa-solid fa-circle-user"></i>
+                    Mi
+                    Perfil</a></li>
+                <li><a routerLink="/orders" (click)="closeUserMenu(true)"><i class="fa-solid fa-box"></i> Mis
+                    Pedidos</a>
+                </li>
+                <li><a routerLink="/payment-methods" (click)="closeUserMenu(true)"><i
+                      class="fa-solid fa-credit-card"></i>
+                    Métodos de Pago</a></li>
+                <li><a routerLink="/wish-list" (click)="closeUserMenu(true)"><i class="fa-solid fa-heart"></i> Lista de
+                    Deseos</a></li>
+                <li *ngIf="role === 'ADMIN'"><a routerLink="/admin-panel" (click)="closeUserMenu(true)"><i
+                      class="fa-solid fa-gauge-high"></i> Panel Admin</a></li>
+              </ul>
+              <div class="user-dropdown-divider"></div>
+              <button class="logout-btn" (click)="logout()">
+                <i class="fa-solid fa-sign-out-alt"></i> Cerrar sesión
+              </button>
+            </div>
+          </div>
+
+          <!-- Existing logout button - keep for now or replace? User asked for icon where user was logged in. -->
+          <!-- <button *ngIf="(isAuthenticated$ | async)" (click)="logout()" class="icon-btn" title="Cerrar sesión">
             <i class="fa-solid fa-sign-out-alt"></i>
-          </button>
+          </button> -->
         </div>
       </div>
     </div>

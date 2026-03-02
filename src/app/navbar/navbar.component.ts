@@ -116,6 +116,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   selectedGenre: string | null = null;
   categoriesExpanded: boolean = false;
   tabsExpanded: boolean = false;
+  isUserMenuOpen: boolean = false;
+  hideUserMenuTimeout: any;
   role: string | undefined = '';
   user$: Observable<User | null>;
   isAuthenticated$: Observable<boolean | null>;
@@ -153,7 +155,12 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.checkScreenSize();
     this.loadCartItems();
     window.addEventListener('resize', this.checkScreenSize.bind(this));
-    // this.user$.subscribe(data => this.role = data?.role)
+    this.subscriptions.add(
+      this.user$.subscribe(data => {
+        this.role = data?.role;
+        this.cd.detectChanges();
+      })
+    );
     this.store.dispatch(loadUserFromSession());
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
 
@@ -308,6 +315,30 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   toggleUserTabs() {
     this.tabsExpanded = !this.tabsExpanded;
+  }
+
+  toggleUserMenu(): void {
+    if (this.hideUserMenuTimeout) {
+      clearTimeout(this.hideUserMenuTimeout);
+      this.hideUserMenuTimeout = null;
+    }
+    this.isUserMenuOpen = true;
+  }
+
+  closeUserMenu(immediate: boolean = false): void {
+    if (immediate) {
+      this.isUserMenuOpen = false;
+      if (this.hideUserMenuTimeout) {
+        clearTimeout(this.hideUserMenuTimeout);
+        this.hideUserMenuTimeout = null;
+      }
+      return;
+    }
+
+    this.hideUserMenuTimeout = setTimeout(() => {
+      this.isUserMenuOpen = false;
+      this.cd.detectChanges();
+    }, 3000);
   }
 
 
