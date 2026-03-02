@@ -40,7 +40,7 @@ export const routes: Routes = [
   { path: 'user-details', component: AccountInfoComponent, canActivate: [AuthGuard] },
   { path: 'cart', component: CartComponent },
   { path: 'tigo-payment', component: TigoPaymentComponent },
-  { path: 'admin-panel', component: AdminPanelComponent },
+  { path: 'admin-panel', component: AdminPanelComponent, canActivate: [AuthGuard] },
   { path: 'set-password', component: SetPasswordComponent },
   { path: 'purchase-confirmation', component: PurchaseConfirmationComponent },
   { path: 'free-fire-details', component: FreeFireDetailsComponent },
