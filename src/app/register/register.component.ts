@@ -57,7 +57,7 @@ export class RegisterComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.animateText("¡Bienvenido a Astralis!", 100);
+    this.animateText("¡Bienvenido a GeekyFriki.com!", 100);
     this.nameInput.nativeElement.focus();
   }
 

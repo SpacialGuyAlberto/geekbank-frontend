@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    this.animateText('Welcome back to Astralis!', 100);
+    this.animateText('Welcome back to GeekyFriki.com!', 100);
     this.emailInput.nativeElement.focus();
   }
 
