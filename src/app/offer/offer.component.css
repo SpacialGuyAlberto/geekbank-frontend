@@ -408,94 +408,211 @@
   color: #2a4d2a;
 }
 
-.result-item {
-  background-color: var(--primary-color);
-  border: 2px solid rgba(173, 216, 230, 0.2);
-  border-radius: 8px;
-  padding: 0;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-  cursor: pointer;
-  position: relative;
-  z-index: 1;
-}
+/* --- PREMIUM STANDARD GIFT CARD STYLE --- */
 
-.result-item:hover {
-  transform: translateY(calc(-5px * var(--scale-factor)));
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
-}
-
-.card-image {
+.standard-card {
+  background: #1a1c23;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
   width: 100%;
-  height: calc(15rem * var(--scale-factor));
-  object-fit: cover;
-  border-top-left-radius: calc(0.5rem * var(--scale-factor));
-  border-top-right-radius: calc(0.5rem * var(--scale-factor));
-  display: block;
-  transition: transform var(--transition-speed) ease;
-}
-
-.card-content {
+  /* Flexible width for grid */
+  max-width: 260px;
+  /* Slightly smaller */
+  height: auto;
+  min-height: 460px;
   display: flex;
   flex-direction: column;
-  flex: 1;
-  margin-top: calc(1rem * var(--scale-factor));
-  padding: calc(1rem * var(--scale-factor));
-}
-
-.discount-percentage {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #ff0000;
-  color: var(--text-color);
-  padding: calc(5px * var(--scale-factor));
-  border-radius: 5px;
-  font-weight: bold;
-}
-
-.card-price {
-  margin-top: calc(10px * var(--scale-factor));
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #AAA;
-}
-
-.gift-card-title {
-  font-size: calc(0.9rem * var(--scale-factor));
-  color: var(--text-color);
-  margin-bottom: calc(0.625rem * var(--scale-factor));
-  margin-top: -1rem;
-  text-transform: uppercase;
-  word-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
-  max-height: calc(3rem * var(--scale-factor));
   overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: 1.2;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin: 0 auto;
+  /* Center in grid cell */
 }
 
-.discounted-price {
-  font-size: calc(1.2em * var(--scale-factor));
-  color: var(--accent-color);
+/* Ensure container handles cards correctly */
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  justify-items: center;
 }
 
-.platform {
+.standard-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--accent-color);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.card-image-container {
+  width: 100%;
+  height: 180px;
+  /* Reduced height */
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+.card-image-container .card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.standard-card:hover .card-image {
+  transform: scale(1.1);
+}
+
+.discount-badge-standard {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #ff0000;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: 900;
+  font-size: 0.75rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  z-index: 2;
+}
+
+.standard-card .card-content {
+  padding: 15px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+}
+
+.platform-tag {
   display: inline-block;
-  background-color: #021526;
-  color: #ffffff;
-  font-size: calc(0.6rem * var(--scale-factor));
-  font-weight: bold;
-  padding: 4px 6px;
-  border-radius: 12px;
-  margin-top: 4px;
-  text-align: center;
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--accent-color);
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 4px;
   text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  width: fit-content;
-  align-self: center;
+  margin-bottom: 6px;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.standard-card .gift-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-transform: none;
+  word-wrap: normal;
+  word-break: normal;
+  white-space: normal;
+  max-height: none;
+  text-align: left;
+}
+
+.card-footer-standard {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.price-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.old-price-label {
+  font-size: 0.55rem;
+  color: #888;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.original-price-strikethrough {
+  font-size: 0.85rem;
+  color: #888;
+  text-decoration: line-through;
+  opacity: 0.7;
+  margin-bottom: 2px;
+}
+
+.current-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.price-now-label {
+  font-size: 0.6rem;
+  color: var(--accent-color);
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.discounted-price-large {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--accent-color);
+  text-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  line-height: 1;
+}
+
+.buy-button-standard {
+  width: 100%;
+  background: var(--accent-color);
+  color: #000;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 900;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.buy-button-standard:hover {
+  background: white;
+  transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .results-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .standard-card {
+    min-height: 380px;
+    max-width: 180px;
+  }
+
+  .card-image-container {
+    height: 120px;
+  }
+
+  .discounted-price-large {
+    font-size: 1.2rem;
+  }
+
+  .gift-card-title {
+    font-size: 0.85rem;
+  }
 }
