@@ -5,19 +5,23 @@ import {Observable, of, Subscription} from 'rxjs';
 import {tap, catchError, map} from 'rxjs/operators';
 import {AsyncPipe, CurrencyPipe, DecimalPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Router} from '@angular/router';
-
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {CurrencyService} from "../services/currency.service";
+import {DisplayPersistentDiscount} from "../pipes/calculate-displayed-discount.pipe";
 
 @Component({
     selector: 'app-suggestions',
     templateUrl: './suggestions.component.html',
-    imports: [
-        NgClass,
-        AsyncPipe,
-        CurrencyPipe,
-        NgForOf,
-        NgIf,
-        DecimalPipe
-    ],
+  imports: [
+    NgClass,
+    AsyncPipe,
+    CurrencyPipe,
+    NgForOf,
+    NgIf,
+    DecimalPipe,
+    ConvertToHnlPipe,
+    DisplayPersistentDiscount
+  ],
     styleUrls: ['./suggestions.component.css'],
     changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -30,15 +34,19 @@ export class SuggestionsComponent implements OnInit {
   private readonly limit: number = 10; //
   private startTime: number = 0;
   private endTime: number = 0;
+  private conversionError: string  = '';
+  protected exchangeRate: number = 0;
   constructor(
     private recommendationsService: RecommendationsService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private currencyService: CurrencyService,
   ) {}
 
   ngOnInit(): void {
     this.loadRecommendations();
+    this.fetchCurrencyExchange();
     this.giftCards.map(card => console.log(card))
   }
 
@@ -101,7 +109,6 @@ export class SuggestionsComponent implements OnInit {
     window.location.href = `/gift-card-details/${card.kinguinId}`;
   }
 
-
   generatePersistentDiscount(cardName: string): number {
     let hash = 0;
     for (let i = 0; i < cardName.length; i++) {
@@ -110,6 +117,15 @@ export class SuggestionsComponent implements OnInit {
     }
     return Math.abs(hash % 26) + 15; // Generar un valor entre 15 y 40
   }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      }
+    );
+  }
+
 
 
 }
