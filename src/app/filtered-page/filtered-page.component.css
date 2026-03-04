@@ -2,7 +2,8 @@
 /* Banner con blur y z-index negativo */
 .genre-banner {
   width: 100%;
-  height: 600px; /* Ajusta la altura según tus necesidades */
+  height: 600px;
+  /* Ajusta la altura según tus necesidades */
   background-image: url('/assets/adventure2.webp');
   background-size: cover;
   background-position: center;
@@ -24,8 +25,10 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); /* Superposición para mejorar la legibilidad del texto */
+  background: rgba(0, 0, 0, 0.5);
+  /* Superposición para mejorar la legibilidad del texto */
 }
+
 /* Contenedor principal con margen ajustado */
 .filtered-page-container {
   position: relative;
@@ -113,11 +116,9 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: linear-gradient(
-    135deg,
-    rgba(39, 39, 57, 0.4),
-    rgba(8, 64, 180, 0.4)
-  );
+  background: linear-gradient(135deg,
+      rgba(39, 39, 57, 0.4),
+      rgba(8, 64, 180, 0.4));
   border: 2px solid rgba(173, 216, 230, 0.2);
   border-radius: 8px;
   padding: 0;
@@ -135,7 +136,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: var(--highlight-color);
+  background-color: #ff0000;
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
@@ -154,13 +155,11 @@
   right: calc(-2px * var(--scale-factor));
   bottom: calc(-2px * var(--scale-factor));
   border-radius: calc(15px * var(--scale-factor));
-  background: linear-gradient(
-    45deg,
-    rgba(28, 29, 50, 0.4),
-    rgba(74, 35, 90, 0.4),
-    rgb(33, 9, 9),
-    rgba(173, 216, 230, 1)
-  );
+  background: linear-gradient(45deg,
+      rgba(28, 29, 50, 0.4),
+      rgba(74, 35, 90, 0.4),
+      rgb(33, 9, 9),
+      rgba(173, 216, 230, 1));
   background-size: 300% 300%;
   z-index: -1;
   animation: animatedBorder 5s ease infinite;
@@ -170,9 +169,11 @@
   0% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -318,13 +319,17 @@
 /* Media queries */
 @media (max-width: 768px) {
   .genre-banner {
-    width: 100vw; /* Abarca todo el ancho de la ventana */
+    width: 100vw;
+    /* Abarca todo el ancho de la ventana */
     height: 250px;
-    margin: 0; /* Elimina cualquier margen */
-    padding: 0; /* Elimina cualquier padding */
+    margin: 0;
+    /* Elimina cualquier margen */
+    padding: 0;
+    /* Elimina cualquier padding */
     left: 50%;
     right: 50%;
-    transform: translateX(-50%); /* Centra el banner */
+    transform: translateX(-50%);
+    /* Centra el banner */
   }
 
   .filtered-page-container {
@@ -401,12 +406,16 @@
   }
 
   .genre-banner {
-    width: 100vw; /* Abarca todo el ancho de la ventana */
+    width: 100vw;
+    /* Abarca todo el ancho de la ventana */
     height: 250px;
-    margin: 0; /* Elimina cualquier margen */
-    padding: 0; /* Elimina cualquier padding */
+    margin: 0;
+    /* Elimina cualquier margen */
+    padding: 0;
+    /* Elimina cualquier padding */
     left: 50%;
     right: 50%;
-    transform: translateX(-50%); /* Centra el banner */
+    transform: translateX(-50%);
+    /* Centra el banner */
   }
 }

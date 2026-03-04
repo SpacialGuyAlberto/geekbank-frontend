@@ -22,22 +22,21 @@
           </div>
           <!-- Imagen principal -->
           <div class="flash-sale-img-container" *ngIf="giftCard as card">
-            <img
-              ngOptimizedImage
-              [src]="card.images.cover.thumbnail"
-              [alt]="card.name || 'Oferta Principal'"
-              loading="lazy"
-              decoding="async"
-              width="300"
-              height="400"
-            >
+            <img ngOptimizedImage [src]="card.images.cover.thumbnail" [alt]="card.name || 'Oferta Principal'"
+              loading="lazy" decoding="async" width="300" height="400">
           </div>
 
           <h2 class="flash-sale-title">{{ giftCard?.name }}</h2>
 
           <!-- Precio -->
           <div class="price-box">
-            <p class="price-offer">{{giftCard?.price}} <span class="original-price">{{flashSale?.temporaryPrice}}</span> <span class="discount">-16%</span></p>
+            <p class="price-offer">
+              {{giftCard?.price}}
+              <span class="original-price-badge">
+                <span class="original-price">{{flashSale?.temporaryPrice}}</span>
+              </span>
+              <span class="discount">-16%</span>
+            </p>
           </div>
           <!-- Información de stock -->
           <p class="stock-info">Quedan {{ itemsLeft }} - Vendido {{ totalSold }}</p>
@@ -55,19 +54,27 @@
       <!-- Otras ofertas al lado derecho -->
       <div class="other-offers">
         <div class="offer">
-          <img src="https://www.vollversion-kaufen.de/tpl/images/produkte/RESTRICTEDVSBUTTERFLYKNIFERandomCS2SkinCaseDroplandnetKey.webp" alt="Oferta 1">
+          <img
+            src="https://www.vollversion-kaufen.de/tpl/images/produkte/RESTRICTEDVSBUTTERFLYKNIFERandomCS2SkinCaseDroplandnetKey.webp"
+            alt="Oferta 1">
           <p>$11.79</p>
         </div>
         <div class="offer">
-          <img src="https://images.g2a.com/300x400/1x1x1/counter-strike-2-random-restricted-skin-by-droplandnet-key-global-i10000033473001/a479619b55c440dab24f3aef" alt="Oferta 2">
+          <img
+            src="https://images.g2a.com/300x400/1x1x1/counter-strike-2-random-restricted-skin-by-droplandnet-key-global-i10000033473001/a479619b55c440dab24f3aef"
+            alt="Oferta 2">
           <p>$23.58</p>
         </div>
         <div class="offer">
-          <img src="https://images.g2a.com/300x400/1x1x1/counter-strike-2-random-knife-skin-by-droplandnet-key-global-i10000033456002/647531668a214bc6825d43e8" alt="Oferta 3">
+          <img
+            src="https://images.g2a.com/300x400/1x1x1/counter-strike-2-random-knife-skin-by-droplandnet-key-global-i10000033456002/647531668a214bc6825d43e8"
+            alt="Oferta 3">
           <p>$22.28</p>
         </div>
         <div class="offer">
-          <img src="https://images.g2a.com/170x228/1x1x0/wallet-gift-card-10-usd-by-droplandnet-key-global/5ccaa3995bafe348cb74bcd3" alt="Oferta 4">
+          <img
+            src="https://images.g2a.com/170x228/1x1x0/wallet-gift-card-10-usd-by-droplandnet-key-global/5ccaa3995bafe348cb74bcd3"
+            alt="Oferta 4">
           <p>$28.59</p>
         </div>
       </div>
