@@ -19,8 +19,8 @@
     <!-- Main Marketplace -->
     <app-banner class="app-banner" *ngIf="showHighlightsAndRecommendations"></app-banner>
 
-    <div *ngIf="showHighlightsAndRecommendations">
-      <h2 class="section-header snap-title" style="margin-left: 1rem;">Trending Now</h2>
+    <div *ngIf="showHighlightsAndRecommendations" class="trending-banner-container">
+      <img src="assets/BannerTendencias.jpg" alt="Trending Now Banner" class="trending-banner">
       <div class="main-gift-cards">
         <app-kinguin-gift-cards></app-kinguin-gift-cards>
       </div>

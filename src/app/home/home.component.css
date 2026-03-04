@@ -90,6 +90,26 @@
   gap: 3rem;
 }
 
+.trending-banner-container {
+  width: 100%;
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.trending-banner {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.trending-banner:hover {
+  transform: scale(1.01);
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .filter-giftcard-container {
