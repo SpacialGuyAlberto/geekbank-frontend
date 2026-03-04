@@ -90,7 +90,322 @@
   position: relative;
   /* Asegúrate de que los elementos interactivos estén posicionados correctamente */
   z-index: 1;
-  /* Los resultados ahora estarán sobre los banners */
+}
+
+.results-container.is-war-style {
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 40px;
+}
+
+/* --- COMMERCIAL "STEEL EDITION" DOG TAG STYLE --- */
+
+.modern-tag.commercial-edition {
+  position: relative;
+  width: 320px;
+  /* Reduced from 380px */
+  height: 700px;
+  /* Reduced from 1050px */
+  background: linear-gradient(135deg, #e0e0e0 0%, #ffffff 30%, #b0b0b0 60%, #ffffff 80%, #909090 100%);
+  border-radius: 20px;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.6),
+    inset 0 0 15px rgba(255, 255, 255, 0.8),
+    inset 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid #aaa;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  margin: 10px auto;
+}
+
+.modern-tag.commercial-edition:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.7);
+  border-color: #00ffff;
+}
+
+.tag-gloss {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+  z-index: 20;
+}
+
+.tactical-discount-badge {
+  position: absolute;
+  top: 20px;
+  right: -30px;
+  background: #8a0303;
+  color: #fff;
+  padding: 8px 40px;
+  transform: rotate(35deg);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  z-index: 5;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+  font-size: 0.9rem;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+}
+
+.blood-strike {
+  text-decoration: line-through;
+  text-decoration-color: rgba(255, 255, 255, 0.6);
+  opacity: 0.9;
+}
+
+.tag-scratches {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 0px, rgba(0, 0, 0, 0.05) 1px, transparent 1px, transparent 10px);
+  pointer-events: none;
+  z-index: 18;
+}
+
+.metal-hole {
+  width: 18px;
+  height: 18px;
+  background-color: #0f2027;
+  border-radius: 50%;
+  position: absolute;
+  top: 15px;
+  left: 20px;
+  box-shadow:
+    inset 0 3px 6px rgba(0, 0, 0, 0.8),
+    0 1px 1px rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.game-logo.overlay {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #fff;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
+  opacity: 1;
+}
+
+.game-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #111;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.9;
+}
+
+.tag-header-image {
+  width: 100%;
+  height: 400px;
+  /* Balanced height */
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 8;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 24px 24px 0 0;
+  background: #000;
+  /* Backdrop for contain */
+}
+
+.tag-header-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  /* Show the whole image */
+  transition: transform 0.5s ease;
+  display: block;
+}
+
+.modern-tag.commercial-edition:hover .tag-header-image img {
+  transform: scale(1.05);
+  /* Subtle zoom */
+}
+
+.modern-tag.commercial-edition .card-content {
+  position: relative;
+  z-index: 5;
+  flex: 1;
+  /* Take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 30px 30px 30px;
+  box-sizing: border-box;
+}
+
+.tag-header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.tag-main-info {
+  margin: 5px 0 15px 0;
+  text-align: center;
+}
+
+.player-name {
+  font-family: 'Courier New', monospace;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #000;
+  margin: 0 0 5px 0;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.modern-tag.commercial-edition .card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #333;
+  margin: 5px 0 0 0;
+  line-height: 1.2;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.tag-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-top: 2px solid rgba(0, 0, 0, 0.1);
+  padding-top: 20px;
+}
+
+.price-section {
+  text-align: center;
+}
+
+.price-section .label {
+  display: block;
+  font-size: 0.65rem;
+  font-weight: 900;
+  color: #666;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.card-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 950;
+  background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 25%, #b38728 50%, #fcf6ba 75%, #bf953f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5)) drop-shadow(0 -1px 0 rgba(255, 255, 255, 0.4));
+  position: relative;
+}
+
+.tag-cta {
+  background: linear-gradient(135deg, #8a6e2f 0%, #bf953f 50%, #8a6e2f 100%);
+  color: #000;
+  border: 1px solid #bf953f;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: 950;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+
+.tag-cta:hover {
+  background: linear-gradient(135deg, #bf953f 0%, #fcf6ba 50%, #bf953f 100%);
+  box-shadow:
+    0 8px 25px rgba(191, 149, 63, 0.5),
+    0 0 40px rgba(252, 246, 186, 0.3);
+  transform: translateY(-4px) scale(1.02);
+  color: #111;
+  animation: gold-pulse 1.5s infinite;
+}
+
+/* Gold Shimmer Animation */
+.tag-cta::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -100%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      rgba(255, 255, 255, 0) 100%);
+  transform: rotate(30deg);
+  transition: none;
+}
+
+.tag-cta:hover::after {
+  left: 150%;
+  transition: all 0.7s ease-in-out;
+}
+
+@keyframes gold-pulse {
+  0% {
+    box-shadow: 0 0 15px rgba(191, 149, 63, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(252, 246, 186, 0.6);
+  }
+
+  100% {
+    box-shadow: 0 0 15px rgba(191, 149, 63, 0.4);
+  }
+}
+
+.card-details-grid {
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Courier New', monospace;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #555;
+  padding: 0 10px;
+}
+
+.status-confirmed {
+  color: #2a4d2a;
 }
 
 .result-item {
@@ -103,9 +418,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   cursor: pointer;
   position: relative;
-  /* Asegura que el z-index funcione correctamente */
   z-index: 1;
-  /* Elementos clickeables encima de los banners */
 }
 
 .result-item:hover {
