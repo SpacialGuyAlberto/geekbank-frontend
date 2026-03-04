@@ -1,30 +1,36 @@
 <div class="highlights-carousel">
-  <!-- Flecha para ir al slide anterior -->
-  <div class="carousel-arrow left" (click)="moveToPrevSlide()">
-    &#10094;
+  <!-- Flechas elegantes -->
+  <div class="carousel-arrow left" (click)="moveToPrevSlide(true)">
+    <i class="fa-solid fa-chevron-left"></i>
   </div>
 
-  <div class="carousel-track">
-    <div
-      *ngFor="let highlight of displayedHighlights"
-      class="highlight-card"
-      (click)="viewDetails(highlight.productId)"
-      >
-      <img
-        [src]="highlight.imageUrl"
-        [alt]="highlight.title"
-        class="highlight-card-image"
-        loading="lazy"
-      >
+  <div class="carousel-track" [style.transform]="'translateX(-' + (currentIndex * 100) + '%)'">
+    <div *ngFor="let highlight of displayedHighlights; let i = index" class="highlight-card"
+      (click)="viewDetails(highlight.productId)">
+      <img [src]="highlight.imageUrl" [alt]="highlight.title" class="highlight-card-image" loading="lazy">
+      <!-- Overlay Neon -->
+      <div class="highlight-content-overlay">
+        <span class="highlight-tag">Selección Geek</span>
+        <h2 class="highlight-title">{{ highlight.title }}</h2>
+        <div class="highlight-price-row">
+          <div class="price-info">
+            <span class="highlight-price-label">Precio Especial</span>
+            <span class="highlight-price-value">{{ (highlight.price || 0) | currency:'USD' }}</span>
+          </div>
+          <button class="highlight-cta">
+            <span>Explorar Ahora</span>
+            <i class="fa-solid fa-bolt"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Flecha para ir al siguiente slide -->
-  <div class="carousel-arrow right" (click)="moveToNextSlide()">
-    &#10095;
+  <div class="carousel-arrow right" (click)="moveToNextSlide(true)">
+    <i class="fa-solid fa-chevron-right"></i>
   </div>
 
-  <!-- Barra de progreso (indicador de tiempo) -->
+  <!-- Barra de progreso -->
   <div class="progress-container">
     <div class="progress-bar" [style.width.%]="progress"></div>
   </div>

@@ -55,19 +55,16 @@
 }
 
 /* Sección de Destacados */
-.highlight-recommendations {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  margin-bottom: 4rem;
-}
-
-.highlights-section,
-.recommendations-section {
+.highlights-section-wrapper,
+.recommendations-section-wrapper {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  height: 100%;
+  width: 100%;
+}
+
+.recommendations-section-wrapper {
+  margin-top: 1rem;
 }
 
 /* Filters Layout */

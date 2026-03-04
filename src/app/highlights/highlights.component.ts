@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForOf, NgOptimizedImage } from "@angular/common";
-import {HighlightItem, HighlightItemWithGiftcard} from "../highlights-config/HighlightItem";
+import { CurrencyPipe, NgForOf, NgOptimizedImage } from "@angular/common";
+import { HighlightItem, HighlightItemWithGiftcard } from "../highlights-config/HighlightItem";
 import { HighlightService } from "../highlights-config/highlights.service";
 import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { Router } from '@angular/router';
 import { firstValueFrom } from "rxjs";
 
 @Component({
-    selector: 'app-highlights',
-    imports: [
-        NgForOf,
-        NgOptimizedImage
-    ],
-    templateUrl: './highlights.component.html',
-    styleUrls: ['./highlights.component.css']
+  selector: 'app-highlights',
+  imports: [
+    NgForOf,
+    NgOptimizedImage,
+    CurrencyPipe
+  ],
+  templateUrl: './highlights.component.html',
+  styleUrls: ['./highlights.component.css']
 })
 export class HighlightsComponent implements OnInit {
   highlightItems: HighlightItemWithGiftcard[] = [];
@@ -37,7 +38,7 @@ export class HighlightsComponent implements OnInit {
     try {
       const data = await firstValueFrom(this.highlightService.getHighlights());
       this.displayedHighlights = data;
-      data.map( value => {
+      data.map(value => {
 
       })
 
@@ -62,17 +63,16 @@ export class HighlightsComponent implements OnInit {
       img.onerror = reject;
     });
   }
-
   // Inicia el carrusel automático y la barra de progreso
   startAutoSlide(): void {
     // Por si acaso hubiera un intervalo corriendo, lo limpiamos
     this.stopAutoSlide();
 
-    // Cada 3 segundos pasamos a la siguiente imagen
+    // Cada 5 segundos pasamos a la siguiente imagen
     this.autoSlideInterval = setInterval(() => {
       this.moveToNextSlide();
       this.resetProgressBar();
-    }, 3000);
+    }, 5000);
 
     // Iniciamos la barra de progreso
     this.resetProgressBar();
@@ -96,7 +96,7 @@ export class HighlightsComponent implements OnInit {
     }
 
     this.progress = 0;
-    const duration = 3000; // 3 segundos
+    const duration = 5000; // 5 segundos
     const stepTime = 50;   // Actualizar cada 50 ms
     const steps = duration / stepTime;
     const increment = 100 / steps;
@@ -110,29 +110,26 @@ export class HighlightsComponent implements OnInit {
     }, stepTime);
   }
 
-  // Ir al siguiente slide
-  moveToNextSlide(): void {
-    const track = document.querySelector('.carousel-track') as HTMLElement;
-    const slides = document.querySelectorAll('.highlight-card') as NodeListOf<HTMLElement>;
+  moveToNextSlide(manual = false): void {
+    if (!this.displayedHighlights.length) return;
+    this.currentIndex = (this.currentIndex + 1) % this.displayedHighlights.length;
 
-    if (!track || slides.length === 0) return;
-
-    this.currentIndex = (this.currentIndex + 1) % slides.length;
-    const amountToMove = -track.clientWidth * this.currentIndex;
-    track.style.transform = `translateX(${amountToMove}px)`;
+    if (manual) {
+      this.startAutoSlide();
+    } else {
+      this.resetProgressBar();
+    }
   }
 
-  // Ir al slide anterior
-  moveToPrevSlide(): void {
-    const track = document.querySelector('.carousel-track') as HTMLElement;
-    const slides = document.querySelectorAll('.highlight-card') as NodeListOf<HTMLElement>;
+  moveToPrevSlide(manual = false): void {
+    if (!this.displayedHighlights.length) return;
+    this.currentIndex = (this.currentIndex - 1 + this.displayedHighlights.length) % this.displayedHighlights.length;
 
-    if (!track || slides.length === 0) return;
-
-    // Si estamos en el primer slide (index = 0), volvemos al último.
-    this.currentIndex = (this.currentIndex - 1 + slides.length) % slides.length;
-    const amountToMove = -track.clientWidth * this.currentIndex;
-    track.style.transform = `translateX(${amountToMove}px)`;
+    if (manual) {
+      this.startAutoSlide();
+    } else {
+      this.resetProgressBar();
+    }
   }
 
   viewDetails(productId: number): void {

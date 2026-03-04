@@ -5,15 +5,14 @@
 
   <div class="gift-cards-wrapper">
     <!-- Featured Sections -->
-    <div class="highlight-recommendations" *ngIf="showHighlightsAndRecommendations">
-      <div class="highlights-section">
-        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Weekly Highlights</h2>
-        <app-highlights></app-highlights>
-      </div>
-      <div class="recommendations-section">
-        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Recommended for You</h2>
-        <app-recommendations></app-recommendations>
-      </div>
+    <div class="highlights-section-wrapper" *ngIf="showHighlightsAndRecommendations">
+      <h2 class="section-header snap-title" style="font-size: 1.5rem;">Weekly Highlights</h2>
+      <app-highlights></app-highlights>
+    </div>
+
+    <div class="recommendations-section-wrapper" *ngIf="showHighlightsAndRecommendations">
+      <h2 class="section-header snap-title" style="font-size: 1.5rem;">Recommended for You</h2>
+      <app-recommendations></app-recommendations>
     </div>
 
     <!-- Main Marketplace -->
