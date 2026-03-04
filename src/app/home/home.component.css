@@ -9,8 +9,7 @@
 .banner {
   width: 100%;
   height: 480px;
-  background: radial-gradient(circle at top right, #1d4ed8, transparent 40%),
-    radial-gradient(circle at bottom left, #0f172a, #020617);
+  background: url('../../assets/BannerPrincipal.png') center/cover no-repeat;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;
@@ -25,12 +24,7 @@
 }
 
 .banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-  opacity: 0.1;
-  pointer-events: none;
+  display: none;
 }
 
 .banner h1 {
