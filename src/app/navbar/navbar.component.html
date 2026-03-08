@@ -14,6 +14,11 @@
       </div>
     </div>
 
+    <!-- Toggle menu for mobile -->
+    <div class="mobile-menu-toggle" *ngIf="isSmallScreen" (click)="openMenuModal()">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
     <div class="navbar-center" *ngIf="!isSmallScreen">
       <!-- Primary nav links if any -->
     </div>
@@ -21,7 +26,8 @@
     <div class="navbar-right">
       <div class="nav-actions">
         <!-- Auth Links -->
-        <ng-container *ngIf="!(isAuthenticated$ | async)">
+        <!-- Auth Links - Hidden on mobile, moved to menu -->
+        <ng-container *ngIf="!(isAuthenticated$ | async) && !isSmallScreen">
           <a (click)="goToLogin()" class="nav-link">Iniciar sesión</a>
           <a routerLink="/register" class="nav-link">Registrarse</a>
         </ng-container>
