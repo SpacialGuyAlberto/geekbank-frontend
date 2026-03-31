@@ -10,6 +10,7 @@ import {
 import { StripeService } from "../stripe.service";
 import { firstValueFrom } from "rxjs";
 import { CurrencyPipe, NgIf } from "@angular/common";
+import { CurrencyService} from "../../../services/currency.service";
 import { OrderRequest } from "../../../models/order-request.model";
 import { OrderService } from "../../../services/order.service";
 import { environment } from "../../../../environments/environment";
@@ -48,6 +49,7 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
   constructor(
     private stripeSvc: StripeService,
     private orderService: OrderService,
+    private currencyService: CurrencyService,
   ) { }
 
   onClose() {
@@ -77,7 +79,8 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
 
     try {
       const { clientSecret } = await firstValueFrom(
-        this.stripeSvc.createPaymentIntent(65)
+        //TODO moficar la cantidad a euros
+        this.stripeSvc.createPaymentIntent(this.amount * 100)
       );
 
       const { error, paymentIntent } =
@@ -117,4 +120,5 @@ export class CardPaymentComponent implements OnInit, AfterViewInit {
       this.loading = false;
     }
   }
+
 }
