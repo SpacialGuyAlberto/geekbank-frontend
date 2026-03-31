@@ -23,11 +23,7 @@ export class OrderService {
     return this.http.post<any>(`${this.apiUrl}/create-order-for-paypal-and-credit-card`, orderRequest, {
       headers
     });
-
-
-
   }
-
 
   purchaseWithBalance(orderRequest: OrderRequest): Observable<any> {
     return this.http.post(`${this.apiUrl}/purchase-with-balance`, orderRequest);

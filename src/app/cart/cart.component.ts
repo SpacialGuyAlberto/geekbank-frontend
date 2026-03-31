@@ -1,31 +1,35 @@
 import { AfterViewInit, Component, HostListener, input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { CartService } from "./cart.service";
 import { DecimalPipe, NgForOf, NgIf } from "@angular/common";
-import { Event as RouterEvent, Router, RouterLink } from "@angular/router";
-import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
-import { CartItemWithGiftcard } from "./CartItem";
-import { CurrencyService } from "../services/currency.service";
+import { Router, RouterLink } from "@angular/router";
 import { FormsModule, NgModel } from "@angular/forms";
 import { MatIcon } from "@angular/material/icon";
 import { MatDialog } from "@angular/material/dialog";
-import { AuthService } from "../services/auth.service";
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Observable, Subject, takeUntil } from "rxjs";
-import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
-import { OrderRequest } from "../models/order-request.model";
+import { Observable, Subject, takeUntil, switchMap, of } from "rxjs";
+
+import { CartService } from "./cart.service";
+import { CurrencyService } from "../services/currency.service";
+import { AuthService } from "../services/auth.service";
 import { GuestService } from "../services/guest.service";
-import { User } from "../user-details/User";
-import { TermsAndConditionsComponent } from "../terms-and-conditions/terms-and-conditions.component";
 import { PromotionsService } from "../promotions/promotions.service";
-import { Promotion } from "../promotions/Promotion.model";
-import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
 import { PricingService } from "../pricing/pricing.service";
+
+import { CartItemWithGiftcard } from "./CartItem";
+import { User } from "../user-details/User";
+import { Promotion } from "../promotions/Promotion.model";
+import { OrderRequest } from "../models/order-request.model";
+
+import { TigoPaymentComponent } from "../tigo-payment/tigo-payment.component";
+import { CardPaymentComponent } from "../payment/Stripe/card-payment/card-payment.component";
 import { SuggestionsComponent } from "../suggestions/suggestions.component";
+import { TermsAndConditionsComponent } from "../terms-and-conditions/terms-and-conditions.component";
 import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
 
+import { CART_ITEMS, TOTAL_PRICE, PRODUCT_ID, GAME_USER_ID, IS_MANUAL_TRANSACTION, PROMO_CODE } from "../payment/payment.token";
 
 @Component({
   selector: 'app-cart',
+  standalone: true,
   imports: [
     NgForOf,
     NgIf,
@@ -41,81 +45,78 @@ import { ConvertToHnlPipe } from "../pipes/convert-to-hnl.pipe";
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
   providers: [
-    {
-      provide: CART_ITEMS,
-      useFactory: (component: CartComponent) => component.cartItems,
-      deps: [CartComponent]
-    },
-    {
-      provide: TOTAL_PRICE,
-      useFactory: (component: CartComponent) => component.getTotalPrice(),
-      deps: [CartComponent]
-    },
-    {
-      provide: PRODUCT_ID,
-      useValue: null
-    },
-    {
-      provide: GAME_USER_ID,
-      useValue: null
-    },
-    {
-      provide: IS_MANUAL_TRANSACTION,
-      useValue: false
-    },
-    {
-      provide: PROMO_CODE,
-      useValue: null
-    }
+    { provide: CART_ITEMS, useFactory: (c: CartComponent) => c.cartItems, deps: [CartComponent] },
+    { provide: TOTAL_PRICE, useFactory: (c: CartComponent) => c.getTotalPrice(), deps: [CartComponent] },
+    { provide: PRODUCT_ID, useValue: null },
+    { provide: GAME_USER_ID, useValue: null },
+    { provide: IS_MANUAL_TRANSACTION, useValue: false },
+    { provide: PROMO_CODE, useValue: null }
   ]
 })
 export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
-  cartItems: CartItemWithGiftcard[] = [];
-  exchangeRate: number = 1;
-  showDialog: boolean = false
-  protected showPaymentModal: boolean = false;
-  cartItemCount: number = 0;
-  isLoading: boolean = false;
-  totalPriceEUR: number = 0;
-  conversionError: string = '';
-  userId: number | null = null;
-  user: User | null = null;
-  showPaypalPaymentModal: boolean = false;
-  discountApplied: boolean = false;
-  totalAmountString: string | null = '';
-  totalAmountUSD: number | null = 0;
-  totalAmountUSDString: string | null = '';
+  @ViewChild('emailCtrl') emailCtrl!: NgModel;
+  protected readonly input = input;
+  protected readonly Number = Number;
   private destroy$ = new Subject<void>();
-  showCardButton: boolean = false;
-  showPayPalButton: boolean = false;
-  totalHNL: number = 0;
+
+  // ==========================================
+  // ESTADO DEL CARRITO Y PRECIOS
+  // ==========================================
+  cartItems: CartItemWithGiftcard[] = [];
+  cartItemCount: number = 0;
   totalEUR: number = 0;
-  isEmailPromptComplete: boolean = false;
-  showEmailPrompt: boolean = false;
-  wantsEmailKey: boolean = false;
-  emailErrorMessage: boolean = false;
-  wantsSMSKey: boolean = false;
-  emailForKey: string = '';
-  promo: Promotion | undefined = undefined;
+  totalHNL: number = 0;
+  totalPrice: number = 0; // Utilizado como fallback
+  exchangeRate: number = 1;
+
+  // ==========================================
+  // ESTADO DEL USUARIO
+  // ==========================================
+  user: User | null = null;
+  userId: number | null = null;
+  guestId: string | null = null;
   userEmail?: string;
-  emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
-  paymentDetails = { phoneNumber: '' };
-  guestId?: string | null = '';
-  totalPrice: number = 0;
-  isManualTransaction = false;
   gameUserId?: number;
+
+  // ==========================================
+  // ESTADO DEL CHECKOUT Y PAGO
+  // ==========================================
+  selectedOption: string | null = null;
+  orderDetails?: OrderRequest;
+  paymentDetails = { phoneNumber: '' };
+  isManualTransaction = false;
   manualVerificationData = { refNumber: '' };
   manualVerificationError?: string;
-  showSpinner: boolean = false;
   private productId: number | null = null;
-  orderDetails?: OrderRequest;
-  selectedOption: string | null = null;
 
+  // Datos de contacto para la compra
+  emailForKey: string = '';
+  emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$';
+  wantsEmailKey: boolean = false;
+  wantsSMSKey: boolean = false;
+
+  // Promociones
+  promo: Promotion | undefined = undefined;
+  promoCode: string = "";
+  codeExist: boolean = true;
+  codeExistBlueprint: boolean = false;
+  discountApplied: boolean = false;
+  discountReceived: string = "";
+
+  // ==========================================
+  // ESTADO DE LA INTERFAZ (UI FLAGS)
+  // ==========================================
+  isLoading: boolean = false;
+  showSpinner: boolean = false;
+  showDialog: boolean = false;
+  showPaymentModal: boolean = false;
+  showCardButton: boolean = false;
+  showPayPalButton: boolean = false;
   showCancelledModal: boolean = false;
-  protected codeExistBlueprint: boolean = false;
-  protected discountReceived: string = "";
-
-  @ViewChild('emailCtrl') emailCtrl!: NgModel;
+  showEmailPrompt: boolean = false;
+  isEmailPromptComplete: boolean = false;
+  emailErrorMessage: boolean = false;
+  conversionError: string = '';
 
   constructor(
     private cartService: CartService,
@@ -127,298 +128,92 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     private snackBar: MatSnackBar,
     private router: Router,
     private pricing: PricingService
-  ) { }
+  ) {}
 
-  @HostListener('window:load', ['$event'])
-  onLoad(event: Event) {
-    this.loadCartItems();
-    this.countCartItems();
-    this.initExchangeRate();
-    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
-      value => {
-        this.exchangeRate = value;
-      }
-    );
-    const totalEUR = this.cartItems
-      .reduce((sum, i) => sum + i.cartItem.quantity * i.giftcard.price, 0);
-
-
-    // Si aún no tenemos tasa de cambio esperamos a que llegue
-    if (this.exchangeRate) {
-      this.totalHNL = this.pricing.calculateConvertedPrice(totalEUR, this.exchangeRate);
-    }
+  @HostListener('window:load')
+  onLoad() {
+    this.initializeCartData();
   }
 
   ngOnInit(): void {
-    this.loadCartItems();
-    this.countCartItems();
-    this.recalcTotals();
-    this.initExchangeRate();
-    const totalEUR = this.cartItems
-      .reduce((sum, i) => sum + i.cartItem.quantity * i.giftcard.price, 0);
-
-
-    // Si aún no tenemos tasa de cambio esperamos a que llegue
-    if (this.exchangeRate) {
-      this.totalHNL = this.pricing.calculateConvertedPrice(totalEUR, this.exchangeRate);
-    }
-    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
-      value => {
-        this.exchangeRate = value;
-      }
-    );
-
-    if (this.authService.isLoggedIn()) {
-      const storedUserId = sessionStorage.getItem("userId");
-      this.authService.getUserDetails().subscribe(data => {
-        this.user = data;
-        this.userEmail = data.email;
-      });
-      if (storedUserId) {
-        this.userId = parseInt(storedUserId, 10);
-        if (isNaN(this.userId)) {
-          this.userId = null;
-        }
-      } else {
-        this.userId = null;
-      }
-    } else {
-      this.guestId = this.guestService.getGuestId();
-    }
+    this.initializeCartData();
+    this.initializeUser();
   }
 
+  ngAfterViewInit(): void {
+    this.recalcTotals();
+  }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  loadCartItems(): void {
-    this.cartService.loadCartItems();
+  // ==========================================
+  // MÉTODOS DE INICIALIZACIÓN
+  // ==========================================
 
-    this.cartService.cartItems$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(async items => {
-        this.cartItems = items;
-        this.updateCartItemCount();
-
-        await this.recalcTotals();
-
-        this.totalAmountUSD = +(this.totalHNL / 26).toFixed(2);
-        this.totalAmountUSDString = this.totalAmountUSD.toString();
-        this.totalAmountString = this.totalHNL.toString();
-      });
+  private initializeCartData(): void {
+    this.loadCartItems();
+    this.countCartItems();
+    this.initExchangeRate();
   }
 
-  private async recalcTotals(): Promise<void> {
-    const promises = this.cartItems.map(async item => {
-      const price = await item.giftcard.price; // si price es una promesa
-      return price * item.cartItem.quantity;
-    });
+  private initializeUser(): void {
+    if (this.authService.isLoggedIn()) {
+      const storedUserId = sessionStorage.getItem("userId");
+      this.userId = storedUserId ? parseInt(storedUserId, 10) : null;
+      if (this.userId && isNaN(this.userId)) this.userId = null;
 
-    const converted = await Promise.all(promises);
-    this.totalEUR = converted.reduce((sum, price) => sum + price, 0);
-    this.totalHNL = await this.pricing.convert(this.totalEUR, this.exchangeRate);
+      this.authService.getUserDetails()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          this.user = data;
+          this.userEmail = data.email;
+        });
+    } else {
+      this.guestId = this.guestService.getGuestId();
+    }
   }
-
-
-  selectOption(option: string): void {
-    this.selectedOption = option;
-  }
-
 
   private initExchangeRate(): void {
     this.currencyService.getExchangeRateEURtoHNL(1)
       .pipe(takeUntil(this.destroy$))
       .subscribe(async rate => {
         this.exchangeRate = rate;
-        await this.recalcTotals();      // ← segundo cálculo, ahora con la tasa
+        await this.recalcTotals();
       });
   }
 
+  // ==========================================
+  // LÓGICA DEL CARRITO
+  // ==========================================
 
-  continueWithOption(): void {
-    if (this.cartItems.length === 0) {
-      this.snackBar.open('No hay items en el carrito.', 'Cerrar', { duration: 3000 });
-      return;
-    }
-
-    const phoneNumber = this.paymentDetails.phoneNumber;
-    let orderDetails: OrderRequest | undefined;
-
-    if (this.productId !== null) {
-      orderDetails = {
-        userId: this.userId ? Number(this.userId) : null,
-        guestId: this.guestId || null,
-        email: this.emailForKey || '',
-        phoneNumber: phoneNumber,
-        products: [{
-          kinguinId: this.productId,
-          qty: 1,
-          price: this.totalHNL,
-          name: 'Producto'
-        }],
-        amount: this.totalHNL,
-        manual: this.isManualTransaction,
-        sendKeyToSMS: this.wantsSMSKey,
-        gameUserId: this.gameUserId || undefined,
-        promoCode: this.promo?.code
-      };
-    } else if (this.authService.isAuthenticated() && this.userId !== null) {
-      // Caso: Usuario autenticado con userId
-      if (this.cartItems && this.cartItems.length > 0) {
-        // Carrito con ítems
-        orderDetails = {
-          userId: this.userId ? Number(this.userId) : null,
-          guestId: this.guestId || null,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: this.cartItems.map(item => ({
-            kinguinId: item.giftcard.kinguinId || item.cartItem.productId || 0,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.priceHNL || 0,
-            name: item.giftcard.name || 'Producto'
-          })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined,
-          promoCode: this.promo?.code
-        };
-      } else {
-        // Carrito vacío, usar balance u otro
-        orderDetails = {
-          userId: this.userId ? Number(this.userId) : null,
-          guestId: this.guestId || null,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined,
-          promoCode: this.promo?.code
-        };
-      }
-    } else if (this.guestId) {
-      // Caso: Usuario invitado
-      if (this.cartItems && this.cartItems.length > 0) {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.priceHNL,
-            name: 'Producto'
-          })),
-          amount: this.cartItems.reduce((total, item) => total + (item.giftcard.priceHNL * item.cartItem.quantity), 0),
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined,
-          promoCode: this.promo?.code
-        };
-      } else {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalHNL,
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined,
-          promoCode: this.promo?.code
-        };
-      }
-    } else {
-      this.snackBar.open('No se pudo crear la orden: No hay información de usuario o invitado.', 'Cerrar', { duration: 3000 });
-      return;
-    }
-
-    if (!orderDetails) {
-      this.snackBar.open('No se pudo crear el OrderRequest.', 'Cerrar', { duration: 3000 });
-      return;
-    }
-
-    this.orderDetails = orderDetails;
-
-    if (this.selectedOption === 'paypal') {
-      this.selectedOption = null;
-      this.showPayPalButton = true;
-    } else if (this.selectedOption === 'card') {
-
-      /* ---- VALIDACIONES ---- */
-      if (!this.emailForKey.trim()) {
-        this.emailCtrl.control.markAsTouched();
-        this.checkInput();
-        this.snackBar.open('El correo es obligatorio.', 'Cerrar', { duration: 3000 });
-        return;
-      }
-
-      if (!this.isEmailValid()) {
-        this.emailCtrl.control.markAsTouched();
-        this.snackBar.open('Formato de correo incorrecto.', 'Cerrar', { duration: 3000 });
-        return;
-      }
-
-      /* ---- Si todo está bien, ya podemos mostrar el botón de Stripe ---- */
-      this.selectedOption = null;      // ← mover AQUÍ (después de validar)
-      this.showCardButton = true;
-    }
-    else if (this.selectedOption === 'TIGO MONEY') {
-      this.selectedOption = null;
-      this.showPaymentModal = true;
-    } else {
-      console.warn('No se ha seleccionado ninguna opción.');
-    }
+  loadCartItems(): void {
+    this.cartService.loadCartItems();
+    this.cartService.cartItems$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(async items => {
+        this.cartItems = items;
+        this.updateCartItemCount();
+        await this.recalcTotals();
+      });
   }
 
-
-  getExchangeRate(): void {
-    this.isLoading = true;
-    this.conversionError = '';
-
-    this.currencyService.getExchangeRateEURtoHNL(this.totalPriceEUR).subscribe(
-      (rate: number) => {
-        this.exchangeRate = rate;
-        this.isLoading = false;
-        this.snackBar.open('Tasa de cambio obtenida exitosamente.', 'Cerrar', {
-          duration: 3000,
-        });
-      },
-      (error) => {
-        console.error('Error al obtener la tasa de cambio:', error);
-        this.conversionError = 'Error al obtener la tasa de cambio.';
-        this.isLoading = false;
-        this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
-          duration: 3000,
-        });
-      }
-    );
-  }
-
-  removeCartItem(productId: number): void {
-    this.cartService.removeCartItem(productId).subscribe(() => {
-      this.loadCartItems();
+  private async recalcTotals(): Promise<void> {
+    const promises = this.cartItems.map(async item => {
+      const price = await item.giftcard.price;
+      return price * item.cartItem.quantity;
     });
-  }
 
-  removeAllCartItems(): void {
-    this.cartService.removeAllCartItems().subscribe(() => {
-      this.loadCartItems();
-    });
+    const converted = await Promise.all(promises);
+    this.totalEUR = converted.reduce((sum, price) => sum + price, 0);
+    this.totalHNL = await this.pricing.convert(this.totalEUR, this.exchangeRate);
+
+    // Aplicar descuento visual si existe
+    if (this.promo && !this.discountApplied) {
+      this.applyDiscountMath();
+    }
   }
 
   incrementProductQuantity(item: CartItemWithGiftcard): void {
@@ -426,7 +221,7 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cartService.updateCartItem(item.cartItem.productId, newQuantity).subscribe(() => {
       item.cartItem.quantity = newQuantity;
       this.updateCartItemCount();
-      this.recalcTotals()
+      this.recalcTotals();
     });
   }
 
@@ -439,25 +234,23 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
         this.recalcTotals();
       });
     } else {
-      this.cartService.removeCartItem(item.cartItem.productId).subscribe(() => {
-        this.cartItems = this.cartItems.filter(cartItem => cartItem.cartItem.productId !== item.cartItem.productId);
-        this.updateCartItemCount();
-        this.showDialog = true;
-        setTimeout(() => {
-          this.closeDialog();
-        }, 3000);
-        this.recalcTotals();
-      });
+      this.removeCartItem(item.cartItem.productId);
     }
   }
 
+  removeCartItem(productId: number): void {
+    this.cartService.removeCartItem(productId).subscribe(() => {
+      this.cartItems = this.cartItems.filter(i => i.cartItem.productId !== productId);
+      this.updateCartItemCount();
+      this.recalcTotals();
 
-  closeDialog(): void {
-    this.showDialog = false;
+      this.showDialog = true;
+      setTimeout(() => this.showDialog = false, 3000);
+    });
   }
 
-  getTotalPrice(): number {
-    return this.totalHNL;
+  removeAllCartItems(): void {
+    this.cartService.removeAllCartItems().subscribe(() => this.loadCartItems());
   }
 
   updateCartItemCount(): void {
@@ -467,9 +260,58 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
   countCartItems() {
     this.cartService.cartItemCount$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(count => {
-        this.cartItemCount = count;
-      });
+      .subscribe(count => this.cartItemCount = count);
+  }
+
+  // ==========================================
+  // LÓGICA DE CHECKOUT Y ORDEN
+  // ==========================================
+
+  selectOption(option: string): void {
+    this.selectedOption = option;
+  }
+
+  continueWithOption(): void {
+    if (this.cartItems.length === 0) {
+      this.snackBar.open('No hay items en el carrito.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    if (this.selectedOption === 'card') {
+      if (!this.emailForKey.trim()) {
+        this.emailCtrl?.control?.markAsTouched();
+        this.checkInput();
+        this.snackBar.open('El correo es obligatorio.', 'Cerrar', { duration: 3000 });
+        return;
+      }
+
+      if (!this.isEmailValid()) {
+        this.emailCtrl?.control?.markAsTouched();
+        this.snackBar.open('Formato de correo incorrecto.', 'Cerrar', { duration: 3000 });
+        return;
+      }
+    }
+
+    this.orderDetails = this.buildOrderRequest();
+
+    if (!this.orderDetails) {
+      this.snackBar.open('Error al procesar la información de la orden.', 'Cerrar', { duration: 3000 });
+      return;
+    }
+
+    // Procesar la opción seleccionada
+    const option = this.selectedOption;
+    this.selectedOption = null;
+
+    if (option === 'paypal') {
+      this.showPayPalButton = true;
+    } else if (option === 'card') {
+      this.showCardButton = true;
+    } else if (option === 'TIGO MONEY') {
+      this.showPaymentModal = true;
+    } else {
+      console.warn('No se ha seleccionado ninguna opción.');
+    }
   }
 
   async submitOrder(): Promise<OrderRequest> {
@@ -483,119 +325,117 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
       throw new Error('Email prompt not complete');
     }
 
-    const phoneNumber = this.paymentDetails.phoneNumber;
-    let orderDetails: OrderRequest | undefined;
-
-    if (this.productId !== null) {
-      orderDetails = {
-        userId: this.userId ? Number(this.userId) : null,
-        guestId: this.guestId || null,
-        email: this.wantsEmailKey ? (this.userEmail || this.emailForKey || '') : '',
-        phoneNumber: phoneNumber,
-        products: [{
-          kinguinId: this.productId,
-          qty: 1,
-          price: this.totalPrice,
-          name: 'Producto'
-        }],
-        amount: this.totalPrice,
-        manual: this.isManualTransaction,
-        sendKeyToSMS: this.wantsSMSKey,
-        gameUserId: this.gameUserId || undefined
-      };
-    } else if (this.authService.isAuthenticated() && this.userId !== null) {
-      if (this.cartItems && this.cartItems.length > 0) {
-        orderDetails = {
-          userId: this.userId ? Number(this.userId) : null,
-          guestId: this.guestId || null,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-
-          products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId!,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.price,
-            name: item.giftcard.name
-          })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
-        };
-      } else {
-        orderDetails = {
-          userId: this.userId ? Number(this.userId) : null,
-          guestId: this.guestId || null,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
-        };
-      }
+    const order = this.buildOrderRequest();
+    if (!order) {
+      throw new Error('No se pudo crear la orden debido a falta de información de usuario o invitado.');
     }
-    else if (this.guestId) {
-      if (this.cartItems && this.cartItems.length > 0) {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: this.cartItems.map(item => ({
-            kinguinId: item.cartItem.productId,
-            qty: item.cartItem.quantity,
-            price: item.giftcard.price,
-            name: item.giftcard.name
-          })),
-          amount: this.cartItems.reduce((total, item) => total + item.giftcard.price * item.cartItem.quantity, 0),
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
-        };
-      } else {
-        orderDetails = {
-          guestId: this.guestId,
-          phoneNumber: phoneNumber,
-          email: this.emailForKey || '',
-          products: [{
-            kinguinId: -1,
-            qty: 1,
-            price: this.totalPrice,
-            name: 'Balance'
-          }],
-          amount: this.totalPrice,
-          manual: this.isManualTransaction,
-          sendKeyToSMS: this.wantsSMSKey,
-          gameUserId: this.gameUserId || undefined
-        };
-      }
-    } else {
-      throw new Error('No user or guest information available to create order');
-    }
-
-    if (!orderDetails) {
-      throw new Error('No se pudo crear el OrderRequest.');
-    }
-
-    return orderDetails;
+    return order;
   }
 
+  private buildOrderRequest(): OrderRequest | undefined {
+    // Si no hay usuario ni guest, no podemos crear la orden
+    if (!this.userId && !this.guestId) return undefined;
+
+    let products = [];
+    let calculatedAmount = 0;
+
+    // Caso 1: Compra directa de un solo producto (productId seteado manualmente)
+    if (this.productId !== null) {
+      products = [{
+        kinguinId: this.productId,
+        qty: 1,
+        price: this.totalHNL || this.totalPrice,
+        name: 'Producto'
+      }];
+      calculatedAmount = this.totalHNL || this.totalPrice;
+    }
+    // Caso 2: Carrito con productos
+    else if (this.cartItems.length > 0) {
+      products = this.cartItems.map(item => ({
+        kinguinId: item.giftcard.kinguinId || item.cartItem.productId || 0,
+        qty: item.cartItem.quantity,
+        price: item.giftcard.priceHNL || item.giftcard.price,
+        name: item.giftcard.name || 'Producto'
+      }));
+      calculatedAmount = this.cartItems.reduce((total, item) => total + ((item.giftcard.priceHNL || item.giftcard.price) * item.cartItem.quantity), 0);
+    }
+    // Caso 3: Carrito vacío pero se requiere una orden (Ej. recargar balance)
+    else {
+      products = [{
+        kinguinId: -1,
+        qty: 1,
+        price: this.totalPrice,
+        name: 'Balance'
+      }];
+      calculatedAmount = this.totalPrice;
+    }
+
+    return {
+      userId: this.userId ? Number(this.userId) : null,
+      guestId: this.guestId || null,
+      email: this.wantsEmailKey ? (this.userEmail || this.emailForKey) : this.emailForKey,
+      phoneNumber: this.paymentDetails.phoneNumber,
+      products: products,
+      amount: calculatedAmount,
+      manual: this.isManualTransaction,
+      sendKeyToSMS: this.wantsSMSKey,
+      gameUserId: this.gameUserId || undefined,
+      promoCode: this.promo?.code
+    };
+  }
+
+  // ==========================================
+  // PROMOCIONES
+  // ==========================================
+
+  checkIfCodeExists(code: string): void {
+    if (!code) return;
+
+    this.promotionService.promotionCodeExist(code).pipe(
+      takeUntil(this.destroy$),
+      switchMap(exists => {
+        this.codeExist = exists;
+        this.codeExistBlueprint = exists;
+
+        if (exists) {
+          return this.promotionService.fetchPromotionWithCode(code);
+        }
+        return of(null);
+      })
+    ).subscribe(promo => {
+      if (promo) {
+        this.promo = promo;
+        this.promoCode = promo.code;
+        this.discountReceived = `Has recibido un ${promo.discountPorcentage}% de descuento`;
+
+        if (!this.discountApplied) {
+          this.applyDiscountMath();
+          this.discountApplied = true;
+          this.snackBar.open('¡Descuento aplicado a tu orden!', 'Cerrar', { duration: 5000 });
+        }
+      }
+    });
+  }
+
+  private applyDiscountMath(): void {
+    if (!this.promo) return;
+    const total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * (item.giftcard.priceHNL || 0), 0);
+    const discount = total * (this.promo.discountPorcentage / 100);
+    this.totalHNL = parseFloat((total - discount).toFixed(2));
+  }
+
+  // ==========================================
+  // EVENTOS Y VALIDADORES DE UI
+  // ==========================================
+
   onPaymentSuccess(transactionNumber: string) {
+    this.cartService.removeAllCartItems();
     this.router.navigate(['/purchase-confirmation'], {
       queryParams: { transactionNumber: transactionNumber }
     });
-
-    this.cartService.removeAllCartItems();
   }
 
   handleTransactionCancelled() {
-
     this.showCancelledModal = true;
   }
 
@@ -606,58 +446,21 @@ export class CartComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  checkIfCodeExists(code: string): Observable<boolean> {
-
-    this.promotionService.promotionCodeExist(code).subscribe(value => {
-      this.codeExist = value;
-      this.codeExistBlueprint = value;
-      if (value) {
-        this.fetchPromoWithCode(code);
-      }
-    });
-    return this.promotionService.promotionCodeExist(code);
+  isPaymentReady(): boolean {
+    if (!this.selectedOption) return false;
+    if (this.selectedOption !== 'card') return true;
+    return !!this.emailForKey?.trim() && this.isEmailValid();
   }
-
-  fetchPromoWithCode(code: string) {
-    if (this.codeExistBlueprint) {
-      this.promotionService.fetchPromotionWithCode(code).subscribe(
-        (value) => {
-          this.promo = value;
-          this.discountReceived = value ? `You have received ${this.promo.discountPorcentage} of discount` : "You have not received discount";
-          if (this.promo && !this.discountApplied) {
-            let total = this.cartItems.reduce((sum, item) => sum + item.cartItem.quantity * item.giftcard.priceHNL, 0);
-            this.totalHNL = parseFloat(total.toFixed(2)) - (parseFloat(total.toFixed(2)) * (this.promo.discountPorcentage / 100));
-            this.promoCode = value.code;
-          }
-        });
-    }
-    this.snackBar.open('Descuento aplicado a tu orden de compra', 'Cerrar', { duration: 5000 });
-  }
-
-  protected readonly Number = Number;
-  promoCode: string = "";
-  codeExist: boolean = true;
-
 
   private isEmailValid(): boolean {
     return new RegExp(this.emailRegex).test(this.emailForKey.trim());
   }
 
-  isPaymentReady(): boolean {
-    if (!this.selectedOption) { return false; }
-    if (this.selectedOption !== 'card') { return true; }
-    return !!this.emailForKey?.trim() && this.isEmailValid();
-  }
-
   checkInput() {
-    if (this.emailForKey) {
-      this.emailErrorMessage = true;
-    }
+    this.emailErrorMessage = !!this.emailForKey;
   }
 
-  protected readonly input = input;
-
-  ngAfterViewInit(): void {
-    this.recalcTotals();
+  getTotalPrice(): number {
+    return this.totalHNL;
   }
 }
