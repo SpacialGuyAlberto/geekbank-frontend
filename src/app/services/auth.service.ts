@@ -9,6 +9,7 @@ import {Store} from "@ngrx/store";
 import {AppState} from "../app.state";
 import {CookieService} from "ngx-cookie-service";
 import { catchError, map } from 'rxjs/operators';
+import { ApiResponse } from '../models/api-response.model';
 
 
 declare const google: any;
@@ -59,14 +60,15 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<{ userId: string }> {
-    return this.http.post<{ userId: string }>(
+    return this.http.post<ApiResponse<{ userId: string }>>(
       `${this.baseUrl}/login`,
       { email, password },
       { withCredentials: true }
     ).pipe(
-      tap(response => {
+      map(response => response.data),
+      tap(data => {
         this.authenticated = true;
-        this.userId = response.userId;
+        this.userId = data.userId;
         this.loggedIn.next(true);
         sessionStorage.setItem('userId', this.userId);
         localStorage.setItem('userId', this.userId);
@@ -158,16 +160,18 @@ export class AuthService {
     if (this.authenticated) {
       return of(true);
     } else {
-      return this.http.get<{ authenticated: boolean }>(
+      return this.http.get<ApiResponse<{ authenticated: boolean }>>(
         `${this.baseUrl}/check-auth`,
         { withCredentials: true }
       ).pipe(
         map(response => {
-          this.authenticated = response.authenticated;
+          this.authenticated = response.data.authenticated;
+          this.loggedIn.next(this.authenticated);
           return this.authenticated;
         }),
         catchError(() => {
           this.authenticated = false;
+          this.loggedIn.next(false);
           return of(false);
         })
       );
@@ -249,7 +253,9 @@ export class AuthService {
 
 
   googleLogin(token: string): Observable<any> {
-    return this.http.post<{ userId: string }>(`${this.baseUrl}/google-login`, { token }, { withCredentials: true });
+    return this.http.post<ApiResponse<{ userId: string }>>(`${this.baseUrl}/google-login`, { token }, { withCredentials: true }).pipe(
+      map(response => response.data)
+    );
   }
 
   getUserById(userId: string): Observable<User> {
