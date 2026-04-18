@@ -6,15 +6,16 @@ import { FormsModule } from "@angular/forms";
 import { UIStateServiceService } from "../services/uistate-service.service";
 import { Subject, Subscription, of } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
-import {SharedService} from "../services/shared.service";
+import { SharedService } from "../services/shared.service";
 
 @Component({
-    selector: 'app-search-bar',
-    templateUrl: './search-bar.component.html',
-    imports: [
-        FormsModule
-    ],
-    styleUrls: ['./search-bar.component.css']
+  selector: 'app-search-bar',
+  templateUrl: './search-bar.component.html',
+  standalone: true,
+  imports: [
+    FormsModule
+  ],
+  styleUrls: ['./search-bar.component.css']
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
   @Output() searchResults = new EventEmitter<KinguinGiftCard[]>();
@@ -23,7 +24,6 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   private searchSubject = new Subject<string>();
   private searchSubscription!: Subscription;
-
 
   constructor(
     private kinguinService: KinguinService,
@@ -34,7 +34,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.searchSubscription = this.searchSubject.pipe(
-      debounceTime(5000),
+      debounceTime(500),
       distinctUntilChanged(),
       switchMap(query => {
         if (query.trim() === '') {
@@ -42,22 +42,31 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }
         return this.kinguinService.searchGiftCards(query).pipe(
           catchError(err => {
+            console.error('Error en la búsqueda live:', err);
             return of([] as KinguinGiftCard[]);
           })
         );
       })
     ).subscribe((data: KinguinGiftCard[]) => {
-
-      const giftCards = data.map(card => {
-        card.coverImageOriginal = card.images.cover?.thumbnail || '';
-        card.coverImage = card.images.cover?.thumbnail || '';
-        return card;
-      });
-
-      this.searchResults.emit(giftCards);
-      this.uiStateService.setShowHighlights(false);
-      this.cd.detectChanges();
+      this.processAndEmitResults(data);
     });
+  }
+
+  private async processAndEmitResults(data: KinguinGiftCard[]) {
+    const giftCardsPromises = data.map(async card => {
+      card.coverImageOriginal =
+        card.coverImageOriginal ||
+        card.images.cover?.thumbnail ||
+        card.coverImage ||
+        await this.getBestImageUrl(card);
+      card.coverImage = card.images.cover?.thumbnail || '';
+      return card;
+    });
+
+    const giftCards = await Promise.all(giftCardsPromises);
+    this.searchResults.emit(giftCards);
+    this.uiStateService.setShowHighlights(false);
+    this.cd.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -85,7 +94,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       imageUrls.push(card.coverImage);
     }
 
-    if (card.images.screenshots && card.images.screenshots.length > 0){
+    if (card.images.screenshots && card.images.screenshots.length > 0) {
       imageUrls.push(...card.images.screenshots.map(screenshot => screenshot.url))
     }
 
@@ -103,7 +112,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
         }))
         .catch(err => {
           console.error(`Error al cargar la imagen ${url}:`, err);
-          return { url, resolution: 0 }; // Considera 0 si falla
+          return { url, resolution: 0 };
         })
     );
 
@@ -124,10 +133,11 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       img.onerror = reject;
     });
   }
+
   onSearchEnter(): void {
-    const query = this.searchQuery.trim().toLowerCase();
-    this.sharedService.traceSearchQuery(query);
-    const isFreeFire = query.includes('free fire') || query.includes('freefair') || query.includes('free fair');
+    const query = this.searchQuery.trim();
+    this.sharedService.traceSearchQuery(query.toLowerCase());
+    const isFreeFire = query.toLowerCase().includes('free fire') || query.toLowerCase().includes('freefair') || query.toLowerCase().includes('free fair');
     this.isFreeFireSearch.emit(isFreeFire);
 
     if (query === '') {
@@ -137,66 +147,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.searchSubject.complete();
-    this.searchSubscription.unsubscribe();
-
-    this.kinguinService.searchGiftCards(query).pipe(
-      catchError(err => {
-        console.error('Error en la búsqueda de tarjetas (Enter):', err);
-        return of([] as KinguinGiftCard[]);
-      })
-    ).subscribe(async (data: KinguinGiftCard[]) => {
-
-      const giftCardsPromises = data.map(async card => {
-        card.coverImageOriginal =
-          card.coverImageOriginal ||
-          card.images.cover?.thumbnail ||
-          card.coverImage ||
-          await this.getBestImageUrl(card);
-        card.coverImage = card.images.cover?.thumbnail || '';
-        return card;
-      });
-
-      const giftCards = await Promise.all(giftCardsPromises);
-
-      this.searchResults.emit(giftCards);
-      this.uiStateService.setShowHighlights(false);
-      this.cd.detectChanges();
-
-      this.searchSubject = new Subject<string>();
-      this.searchSubscription = this.searchSubject.pipe(
-        debounceTime(3000),
-        distinctUntilChanged(),
-        switchMap(q => {
-          if (q.trim() === '') {
-            return of([] as KinguinGiftCard[]);
-          }
-          return this.kinguinService.searchGiftCards(q).pipe(
-            catchError(err => {
-              console.error('Error en la búsqueda de tarjetas:', err);
-              return of([] as KinguinGiftCard[]);
-            })
-          );
-        })
-      ).subscribe(async (res: KinguinGiftCard[]) => {
-
-        const gcPromises = res.map(async card => {
-          card.coverImageOriginal =
-            card.coverImageOriginal ||
-            card.images.cover?.thumbnail ||
-            card.coverImage ||
-            await this.getBestImageUrl(card);
-          card.coverImage = card.images.cover?.thumbnail || '';
-          return card;
-        });
-
-        const gc = await Promise.all(gcPromises);
-
-        this.searchResults.emit(gc);
-        this.uiStateService.setShowHighlights(false);
-        this.cd.detectChanges();
-      });
-    });
+    // Trigger immediate search by pushing to the subject
+    this.searchSubject.next(query);
   }
-
 }
