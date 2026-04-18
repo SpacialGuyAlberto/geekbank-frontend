@@ -23,7 +23,7 @@ export class KinguinService {
   }
 
   getKinguinGiftCards(page: number): Observable<KinguinGiftCard[]> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const headers = new HttpHeaders().set('X-Api-Key', '46b571b40a9418b22112762a68273c24');
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}?page=${page}`, { headers })
       .pipe(
         tap((giftCards: KinguinGiftCard[]) => this.updateGiftCardsModel(giftCards))
@@ -31,17 +31,17 @@ export class KinguinService {
   }
 
   getGiftCardDetails(id: string): Observable<KinguinGiftCard> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const headers = new HttpHeaders().set('X-Api-Key', '46b571b40a9418b22112762a68273c24');
     return this.http.get<KinguinGiftCard>(`${this.apiUrl}/${id}`, { headers });
   }
 
   getGiftCardInformation(id: string): Observable<KinguinGiftCard> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const headers = new HttpHeaders().set('X-Api-Key', '46b571b40a9418b22112762a68273c24');
     return this.http.get<KinguinGiftCard>(`${environment.apiUrl}/kinguin/gift-cards-details/${id}`, { headers });
   }
 
   searchGiftCards(name: string): Observable<KinguinGiftCard[]> {
-    const headers = new HttpHeaders().set('X-Api-Key', '77d96c852356b1c654a80f424d67048f');
+    const headers = new HttpHeaders().set('X-Api-Key', '46b571b40a9418b22112762a68273c24');
     return this.http.get<KinguinGiftCard[]>(`${this.apiUrl}/search?name=${name}`, { headers })
       .pipe(
         tap((giftCards: KinguinGiftCard[]) => this.updateGiftCardsModel(giftCards))
