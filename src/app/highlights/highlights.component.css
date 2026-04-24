@@ -2,11 +2,11 @@
   position: relative;
   width: 100%;
   height: 520px;
-  border-radius: 2rem;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
-  background: #050507;
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  background: #04050b;
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.14));
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5); /* Sombra para profundidad */
 }
 
 /* TRACK (SLIDING) */
@@ -14,7 +14,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .highlight-card {
@@ -29,249 +29,167 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
-  filter: brightness(0.85) contrast(1.1);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: brightness(0.65) saturate(1.1); /* Oscurecemos para legibilidad del texto */
 }
 
 .highlight-card:hover .highlight-card-image {
-  transform: scale(1.03);
-  filter: brightness(1) contrast(1.1);
+  transform: scale(1.04);
 }
 
-/* OVERLAY NEON */
+/* OVERLAY CON GRADIENTE (Para legibilidad) */
 .highlight-content-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 5rem 3rem 3rem;
-  background: linear-gradient(to top,
-      rgba(5, 5, 7, 0.95) 0%,
-      rgba(5, 5, 7, 0.8) 30%,
-      transparent 100%);
-  color: white;
+  padding: 6rem 4rem 4rem; /* Más padding para aire */
+  background: linear-gradient(to top, rgba(4, 5, 11, 0.95) 0%, transparent 100%);
+  color: #fff;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   pointer-events: none;
 }
 
+/* TAG ELEGANTE */
 .highlight-tag {
   align-self: flex-start;
-  background: rgba(0, 255, 255, 0.1);
-  color: #00ffff;
+  background: rgba(10, 132, 255, 0.15);
+  color: var(--blue, #0a84ff);
   padding: 0.5rem 1.2rem;
-  border-radius: 4px;
-  font-size: 0.7rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  border: 1px solid rgba(0, 255, 255, 0.3);
-  margin-bottom: 0.8rem;
-  backdrop-filter: blur(5px);
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.5);
+  letter-spacing: 0.15em;
+  border: 1px solid rgba(10, 132, 255, 0.3);
+  margin-bottom: 0.5rem;
 }
 
+/* TÍTULO IMPACTANTE */
 .highlight-title {
   font-size: 3.5rem;
-  font-weight: 900;
-  line-height: 1;
+  font-weight: 860;
+  line-height: 1.1;
   margin: 0;
-  color: #fff;
-  text-transform: uppercase;
   letter-spacing: -0.02em;
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* FILA DE PRECIO Y CTA */
 .highlight-price-row {
   display: flex;
-  align-items: flex-end;
+  align-items: center; /* Alineación vertical perfecta */
   justify-content: space-between;
+  margin-top: 2rem;
   gap: 2rem;
-  margin-top: 1.5rem;
+  pointer-events: auto; /* Reactivamos clicks */
 }
 
+/* CONTENEDOR DE PRECIO (Coherente e-commerce) */
 .price-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
 }
 
 .highlight-price-label {
-  font-size: 0.85rem;
-  opacity: 0.6;
+  font-size: 0.8rem;
+  color: var(--muted, rgba(255, 255, 255, 0.6));
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
 
+/* PRECIO ESPECIAL (Coherente Aurora) */
 .highlight-price-value {
-  font-size: 2.8rem;
+  font-size: 3.2rem; /* Más grande y legible */
   font-weight: 950;
-  color: #00ffff;
+  color: #fff; /* Blanco puro, elegante */
   line-height: 1;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-/* COOL CTA BUTTON */
+/* BOTÓN CTA AURORA (Estilo E-commerce Elegante) */
 .highlight-cta {
-  background: rgba(0, 255, 255, 0.1);
-  color: #00ffff;
-  border: 2px solid #00ffff;
+  background: var(--blue, #ffd60a); /* Botón principal azul */
+  color: #fff;
+  border: none;
   padding: 1.2rem 2.8rem;
-  border-radius: 4px;
+  border-radius: 14px;
   font-size: 1.1rem;
-  font-weight: 900;
+  font-weight: 800;
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: uppercase;
-  letter-spacing: 0.15em;
-  pointer-events: auto;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-}
-
-.highlight-cta::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-  transition: 0.5s;
-}
-
-.highlight-cta:hover::before {
-  left: 100%;
+  letter-spacing: 0.1em;
+  box-shadow: 0 8px 20px rgba(10, 132, 255, 0.3);
 }
 
 .highlight-cta:hover {
-  background: #00ffff;
-  color: #000;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+  background: #fff; /* Inversión de color elegante */
+  color: var(--blue, #0a84ff);
   transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(10, 132, 255, 0.4);
 }
 
 .highlight-cta i {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
-/* ARROWS NEON */
+/* FLECHAS AURORA (Solucionado el colapso) */
 .carousel-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   width: 4rem;
   height: 4rem;
-  background: rgba(5, 5, 7, 0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #00ffff;
+  color: #fff;
   cursor: pointer;
-  z-index: 10;
+  z-index: 20; /* Mayor z-index */
   transition: all 0.3s ease;
-  font-size: 1.4rem;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+  font-size: 1.2rem;
 }
 
 .carousel-arrow:hover {
-  background: #00ffff;
-  color: #000;
-  border-color: #00ffff;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.05);
 }
 
+/* POSICIONAMIENTO SOLUCIONADO */
 .carousel-arrow.left {
-  left: 2.5rem;
+  left: 2rem; /* Espacio fijo a la izquierda */
 }
 
 .carousel-arrow.right {
-  right: 2.5rem;
+  right: 2rem; /* Espacio fijo a la derecha */
 }
 
-/* PROGRESS BAR NEON */
+/* BARRA DE PROGRESO */
 .progress-container {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 4px;
+  height: 3px;
   background: rgba(255, 255, 255, 0.05);
-  z-index: 10;
 }
 
 .progress-bar {
   height: 100%;
-  background: #00ffff;
-  box-shadow: 0 0 10px #00ffff;
+  background: var(--blue, #0a84ff);
   transition: width 0.05s linear;
-}
-
-/* RESPONSIVE */
-@media (max-width: 1024px) {
-  .highlights-carousel {
-    height: 420px;
-  }
-
-  .highlight-title {
-    font-size: 2.5rem;
-  }
-
-  .highlight-price-value {
-    font-size: 2.2rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .highlights-carousel {
-    height: 320px;
-    border-radius: 1.2rem;
-  }
-
-  .highlight-content-overlay {
-    padding: 3rem 1.5rem 2rem;
-  }
-
-  .highlight-title {
-    font-size: 1.8rem;
-  }
-
-  .highlight-price-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .highlight-price-value {
-    font-size: 1.5rem;
-  }
-
-  .highlight-cta {
-    padding: 0.8rem 1.5rem;
-    font-size: 0.9rem;
-    width: fit-content;
-  }
-
-  .carousel-arrow {
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.1rem;
-  }
-
-  .carousel-arrow.left {
-    left: 1rem;
-  }
-
-  .carousel-arrow.right {
-    right: 1rem;
-  }
 }
