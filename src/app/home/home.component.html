@@ -1,69 +1,82 @@
 <div class="home-container">
-  <!-- Hero Section -->
-  <div class="banner" *ngIf="showHighlightsAndRecommendations" aria-label="GeekyFriki Premium Digital Marketplace">
-  </div>
+  @if (showHighlightsAndRecommendations) {
+    <div class="banner" aria-label="GeekyFriki Premium Digital Marketplace">
+    </div>
+  }
 
   <div class="gift-cards-wrapper">
-    <!-- Featured Sections -->
-    <div class="highlights-section-wrapper" *ngIf="showHighlightsAndRecommendations">
-      <h2 class="section-header snap-title" style="font-size: 1.5rem;">Weekly Highlights</h2>
-      <app-highlights></app-highlights>
-    </div>
-
-    <div class="recommendations-section-wrapper" *ngIf="showHighlightsAndRecommendations">
-      <h2 class="section-header snap-title" style="font-size: 1.5rem;">Recommended for You</h2>
-      <app-recommendations></app-recommendations>
-    </div>
-
-    <!-- Main Marketplace -->
-    <app-banner class="app-banner" *ngIf="showHighlightsAndRecommendations"></app-banner>
-
-    <div *ngIf="showHighlightsAndRecommendations" class="trending-banner-container">
-      <img src="assets/BannerTendencias.jpg" alt="Trending Now Banner" class="trending-banner">
-      <div class="main-gift-cards">
-        <app-kinguin-gift-cards></app-kinguin-gift-cards>
-      </div>
-    </div>
-
-    <!-- Filtered Results -->
-    <div *ngIf="!showHighlightsAndRecommendations" class="filter-giftcard-container">
-      <div *ngIf="!isSmallScreen" class="filter-section">
-        <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()"
-          [searchQuery]="searchQuery">
-        </app-filters>
+    @if (showHighlightsAndRecommendations) {
+      <div class="highlights-section-wrapper">
+        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Weekly Highlights</h2>
+        <app-highlights></app-highlights>
       </div>
 
-      <button class="filter-button" *ngIf="isSmallScreen" (click)="openFilterModal()">
-        <span class="material-symbols-outlined">tune</span>
-      </button>
+      <div class="recommendations-section-wrapper">
+        <h2 class="section-header snap-title" style="font-size: 1.5rem;">Recommended for You</h2>
+        <app-recommendations></app-recommendations>
+      </div>
 
-      <div class="modal" *ngIf="isFilterVisible && isSmallScreen">
-        <div class="modal-content">
-          <span class="close" (click)="closeFilterModal()">&times;</span>
-          <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()">
-          </app-filters>
+      <app-banner class="app-banner"></app-banner>
+
+      <div class="trending-banner-container">
+        <img src="assets/BannerTendencias.jpg" alt="Trending Now Banner" class="trending-banner">
+        <div class="main-gift-cards">
+          <app-kinguin-gift-cards></app-kinguin-gift-cards>
         </div>
       </div>
+    }
 
-      <div *ngIf="isLoading" class="loading-indicator">
-        <div class="bars">
-          <div class="bar bar1"></div>
-          <div class="bar bar2"></div>
-          <div class="bar bar3"></div>
-          <div class="bar bar4"></div>
-          <div class="bar bar5"></div>
-        </div>
-      </div>
+    @if (!showHighlightsAndRecommendations) {
+      <div class="filter-giftcard-container">
+        @if (!isSmallScreen) {
+          <div class="filter-section">
+            <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()"
+                         [searchQuery]="searchQuery">
+            </app-filters>
+          </div>
+        }
 
-      <div class="giftcard-section" *ngIf="!isLoading">
-        <h2 class="section-header snap-title">Search Results</h2>
-        <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
-          <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
-        </div>
+        @if (isSmallScreen) {
+          <button class="filter-button" (click)="openFilterModal()">
+            <span class="material-symbols-outlined">tune</span>
+          </button>
+        }
+
+        @if (isFilterVisible && isSmallScreen) {
+          <div class="modal">
+            <div class="modal-content">
+              <span class="close" (click)="closeFilterModal()">&times;</span>
+              <app-filters (filteredResults)="handleFilteredResults($event)" (filtersApplied)="applyFilters()">
+              </app-filters>
+            </div>
+          </div>
+        }
+
+        @if (isLoading) {
+          <div class="loading-indicator">
+            <div class="bars">
+              <div class="bar bar1"></div>
+              <div class="bar bar2"></div>
+              <div class="bar bar3"></div>
+              <div class="bar bar4"></div>
+              <div class="bar bar5"></div>
+            </div>
+          </div>
+        } @else {
+          <div class="giftcard-section">
+            <h2 class="section-header snap-title">Search Results</h2>
+            <div [ngClass]="{ 'gift-cards-grid-big' : !isSmallScreen, 'gift-cards-grid-small': isSmallScreen}">
+              <app-kinguin-gift-cards [giftCardsInput]="currentGiftCards"></app-kinguin-gift-cards>
+            </div>
+          </div>
+        }
       </div>
-    </div>
+    }
   </div>
 
-  <app-offers-banner *ngIf="showHighlightsAndRecommendations"></app-offers-banner>
+  @if (showHighlightsAndRecommendations) {
+    <app-offers-banner></app-offers-banner>
+  }
+
   <app-inferior-filter></app-inferior-filter>
 </div>
