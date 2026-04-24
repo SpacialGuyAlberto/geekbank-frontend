@@ -151,54 +151,63 @@ footer::before {
 }
 
 /* Newsletter Box */
+/* Newsletter Box: Reducimos el padding para que se vea más compacto */
 .newsletter-box {
   background: var(--surface);
   padding: 1.5rem;
   border-radius: 20px;
   border: 1px solid var(--stroke);
   backdrop-filter: blur(14px);
+  box-sizing: border-box; /* Fundamental para que el padding no sume ancho extra */
 }
 
+/* Alineación forzada con altura fija */
+/* Aumentamos el gap en el grupo para separar un poco más el input del botón */
 .newsletter-form .input-group {
   display: flex;
   gap: 0.6rem;
+  width: 100%;
+  height: 48px; /* Altura controlada */
 }
 
-.newsletter-form input {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--stroke);
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  color: #ffffff;
-  font-size: 0.9rem;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.newsletter-form input:focus {
-  border-color: var(--blue);
-  background: rgba(0, 0, 0, 0.3);
-}
-
+/* Ajustamos el botón para que sea un poco más ancho y cómodo */
 .newsletter-form button {
+  flex: 0 0 50px; /* Ocupa exactamente 50px, no crece ni se encoge */
+  height: 100%;
   background: radial-gradient(140% 180% at 20% 10%, rgba(10, 132, 255, 0.22), rgba(255, 255, 255, 0.05));
   border: 1px solid rgba(10, 132, 255, 0.55);
   color: #ffffff;
   border-radius: 12px;
-  width: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
+/* Un efecto visual al pasar el mouse que lo hace sentir menos "limitado" */
 .newsletter-form button:hover {
   border-color: var(--blue);
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(10, 132, 255, 0.2);
+  background: rgba(10, 132, 255, 0.15); /* Cambiamos a solo luz en lugar de crecer de tamaño */
+  box-shadow: 0 0 15px rgba(10, 132, 255, 0.3);
 }
+
+.newsletter-form input {
+  flex: 1 1 auto; /* Permite crecer y encogerse */
+  min-width: 0; /* TRUCO CLAVE: Evita que el input empuje al botón hacia afuera */
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  padding: 0 1rem;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+
 
 /* Payment Methods */
 .payment-methods {
