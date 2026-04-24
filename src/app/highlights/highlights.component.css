@@ -95,21 +95,34 @@
   gap: 2px;
 }
 
+/* 1. Etiqueta "Precio Especial" más discreta para que el número resalte más */
 .highlight-price-label {
-  font-size: 0.8rem;
-  color: var(--muted, rgba(255, 255, 255, 0.6));
-  font-weight: 600;
+  font-size: 0.7rem; /* Reducimos un poco */
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.2rem;
 }
 
-/* PRECIO ESPECIAL (Coherente Aurora) */
+/* 2. PRECIO ESPECIAL: Ahora gigante y con peso máximo */
 .highlight-price-value {
-  font-size: 3.2rem; /* Más grande y legible */
+  font-size: 5.5rem; /* Aumentado drásticamente */
   font-weight: 950;
-  color: #fff; /* Blanco puro, elegante */
-  line-height: 1;
-  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* 3. Ajuste de alineación para que el precio y el botón se vean equilibrados */
+.highlight-price-row {
+  display: flex;
+  align-items: flex-end; /* Alineamos al final para que el precio grande se asiente en la base */
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  gap: 3rem;
+  pointer-events: auto;
 }
 
 /* BOTÓN CTA AURORA (Estilo E-commerce Elegante) */
@@ -192,4 +205,46 @@
   height: 100%;
   background: var(--blue, #0a84ff);
   transition: width 0.05s linear;
+}
+
+
+@media (max-width: 1024px) {
+  .highlight-price-value {
+    font-size: 3.5rem; /* Ajuste para tablets */
+  }
+}
+
+@media (max-width: 768px) {
+  /* Ajustamos el tamaño del precio para móvil */
+  .highlight-price-value {
+    font-size: 2.8rem;
+  }
+
+  /* 1. Apilamos el precio y el botón verticalmente */
+  .highlight-price-row {
+    flex-direction: column; /* Cambia la dirección a columna */
+    align-items: flex-start; /* Alineamos todo a la izquierda */
+    gap: 1.2rem; /* Espacio entre el precio y el botón */
+    margin-top: 1rem;
+  }
+
+  /* 2. El botón ahora ocupa todo el ancho y se centra su contenido */
+  .highlight-cta {
+    width: 100%; /* Botón de borde a borde, ideal para móviles */
+    justify-content: center; /* Centramos el texto y el rayito */
+    padding: 1rem; /* Un poco menos de alto para que no estorbe */
+  }
+
+  /* Opcional: Ajustamos un poco las flechas para que no tapen el texto en móvil */
+  .carousel-arrow {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+  .carousel-arrow.left {
+    left: 0.5rem;
+  }
+  .carousel-arrow.right {
+    right: 0.5rem;
+  }
 }

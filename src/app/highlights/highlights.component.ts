@@ -5,13 +5,16 @@ import { HighlightService } from "../highlights-config/highlights.service";
 import { KinguinGiftCard } from "../kinguin-gift-cards/KinguinGiftCard";
 import { Router } from '@angular/router';
 import { firstValueFrom } from "rxjs";
+import {ConvertToHnlPipe} from "../pipes/convert-to-hnl.pipe";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {CurrencyService} from "../services/currency.service";
+
 
 @Component({
   selector: 'app-highlights',
   imports: [
-    NgForOf,
-    NgOptimizedImage,
-    CurrencyPipe
+    CurrencyPipe,
+    ConvertToHnlPipe
   ],
   templateUrl: './highlights.component.html',
   styleUrls: ['./highlights.component.css']
@@ -20,6 +23,7 @@ export class HighlightsComponent implements OnInit {
   highlightItems: HighlightItemWithGiftcard[] = [];
   highlights: KinguinGiftCard[] = [];
   displayedHighlights: HighlightItem[] = [];
+  exchangeRate: number = 0;
 
   currentIndex = 0;
 
@@ -28,10 +32,15 @@ export class HighlightsComponent implements OnInit {
   private progressInterval: any;
   private autoSlideInterval: any;
 
-  constructor(private highlightService: HighlightService, private router: Router) { }
+  constructor(private highlightService: HighlightService,
+              private router: Router,
+              private snackBar: MatSnackBar,
+              private currencyService: CurrencyService,
+              ) { }
 
   ngOnInit(): void {
     this.loadHighlights();
+    this.fetchCurrencyExchange();
   }
 
   async loadHighlights() {
@@ -140,6 +149,25 @@ export class HighlightsComponent implements OnInit {
       } else {
         console.log('Navigation failed');
       }
+    });
+  }
+
+  fetchCurrencyExchange(): void {
+    this.currencyService.getExchangeRateEURtoHNL(1).subscribe(
+      (convertedAmount: number) => {
+        this.exchangeRate = convertedAmount;
+      },
+      (error) => {
+        this.snackBar.open('Error al obtener la tasa de cambio.', 'Cerrar', {
+          duration: 3000,
+        });
+      }
+    );
+  }
+
+  showSnackBar(message: string): void {
+    this.snackBar.open(message, 'Cerrar', {
+      duration: 3000,
     });
   }
 }

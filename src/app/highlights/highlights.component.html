@@ -15,7 +15,9 @@
           <div class="highlight-price-row">
             <div class="price-info">
               <span class="highlight-price-label">Precio Especial</span>
-              <span class="highlight-price-value">{{ (highlight.price || 0) | currency:'USD' }}</span>
+              <span class="highlight-price-value">
+                {{ highlight.price | convertToHnl: exchangeRate | currency:'HNL':'symbol':'1.2-2' }}
+              </span>
             </div>
             <button class="highlight-cta">
               <span>Explorar Ahora</span>
