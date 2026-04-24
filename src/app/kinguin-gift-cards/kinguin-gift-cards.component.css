@@ -144,34 +144,35 @@
 }
 
 /* Search Mode Styles - Refined for Aurora */
+/* Search Mode Styles - Refined for Desktop */
 .gift-card-search {
   flex-direction: row;
-  height: 180px;
-  border-radius: var(--rLG, 22px);
-  border: 1px solid var(--stroke);
-  background: rgba(255, 255, 255, 0.04);
+  height: 130px; /* Altura más delgada y elegante, fiel a la imagen */
+  border-radius: 16px;
+  border: 1px solid var(--stroke, rgba(255, 255, 255, 0.08));
+  background: rgba(18, 20, 30, 0.7); /* Fondo oscuro profundo */
   backdrop-filter: blur(14px);
   display: flex;
-  transition: all 0.35s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
 }
 
 .gift-card-search:hover {
-  transform: translateX(8px);
-  border-color: var(--blue);
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: var(--shadow3);
+  background: rgba(25, 28, 45, 0.9);
+  border-color: rgba(10, 132, 255, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
 .image-container-search {
-  width: 280px;
+  width: 240px; /* Proporción 16:9 ajustada */
   height: 100%;
   flex-shrink: 0;
-  overflow: hidden;
   background-color: #000;
-  border-right: 1px solid var(--stroke);
+  overflow: hidden;
+  position: relative;
 }
 
 .gift-card-image-search {
@@ -179,42 +180,61 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.6s ease;
+  /* Efecto de degradado para fusionar la imagen con el fondo oscuro */
+  -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to right, rgba(0,0,0,1) 80%, rgba(0,0,0,0) 100%);
 }
 
 .gift-card-search:hover .gift-card-image-search {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
 
+/* LA MAGIA: Usamos CSS Grid para ordenar los elementos sin tocar el HTML */
 .gift-card-content-search {
   flex: 1;
-  padding: 1.5rem 2.5rem;
-  display: flex;
-  flex-direction: row;
+  padding: 0 2rem 0 1rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto; /* 4 Columnas: Descuento, Título, Plataforma, Precio */
   align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1));
+  gap: 1.5rem;
+}
+
+.discount-percentage-search {
+  position: static; /* Quitamos el position absolute del modo grid */
+  background: #ff2a5f; /* Rosa/Rojo vibrante de la captura */
+  color: #ffffff;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  margin: 0;
+  white-space: nowrap;
+  box-shadow: none;
 }
 
 .gift-card-title-search {
-  font-size: 1.25rem;
-  font-weight: 860;
-  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text, #ffffff);
   margin: 0;
-  flex: 1;
-  line-height: 1.3;
-  padding-right: 2rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .platform-search {
-  font-size: 11px;
-  color: var(--blue);
-  background: rgba(10, 132, 255, 0.1);
-  padding: 4px 10px;
-  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05); /* Pastilla oscura como en la imagen */
+  color: var(--blue, #0a84ff);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.75rem;
   text-transform: uppercase;
   font-weight: 800;
-  border: 1px solid rgba(10, 132, 255, 0.2);
-  margin-left: 1rem;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .gift-card-price-search {
@@ -222,31 +242,21 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  min-width: 140px;
+  min-width: 120px;
 }
 
 .original-price-search {
-  font-size: 0.9rem;
-  color: var(--muted);
+  font-size: 0.85rem;
+  color: var(--muted, rgba(255, 255, 255, 0.5));
   text-decoration: line-through;
-  margin-bottom: 0.25rem;
+  margin-bottom: 2px;
 }
 
 .discounted-price-search {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
   font-weight: 900;
   color: #ffffff;
-}
-
-.discount-percentage-search {
-  background: var(--pink);
-  color: #ffffff;
-  padding: 4px 10px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 900;
-  margin-bottom: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: -0.02em;
 }
 
 /* Paginator - Aurora Overrides */
@@ -306,37 +316,49 @@
   .gift-card-search {
     flex-direction: column;
     height: auto;
-    border-radius: var(--rMD);
+    border-radius: 24px; /* Bordes redondeados consistentes */
   }
 
   .image-container-search {
     width: 100%;
+    height: auto;
     aspect-ratio: 16/9;
     border-right: none;
-    border-bottom: 1px solid var(--stroke);
+    border-bottom: 1px solid var(--stroke, rgba(255, 255, 255, 0.08));
+  }
+  .gift-card-image-search {
+    -webkit-mask-image: none;
+    mask-image: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .gift-card-content-search {
+    display: flex; /* Anula el display: grid de escritorio */
     flex-direction: column;
     align-items: flex-start;
     padding: 1.5rem;
+    gap: 0.75rem;
   }
 
   .gift-card-title-search {
     padding-right: 0;
-    margin-bottom: 1rem;
     font-size: 1.1rem;
   }
 
   .gift-card-price-search {
-    align-items: flex-start;
-    min-width: auto;
-    margin-top: 1rem;
+    align-items: flex-start; /* Alineamos el precio a la izquierda */
+    margin-top: 0.5rem;
+    width: 100%;
   }
 
   .platform-search {
-    margin-left: 0;
-    margin-top: 0.5rem;
+    margin: 0.25rem 0;
+  }
+
+  .discount-percentage-search {
+    margin-bottom: 0.25rem;
   }
 }
 
