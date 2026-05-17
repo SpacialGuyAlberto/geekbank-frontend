@@ -27,7 +27,7 @@ export class MainScreenGiftCardService {
 
     return this.http.get<Page<MainScreenGiftCardItemDTO[]>>(url, {
       headers,
-      withCredentials: true
+      withCredentials: false
     });
   }
 
@@ -67,7 +67,7 @@ export class MainScreenGiftCardService {
     return this.http.get<MainScreenGiftCardItemDTO[]>(this.baseUrl, {
       params,
       headers,
-      withCredentials: true
+      withCredentials: false
     }).pipe(
       catchError((error: HttpErrorResponse) => {
         console.error('Error al obtener giftcards por clasificación:', error);
@@ -75,7 +75,6 @@ export class MainScreenGiftCardService {
       })
     );
   }
-
 
   /**
    * Elimina elementos de tarjetas de regalo para la pantalla principal basados en una lista de productIds.
